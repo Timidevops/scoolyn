@@ -15,6 +15,10 @@ class CreateAcademicSessionsTable extends Migration
     {
         Schema::create('academic_sessions', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('session_name');
+            $table->string('slug');
+            $table->string('session_year');
             $table->timestamps();
             $table->softDeletes();
         });

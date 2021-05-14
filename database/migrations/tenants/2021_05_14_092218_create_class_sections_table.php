@@ -15,6 +15,10 @@ class CreateClassSectionsTable extends Migration
     {
         Schema::create('class_sections', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('section_name');
+            $table->string('slug');
+            $table->string('school_class_id');
             $table->timestamps();
             $table->softDeletes();
         });

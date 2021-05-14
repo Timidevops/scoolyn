@@ -15,6 +15,10 @@ class CreateSubjectTeachersTable extends Migration
     {
         Schema::create('subject_teachers', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->nullableMorphs('subjectTeacher');
+            $table->string('teacher_id');
+            $table->string('subject_id');
             $table->timestamps();
             $table->softDeletes();
         });

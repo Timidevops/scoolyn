@@ -8,10 +8,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Classes extends Model
+class StudentFee extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+
+    protected $guarded = [];
+
+    protected $casts = [
+        'fee_structure_id' => 'array',
+    ];
 }

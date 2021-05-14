@@ -14,4 +14,10 @@ class StudentSubject extends Model
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+
+    protected $guarded = [];
+
+    protected $casts = [
+        'subjects' => 'array'
+    ];
 }

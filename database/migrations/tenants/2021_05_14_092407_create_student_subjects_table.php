@@ -15,6 +15,9 @@ class CreateStudentSubjectsTable extends Migration
     {
         Schema::create('student_subjects', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('student_id');
+            $table->json('subjects');
             $table->timestamps();
             $table->softDeletes();
         });

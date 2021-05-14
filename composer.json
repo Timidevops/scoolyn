@@ -11,8 +11,10 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^8.12",
         "laravel/tinker": "^2.5",
+        "spatie/laravel-model-status": "^1.10",
         "spatie/laravel-multitenancy": "^2.0",
-        "spatie/laravel-prefixed-ids": "^1.0"
+        "spatie/laravel-prefixed-ids": "^1.0",
+        "spatie/laravel-sluggable": "^3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

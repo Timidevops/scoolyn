@@ -15,6 +15,8 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('full_name');
             $table->timestamps();
             $table->softDeletes();
         });

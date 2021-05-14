@@ -15,6 +15,8 @@ class CreateParentsTable extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('full_name');
             $table->timestamps();
             $table->softDeletes();
         });

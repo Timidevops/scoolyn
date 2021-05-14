@@ -15,6 +15,9 @@ class CreateTermsTable extends Migration
     {
         Schema::create('academic_terms', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
+            $table->string('term_name');
+            $table->string('slug');
             $table->timestamps();
             $table->softDeletes();
         });

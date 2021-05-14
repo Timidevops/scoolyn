@@ -7,6 +7,8 @@ use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Sluggable\HasSlug;
+use Spatie\Sluggable\SlugOptions;
 
 class AcademicSession extends Model
 {
@@ -14,4 +16,14 @@ class AcademicSession extends Model
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+    use HasSlug;
+
+    protected $guarded = [];
+
+    public function getSlugOptions(): SlugOptions
+    {
+        return SlugOptions::create()
+            ->generateSlugsFrom('session_name')
+            ->saveSlugsTo('slug');
+    }
 }
