@@ -37,12 +37,12 @@ class ClassSection extends Model
 
     public function classTeacher(): MorphOne
     {
-        return $this->morphOne(ClassTeacher::class, 'classTeacher');
+        return $this->morphOne(ClassTeacher::class, 'schoolClass');
     }
 
     public function subjectTeacher(): MorphMany
     {
-        return $this->morphMany(SubjectTeacher::class, 'subjectTeacher');
+        return $this->morphMany(SubjectTeacher::class, 'schoolClass');
     }
 
     public function schoolClass(): MorphMany
@@ -53,5 +53,10 @@ class ClassSection extends Model
     public function classFee(): HasMany
     {
         return $this->hasMany(ClassFee::class,'class_section_id', 'uuid');
+    }
+
+    public function academicBroadsheet(): MorphMany
+    {
+        return $this->morphMany(AcademicBroadSheet::class, 'schoolClass');
     }
 }

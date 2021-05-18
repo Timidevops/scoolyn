@@ -7,7 +7,7 @@ namespace App\Actions\Tenant\Student\StudentSubject;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
-class CreateNewStudentSubject
+class CreateNewStudentSubjectAction
 {
     public function execute(Model $student, array $input)
     {

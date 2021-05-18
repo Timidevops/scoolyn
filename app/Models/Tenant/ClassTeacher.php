@@ -16,7 +16,9 @@ class ClassTeacher extends Model
     use SchoolTermTrait;
     use SchoolSessionTrait;
 
-    public function classTeacher(): MorphTo
+    protected $guarded = [];
+
+    public function schoolClass(): MorphTo
     {
         return $this->morphTo();
     }
