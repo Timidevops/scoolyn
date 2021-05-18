@@ -17,7 +17,8 @@ abstract class TestCase extends BaseTestCase
 
     public function tearDown() : void
     {
-        Artisan::call('migrate:reset --database=testDB ');
-        parent::tearDown();
+        Artisan::call('migrate:reset --path=database/migrations/tenants --database=testDB ');
+        //parent::tearDown();
     }
+
 }
