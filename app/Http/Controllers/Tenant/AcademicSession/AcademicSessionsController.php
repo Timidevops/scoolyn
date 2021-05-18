@@ -11,7 +11,7 @@ class AcademicSessionsController
 
     public function store(Request $request)
     {
-        (new CreateNewAcademicSessionAction)->execute($request->except('_token'));
+        (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->except('_token')));
 
         return redirect('/');
     }

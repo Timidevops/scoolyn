@@ -75,6 +75,8 @@ class CreateNewTeacherTest extends TestCase
         $this->assertEquals($getTeacher->uuid, $getClassTeacher->teacher_id);
     }
 
+
+
     public function test_that_subject_teacher_is_created_as_class_section()
     {
         $getClass   = SchoolClass::factory()->make();

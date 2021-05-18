@@ -17,8 +17,8 @@ class AcademicSessionsControllerTest extends TestCase
     {
 
         $response = $this->post('/academic-session',[
-            'session_name' => '2021/2022',
-            'session_year' => '2021'
+            'sessionName' => '2021/2022',
+            'sessionYear' => '2021'
         ]);
 
         $response->assertRedirect('/');

@@ -36,6 +36,39 @@ if(! function_exists('moneyFormat')){
     }
 }
 
+if(! function_exists('camel_to_snake')){
+    /**
+     *
+     * @param array | string $input
+     * @return array | string
+     */
+    function camel_to_snake($input)
+    {
+        if(! is_array($input)){
+            preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $input, $matches);
+            $ret = $matches[0];
+            foreach ($ret as &$match) {
+                $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+            }
+            return implode('_', $ret);
+        }
+        $newInput = array();
+        foreach ($input as $key => $inputs){
+            preg_match_all('!([A-Z][A-Z0-9]*(?=$|[A-Z][a-z0-9])|[A-Za-z][a-z0-9]+)!', $key, $matches);
+            $ret = $matches[0];
+            foreach ($ret as &$match) {
+                $match = $match == strtoupper($match) ? strtolower($match) : lcfirst($match);
+            }
+            $index = implode('_', $ret);
+            $newInput[$index] = $inputs;
+        }
+
+        return $newInput;
+
+    }
+}
+
+
     if(! function_exists('encrypt')){
         function encrypt($value)
         {
