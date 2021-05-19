@@ -11,17 +11,16 @@ module.exports = {
     require('@tailwindcss/ui'),
   ],
   colors: {
-
     'white': '#FFFFFF',
     'blue-100': '#020E83',
     'purple-100': '#EAECF4',
+    'red-100':'#EC4F4F',
     'gray-100':'#707070',
     'gray-200': '#1F2438',
     'gray-300':'#8283A2',
-    'gray-400':'#787389',
-    'gray-500':'#78738933',
-    
-
+    'gray-400':'#F7F7FA',
+    'gray-500':'#787389',
+    'gray-600':'#78738933',
 },
 }
 };

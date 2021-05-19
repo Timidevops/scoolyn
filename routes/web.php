@@ -17,6 +17,10 @@ Route::get('dashboard', function () {
     return view('Tenant.dashboard');
 });
 
+Route::get('subject', function () {
+    return view('Tenant.subject');
+});
+
 //Route::middleware('tenant')->group(function() {
 //    Route::get('/', function () {
 //    return view('welcome');
