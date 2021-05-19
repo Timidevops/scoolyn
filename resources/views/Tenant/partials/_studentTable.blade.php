@@ -37,9 +37,9 @@
                 </td>
 
                   <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
-                   <button class="focus:outline-none">
+                   <button class="focus:outline-none" x-on:click="editModal = true">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
                      </button> 
                      <button class="focus:outline-none">
@@ -47,10 +47,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                      </button>
-                   
-                      {{-- <a x-bind:href="item.url" class="font-normal text-light-blue">View</a> --}}
                   </td>
-
               </tr>
               </tbody>
               </template>
@@ -102,8 +99,15 @@
          {{-- modal --}}
          <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
           <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
-            <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4">
-              Create Subject
+            <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
+             <div class="block">
+              <span>Create Subject</span>
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+              </svg>
+            </span>
+            </div> 
               <button x-on:click="showModal = false" class="focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -153,11 +157,89 @@
                     </template>
                   </ul>
                 </div>
+
+              <div class="mb-6">
+                <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" x-on:click="addNewField()">
+                  Create Subject
+                </button>
+              </div>
           </div>
              
           </div>
         </div>
         {{-- modal --}}
+          {{-- edit modal --}}
+          <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="editModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': editModal }">
+            <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
+              <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4">
+                <div class="block">
+                  <span>Edit Subject</span>
+                  <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
+                  </svg>
+                </span>
+                </div> 
+                <button x-on:click="editModal = false" class="focus:outline-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </button>
+              </div>
+              <div class=" mx-4" >
+              <div class="mt-6">
+                <label for="service" class="block text-xs font-normal text-gray-100">Class</label>
+                <div class="relative inline-block w-full rounded-md ">
+                  <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="selected.value" x-on:click="open = true"> 
+                    <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                      </span>
+                  </button>
+                  </div>
+                  <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                  rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                    <template x-for="option in options" :key="option">
+                  <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">
+              <p x-text="option.value" class="inline-flex"></p>
+              </li>
+                    </template>
+                  </ul>
+                </div>
+  
+                <div class="my-6">
+                  <label for="service" class="block text-xs font-normal text-gray-100">Subject Name</label>
+                  <div class="relative inline-block w-full rounded-md ">
+                    <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true"> 
+                      
+                      <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                        </span>
+                    </button>
+                    </div>
+                    <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                    rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                      <template x-for="subject in subjects" :key="subject">
+                    <li @click.prevent="select = subject; show = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-blue-100 hover:bg-purple-100': show == true}">
+                <p x-text="subject.value" class="inline-flex"></p>
+                </li>
+                      </template>
+                    </ul>
+                  </div>
+  
+                <div class="mb-6">
+                  <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" @click.prevent="addNewField()">
+                    Create Subject
+                  </button>
+                </div>
+            </div>
+               
+            </div>
+          </div>
+          {{-- edit modal --}}
       </div>
    
   </div>
@@ -165,69 +247,30 @@
 
 
   <script>
-     var sourceData = [
-        {
-          id: "1",
-          subject_name: "Mathematics",
-        },
-        {
-          id: "2",
-          subject_name: "English",
-        },
-        {
-          id: "3",
-          subject_name: "Further Mathematics",
-        },
-        {
-          id: "4",
-          subject_name: "Social Studies",
-        },
-        {
-          id: "5",
-          subject_name: "French",
-        },
-        {
-          id: "6",
-          subject_name: "Moral Instruction",
-        },
-        {
-          id: "7",
-          subject_name: "Herrod Chandler",
-        },
-        {
-          id: "8",
-          subject_name: "Rhona Davidson",
-        },
-        {
-          id: "9",
-          subject_name: "Colleen Hurst",
-        },
-        {
-          id: "10",
-          subject_name: "Sonya Frost",
-        },
-        {
-          id: "11",
-          subject_name: "Sonya Frost",
-        },
-        {
-          id: "12",
-          subject_name: "Sonya Frost",
-        },
-       
-      ];
-
           function activeEmployee() {
             return {
               open: false,
               show: false,
               showModal: false,
+              editModal: false,
               search: "",
               pageNumber: 0,
               size: 5,
               total: "",
-              myForData: sourceData,
-              selected: {
+              myForData:[
+                {
+                  id: "",
+                  subject_name: "",
+                }
+              ],
+             
+           addNewField() {
+           this.subjects.push({
+           subject: this.subject_name,
+           });
+           this.subject_name = "";
+        },
+            selected: {
                 value: "Junior Secondary School 1"
                 
             },
@@ -235,7 +278,7 @@
                 value: "Mathematics"
                 
             },
-            options:[
+            options: [
                 {
                     
                     value:'Junior Secondary School 1',
@@ -268,6 +311,11 @@
                     value:'French',
                     
                 },
+                {
+                
+                value:'Social studies',
+                
+            },
             ],
               get filteredEmployees() {
                 const start = this.pageNumber * this.size,
