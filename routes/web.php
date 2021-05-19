@@ -25,6 +25,8 @@ Route::post('setting/set-academic-calendar', [\App\Http\Controllers\Tenant\Setti
 
 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
 
+Route::post('subject/teacher', [\App\Http\Controllers\Tenant\Subject\SubjectTeachersController::class, 'store'])->name('storeSubjectTeacher');
+
 Route::post('class', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'store'])->name('storeSchoolClass');
 
 Route::post('class/subject', [\App\Http\Controllers\Tenant\SchoolClass\ClassSubjectsController::class, 'store'])->name('storeClassSubject');
@@ -32,6 +34,26 @@ Route::post('class/subject', [\App\Http\Controllers\Tenant\SchoolClass\ClassSubj
 Route::post('class/teacher', [\App\Http\Controllers\Tenant\SchoolClass\ClassTeachersController::class, 'store'])->name('storeClassTeacher');
 
 Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
+
+Route::post('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'store'])->name('storeStudent');
+
+Route::post('student/subject', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'store'])->name('storeStudentSubject');
+
+Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
+
+Route::post('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'store'])->name('storeCAStructure');
+
+Route::post('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'store'])->name('storeAcademicBroadsheet');
+
+Route::post('result/academic-report/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicReportsController::class, 'store'])->name('storeAcademicReport');
+
+Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');
+
+Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsController::class, 'store'])->name('storeClassFee');
+
+Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
+
+Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
 
 //Route::middleware('tenant')->group(function() {
 //    Route::get('/', function () {
