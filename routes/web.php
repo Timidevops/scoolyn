@@ -21,6 +21,10 @@ Route::get('subject', function () {
     return view('Tenant.subject');
 });
 
+Route::get('classes', function () {
+    return view('Tenant.classes');
+});
+
 //Route::middleware('tenant')->group(function() {
 //    Route::get('/', function () {
 //    return view('welcome');

@@ -9,7 +9,7 @@
                 <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
                   S/N
                 </th>
-                  <th class="px-6 py-3 w-full  text-left  font-medium text-blue-100 text-sm">
+                  <th class="px-6 py-3 w-full  text-left  font-medium text-gray-500 text-sm">
                     Junior School 1
                   </th>
                   <th class="px-6 py-3 w-1/3  text-left text-sm font-medium text-gray-500">
