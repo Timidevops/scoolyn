@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seeders\Tenant;
+namespace Database\Seeders;
 
 use App\Models\Tenant\User;
 use Illuminate\Database\Seeder;
@@ -21,5 +21,6 @@ class RoleSeeder extends Seeder
         Role::create(['name' => User::ADMIN_USER]);
         Role::create(['name' => User::TEACHER_USER]);
         Role::create(['name' => User::STUDENT_USER]);
+        Role::create(['name' => User::PARENT_USER]);
     }
 }

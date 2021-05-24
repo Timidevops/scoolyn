@@ -3,7 +3,6 @@
 
 namespace App\Actions\Tenant\Student;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 

@@ -5,13 +5,14 @@ namespace App\Actions\Tenant\Parent;
 
 
 use App\Models\Tenant\Parents;
+use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 
 class CreateNewParentAction
 {
-    public function execute(array $input)
+    public function execute(Model $user, array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        return Parents::query()->create($input);
+        return $user->parent()->create($input);
     }
 }

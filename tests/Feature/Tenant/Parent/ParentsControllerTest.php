@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Parent;
 
 use App\Models\Tenant\Parents;
+use App\Models\Tenant\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,11 +16,18 @@ class ParentsControllerTest extends TestCase
     public function test_that_parent_controller_is_stored()
     {
         $response = $this->post('parent', [
-            'fullName' => 'john doe'
+            'fullName' => 'john doe',
+            'email' => 'john.doe@test.com',
         ]);
 
-        $response->assertRedirect('/');$getParent = Parents::all()->first();
+        $response->assertRedirect('/');
+
+        $getParent = Parents::all()->first();
+        $getUser = User::all()->first();
 
         $this->assertEquals('john doe', $getParent->full_name);
+        $this->assertEquals('john.doe@test.com', $getUser->email);
+        // assert that role name matches
+        $this->assertEquals(User::PARENT_USER, $getUser->roles->pluck('name')[0]);
     }
 }

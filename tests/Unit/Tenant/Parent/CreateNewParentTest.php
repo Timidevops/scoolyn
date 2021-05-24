@@ -5,6 +5,7 @@ namespace Tests\Unit\Tenant\Parent;
 
 use App\Actions\Tenant\Parent\CreateNewParentAction;
 use App\Models\Tenant\Parents;
+use App\Models\Tenant\User;
 use Tests\TestCase;
 
 class CreateNewParentTest extends TestCase
@@ -15,8 +16,10 @@ class CreateNewParentTest extends TestCase
      */
     public function test_that_parent_is_created()
     {
-        (new CreateNewParentAction())->execute([
+        $getUser = User::factory()->make();
+        (new CreateNewParentAction())->execute($getUser,[
             'full_name' => 'john doe',
+            'email' => 'john.doe@test.com',
         ]);
 
         $getParent = Parents::all()->first();

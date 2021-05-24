@@ -4,6 +4,7 @@ namespace Tests\Feature\Tenant\Student;
 
 use App\Actions\Tenant\Parent\CreateNewParentAction;
 use App\Models\Tenant\Student;
+use App\Models\Tenant\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -16,8 +17,10 @@ class StudentsControllerTest extends TestCase
      */
     public function test_that_student_controller_is_stored()
     {
-        $getParent = (new CreateNewParentAction())->execute([
+        $getUser = User::factory()->make();
+        $getParent = (new CreateNewParentAction())->execute($getUser,[
             'full_name' => 'john doe',
+            'email' => 'john.doe@test.com',
         ]);
 
         $response = $this->post('student', [

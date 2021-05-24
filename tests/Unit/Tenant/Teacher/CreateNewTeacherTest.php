@@ -14,6 +14,7 @@ use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Subject;
 use App\Models\Tenant\SubjectTeacher;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Tests\TestCase;
 
 class CreateNewTeacherTest extends TestCase
@@ -23,8 +24,12 @@ class CreateNewTeacherTest extends TestCase
      */
     public function test_teacher_is_created()
     {
-        (new CreateNewTeacherAction())->execute([
+        $user = User::factory()->make();
+
+        (new CreateNewTeacherAction())->execute($user, [
             'full_name' => 'john doe',
+            'email' => 'john.doe@test.com',
+            'staff_id' => 'staff_id'
         ]);
 
         $getTeacher = Teacher::all()->first();

@@ -10,6 +10,7 @@ use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Student;
+use App\Models\Tenant\User;
 use Tests\TestCase;
 
 class CreateNewStudentTest extends TestCase
@@ -72,6 +73,5 @@ class CreateNewStudentTest extends TestCase
         $this->assertEquals($getClass->uuid, $getStudent->school_class_id);
         $this->assertEquals($getClassSection->uuid, $getStudent->class_section_id);
         $this->assertEquals($getClassSectionCategory->uuid, $getStudent->class_section_category_id);
-
     }
 }

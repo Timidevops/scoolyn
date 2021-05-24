@@ -13,11 +13,12 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         Artisan::call('migrate:fresh --path=database/migrations/tenants --database=testDB --seed');
+        Artisan::call('db:seed --class=RoleSeeder');
     }
 
     public function tearDown() : void
     {
-        Artisan::call('migrate:reset --path=database/migrations/tenants --database=testDB ');
+        //Artisan::call('migrate:reset --path=database/migrations/tenants --database=testDB ');
         //parent::tearDown();
     }
 
