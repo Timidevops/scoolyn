@@ -21,25 +21,25 @@
                
               </tr>
               </thead>
-              <template x-for="item in filteredEmployees" :key="item" >
+              <template x-for="item in classTable" :key="item" >
               <tbody class="bg-white divide-y divide-purple-100">
               <tr class="bg-white">
 
                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
                     <a href="#" class="group inline-flex space-x-2 truncate">
-                      <p class="text-gray-500 truncate" x-text="item.id">
+                      <p class="text-gray-500 truncate">
                       </p>
                     </a>
                   </div>
                 </td>
 
                   <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="item.subject_name">
+                  <span class="text-gray-200 font-normal" x-text="item.subject_name">
                   </span>
                 </td>
                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                    <span class="text-gray-200 font-normal"  x-text="item.subject_name">
+                    <span class="text-gray-200 font-normal">
                     </span>
                   </td>
 
@@ -108,7 +108,7 @@
           <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
             <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
              <div class="block">
-              <span>Create Subject</span>
+              <span> Create Class</span>
               <span>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -144,7 +144,7 @@
               </div>
 
               <div class="my-6">
-                <label for="service" class="block text-xs font-normal text-gray-100">Subject Name</label>
+                <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
                 <div class="relative inline-block w-full rounded-md ">
                   <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true"> 
                     
@@ -155,19 +155,38 @@
                       </span>
                   </button>
                   </div>
-                  <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
-                  rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                  <div x-show="show"  @click.away="show = false" class="border border-purple-100">
+                    <div class="py-2 cursor-pointer relative ">
+                      <input type="search" class="py-2 px-10 w-full text-xs font-normal text-gray-100" placeholder="Search">
+                      <span class="absolute inset-y-0 left-0 mx-2 my-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 bg-purple-100
+                        rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                      </span>
+                  </div> 
+                    <div class="flex items-center py-2 cursor-pointer">
+                      <span class="mx-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                        </svg>
+                    </span>
+                    <span class="text-xs font-normal text-gray-100">Add new section</span>
+                  </div> 
+                  <ul  class="py-1 overflow-auto h-32 text-base leading-6  
+                   shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                     <template x-for="subject in subjects" :key="subject">
                   <li @click.prevent="select = subject; show = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-blue-100 hover:bg-purple-100': show == true}">
               <p x-text="subject.value" class="inline-flex"></p>
               </li>
                     </template>
                   </ul>
+                  </div>
                 </div>
 
               <div class="mb-6">
-                <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" x-on:click="addNewField()">
-                  Create Subject
+                <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" x-on:click="addClass">
+                  Create Class
                 </button>
               </div>
           </div>
@@ -180,7 +199,7 @@
             <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
               <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4">
                 <div class="block">
-                  <span>Edit Subject</span>
+                  <span>Edit Class</span>
                   <span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
@@ -216,7 +235,7 @@
                 </div>
   
                 <div class="my-6">
-                  <label for="service" class="block text-xs font-normal text-gray-100">Subject Name</label>
+                  <label for="section name" class="block text-xs font-normal text-gray-100">Section name</label>
                   <div class="relative inline-block w-full rounded-md ">
                     <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true"> 
                       
@@ -239,7 +258,7 @@
   
                 <div class="mb-6">
                   <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" @click.prevent="addNewField()">
-                    Create Subject
+                    Edit Class
                   </button>
                 </div>
             </div>
@@ -254,7 +273,7 @@
 
 
   <script>
-          function activeEmployee() {
+          function activeClasses() {
             return {
               open: false,
               show: false,
@@ -264,67 +283,61 @@
               pageNumber: 0,
               size: 5,
               total: "",
-              myForData:[
-                {
-                  id: "",
-                  subject_name: "",
-                }
-              ],
-             
-           addNewField() {
-           this.subjects.push({
-           subject: this.subject_name,
-           });
-           this.subject_name = "";
+              selected: {
+                value: "select class"
+                
+                        },
+                select: {
+                value: "select class section"
+                
+                        },
+                options: [
+                        {
+                        
+                        value:'Junior Secondary School 1',
+                      
+                        },
+                        {
+                    
+                        value:'Junior Secondary School 2',
+                        
+                        },
+                        {
+                    
+                        value:'Junior Secondary School 3',
+                        
+                        },
+                ],
+                subjects:[
+                        {
+                        
+                        value:'A',
+                      
+                        },
+                        {
+                    
+                        value:'B',
+                        
+                        },
+                        {
+                    
+                        value:'C',
+                        
+                        },
+                ],
+                addClass() {
+                 this.subjects.push({
+                item: this.subject_name,
+                completed: false
+            });
+
+                 this.subject_name = "";
         },
-            selected: {
-                value: "Junior Secondary School 1"
-                
-            },
-            select: {
-                value: "Mathematics"
-                
-            },
-            options: [
-                {
-                    
-                    value:'Junior Secondary School 1',
-                  
-                },
-                {
-                
-                    value:'Junior Secondary School 2',
-                    
-                },
-                {
-                
-                    value:'Junior Secondary School 3',
-                    
-                },
-            ],
-            subjects:[
-                {
-                    
-                    value:'Mathematics',
-                  
-                },
-                {
-                
-                    value:'English',
-                    
-                },
-                {
-                
-                    value:'French',
-                    
-                },
-                {
-                
-                value:'Social studies',
-                
-            },
-            ],
-              get filteredEmployees() {
+        // test
+        myForData:[
+              
+              ],
+        get classTable() {
                 const start = this.pageNumber * this.size,
                   end = start + this.size;
 
@@ -392,7 +405,8 @@
               viewPage(index) {
                 this.pageNumber = index;
               },
+        // test
+              
             };
           }
-
           </script>
