@@ -12,9 +12,22 @@
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm">
                     Class name
                   </th>
-                  <th class="px-6 py-3 w-64 text-left  font-medium text-gray-500 text-sm">
+                  {{-- <th class="px-6 py-3 w-64 text-left  font-medium text-gray-500 text-sm">
                     Section
-                  </th>
+                  </th> --}}
+                  <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
+                    <span class="flex items-center mx-1">Section
+                     <span> 
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                     <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                   </svg>
+                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                   </svg>
+                     </span>
+                    </span> 
+                  
+                    </th>
                   <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                     Action
                   </th>
