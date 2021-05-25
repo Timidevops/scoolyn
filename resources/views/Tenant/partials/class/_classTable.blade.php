@@ -12,11 +12,6 @@
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm">
                     Class name
                   </th>
-<<<<<<< HEAD
-                  <th class="px-6 py-3 w-64 text-left  font-medium text-gray-500 text-sm">
-                    Section
-                  </th>
-=======
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
                     <span class="flex items-center mx-1">Section
                      <span>
@@ -30,7 +25,6 @@
                     </span>
 
                     </th>
->>>>>>> origin/main
                   <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                     Action
                   </th>
