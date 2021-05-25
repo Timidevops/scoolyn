@@ -14,8 +14,16 @@ use Spatie\WelcomeNotification\WelcomesNewUsers;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('dashboard', function () {
+    return view('Tenant.dashboard');
+});
+
+Route::get('subject', function () {
+    return view('Tenant.subject');
+});
+
+Route::get('classes', function () {
+    return view('Tenant.classes');
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
