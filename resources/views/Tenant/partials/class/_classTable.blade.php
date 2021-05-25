@@ -12,22 +12,9 @@
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm">
                     Class name
                   </th>
-                  {{-- <th class="px-6 py-3 w-64 text-left  font-medium text-gray-500 text-sm">
+                  <th class="px-6 py-3 w-64 text-left  font-medium text-gray-500 text-sm">
                     Section
-                  </th> --}}
-                  <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
-                    <span class="flex items-center mx-1">Section
-                     <span> 
-                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                     <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
-                   </svg>
-                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                     <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                   </svg>
-                     </span>
-                    </span> 
-                  
-                    </th>
+                  </th>
                   <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                     Action
                   </th>
@@ -178,7 +165,7 @@
                         </svg>
                       </span>
                   </div> 
-                    <div class="flex items-center py-2 cursor-pointer">
+                    <div class="flex items-center py-2 cursor-pointer" x-on:click="showw = false">
                       <span class="mx-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">
                           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
@@ -186,6 +173,8 @@
                     </span>
                     <span class="text-xs font-normal text-gray-100">Add new section</span>
                   </div> 
+                  <div x-show="showw">hhh</div>
+                </div>
                   <ul  class="py-1 overflow-auto h-32 text-base leading-6  
                    shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                     <template x-for="subject in subjects" :key="subject">
@@ -194,7 +183,7 @@
               </li>
                     </template>
                   </ul>
-                  </div>
+                 
                 </div>
 
               <div class="mb-6">
@@ -290,6 +279,7 @@
             return {
               open: false,
               show: false,
+              showw: false,
               showModal: false,
               editModal: false,
               search: "",
