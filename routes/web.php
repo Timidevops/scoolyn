@@ -25,6 +25,9 @@ Route::get('subject', function () {
 Route::get('classes', function () {
     return view('Tenant.classes');
 });
+Route::get('/', function () {
+    return view('welcome');
+});
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
     Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('createWelcomeUser');
