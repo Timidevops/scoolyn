@@ -23,6 +23,7 @@ class CreateStudentsTable extends Migration
             $table->string('class_section_id');
             $table->string('class_section_category_id')->nullable();
             $table->string('parent_id');
+            //$table->string('user_id');
             $table->timestamps();
             $table->softDeletes();
         });

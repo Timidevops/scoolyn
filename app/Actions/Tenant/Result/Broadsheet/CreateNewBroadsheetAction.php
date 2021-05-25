@@ -12,6 +12,6 @@ class CreateNewBroadsheetAction
     public function execute(Model $model, array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        $model->schoolClass()->create($input);
+        $model->academicBroadsheet()->create($input);
     }
 }

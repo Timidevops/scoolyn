@@ -19,6 +19,7 @@ class CreateAcademicBroadSheetsTable extends Migration
             $table->morphs('schoolClass');
             $table->string('subject_id');
             $table->string('teacher_id');
+            $table->json('meta');
             $table->timestamps();
             $table->softDeletes();
         });

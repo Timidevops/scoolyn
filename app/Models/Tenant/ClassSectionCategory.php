@@ -31,15 +31,20 @@ class ClassSectionCategory extends Model
 
     public function classTeacher(): MorphOne
     {
-        return $this->morphOne(ClassTeacher::class, 'classTeacher');
+        return $this->morphOne(ClassTeacher::class, 'schoolClass');
     }
 
     public function subjectTeacher(): MorphMany
     {
-        return $this->morphMany(SubjectTeacher::class, 'subjectTeacher');
+        return $this->morphMany(SubjectTeacher::class, 'schoolClass');
     }
 
     public function schoolClass(): MorphMany
+    {
+        return $this->morphMany(AcademicBroadSheet::class, 'schoolClass');
+    }
+
+    public function academicBroadsheet(): MorphMany
     {
         return $this->morphMany(AcademicBroadSheet::class, 'schoolClass');
     }

@@ -11,7 +11,7 @@ class CreateNewAcademicSessionAction
 {
     public function execute(array $input)
     {
-        $input['input'] = Uuid::uuid4();
+        $input['uuid'] = Uuid::uuid4();
         AcademicSession::query()->create($input);
     }
 }

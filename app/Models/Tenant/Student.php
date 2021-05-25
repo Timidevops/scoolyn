@@ -20,7 +20,7 @@ class Student extends Model
 
     public function subjects(): HasMany
     {
-        return $this->hasMany(Subject::class, 'student_id', 'uuid');
+        return $this->hasMany(StudentSubject::class, 'student_id', 'uuid');
     }
 
     public function academicReport(): HasMany

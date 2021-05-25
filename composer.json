@@ -13,8 +13,10 @@
         "laravel/tinker": "^2.5",
         "spatie/laravel-model-status": "^1.10",
         "spatie/laravel-multitenancy": "^2.0",
+        "spatie/laravel-permission": "^4.0",
         "spatie/laravel-prefixed-ids": "^1.0",
-        "spatie/laravel-sluggable": "^3.0"
+        "spatie/laravel-sluggable": "^3.0",
+        "spatie/laravel-welcome-notification": "^2.2"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

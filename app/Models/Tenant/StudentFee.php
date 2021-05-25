@@ -6,6 +6,7 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StudentFee extends Model
@@ -20,4 +21,9 @@ class StudentFee extends Model
     protected $casts = [
         'fee_structure_id' => 'array',
     ];
+
+    public function feeStructure(): BelongsTo
+    {
+        return $this->belongsTo(FeeStructure::class, 'fee_structure_id', 'uuid');
+    }
 }

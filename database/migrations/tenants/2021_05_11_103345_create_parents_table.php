@@ -17,6 +17,8 @@ class CreateParentsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('full_name');
+            $table->string('email');
+            $table->string('user_id');
             $table->timestamps();
             $table->softDeletes();
         });

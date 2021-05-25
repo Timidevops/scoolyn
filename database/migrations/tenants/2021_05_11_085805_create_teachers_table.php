@@ -17,6 +17,9 @@ class CreateTeachersTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('full_name');
+            $table->string('email');
+            $table->string('user_id');
+            $table->string('staff_id');
             $table->timestamps();
             $table->softDeletes();
         });
