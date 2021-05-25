@@ -11,8 +11,8 @@
                 </th>
                   <th class="px-6 py-3 w-full  text-left  font-medium text-gray-500 text-sm ">
                   <span class="flex items-center mx-1">Junior School 1
-                   
-                   <span> 
+
+                   <span>
                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                    <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
                  </svg>
@@ -20,13 +20,13 @@
                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                  </svg>
                    </span>
-                  </span> 
-                
+                  </span>
+
                   </th>
                   <th class="px-6 py-3 w-1/3  text-left text-sm font-medium text-gray-500">
                     Action
                   </th>
-               
+
               </tr>
               </thead>
               <template x-for="item in filteredEmployees" :key="item" >
@@ -52,7 +52,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
-                     </button> 
+                     </button>
                      <button class="focus:outline-none">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -107,6 +107,7 @@
         </button>
       </div>
       </nav>
+
          {{-- modal --}}
          <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
           <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
@@ -118,7 +119,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
               </svg>
             </span>
-            </div> 
+            </div>
               <button x-on:click="showModal = false" class="focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -129,7 +130,7 @@
             <div class="mt-6">
               <label for="service" class="block text-xs font-normal text-gray-100">Class</label>
               <div class="relative inline-block w-full rounded-md ">
-                <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="selected.value" x-on:click="open = true"> 
+                <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="selected.value" x-on:click="open = true">
                   <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -137,7 +138,7 @@
                     </span>
                 </button>
                 </div>
-                <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
                 rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                   <template x-for="option in options" :key="option">
                 <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">
@@ -150,8 +151,8 @@
               <div class="my-6">
                 <label for="service" class="block text-xs font-normal text-gray-100">Subject Name</label>
                 <div class="relative inline-block w-full rounded-md ">
-                  <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true"> 
-                    
+                  <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true">
+
                     <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -159,7 +160,7 @@
                       </span>
                   </button>
                   </div>
-                  <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                  <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
                   rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                     <template x-for="subject in subjects" :key="subject">
                   <li @click.prevent="select = subject; show = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-blue-100 hover:bg-purple-100': show == true}">
@@ -175,10 +176,11 @@
                 </button>
               </div>
           </div>
-             
+
           </div>
         </div>
         {{-- modal --}}
+
           {{-- edit modal --}}
           <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="editModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': editModal }">
             <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
@@ -190,7 +192,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4" />
                   </svg>
                 </span>
-                </div> 
+                </div>
                 <button x-on:click="editModal = false" class="focus:outline-none">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -201,7 +203,7 @@
               <div class="mt-6">
                 <label for="service" class="block text-xs font-normal text-gray-100">Class</label>
                 <div class="relative inline-block w-full rounded-md ">
-                  <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="selected.value" x-on:click="open = true"> 
+                  <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="selected.value" x-on:click="open = true">
                     <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -209,7 +211,7 @@
                       </span>
                   </button>
                   </div>
-                  <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                  <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
                   rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                     <template x-for="option in options" :key="option">
                   <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">
@@ -218,12 +220,12 @@
                     </template>
                   </ul>
                 </div>
-  
+
                 <div class="my-6">
                   <label for="service" class="block text-xs font-normal text-gray-100">Subject Name</label>
                   <div class="relative inline-block w-full rounded-md ">
-                    <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true"> 
-                      
+                    <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-200" x-text="select.value" x-on:click="show = true">
+
                       <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -231,7 +233,7 @@
                         </span>
                     </button>
                     </div>
-                    <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                    <ul x-show="show"  @click.away="show = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
                     rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                       <template x-for="subject in subjects" :key="subject">
                     <li @click.prevent="select = subject; show = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-blue-100 hover:bg-purple-100': show == true}">
@@ -240,19 +242,19 @@
                       </template>
                     </ul>
                   </div>
-  
+
                 <div class="mb-6">
                   <button class="bg-blue-100 text-white px-4 py-2 rounded-md text-base" @click.prevent="addNewField()">
                     Create Subject
                   </button>
                 </div>
             </div>
-               
+
             </div>
           </div>
           {{-- edit modal --}}
       </div>
-   
+
   </div>
 
 
@@ -274,7 +276,7 @@
                   subject_name: "",
                 }
               ],
-             
+
            addNewField() {
            this.subjects.push({
            subject: this.subject_name,
@@ -283,49 +285,49 @@
         },
             selected: {
                 value: "Junior Secondary School 1"
-                
+
             },
             select: {
                 value: "Mathematics"
-                
+
             },
             options: [
                 {
-                    
+
                     value:'Junior Secondary School 1',
-                  
+
                 },
                 {
-                
+
                     value:'Junior Secondary School 2',
-                    
+
                 },
                 {
-                
+
                     value:'Junior Secondary School 3',
-                    
+
                 },
             ],
             subjects:[
                 {
-                    
+
                     value:'Mathematics',
-                  
+
                 },
                 {
-                
+
                     value:'English',
-                    
+
                 },
                 {
-                
+
                     value:'French',
-                    
+
                 },
                 {
-                
+
                 value:'Social studies',
-                
+
             },
             ],
               get filteredEmployees() {

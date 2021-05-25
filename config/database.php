@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('TEST_DB_CONNECTION', 'testDB'),
+    'default' => env('TEST_DB_CONNECTION', 'testDB'),//DB_CONNECTION_TENANT
 
     /*
     |--------------------------------------------------------------------------
@@ -116,8 +116,8 @@ return [
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST_TENANT', '127.0.0.1'),
             'port' => env('DB_PORT_TENANT', '3306'),
-            'database' => null,
-            'username' => env('DB_USERNAME_TENANT', 'forge'),
+            'database' => env('DB_DATABASE_TENANT'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD_TENANT', ''),
             'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8mb4',

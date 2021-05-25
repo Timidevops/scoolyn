@@ -18,8 +18,10 @@ class SchoolClassesControllerTest extends TestCase
     {
         $response = $this->post('class', [
             'className' => 'sss one',
-            'sectionName' => 'science',
-            'categoryName' => 'a',
+            'newSectionName' => 'science',
+            'classSectionType' => 'classSectionTypeId',
+            'categoryName' => 'categoryNameId',
+            'newClassSectionCategoryType' => 'a'
         ]);
 
         $response->assertRedirect('/');
@@ -28,13 +30,11 @@ class SchoolClassesControllerTest extends TestCase
         $this->assertEquals('sss one', $getClass->class_name);
         $this->assertEquals('sss-one', $getClass->slug);
 
+        $this->assertEquals('science', $getClass->classSection->section_name);
+
         $getClassSection = ClassSection::all()->first();
 
-        $this->assertEquals('science', $getClassSection->section_name);
-
-        $getClassSectionCategory = ClassSectionCategory::all()->first();
-
-        $this->assertEquals('a', $getClassSectionCategory->category_name);
-        $this->assertEquals($getClassSection->uuid, $getClassSectionCategory->class_section_id);
+        $this->assertEquals('a', $getClassSection->classSectionCategory->category_name);
+//        $this->assertEquals($getClassSection->uuid, $getClassSectionCategory->class_section_id);
     }
 }

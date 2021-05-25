@@ -3,15 +3,12 @@
 
 namespace App\Actions\Tenant\SchoolClass;
 
-
-use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
+use App\Models\Tenant\ClassSectionCategory;
 
 class CreateNewClassSectionCategoryAction
 {
-    public function execute(Model $classSection, array $input)
+    public function execute(array $input)
     {
-        $input['uuid'] = Uuid::uuid4();
-        $classSection->classSectionCategory()->create($input);
+      return ClassSectionCategory::query()->create($input);
     }
 }

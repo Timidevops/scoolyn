@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassSectionsTable extends Migration
+class CreateClassSectionCategoryTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,11 @@ class CreateClassSectionsTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_sections', function (Blueprint $table) {
+        Schema::create('class_section_category_types', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('class_section_types_id');
-            $table->string('school_class_id');
+            $table->string('category_name');
+            $table->string('slug');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +30,6 @@ class CreateClassSectionsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_sections');
+        Schema::dropIfExists('class_section_category_types');
     }
 }

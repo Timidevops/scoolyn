@@ -7,11 +7,10 @@ use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Sluggable\HasSlug;
-use Spatie\Sluggable\SlugOptions;
 
 class ClassSection extends Model
 {
@@ -19,20 +18,12 @@ class ClassSection extends Model
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
-    use HasSlug;
 
     protected $guarded = [];
 
-    public function getSlugOptions(): SlugOptions
+    public function classSectionCategory(): HasOneThrough
     {
-        return SlugOptions::create()
-            ->generateSlugsFrom('section_name')
-            ->saveSlugsTo('slug');
-    }
-
-    public function classSectionCategory(): HasMany
-    {
-        return $this->hasMany(ClassSectionCategory::class, 'class_section_id', 'uuid');
+        return $this->hasOneThrough(ClassSectionCategoryType::class, ClassSectionCategory::class, 'class_section_id', 'uuid', 'uuid', 'class_section_category_types_id');
     }
 
     public function classTeacher(): MorphOne

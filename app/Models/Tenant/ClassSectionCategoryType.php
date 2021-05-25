@@ -6,15 +6,11 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-class SchoolClass extends Model
+class ClassSectionCategoryType extends Model
 {
     use HasFactory;
     use SoftDeletes;
@@ -27,13 +23,7 @@ class SchoolClass extends Model
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom('class_name')
+            ->generateSlugsFrom('category_name')
             ->saveSlugsTo('slug');
     }
-
-    public function classSection(): HasOneThrough
-    {
-        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'school_class_id', 'uuid', 'uuid','class_section_types_id');
-    }
-
 }

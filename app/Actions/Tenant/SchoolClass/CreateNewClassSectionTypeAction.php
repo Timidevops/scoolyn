@@ -4,14 +4,14 @@
 namespace App\Actions\Tenant\SchoolClass;
 
 
-use App\Models\Tenant\ClassSection;
+use App\Models\Tenant\ClassSectionType;
 use Ramsey\Uuid\Uuid;
 
-class CreateNewClassSectionAction
+class CreateNewClassSectionTypeAction
 {
     public function execute(array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        return ClassSection::query()->create($input);
+        return ClassSectionType::query()->create($input);
     }
 }

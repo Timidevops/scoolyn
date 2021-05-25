@@ -18,13 +18,7 @@ Route::get('dashboard', function () {
     return view('Tenant.dashboard');
 });
 
-Route::get('subject', function () {
-    return view('Tenant.subject');
-});
 
-Route::get('classes', function () {
-    return view('Tenant.classes');
-});
 Route::get('/', function () {
     return view('welcome');
 });
@@ -41,9 +35,11 @@ Route::post('academic-term', [\App\Http\Controllers\Tenant\AcademicTerm\Academic
 Route::post('setting/set-academic-calendar', [\App\Http\Controllers\Tenant\Setting\SetCurrentAcademicCalendarController::class, 'store'])->name('setAcademicCalendar');
 
 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
+Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
 
 Route::post('subject/teacher', [\App\Http\Controllers\Tenant\Subject\SubjectTeachersController::class, 'store'])->name('storeSubjectTeacher');
 
+Route::get('class', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
 Route::post('class', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'store'])->name('storeSchoolClass');
 
 Route::post('class/subject', [\App\Http\Controllers\Tenant\SchoolClass\ClassSubjectsController::class, 'store'])->name('storeClassSubject');
