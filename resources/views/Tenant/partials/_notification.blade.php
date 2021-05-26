@@ -9,7 +9,7 @@
               </svg>
             </span>
             </div>
-            <div class="bg-white mx-6 mt-4 overflow-y-auto rounded-md">
+            <div class="bg-white mx-6 mt-4 overflow-y-auto rounded-md h-64">
                 {{-- <ul class="text-xs">
                     <li class="mx-4 my-3">
                         Please do well to remind your parents of the upcoming PTF meeting

@@ -19,6 +19,18 @@ Route::get('dashboard', function () {
 });
 
 
+Route::get('student', function () {
+    return view('Tenant.student');
+});
+
+Route::get('addStudent', function () {
+    return view('Tenant.addStudent');
+});
+
+Route::get('classes', function () {
+    return view('Tenant.classes');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });
