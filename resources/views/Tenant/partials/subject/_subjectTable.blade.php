@@ -13,12 +13,9 @@
                   <span class="flex items-center mx-1">Junior School 1
                    
                    <span> 
-                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                   <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
-                 </svg>
-                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                   <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                 </svg>
+                    <span>
+                      <img src="images/filter_alt_black_24dp.svg" alt="" class="w-4">
+                       </span>
                    </span>
                   </span> 
                 
@@ -209,7 +206,7 @@
                       </span>
                   </button>
                   </div>
-                  <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
+                  <ul x-show="open" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100 
                   rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                     <template x-for="option in options" :key="option">
                   <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">

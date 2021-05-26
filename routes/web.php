@@ -22,6 +22,14 @@ Route::get('subject', function () {
     return view('Tenant.subject');
 });
 
+Route::get('student', function () {
+    return view('Tenant.student');
+});
+
+Route::get('addStudent', function () {
+    return view('Tenant.addStudent');
+});
+
 Route::get('classes', function () {
     return view('Tenant.classes');
 });
