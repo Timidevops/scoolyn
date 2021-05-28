@@ -1,8 +1,8 @@
 <div>
     <div class="mt-2 text-xl text-gray-200">
     Subject
-    </div> 
-    <span class="mt-2 text-base text-gray-300">56 Total Subjects</span>
+    </div>
+    <span class="mt-2 text-base text-gray-300">{{$subjectTotal}} Total Subjects</span>
 </div>
 <div class="bg-white rounded-md">
 <div class="md:flex md:items-center md:mt-2 ">
@@ -14,7 +14,7 @@
      </svg>
    </span>
     </div>
- 
+
    </div>
    <button class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4   text-sm flex items-center" x-on:click="showModal = true">
     <span class="mx-2">
@@ -22,9 +22,9 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </span>
-      <span class="mx-2">Add New</span> 
+      <span class="mx-2">Add New</span>
   </button>
 </div>
- 
+
 @include('Tenant.partials.subject._subjectTable')
 </div>

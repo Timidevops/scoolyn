@@ -31,9 +31,19 @@ class SchoolClass extends Model
             ->saveSlugsTo('slug');
     }
 
-    public function classSection(): HasOneThrough
+    public function classSection()
     {
-        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'school_class_id', 'uuid', 'uuid','class_section_types_id');
+        return $this->hasMany(ClassSection::class, 'school_class_id', 'uuid');
+    }
+
+    public function classSectionType(): HasManyThrough
+    {
+        return $this->hasManyThrough(ClassSectionType::class,ClassSection::class, 'school_class_id', 'uuid', 'uuid','class_section_types_id');
+    }
+
+    public function subject(): HasMany
+    {
+        return $this->hasMany(ClassSubject::class, 'school_class_id', 'uuid');
     }
 
 }

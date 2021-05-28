@@ -21,7 +21,7 @@ class ClassSection extends Model
 
     protected $guarded = [];
 
-    public function classSectionCategory(): HasOneThrough
+    public function classSectionCategoryType(): HasOneThrough
     {
         return $this->hasOneThrough(ClassSectionCategoryType::class, ClassSectionCategory::class, 'class_section_id', 'uuid', 'uuid', 'class_section_category_types_id');
     }

@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'default' => env('TEST_DB_CONNECTION', 'testDB'),//DB_CONNECTION_TENANT
+    'default' => env('DB_CONNECTION_TENANT', 'testDB'),//DB_CONNECTION_TENANT
 
     /*
     |--------------------------------------------------------------------------

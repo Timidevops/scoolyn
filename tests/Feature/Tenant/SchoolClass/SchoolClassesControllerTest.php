@@ -20,7 +20,7 @@ class SchoolClassesControllerTest extends TestCase
             'className' => 'sss one',
             'newSectionName' => 'science',
             'classSectionType' => 'classSectionTypeId',
-            'categoryName' => 'categoryNameId',
+            'classSectionCategoryType' => 'categoryNameId',
             'newClassSectionCategoryType' => 'a'
         ]);
 

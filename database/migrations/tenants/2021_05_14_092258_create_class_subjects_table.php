@@ -19,6 +19,7 @@ class CreateClassSubjectsTable extends Migration
             $table->string('subject_id');
             $table->string('school_class_id');
             $table->string('class_section_id')->nullable();
+            $table->string('class_section_category_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

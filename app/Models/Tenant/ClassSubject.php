@@ -16,4 +16,9 @@ class ClassSubject extends Model
     use SchoolSessionTrait;
 
     protected $guarded = [];
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class, 'subject_id', 'uuid');
+    }
 }
