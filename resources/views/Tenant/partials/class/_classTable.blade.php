@@ -49,7 +49,10 @@
                   </span>
                 </td>
 
-                <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
+                <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
+                  <button class="focus:outline-none ">
+                    <img src="images/user.svg" alt="" class="w-3 h-3 mx-2">
+                  </button>
                  <button class="focus:outline-none" x-on:click="editModal = true">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -128,10 +131,11 @@
           </button>
           </div>
           <div class=" mx-4" >
-          {{-- <div class="mt-6">
-            <label for="service" class="block text-xs font-normal text-gray-100">Class</label>
+          <div class="mt-6">
+            <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
             <div class="relative inline-block w-full rounded-md ">
-              <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-100" x-text="selected.value" x-on:click="open = true">
+              <button class=" z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" x-text="selected.value" x-on:click="open = true">
+
                 <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -139,62 +143,39 @@
                   </span>
               </button>
               </div>
-              <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
-              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
-                <template x-for="option in options" :key="option">
+              <div  class="border border-purple-100">
+              <div x-show="open"  @click.away="open = false">
+            <div> 
+              <div class="flex items-center py-2 cursor-pointer" x-show="open"  >
+                <span class="mx-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                  </svg>
+              </span>
+              <span class="text-xs font-normal text-gray-100" x-on:click="newClass = !newClass">Choose default class</span>
+            </div> 
+          </div>
+          </div>
+              <ul class="py-1 overflow-auto h-32 text-base leading-6
+              shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5" x-show="newClass">
+              <div class="py-2 cursor-pointer relative ">
+                <input type="search" class="py-2 px-10 w-full text-xs font-normal text-gray-100" placeholder="Sedarch" x-model="searchClass">
+                <span class="absolute inset-y-0 left-0 mx-2 my-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 bg-purple-100
+                  rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </span>
+            </div> 
+            <template x-for="option in options" :key="option">
               <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">
                 <p x-text="option.value" class="inline-flex"></p>
               </li>
                 </template>
               </ul>
-            </div> --}}
-{{-- test --}}
-<div class="mt-6">
-  <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
-  <div class="relative inline-block w-full rounded-md ">
-    <button class=" z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5" x-text="selected.value" x-on:click="open = true">
-
-      <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-        </svg>
-        </span>
-    </button>
-    </div>
-    <div  class="border border-purple-100">
-    <div x-show="open"  @click.away="open = false">
-   <div> 
-     <div class="flex items-center py-2 cursor-pointer" x-show="open"  >
-      <span class="mx-2">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-        </svg>
-    </span>
-    <span class="text-xs font-normal text-gray-100" x-on:click="newClass = !newClass">Choose default class</span>
-  </div> 
-</div>
-</div>
-    
-    <ul class="py-1 overflow-auto h-32 text-base leading-6
-     shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5" x-show="newClass">
-     <div class="py-2 cursor-pointer relative ">
-      <input type="search" class="py-2 px-10 w-full text-xs font-normal text-gray-100" placeholder="Search">
-      <span class="absolute inset-y-0 left-0 mx-2 my-4">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 bg-purple-100
-        rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-      </span>
-  </div> 
-  <template x-for="option in options" :key="option">
-    <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">
-      <p x-text="option.value" class="inline-flex"></p>
-    </li>
-      </template>
-    </ul>
-    </div>
-  </div>
-{{-- test --}}
+              </div>
+            </div>
+            
             <div class="my-6">
               <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
               <div class="relative inline-block w-full rounded-md ">
@@ -388,7 +369,7 @@
             newClass: false,
             showModal: false,
             editModal: false,
-            search: "",
+            searchClass: "",
             pageNumber: 0,
             size: 5,
             total: "",

@@ -20,7 +20,7 @@
                   </span> 
                 
                   </th>
-                  <th class="px-6 py-3 w-1/3  text-left text-sm font-medium text-gray-500">
+                  <th class="px-8 py-3 w-1/3 text-left text-sm font-medium text-gray-500">
                     Action
                   </th>
                
@@ -44,14 +44,19 @@
                   </span>
                 </td>
 
-                  <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
+                  <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
+                    <button class="focus:outline-none" x-on:click="profileModal = true">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </button>
                    <button class="focus:outline-none" x-on:click="editModal = true">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                    </svg>
+                    </svg> 
                      </button> 
                      <button class="focus:outline-none">
-                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                       </svg>
                      </button>
@@ -248,6 +253,80 @@
             </div>
           </div>
           {{-- edit modal --}}
+
+             {{-- profile modal --}}
+             <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="profileModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': profileModal }">
+              <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md   bg-white rounded-lg shadow-md">
+                <div class=" mx-3 my-6" >
+                  <div class="" id="tab_wrapper">
+                    <!-- The tabs navigation -->
+                  <div class="flex items-center justify-between mt-3 text-gray-200 text-base">
+                    <nav class="">
+                      <a class="text-gray-200 mx-2" :class="{ 'active border-b-2 border-blue-100': tab === 'profile' }" @click.prevent="tab = 'profile'; window.location.hash = 'profile'" href="#">Profile</a>
+                      <a class="text-gray-200 mx-2" :class="{ 'active border-b-2 border-blue-100': tab === 'parent' }" @click.prevent="tab = 'parent'; window.location.hash = 'parent'" href="#">Parent info</a> 
+                    </nav>
+                    <button x-on:click="profileModal = false" class="focus:outline-none">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </button>
+                  </div>
+                    <!-- The tabs content -->
+                    <div class="mx-2 my-8" x-show="tab === 'profile'">
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Name:</label>
+                        <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Class:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Section:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Phone Number:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+                    
+                    </div>
+                    <div class="mx-2" x-show="tab === 'parent'">
+                      <div class="mt-8 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Parent Name:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Parent Email:</label>
+                        <input type="email" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Address:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+
+                      <div class="mt-4 flex items-center border-b border-purple-100">
+                        <label for="name" class="block text-xs font-normal text-gray-100">Phone Number:</label>
+                        <input type="text" name="" id="" class=" text-gray-100 rounded-md py-2 px-2 focus:outline-none" readonly>
+                      </div>
+                     </div>
+                  
+                  </div>
+               
+    
+                
+    
+                 
+              </div>
+                 
+              </div>
+            </div>
+            {{-- profile modal --}}
       </div>
    
   </div>
@@ -261,10 +340,12 @@
               show: false,
               showModal: false,
               editModal: false,
+              profileModal: false,
               search: "",
               pageNumber: 0,
               size: 5,
               total: "",
+              tab: window.location.hash ? window.location.hash.substring(1) : 'profile',
               myForData:[
                 {
                   id: "",
