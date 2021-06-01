@@ -7,11 +7,27 @@ use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Parents;
+use App\Models\Tenant\Student;
 use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 
 class StudentsController extends Controller
 {
+    public function index()
+    {
+        return view('Tenant.pages.student.student', [
+            'totalStudents' => Student::query()->count(),
+            'students'      => Student::query()->get(['uuid']),
+        ]);
+    }
+
+    public function create()
+    {
+        return view('Tenant.pages.student.addStudent', [
+            'parents' => Parents::query()->get(['uuid', 'full_name']),
+        ]);
+    }
+
     public function store(Request $request)
     {
         if( $request->input('parent') ){

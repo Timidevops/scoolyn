@@ -58,6 +58,8 @@ Route::post('class/teacher', [\App\Http\Controllers\Tenant\SchoolClass\ClassTeac
 
 Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
 
+Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
+Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
 Route::post('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'store'])->name('storeStudent');
 
 Route::post('student/subject', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'store'])->name('storeStudentSubject');

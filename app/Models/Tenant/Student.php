@@ -6,6 +6,7 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -17,6 +18,11 @@ class Student extends Model
     use SchoolSessionTrait;
 
     protected $guarded = [];
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Parents::class, 'parent_id', 'uuid');
+    }
 
     public function subjects(): HasMany
     {
