@@ -47,8 +47,11 @@
                   </template>
                 </td>
 
-                <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
+                <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
                     <a x-bind:href="`{{route('listClassSubject', '')}}/${item.slug}`">subject</a>
+                  <button class="focus:outline-none ">
+                    <img src="images/user.svg" alt="" class="w-3 h-3 mx-2">
+                  </button>
                  <button class="focus:outline-none" x-on:click="editModal = true">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -187,7 +190,7 @@
     <ul class="py-1 overflow-auto h-32 text-base leading-6
      shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5" x-show="newClass">
      <div class="py-2 cursor-pointer relative ">
-      <input type="search" class="py-2 px-10 w-full text-xs font-normal text-gray-100" placeholder="Search default class">
+      <input type="search" class="py-2 px-10 w-full text-xs font-normal text-gray-100" placeholder="Search default class" x-model="searchClass">
       <span class="absolute inset-y-0 left-0 mx-2 my-4">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 bg-purple-100
         rounded-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -204,6 +207,7 @@
     </div>
   </div>
 {{-- test --}}
+
             <div class="my-6">
               <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
                 <input type="hidden" name="classSectionType" x-bind:value="select.value">
@@ -393,6 +397,7 @@
           return {
             open: false,
             show: false,
+            search: "",
             showCategory: false,
             isShowClass: true,
             newSection: false,
@@ -400,7 +405,7 @@
             newClass: false,
             showModal: false,
             editModal: false,
-            search: "",
+            searchClass: "",
             pageNumber: 0,
             size: 5,
             total: "",
@@ -408,11 +413,10 @@
                 value: "",
                 title: 'select class',
                       },
-
-              select: {
-              title: "select class section",
-              value: ''
-                      },
+          select: {
+          title: "select class section",
+          value: ''
+                  },
 
               selectCategory: {
               title: "select class category",
@@ -463,21 +467,23 @@
                 this.total = this.myForData.length;
                 return this.myForData.slice(start, end);
               }
-              //Return the total results of the filters
-              this.total = this.myForData.filter((item) => {
-                return item.subject_name
+              console.log(`pass`)
+          //Return the total results of the filters
+          this.total = this.myForData.filter((item) => {
+              return item.subject_name
                   .toLowerCase()
                   .includes(this.search.toLowerCase());
-              }).length;
-              //Return the filtered data
-              return this.myForData
-                .filter((item) => {
+          }).length;
+          //Return the filtered data
+          return this.myForData
+              .filter((item) => {
                   return item.subject_name
-                    .toLowerCase()
-                    .includes(this.search.toLowerCase());
-                })
-                .slice(start, end);
+                      .toLowerCase()
+                      .includes(this.search.toLowerCase());
+              })
+              .slice(start, end);
             },
+
             //Create array of all pages (for loop to display page numbers)
             pages() {
               return Array.from({

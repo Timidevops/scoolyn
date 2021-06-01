@@ -1,10 +1,10 @@
-<div>
+<div class="mt-8 mb-4">
     <div class="mt-2 text-xl text-gray-200">
     Subject
     </div>
     <span class="mt-2 text-base text-gray-300">{{$subjectTotal}} Total Subjects</span>
 </div>
-<div class="bg-white rounded-md">
+<div class="bg-white rounded-md" x-data="activeEmployee()" @keydown.escape="showModal = false" @keydown.escape="showSuccess = false" x-cloak id="tab_wrapper">
 <div class="md:flex md:items-center md:mt-2 ">
   <div class="py-6 px-2 relative w-full">
     <div class="">
