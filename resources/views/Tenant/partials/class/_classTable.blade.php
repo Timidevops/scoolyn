@@ -48,7 +48,9 @@
                 </td>
 
                 <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
-                    <a x-bind:href="`{{route('listClassSubject', '')}}/${item.slug}`">subject</a>
+                    <a x-bind:href="`{{route('listClassSubject', '')}}/${item.slug}`"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg></a>
                   <button class="focus:outline-none ">
                     <img src="images/user.svg" alt="" class="w-3 h-3 mx-2">
                   </button>
@@ -57,7 +59,7 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                   </svg>
                    </button>
-                   <button class="focus:outline-none">
+                   <button type="button" class="focus:outline-none" x-on:click="removeField(index)">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
@@ -130,29 +132,8 @@
             </svg>
           </button>
           </div>
-          <div class=" mx-4" >
-{{--          --}}{{-- <div class="mt-6">--}}
-{{--            <label for="service" class="block text-xs font-normal text-gray-100">Class</label>--}}
-{{--            <div class="relative inline-block w-full rounded-md ">--}}
-{{--              <button class=" z-0 w-full py-2 pl-3 pr-10 text-left font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5 text-gray-100" x-text="selected.value" x-on:click="open = true">--}}
-{{--                <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">--}}
-{{--                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">--}}
-{{--                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />--}}
-{{--                  </svg>--}}
-{{--                  </span>--}}
-{{--              </button>--}}
-{{--              </div>--}}
-{{--              <ul x-show="open"  @click.away="open = false" class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100--}}
-{{--              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">--}}
-{{--                <template x-for="option in options" :key="option">--}}
-{{--              <li @click.prevent="selected = option; open = false" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9" :class="{ ' text-gray-200 hover:bg-purple-100': open == true}">--}}
-{{--                <p x-text="option.value" class="inline-flex"></p>--}}
-{{--              </li>--}}
-{{--                </template>--}}
-{{--              </ul>--}}
-{{--            </div> --}}
-{{-- test --}}
-<div class="mt-6">
+          <div class=" mx-4" >    
+      <div class="mt-6">
   <label for="service" class="block text-xs font-normal text-gray-100">Class name</label>
     <input type="hidden" name="className" x-bind:value="selected.value">
   <div class="relative inline-block w-full rounded-md ">
@@ -453,6 +434,9 @@
           });
                this.subject_name = "";
       },
+      removeField(index) {
+           this.classTable.splice(index, 1);
+         },
       getClassSectionForTable(array){
                return    array.map((item, index) => {
                       item.id

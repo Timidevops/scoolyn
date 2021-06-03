@@ -1,9 +1,11 @@
-<div class="h-screen py-10">
-<div class="bg-white rounded-md "  x-data="addStudent()">
+<div class="h-screen py-10" x-data="addStudent()" x-show="tab === 'Invite Employees'">
+<div class="bg-white rounded-md "  >
     <div class="flex justify-end px-4 py-4">
-        <button type="button" href="" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm">
+       <a href="http://app.scoolyn.com.test/uploadExcel" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm">
+     
               Upload Excel
-        </button>
+        
+      </a> 
     </div>
     <form>
         @csrf

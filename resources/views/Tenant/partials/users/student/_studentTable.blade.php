@@ -6,9 +6,11 @@
             <table class="min-w-full divide-y  divide-purple-100">
               <thead>
               <tr>
+
                 <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
                   SN
                 </th>
+
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
                     <span class="flex items-center mx-1">
                         Junior School 1
@@ -17,22 +19,35 @@
                      </span>
                     </span>
                     </th>
-                    <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+
+                     <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                         Name
                       </th>
+
                       <th class="px-6 py-3   text-right  font-medium text-gray-500 text-sm">
                         Section
                       </th>
-                  <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
+
+                      <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                     Action
-                  </th>
+                      </th>
   
               </tr>
               </thead>
               <template x-for="item in classTable" :key="item" >
               <tbody class="bg-white divide-y divide-purple-100">
               <tr class="bg-white">
-  
+
+                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                  <div class="flex">
+                    <a href="#" class="group inline-flex space-x-2 truncate">
+                      <p class="text-gray-500 truncate" x-text="index + 1">
+                      </p>
+                    </a>
+                  </div>
+                </td>
+
+                
                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
                     <a href="#" class="group inline-flex space-x-2 truncate">
@@ -43,9 +58,10 @@
                 </td>
   
                   <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal" x-text="item.subject_name">
+                  <span class="text-gray-200 font-normal">
                   </span>
                 </td>
+
                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal">
                     </span>

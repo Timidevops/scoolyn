@@ -3,10 +3,11 @@
 <head>
     @yield('headerMeta')
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/font/stylesheet.css" type="text/css" charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
 </head>
-<body>
+<body style="font-family: 'Circular Std'; font-family: 'Circular Std Book'" >
     @yield('topNav')
     @yield('content')
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.3.5/dist/alpine.min.js" defer></script>
