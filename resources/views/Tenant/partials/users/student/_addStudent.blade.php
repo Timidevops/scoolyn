@@ -12,15 +12,15 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
         <div class="mt-2">
             <label for="First name" class="block text-sm font-normal text-gray-100">First name</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" x-model="newTodo" ></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required x-model="newTodo" ></div>
 
         <div class="mt-2">
             <label for="Second name" class="block text-sm font-normal text-gray-100">Last name</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required></div>
 
         <div class="mt-2">
             <label for="Email" class="block text-sm font-normal text-gray-100">Other Names</label>
-            <input type="email" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="email" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required></div>
 
         <div class="mt-2 relative">
             <label for="Gender" class="block text-sm font-normal text-gray-100">Gender</label>
@@ -52,7 +52,7 @@
 
         <div class="mt-2">
             <label for="Address" class="block text-sm font-normal text-gray-100">Address</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required></div>
 
         <div class="mt-2 relative">
             <label for="Phone number" class="block text-sm font-normal text-gray-100">Class</label>
