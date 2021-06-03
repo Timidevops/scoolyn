@@ -3,25 +3,38 @@
 namespace App\Http\Controllers\Tenant\Result;
 
 use App\Actions\Tenant\Result\ContinuousAssessment\CreateNewCAStructureAction;
+use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ContinuousAssessmentFormatsController extends Controller
 {
 
-    public function store(Request $request)
+    public function create()
+    {
+        return view('Tenant.testCreateCAStructure');
+    }
+
+    public function store(Request $request): RedirectResponse
     {
         $lastEntry   = ContinuousAssessmentStructure::all();
-        $lastEntryId = $lastEntry->isEmpty() ? '' : $lastEntry->last()->id;
+        $lastEntryId = $lastEntry->isEmpty() ? '' : "_{$lastEntry->last()->id}";
 
-        $request['name'] = $request->input('name') ?? "default_$lastEntryId";
+        $request['name'] = $request->input('name') ?? "continuous_assessment_format{$lastEntryId}";
 
-        //@todo --- form submission variables linkage ---
-        $request['meta'] = $request->input('format');
+        //@todo get format :/ returns array
+        $format = (new FilterFormInputAction())->execute([
+            'numberOfCA' => $request->input('numberOfCA'),
+            'caName'     => $request->input('caName'),
+            'caScore'    => $request->input('caScore'),
+        ]);
+
+        $request['meta'] = $format;
 
         (new CreateNewCAStructureAction())->execute(camel_to_snake($request->only('name', 'meta')));
 
-        return redirect('/');
+        return back();
     }
 }

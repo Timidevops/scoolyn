@@ -66,8 +66,10 @@ Route::post('student/subject', [\App\Http\Controllers\Tenant\Student\StudentSubj
 
 Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
 
+Route::get('result/continuous-assessment-format/add-new', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'create'])->name('createCAStructure');
 Route::post('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'store'])->name('storeCAStructure');
 
+Route::get('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'create'])->name('createAcademicBroadsheet');
 Route::post('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'store'])->name('storeAcademicBroadsheet');
 
 Route::post('result/academic-report/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicReportsController::class, 'store'])->name('storeAcademicReport');
