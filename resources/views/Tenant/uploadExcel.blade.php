@@ -7,10 +7,9 @@
 <div class="h-screen flex overflow-hidden bg-purple-100">
     <div>
         @include('Tenant.partials._sidebar') </div>
-    <div class="flex-1 overflow-auto bg-purple-100 focus:outline-none px-4 py-8" tabindex="0">
-        @include('Tenant.partials.users.student._student')
+    <div class="flex-1 overflow-auto bg-purple-100 focus:outline-none px-4 py-8" >
+        @include('Tenant.partials.users.student._uploadExcel')
     </div>
     @include('Tenant.partials._notification')
 </div>
 @endsection
-

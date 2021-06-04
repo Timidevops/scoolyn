@@ -27,6 +27,9 @@ Route::get('addStudent', function () {
     return view('Tenant.addStudent');
 });
 
+Route::get('uploadExcel', function () {
+    return view('Tenant.uploadExcel');
+});
 
 Route::get('/', function () {
     return view('welcome');

@@ -107,8 +107,8 @@
 <!-- Static sidebar for desktop -->
 
   {{-- Mobile Menu --}}
-  <div class="lg:hidden " x-data="{ isOpen: false }">
-  <div class="ml-2 my-4 flex items-center justify-end">
+  <div class="lg:hidden" x-data="{ isOpen: false }">
+  <div class="ml-2 my-4 flex items-center justify-between">
     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
       </svg>

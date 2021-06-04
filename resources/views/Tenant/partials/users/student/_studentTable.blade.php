@@ -1,4 +1,4 @@
-<div class="mt-8">
+<div class="mt-8" x-data="addStudent()">
     <div class=" sm:block">
       <div class="max-w-6xl mx-auto  sm:px-6 ">
         <div class="flex flex-col mt-2">
@@ -6,9 +6,11 @@
             <table class="min-w-full divide-y  divide-purple-100">
               <thead>
               <tr>
+
                 <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
                   SN
                 </th>
+
                   <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
                     <span class="flex items-center mx-1">
                         Junior School 1
@@ -17,35 +19,49 @@
                      </span>
                     </span>
                     </th>
-                    <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+
+                     <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                         Name
                       </th>
+
                       <th class="px-6 py-3   text-right  font-medium text-gray-500 text-sm">
                         Section
                       </th>
-                  <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
+
+                      <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                     Action
-                  </th>
+                      </th>
   
               </tr>
               </thead>
-              <template x-for="item in classTable" :key="item" >
+              <template x-for="(todo, index) in todos" :key="index">
               <tbody class="bg-white divide-y divide-purple-100">
               <tr class="bg-white">
-  
+
                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
                     <a href="#" class="group inline-flex space-x-2 truncate">
-                      <p class="text-gray-500 truncate">
+                      <p class="text-gray-500 truncate" x-text="index + 1">
+                      </p>
+                    </a>
+                  </div>
+                </td>
+
+                
+                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                  <div class="flex">
+                    <a href="#" class="group inline-flex space-x-2 truncate">
+                      <p class="text-gray-500 truncate" x-text="todo.todo">
                       </p>
                     </a>
                   </div>
                 </td>
   
                   <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal" x-text="item.subject_name">
+                  <span class="text-gray-200 font-normal">
                   </span>
                 </td>
+
                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal">
                     </span>
@@ -121,136 +137,4 @@
   
   
   
-  <script>
-          function activeClasses() {
-            return {
-              open: false,
-              show: false,
-              showCategory: false,
-              newSection: false,
-              newCategory: false,
-              showModal: false,
-              editModal: false,
-              search: "",
-              pageNumber: 0,
-              size: 5,
-              total: "",
-              selected: {
-                value: "select class"
-                        },
   
-                select: {
-                value: "select class section"
-                        },
-  
-                selectCategory: {
-                value: "select class category"
-                        },
-  
-                options: [
-                        {
-                        value:'Junior Secondary School 1',
-                        },
-                        {
-                        value:'Junior Secondary School 2',
-                        },
-                        {
-                        value:'Junior Secondary School 3',
-                        },
-                ],
-                subjects:[
-                        {
-                        value:'A',
-                        },
-                        {
-                        value:'B',
-                        },
-                        {
-                        value:'C',
-                        },
-                ],
-  
-                categories:[
-                        {
-                        value:'A',
-                        },
-                        {
-                        value:'B',
-                        },
-                        {
-                        value:'C',
-                        },
-                        {
-                        value:'C',
-                        },
-                ],
-                addClass() {
-                 this.subjects.push({
-                item: this.subject_name,
-                completed: false
-            });
-                 this.subject_name = "";
-        },
-        // test
-        myForData:[
-              ],
-        get classTable() {
-                const start = this.pageNumber * this.size,
-                  end = start + this.size;
-                if (this.search === "") {
-                  this.total = this.myForData.length;
-                  return this.myForData.slice(start, end);
-                }
-                //Return the total results of the filters
-                this.total = this.myForData.filter((item) => {
-                  return item.subject_name
-                    .toLowerCase()
-                    .includes(this.search.toLowerCase());
-                }).length;
-                //Return the filtered data
-                return this.myForData
-                  .filter((item) => {
-                    return item.subject_name
-                      .toLowerCase()
-                      .includes(this.search.toLowerCase());
-                  })
-                  .slice(start, end);
-              },
-              //Create array of all pages (for loop to display page numbers)
-              pages() {
-                return Array.from({
-                  length: Math.ceil(this.total / this.size),
-                });
-              },
-              //Next Page
-              nextPage() {
-                this.pageNumber++;
-              },
-              //Previous Page
-              prevPage() {
-                this.pageNumber--;
-              },
-              //Total number of pages
-              pageCount() {
-                return Math.ceil(this.total / this.size);
-              },
-              //Return the start range of the paginated results
-              startResults() {
-                return this.pageNumber * this.size + 1;
-              },
-              //Return the end range of the paginated results
-              endResults() {
-                let resultsOnPage = (this.pageNumber + 1) * this.size;
-                if (resultsOnPage <= this.total) {
-                  return resultsOnPage;
-                }
-                return this.total;
-              },
-              //Link to navigate to page
-              viewPage(index) {
-                this.pageNumber = index;
-              },
-        // test
-            };
-          }
-          </script>

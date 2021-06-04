@@ -1,24 +1,26 @@
-<div class="h-screen py-10">
-<div class="bg-white rounded-md "  x-data="addStudent()">
+<div class="h-screen py-10" x-data="addStudent()">
+<div class="bg-white rounded-md "  >
     <div class="flex justify-end px-4 py-4">
-        <button type="button" href="" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm">
+       <a href="http://app.scoolyn.com.test/uploadExcel" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm">
+     
               Upload Excel
-        </button>
+        
+      </a> 
     </div>
     <form>
         @csrf
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
         <div class="mt-2">
             <label for="First name" class="block text-sm font-normal text-gray-100">First name</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100"></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required x-model="newTodo" ></div>
 
         <div class="mt-2">
             <label for="Second name" class="block text-sm font-normal text-gray-100">Last name</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required></div>
 
         <div class="mt-2">
             <label for="Email" class="block text-sm font-normal text-gray-100">Other Names</label>
-            <input type="email" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="email" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required></div>
 
         <div class="mt-2 relative">
             <label for="Gender" class="block text-sm font-normal text-gray-100">Gender</label>
@@ -50,7 +52,7 @@
 
         <div class="mt-2">
             <label for="Address" class="block text-sm font-normal text-gray-100">Address</label>
-            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 "></div>
+            <input type="text" name="" id="" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required></div>
 
         <div class="mt-2 relative">
             <label for="Phone number" class="block text-sm font-normal text-gray-100">Class</label>
@@ -177,7 +179,7 @@
 
       </div>
       <div class="px-4 py-4">
-        <button type="submit" href="" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/5 text-sm">
+        <button type="submit" href="" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/5 text-sm" x-on:click="addToDo">
             Add student
         </button>
     </div>
@@ -194,7 +196,18 @@
             classCategory: false,
             newSection: false,
             newCategory: false,
+// test
+            newTodo: "", 
+            todos: [], 
+            addToDo() {
+            this.todos.push({
+                todo: this.newTodo,
+                completed: false
+            });
 
+            this.newTodo = "";
+        },
+// test
               selectCategory: {
               value: "Select class "
                       },
