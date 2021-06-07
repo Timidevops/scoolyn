@@ -1,7 +1,10 @@
 <!-- Static sidebar for desktop -->
 <div class="hidden lg:flex lg:flex-shrink-0">
     <div class="flex flex-col  bg-white" style="width: 256px;">
-        <div class="flex flex-col flex-grow pt-10 pb-4 overflow-y-auto">
+        <div class="text-blue-100 text-2xl font-bold mx-4 my-4">
+            Scoolyn
+        </div>
+        <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
             <div class="flex-shrink-0 px-4 py-2 mx-auto">
                 <a href="#">
                     <img class="h-12 mx-auto" src="images/pexels-teddy-joseph-2955375.png" alt="">
@@ -107,12 +110,17 @@
 <!-- Static sidebar for desktop -->
 
   {{-- Mobile Menu --}}
-  <div class="lg:hidden" x-data="{ isOpen: false }">
-  <div class="ml-2 my-4 flex items-center justify-between">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-      </svg>
-    </div>
+  <div class="md:hidden" x-data="{ isOpen: false }">
+ <div class="border-b border-blue-100 shadow-lg">
+    <div class="mx-4 my-4 flex items-center justify-between">
+        <div class="text-blue-100 text-2xl font-bold">
+            Scoolyn
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100 " fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </div>
+ </div>
   <div class="bg-gray-100 flex items-center" x-show="isOpen">
 
     <div class="fixed inset-0 flex z-40">
@@ -126,7 +134,7 @@
                 <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none  focus:ring-inset focus:ring-white"  x-on:click="isOpen=!isOpen">
                     <span class="sr-only">Close sidebar</span>
                     <!-- Heroicon name: x -->
-                    <svg class="h-6 w-6 text-gray-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg class="h-6 w-6 text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>

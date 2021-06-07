@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
+      <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4 py-2  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
           <div
             class="mt-6 mb-6 flex flex-wrap justify-between items-center text-sm leading-5 text-gray"
           >

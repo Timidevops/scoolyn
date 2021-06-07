@@ -96,10 +96,10 @@
                 </div>
             </div>
             <div
-                class=" flex justify-center items-center md:mt-0 mt-4 md:flex md:justify-end md:items-center"
+                class=" flex justify-center items-center md:mt-0 mt-4  md:flex md:justify-end md:items-center"
                 x-show="pageCount() > 1">
                 <!--First Button-->
-                <button type="button" class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
+                <button type="button" class="border border-gray rounded py-1 px-2 mx-4  text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
                     Previous
                 </button>
                 <!--Last Button-->
@@ -112,7 +112,7 @@
         <form action="{{route('storeClassSubject')}}" method="post" class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
             @csrf
             <input type="hidden" name="class" value="{{$classSections['uuid']}}">
-            <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
+            <div class="mt-12 sm:mx-auto sm:w-full sm:xmax-w-md md:max-w-md  bg-white rounded-lg shadow-md">
                 <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
                     <div class="block">
                         <span>Add Subject to class</span>

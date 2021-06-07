@@ -1,10 +1,11 @@
+<div x-data="add()">
 <div>
     <div class="mt-2 text-xl text-gray-200">
       Student
     </div>
-    <span class="mt-2 text-base text-gray-300">{{$totalStudents}} Total Subjects</span>
+    <span class="mt-2 text-base text-gray-300">{{$totalStudents}} Total Students</span>
 </div>
-<div class="bg-white rounded-md" x-data="addStudent()">
+<div class="bg-white rounded-md">
 <div class="md:flex md:items-center md:mt-2 ">
   <div class="py-6 px-2 relative w-full">
     <div class="">
@@ -28,3 +29,5 @@
 
 @include('Tenant.partials.users.student._studentTable')
 </div>
+</div>
+
