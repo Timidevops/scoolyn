@@ -68,7 +68,7 @@
                   </td>
   
                   <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
-                    <button class="focus:outline-none" >
+                    <button class="focus:outline-none" x-on:click="showModal = true">
                         <img src="images/user.svg" alt="" class="w-3 h-3 mx-2">
                       </button>
                    <button class="focus:outline-none">
@@ -131,7 +131,53 @@
         </button>
       </div>
       </nav> --}}
-      
+      {{-- test --}}
+     <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
+      <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-lg  bg-white rounded-lg shadow-md">
+        <div  class="p-6">
+        <div class="flex items-center justify-between border-b border-purple-100">
+          <div class="flex ">
+              <a class="inline-block  rounded-t py-2  text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100': openTab == '1' }" href="#" @click.prevent="openTab = 1">Profile</a>
+        
+           
+              <a class=" inline-block py-2 px-4 text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100 ': openTab == '2' }" href="#" @click.prevent="openTab = 2">Parent info</a>
+          </div>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="showModal = false">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg> 
+        </span>
+        </div>
+          <div class="w-full pt-4 text-gray-100">
+            <div x-show="openTab === 1">
+              <div class="text-sm border-purple-100 border-b">
+               <div class="flex items-center justify-between w-1/2">
+               <p> Name:<p> <span class="space-x-2">John Doe</span>
+               </div>
+              </div>
+              <div class="text-sm border-purple-100 border-b">
+                <div class="flex items-center justify-between w-1/2 ">
+                 <p> Class: <p><span class="space-x-2">Junior School 1</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b">
+                <div class="flex items-center justify-between w-1/2 ">
+                 <p> Section:<p> <span class="space-x-2 text-left">A</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b">
+                <div class="flex items-center justify-between w-1/2 ">
+                 <p> Phone Number:<p> <span class="space-x-2">090123456789</span>
+                </div>
+               </div>
+            </div>
+            <div x-show="openTab === 2">Tab #2</div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+      {{-- test --}}
       </div>
   
   </div>
@@ -141,6 +187,8 @@
     function add() {
   
   return {
+    openTab: 1,
+    showModal: false,
     studentTable:[],
     first_name:'',
   
