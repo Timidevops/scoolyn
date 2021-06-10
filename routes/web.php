@@ -35,6 +35,9 @@ Route::get('parents', function () {
     return view('Tenant.parents');
 });
 
+Route::get('addParent', function () {
+    return view('Tenant.addParent');
+});
 Route::get('/', function () {
     return view('welcome');
 });
