@@ -38,7 +38,7 @@
 </div>
 <!-- Static sidebar for desktop -->
 <!-- Static sidebar for desktop -->
-<div class="md:hidden flex flex-shrink-0">
+{{-- <div class="md:hidden flex flex-shrink-0">
     <div class="flex flex-col bg-gray-400 w-full" >
         <div class="flex flex-col flex-grow pt-10 pb-4 overflow-y-auto">
             <div class="flex-shrink-0 px-4 py-2 relative">
@@ -75,5 +75,5 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- Static sidebar for desktop -->

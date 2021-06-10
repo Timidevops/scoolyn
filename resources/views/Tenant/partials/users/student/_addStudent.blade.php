@@ -1,4 +1,4 @@
-<div class="h-screen py-10">
+<div class="h-screen py-10" class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }" >
 <div class="bg-white rounded-md "  >
     <div class="flex justify-end px-4 py-4">
        <a href="http://app.scoolyn.com.test/uploadExcel" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm">
@@ -179,7 +179,7 @@
 
       </div>
       <div class="px-4 py-4">
-        <button type="submit" href="" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/5 text-sm" x-on:click=addDetails()>
+        <button type="submit" href="" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" x-on:click=addDetails()>
             Add student
         </button>
     </div>

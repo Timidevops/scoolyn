@@ -133,14 +133,14 @@
       </nav> --}}
       {{-- test --}}
      <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
-      <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-lg  bg-white rounded-lg shadow-md">
+      <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
         <div  class="p-6">
         <div class="flex items-center justify-between border-b border-purple-100">
           <div class="flex ">
               <a class="inline-block  rounded-t py-2  text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100': openTab == '1' }" href="#" @click.prevent="openTab = 1">Profile</a>
         
            
-              <a class=" inline-block py-2 px-4 text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100 ': openTab == '2' }" href="#" @click.prevent="openTab = 2">Parent info</a>
+              <a class=" inline-block py-2 px-4 text-gray-200 text-base mx-2" :class="{ 'active border-b-2 border-blue-100 ': openTab == '2' }" href="#" @click.prevent="openTab = 2">Parent info</a>
           </div>
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="showModal = false">
@@ -149,29 +149,50 @@
         </span>
         </div>
           <div class="w-full pt-4 text-gray-100">
-            <div x-show="openTab === 1">
-              <div class="text-sm border-purple-100 border-b">
-               <div class="flex items-center justify-between w-1/2">
-               <p> Name:<p> <span class="space-x-2">John Doe</span>
+            <div x-show="openTab === 1" class="">
+              <div class="text-sm border-purple-100 border-b mt-4 ">
+               <div class="flex items-center ">
+               <p class=" w-1/3"> Name:<p> <span class="w-2/5">John Doe</span>
                </div>
               </div>
-              <div class="text-sm border-purple-100 border-b">
-                <div class="flex items-center justify-between w-1/2 ">
-                 <p> Class: <p><span class="space-x-2">Junior School 1</span>
+              <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center ">
+                 <p class=" w-1/3"> Class: <p><span class="w-2/5">Junior School 1</span>
                 </div>
                </div>
-               <div class="text-sm border-purple-100 border-b">
-                <div class="flex items-center justify-between w-1/2 ">
-                 <p> Section:<p> <span class="space-x-2 text-left">A</span>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center ">
+                 <p class=" w-1/3"> Section:<p> <span class="w-2/5">A</span>
                 </div>
                </div>
-               <div class="text-sm border-purple-100 border-b">
-                <div class="flex items-center justify-between w-1/2 ">
-                 <p> Phone Number:<p> <span class="space-x-2">090123456789</span>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center  ">
+                 <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
                 </div>
                </div>
             </div>
-            <div x-show="openTab === 2">Tab #2</div>
+            <div x-show="openTab === 2">
+              <div class="text-sm border-purple-100 border-b mt-4 ">
+                <div class="flex items-center ">
+                <p class=" w-1/3"> Parent Name:<p> <span class="w-2/5">John Doe</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center ">
+                  <p class=" w-1/3"> Parent Email: <p><span class="w-2/5">example@gmail.com</span>
+                 </div>
+                </div>
+                <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center ">
+                  <p class=" w-1/3"> Address:<p> <span class="w-2/5">3, trent avenue, bodija, IBADAN.</span>
+                 </div>
+                </div>
+                <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center  ">
+                  <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
+                 </div>
+                </div>
+            </div>
           </div>
         </div>
        

@@ -31,6 +31,10 @@ Route::get('uploadExcel', function () {
     return view('Tenant.uploadExcel');
 });
 
+Route::get('parents', function () {
+    return view('Tenant.parents');
+});
+
 Route::get('/', function () {
     return view('welcome');
 });

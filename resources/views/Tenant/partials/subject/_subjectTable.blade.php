@@ -312,12 +312,12 @@
               myForData: {!! $subjects !!},
               tab: window.location.hash ? window.location.hash.substring(1) : 'profile',
 
-           addNewField() {
-           this.subjects.push({
-           subject: this.subject_name,
-           });
-           this.subject_name = "";
-        },
+              addNewField() {
+              this.subjects.push({
+              subject: this.subject_name,
+              });
+              this.subject_name = "";
+            },
             selectSubjectName: {
                 title: "Select one...",
                 value: ''
@@ -415,5 +415,4 @@
               },
             };
           }
-
-          </script>
+    </script>
