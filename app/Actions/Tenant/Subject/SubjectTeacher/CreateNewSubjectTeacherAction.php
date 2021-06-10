@@ -3,15 +3,14 @@
 
 namespace App\Actions\Tenant\Subject\SubjectTeacher;
 
-
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Tenant\SubjectTeacher;
 use Ramsey\Uuid\Uuid;
 
 class CreateNewSubjectTeacherAction
 {
-    public function execute(Model $model, array $input)
+    public function execute(array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        $model->subjectTeacher()->create($input);
+        SubjectTeacher::query()->create($input);
     }
 }

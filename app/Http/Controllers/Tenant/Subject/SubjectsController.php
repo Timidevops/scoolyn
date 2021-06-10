@@ -15,7 +15,7 @@ class SubjectsController extends Controller
     {
         return view('Tenant.pages.subject.subject', [
             'subjectTotal' => Subject::all()->count(),
-            'subjects'     => Subject::query()->get(['uuid', 'subject_name']),
+            'subjects'     => Subject::query()->get(['uuid', 'subject_name', 'slug']),
         ]);
     }
 

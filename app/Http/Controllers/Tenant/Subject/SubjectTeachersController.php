@@ -6,10 +6,19 @@ use App\Actions\Tenant\Subject\SubjectTeacher\CreateNewSubjectTeacherAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
+use App\Models\Tenant\Subject;
 use Illuminate\Http\Request;
 
 class SubjectTeachersController extends Controller
 {
+    public function index(string $uuid)
+    {
+        $subject = Subject::query()->where('slug', $uuid)->firstOrFail();
+
+        return view('tenant.pages.subject.teacher', [
+            'subject' => $subject,
+        ]);
+    }
 
     public function store(Request $request)
     {

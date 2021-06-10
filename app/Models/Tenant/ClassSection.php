@@ -6,6 +6,7 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -21,7 +22,7 @@ class ClassSection extends Model
 
     protected $guarded = [];
 
-    public function classSectionType()
+    public function classSectionType(): BelongsTo
     {
         return $this->belongsTo(ClassSectionType::class, 'class_section_types_id', 'uuid');
     }

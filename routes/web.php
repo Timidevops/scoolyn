@@ -53,6 +53,7 @@ Route::post('setting/set-academic-calendar', [\App\Http\Controllers\Tenant\Setti
 Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
 
+Route::get('subject-teacher/{uuid}', [\App\Http\Controllers\Tenant\Subject\SubjectTeachersController::class, 'index'])->name('listSubjectTeacher');
 Route::post('subject/teacher', [\App\Http\Controllers\Tenant\Subject\SubjectTeachersController::class, 'store'])->name('storeSubjectTeacher');
 
 Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
