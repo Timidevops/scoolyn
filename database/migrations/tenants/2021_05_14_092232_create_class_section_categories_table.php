@@ -15,6 +15,7 @@ class CreateClassSectionCategoriesTable extends Migration
     {
         Schema::create('class_section_categories', function (Blueprint $table) {
             $table->id();
+            $table->uuid('uuid');
             $table->string('class_section_category_types_id');
             $table->string('class_section_id');
             $table->timestamps();

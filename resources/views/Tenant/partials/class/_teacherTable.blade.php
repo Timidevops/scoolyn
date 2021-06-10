@@ -3,58 +3,63 @@
         <div class="max-w-6xl mx-auto  sm:px-6 ">
             <div class="flex flex-col mt-2">
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
-                    <table class="min-w-full divide-y divide-primary divide-purple-100">
+                    <table class="min-w-full divide-y  divide-purple-100">
                         <thead>
                         <tr>
+
                             <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                S/N
+                                SN
                             </th>
-                            <th class="px-6 py-3 w-full  text-left  font-medium text-gray-500 text-sm ">
-                  <span class="flex items-center mx-1">Subject name<span>
-                    <span>
-                      <img src="images/filter_alt_black_24dp.svg" alt="" class="w-4">
-                       </span>
-                   </span>
-                  </span>
+
+                            <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
+                    <span class="flex items-center mx-1">
+                        Class Section
+                     <span>
+                    <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
+                     </span>
+                    </span>
                             </th>
-                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                Class section
+
+                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                Class Teacher
                             </th>
-                            <th class="px-6 py-3 w-1/3  text-left text-sm font-medium text-gray-500">
+                            <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                                 Action
                             </th>
 
                         </tr>
                         </thead>
-                        <template x-for="(item, index) in filteredClassSubjects" :key="item" >
-                            <tbody class="bg-white divide-y divide-primary">
+                        <template x-for="(content, index) in filteredTeachers" :key="index">
+                            <tbody class="bg-white divide-y divide-purple-100">
                             <tr class="bg-white">
 
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
-                                        <a href="#" class="group inline-flex space-x-2 truncate">
-                                            <p class="text-gray-500 truncate" x-text="index + 1">
-                                            </p>
-                                        </a>
+                                        <p class="group inline-flex space-x-2 truncate">
+                                        <p class="text-gray-500 truncate" x-text="index + 1">
+                                        </p>
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                    <div class="flex">
+                                        <p class="group inline-flex space-x-2 truncate">
+                                        <span class="text-gray-500 truncate" x-text="getTableClassSection(content.class_section, content.class_section_category)"></span>
+                                        </p>
                                     </div>
                                 </td>
 
                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="item.subject.subject_name">
-                  </span>
-                                </td>
-                                <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section, item.class_section_category)">
-                  </span>
+                                    <span class="text-gray-200 font-normal" x-text="content.teacher.full_name"></span>
                                 </td>
 
-                                <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
-                                    <button type="button" class="focus:outline-none" x-on:click="editModal = true">
+                                <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
+                                    <button class="focus:outline-none" x-on:click="editModal = true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                                         </svg>
                                     </button>
-                                    <button type="button" class="focus:outline-none">
+                                    <button class="focus:outline-none">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-red-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
@@ -99,15 +104,16 @@
                 class=" flex justify-center items-center md:mt-0 mt-4 md:flex md:justify-end md:items-center"
                 x-show="pageCount() > 1">
                 <!--First Button-->
-                <button type="button" class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
+                <button class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
                     Previous
                 </button>
                 <!--Last Button-->
-                <button type="button" class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.ceil(total/size)-1)" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
+                <button class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.ceil(total/size)-1)" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
                 >Next
                 </button>
             </div>
         </nav>
+
     </div>
 
 </div>

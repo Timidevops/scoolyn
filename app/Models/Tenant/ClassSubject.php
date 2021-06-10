@@ -6,6 +6,7 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ClassSubject extends Model
@@ -17,8 +18,18 @@ class ClassSubject extends Model
 
     protected $guarded = [];
 
-    public function subject()
+    public function subject(): BelongsTo
     {
         return $this->belongsTo(Subject::class, 'subject_id', 'uuid');
+    }
+
+    public function classSection(): BelongsTo
+    {
+        return $this->belongsTo(ClassSection::class, 'class_section_id', 'uuid');
+    }
+
+    public function classSectionCategory(): BelongsTo
+    {
+        return$this->belongsTo(ClassSectionCategory::class, 'class_section_category_id', 'uuid');
     }
 }

@@ -26,4 +26,9 @@ class ClassSectionCategoryType extends Model
             ->generateSlugsFrom('category_name')
             ->saveSlugsTo('slug');
     }
+
+    public function classSection()
+    {
+        //return $this->hasOne(ClassSection::class, 'class_section_type_id', 'uuid');
+    }
 }

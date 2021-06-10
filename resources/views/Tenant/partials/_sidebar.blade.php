@@ -47,7 +47,12 @@
                            <span class="focus:text-white">Users</span>
                         </button >
                           <ul class="" x-show="show">
-                            <li>
+                              <li>
+                                  <a href="{{route('listTeacher')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                      <span class="focus:text-white">Teacher</span>
+                                  </a>
+                              </li>
+                              <li>
                               <a href="{{route('listStudent')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
                                 <span class="focus:text-white">Student</span>
                                 </a>

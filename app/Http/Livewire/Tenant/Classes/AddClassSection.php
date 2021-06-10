@@ -1,0 +1,233 @@
+<?php
+
+namespace App\Http\Livewire\Tenant\Classes;
+
+use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassSectionCategoryTypeAction;
+use App\Actions\Tenant\SchoolClass\CreateNewClassSectionAction;
+use App\Actions\Tenant\SchoolClass\CreateNewClassSectionCategoryAction;
+use App\Actions\Tenant\SchoolClass\CreateNewClassSectionTypeAction;
+use App\Actions\Tenant\SchoolClass\CreateNewSchoolClassAction;
+use App\Models\Tenant\ClassSection;
+use App\Models\Tenant\ClassSectionCategory;
+use App\Models\Tenant\ClassSectionCategoryType;
+use App\Models\Tenant\ClassSectionType;
+use App\Models\Tenant\SchoolClass;
+use Livewire\Component;
+
+class AddClassSection extends Component
+{
+    public string $schoolClass = '', $defaultClass = '';
+    public string $classSection = '', $newClassSection = '';
+    public string $classSectionCategory = '', $newClassSectionCategory = '';
+
+    public bool $addClassModal = false;
+
+    public string $classLabel = '-- choose a class --';
+    public bool $classDropdown = false;
+    public bool $classDropdownOption = false;
+    public bool $defaultClassOptionDropdown = false;
+    public array $defaultClassOptions = [
+        'Junior Secondary School 1',
+        'Junior Secondary School 2',
+        'Junior Secondary School 3',
+        'Senior Secondary School 1',
+        'Senior Secondary School 2',
+        'Senior Secondary School 3',
+    ];
+
+    public string $sectionLabel = '-- choose a section --';
+    public bool $sectionDropdown = false;
+    public bool $sectionDropdownOption = false;
+    public bool $addNewSection = false;
+
+    public string $sectionCategoryLabel = '-- choose a section category --';
+    public bool $sectionCategoryDropdown = false;
+    public bool $sectionCategoryDropdownOption = false;
+    public bool $addNewSectionCategory = false;
+
+    protected array $rules = [
+        'newClassSection' => ['nullable', 'unique:class_section_types,section_name'],
+        'newClassSectionCategory' => ['nullable', 'unique:class_section_category_types,category_name'],
+    ];
+
+    public function render()
+    {
+        return view('livewire.tenant.classes.add-class-section', [
+            'schoolClasses'            => SchoolClass::query()->get(['uuid', 'class_name']),
+            'classSectionTypes'         => ClassSectionType::query()->get(['section_name', 'uuid']),
+            'classSectionCategoryTypes' => ClassSectionCategoryType::query()->get(['category_name', 'uuid']),
+        ]);
+    }
+
+    public function store()
+    {
+        $this->validate();
+
+        $schoolClassId              = $this->schoolClass() ? $this->schoolClass()->uuid : null;
+        $classSectionTypeId         = $this->classSection();
+        $classSectionCategoryTypeId = $this->classSectionCategory();
+
+        if( ! $schoolClassId || ! $classSectionTypeId){
+            //@todo error message
+            return false;
+        }
+
+        //@todo filter duplicate
+
+        $classSection = ClassSection::query()
+            ->where('class_section_types_id', $classSectionTypeId)
+            ->where('school_class_id', $schoolClassId)
+            ->first();
+
+        if( ! $classSection ){
+            $classSection =  (new CreateNewClassSectionAction())->execute([
+                'class_section_types_id' => $classSectionTypeId,
+                'school_class_id'  =>$schoolClassId,
+            ]);
+        }
+
+        if( $classSectionCategoryTypeId ){
+
+            $classSectionCategory = ClassSectionCategory::query()
+                ->where('class_section_category_types_id', $classSectionCategoryTypeId)
+                ->where('class_section_id', $classSection->uuid)
+                ->first();
+
+            if( ! $classSectionCategory ){
+                (new CreateNewClassSectionCategoryAction())->execute([
+                    'class_section_category_types_id' => $classSectionCategoryTypeId,
+                    'class_section_id' => $classSection->uuid,
+                ]);
+            }
+        }
+
+        $this->addClassModal = false;
+
+        return redirect()->route('listClass');
+    }
+
+    private function schoolClass()
+    {
+        $schoolClass = SchoolClass::query()
+            ->where('class_name', $this->classLabel)
+            ->orWhere('uuid', $this->schoolClass)
+            ->first();
+
+        if( ! $schoolClass && $this->defaultClass ){
+            $schoolClass = (new CreateNewSchoolClassAction())->execute([
+                'class_name' => $this->defaultClass,
+            ]);
+        }
+
+        return $schoolClass;
+    }
+
+    private function classSection()
+    {
+        $classSectionType = $this->classSection;
+
+        if( ! $classSectionType && $this->newClassSection ){
+            $classSectionType = (new CreateNewClassSectionTypeAction())->execute([
+                'section_name' => $this->newClassSection ?? 'default_class',
+            ]);
+
+            $classSectionType = $classSectionType->uuid;
+        }
+
+        return $classSectionType;
+    }
+
+    private function classSectionCategory()
+    {
+        $classSectionCategoryType = $this->classSectionCategory;
+
+        if( ! $classSectionCategoryType && $this->newClassSectionCategory ){
+            $classSectionCategoryType = (new CreateNewClassSectionCategoryTypeAction())->execute([
+                'category_name' => $this->newClassSectionCategory,
+            ]);
+
+            $classSectionCategoryType = $classSectionCategoryType->uuid;
+        }
+
+        return $classSectionCategoryType;
+    }
+
+    public function toggleClassDropdown($dropdown, $dropdownOption='')
+    {
+        $this->classDropdown = $dropdown == 1;
+
+        $this->classDropdownOption = $dropdownOption == 1;
+
+        //$this->defaultClassOptionDropdown = false;
+    }
+
+    public function toggleDefaultClassDropdown($dropdown)
+    {
+        $this->toggleClassDropdown( true, ! $this->classDropdownOption);
+
+        $this->defaultClassOptionDropdown = $dropdown == 1;
+    }
+
+    public function selectClass($classId, $className)
+    {
+        $this->defaultClass        = '';
+        $this->schoolClass         = $classId;
+        $this->classLabel          = $className;
+        $this->classDropdown       = false;
+        $this->classDropdownOption = false;
+    }
+
+    public function selectDefaultClass($class)
+    {
+        $this->schoolClass                = '';
+        $this->defaultClass               = $class;
+        $this->classLabel                 = $class;
+        $this->classDropdown              = false;
+        $this->defaultClassOptionDropdown = false;
+    }
+
+    public function toggleClassSection($section, $sectionOption)
+    {
+        $this->sectionDropdown = $section == 1;
+        $this->sectionDropdownOption = $sectionOption == 1;
+        $this->newClassSection = '';
+    }
+
+    public function toggleAddNewSection($section)
+    {
+        $this->toggleClassSection(true, ! $this->sectionDropdownOption);
+        $this->addNewSection = $section == 1;
+        $this->newClassSection = '';
+    }
+
+    public function selectClassSection($sectionId, $sectionName)
+    {
+        $this->classSection          = $sectionId;
+        $this->sectionLabel          = $sectionName;
+        $this->sectionDropdown       = false;
+        $this->sectionDropdownOption = false;
+    }
+
+    public function toggleClassSectionCategory($section, $sectionOption)
+    {
+        $this->sectionCategoryDropdown = $section == 1;
+        $this->sectionCategoryDropdownOption = $sectionOption == 1;
+        $this->newClassSectionCategory = '';
+    }
+
+    public function toggleAddNewSectionCategory($section)
+    {
+        $this->toggleClassSectionCategory(true, ! $this->sectionCategoryDropdownOption);
+        $this->addNewSectionCategory = $section == 1;
+        $this->newClassSectionCategory = '';
+    }
+
+    public function selectClassSectionCategory($sectionCategoryId, $sectionCategoryName)
+    {
+        $this->classSectionCategory          = $sectionCategoryId;
+        $this->sectionCategoryLabel          = $sectionCategoryName;
+        $this->sectionCategoryDropdown       = false;
+        $this->sectionCategoryDropdownOption = false;
+    }
+
+}

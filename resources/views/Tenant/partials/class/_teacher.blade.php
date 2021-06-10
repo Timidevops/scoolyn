@@ -1,13 +1,13 @@
 <div class="mt-8 mb-4">
     <div class="mt-2 text-xl text-gray-200">
-        Subjects
+        Class Teachers: {{$schoolClass->class_name}}
     </div>
-    <span class="mt-2 text-base text-gray-300">{{$classSubjectsTotal}} Total class subjects</span>
     <p><a href="{{route('listClass')}}"><span class="mt-2  text-sm text-gray-300">/!/ Back to classes</span></a></p>
 </div>
-<div class="bg-white rounded-md" x-data="activeEmployee()">
+
+<div class="bg-white rounded-md" x-data="classTeacher()">
     <div class="md:flex md:items-center md:mt-2 ">
-        <div class="py-6 px-2 relative w-full">
+        <div class="py-6 px-2 relative w-4/6">
             <div class="">
                 <input type="search" name="" id="" class="py-3 px-10 w-full border border-purple-100 rounded-md  bg-white"  placeholder="Search">
                 <span class="absolute inset-y-0 left-0 pl-6 py-10"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -17,21 +17,16 @@
             </div>
 
         </div>
-        {{-- add subject --}}
-            <livewire:tenant.classes.add-subject :schoolClass="$schoolClass" />
-        {{--/: add subject --}}
+        {{-- add class teacher --}}
+            <livewire:tenant.classes.add-teacher :schoolClass="$schoolClass" />
+        {{--/: add class teacher --}}
     </div>
-
-    @include('Tenant.partials.class._subjectTable')
+    @include('Tenant.partials.class._teacherTable')
 </div>
 
 <script>
-    function activeEmployee() {
-        return {
-            open: false,
-            show: false,
-            showModal: false,
-            editModal: false,
+    function classTeacher(){
+        return{
             search: "",
             pageNumber: 0,
             size: 5,
@@ -52,9 +47,8 @@
                 }
                 return 'All Sections'
             },
-            myForData: {!! $classSubjects !!},
-
-            get filteredClassSubjects() {
+            myForData: {!! $teachers !!},
+            get filteredTeachers(){
                 const start = this.pageNumber * this.size,
                     end = start + this.size;
                 if (this.search === "") {
@@ -76,6 +70,7 @@
                     })
                     .slice(start, end);
             },
+
             //Create array of all pages (for loop to display page numbers)
             pages() {
                 return Array.from({
@@ -110,6 +105,6 @@
             viewPage(index) {
                 this.pageNumber = index;
             },
-        };
+        }
     }
 </script>

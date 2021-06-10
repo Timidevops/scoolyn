@@ -36,7 +36,7 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
-    Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('createWelcomeUser');
+    Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('welcome');
     Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
 });
 
@@ -55,10 +55,11 @@ Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesCon
 Route::post('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'store'])->name('storeSchoolClass');
 
 Route::get('class-subject/{uuid}', [\App\Http\Controllers\Tenant\SchoolClass\ClassSubjectsController::class, 'index'])->name('listClassSubject');
-Route::post('class-subject', [\App\Http\Controllers\Tenant\SchoolClass\ClassSubjectsController::class, 'store'])->name('storeClassSubject');
 
-Route::post('class/teacher', [\App\Http\Controllers\Tenant\SchoolClass\ClassTeachersController::class, 'store'])->name('storeClassTeacher');
+Route::get('class-teacher/{uuid}', [\App\Http\Controllers\Tenant\SchoolClass\ClassTeachersController::class, 'single'])->name('classTeacher');
 
+Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
+Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
 Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
 
 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');

@@ -1,11 +1,11 @@
-<div class="mt-8 mb-4">
+<div>
     <div class="mt-2 text-xl text-gray-200">
-        Subjects
+        Teacher
     </div>
-    <span class="mt-2 text-base text-gray-300">{{$classSubjectsTotal}} Total class subjects</span>
-    <p><a href="{{route('listClass')}}"><span class="mt-2  text-sm text-gray-300">/!/ Back to classes</span></a></p>
+    <span class="mt-2 text-base text-gray-300">{{$totalTeachers}} Total Teachers</span>
 </div>
-<div class="bg-white rounded-md" x-data="activeEmployee()">
+
+<div class="bg-white rounded-md" x-data="teacher()">
     <div class="md:flex md:items-center md:mt-2 ">
         <div class="py-6 px-2 relative w-full">
             <div class="">
@@ -17,58 +17,42 @@
             </div>
 
         </div>
-        {{-- add subject --}}
-            <livewire:tenant.classes.add-subject :schoolClass="$schoolClass" />
-        {{--/: add subject --}}
+        <a href="{{route('createTeacher')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
+    <span class="mx-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+    </span>
+            <span class="mx-2">Add Teacher</span>
+        </a>
     </div>
 
-    @include('Tenant.partials.class._subjectTable')
+    @include('Tenant.partials.users.teacher._teacherTable')
 </div>
 
 <script>
-    function activeEmployee() {
-        return {
-            open: false,
-            show: false,
-            showModal: false,
-            editModal: false,
+    function teacher(){
+        return{
             search: "",
             pageNumber: 0,
             size: 5,
             total: "",
-            getTableClassSection(classSection, classSectionCategory){
-
-                let _classSection = {!! $classSectionType !!};
-                let _classSectionCategory = {!! $classSectionCategoryType !!};
-
-                if( classSection && classSectionCategory ){
-                    let filterClassSection = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
-                    let filter = _classSectionCategory.filter(id => id.uuid === classSectionCategory.class_section_category_types_id);
-                    return `${filterClassSection[0]['section_name']} - ${filter[0]['category_name']}`;
-                }
-                else if(classSection && ! classSectionCategory){
-                    let filter = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
-                    return filter[0]['section_name'];
-                }
-                return 'All Sections'
-            },
-            myForData: {!! $classSubjects !!},
-
-            get filteredClassSubjects() {
+            teacherTable: {!! $teachers !!},
+            get filteredTeacherTable() {
                 const start = this.pageNumber * this.size,
                     end = start + this.size;
                 if (this.search === "") {
-                    this.total = this.myForData.length;
-                    return this.myForData.slice(start, end);
+                    this.total = this.teacherTable.length;
+                    return this.teacherTable.slice(start, end);
                 }
                 //Return the total results of the filters
-                this.total = this.myForData.filter((item) => {
+                this.total = this.teacherTable.filter((item) => {
                     return item.subject_name
                         .toLowerCase()
                         .includes(this.search.toLowerCase());
                 }).length;
                 //Return the filtered data
-                return this.myForData
+                return this.teacherTable
                     .filter((item) => {
                         return item.subject_name
                             .toLowerCase()
@@ -110,6 +94,6 @@
             viewPage(index) {
                 this.pageNumber = index;
             },
-        };
+        }
     }
 </script>

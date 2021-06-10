@@ -19,9 +19,14 @@ class ClassSectionCategory extends Model
 
     protected $guarded = [];
 
-    public function classTeacher(): MorphOne
+    public function classSectionCategory()
     {
-        return $this->morphOne(ClassTeacher::class, 'schoolClass');
+        return $this->belongsTo(ClassSection::class, 'class_section_id', 'uuid');
+    }
+
+    public function classSectionCategoryType()
+    {
+        return $this->belongsTo(ClassSectionCategoryType::class, 'class_section_category_types_id', 'uuid');
     }
 
     public function subjectTeacher(): MorphMany

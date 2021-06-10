@@ -6,23 +6,30 @@ use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassTeacherAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
+use App\Models\Tenant\ClassSectionCategoryType;
+use App\Models\Tenant\ClassSectionType;
+use App\Models\Tenant\SchoolClass;
+use App\Models\Tenant\Teacher;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ClassTeachersController extends Controller
 {
-    public function store(Request $request)
+    public function single(string $uuid)
     {
-        $class = ClassSection::query()->where('uuid', '=', $request->input('classSection'))->first();
+        $schoolClass = SchoolClass::query()->where('slug', '=', $uuid)->first();
 
-        if( $request->input('classSectionCategory') ){
-            $class = ClassSectionCategory::query()->where('uuid', '=', $request->input('classSectionCategory'))->first();
-        }
+        $classSectionCategory = $schoolClass->classSection;
 
-        (new CreateNewClassTeacherAction())->execute($class, [
-            'teacher_id' => $request->input('teacher')
+        $classTeacher = $schoolClass->classTeacher->load(['teacher', 'classSection', 'classSectionCategory']);
+
+        return view('tenant.pages.classes.teacher', [
+            'schoolClass'          => $schoolClass,
+            'classSectionCategory' => $classSectionCategory,
+            'teachers'             => $classTeacher,
+            'classSectionCategoryType' => ClassSectionCategoryType::query()->get(['uuid','category_name']),
+            'classSectionType'         => ClassSectionType::query()->get(['uuid','section_name']),
         ]);
-
-        return redirect('/');
-
     }
+
 }

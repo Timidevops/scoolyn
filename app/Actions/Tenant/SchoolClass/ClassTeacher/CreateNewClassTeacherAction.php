@@ -4,14 +4,14 @@
 namespace App\Actions\Tenant\SchoolClass\ClassTeacher;
 
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Tenant\ClassTeacher;
 use Ramsey\Uuid\Uuid;
 
 class CreateNewClassTeacherAction
 {
-    public function execute(Model $model, array $input)
+    public function execute(array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        $model->classTeacher()->create($input);
+        ClassTeacher::query()->create($input);
     }
 }

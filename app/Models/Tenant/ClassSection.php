@@ -21,14 +21,19 @@ class ClassSection extends Model
 
     protected $guarded = [];
 
+    public function classSectionType()
+    {
+        return $this->belongsTo(ClassSectionType::class, 'class_section_types_id', 'uuid');
+    }
+
+    public function classSectionCategory(): HasMany
+    {
+        return $this->hasMany(ClassSectionCategory::class, 'class_section_id', 'uuid');
+    }
+
     public function classSectionCategoryType(): HasOneThrough
     {
         return $this->hasOneThrough(ClassSectionCategoryType::class, ClassSectionCategory::class, 'class_section_id', 'uuid', 'uuid', 'class_section_category_types_id');
-    }
-
-    public function classTeacher(): MorphOne
-    {
-        return $this->morphOne(ClassTeacher::class, 'schoolClass');
     }
 
     public function subjectTeacher(): MorphMany
