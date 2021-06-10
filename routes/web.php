@@ -16,7 +16,7 @@ use Spatie\WelcomeNotification\WelcomesNewUsers;
 
 Route::get('dashboard', function () {
     return view('Tenant.dashboard');
-});
+})->name('dashboard');
 
 
 Route::get('student', function () {
@@ -29,6 +29,10 @@ Route::get('addStudent', function () {
 
 Route::get('uploadExcel', function () {
     return view('Tenant.uploadExcel');
+});
+
+Route::get('parents', function () {
+    return view('Tenant.parents');
 });
 
 Route::get('/', function () {

@@ -1,4 +1,4 @@
-<div class="mt-8 mb-4">
+<div class="md:mt-8 mb-4">
     <div class="mt-2 text-xl text-gray-200">
         Subjects
     </div>

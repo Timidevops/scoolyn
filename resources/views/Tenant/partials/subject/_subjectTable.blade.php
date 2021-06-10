@@ -68,7 +68,7 @@
           </div>
         </div>
       </div>
-      <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
+      <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4 py-2  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
           <div
             class="mt-6 mb-6 flex flex-wrap justify-between items-center text-sm leading-5 text-gray"
           >
@@ -312,12 +312,12 @@
               myForData: {!! $subjects !!},
               tab: window.location.hash ? window.location.hash.substring(1) : 'profile',
 
-           addNewField() {
-           this.subjects.push({
-           subject: this.subject_name,
-           });
-           this.subject_name = "";
-        },
+              addNewField() {
+              this.subjects.push({
+              subject: this.subject_name,
+              });
+              this.subject_name = "";
+            },
             selectSubjectName: {
                 title: "Select one...",
                 value: ''
@@ -415,5 +415,4 @@
               },
             };
           }
-
-          </script>
+    </script>

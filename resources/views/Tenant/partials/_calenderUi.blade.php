@@ -26,6 +26,14 @@
                 <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
                   <div style="width: 14.29%" class="p-1 ">
                     <div @click="getDateValue(date)" x-text="date" class="cursor-pointer text-center text-sm  rounded-full leading-loose transition ease-in-out duration-100" :class="{'bg-purple-200 text-white': isToday(date) == true, 'text-gray-300 hover:text-white hover:bg-blue-100': isToday(date) == false }">
+                      <div class="event bg-blue-100 text-white rounded p-1 text-sm mb-1">
+                      <span class="event-name">
+                        Meeting
+                      </span>
+                      <span class="time">
+                        12:00~14:00
+                      </span>
+                    </div>
                     </div>
                   </div>
                 </template>

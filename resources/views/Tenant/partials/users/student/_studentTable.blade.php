@@ -1,4 +1,4 @@
-<div class="mt-8" x-data="addStudent()">
+<div class="md:mt-8"  >
     <div class=" sm:block">
       <div class="max-w-6xl mx-auto  sm:px-6 ">
         <div class="flex flex-col mt-2">
@@ -11,7 +11,7 @@
                   SN
                 </th>
 
-                  <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
+                  <th class="px-6 py-3   text-left  font-medium text-gray-500 text-sm ">
                     <span class="flex items-center mx-1">
                         Junior School 1
                      <span>
@@ -34,31 +34,31 @@
   
               </tr>
               </thead>
-              <template x-for="(todo, index) in todos" :key="index">
+              {{-- <template x-for="(student, index) in studentTable" :key="student"> --}}
               <tbody class="bg-white divide-y divide-purple-100">
               <tr class="bg-white">
 
                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
                     <a href="#" class="group inline-flex space-x-2 truncate">
-                      <p class="text-gray-500 truncate" x-text="index + 1">
+                      <p class="text-gray-500 truncate" >
                       </p>
                     </a>
                   </div>
                 </td>
 
                 
-                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                <td class="max-w-0 px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
                     <a href="#" class="group inline-flex space-x-2 truncate">
-                      <p class="text-gray-500 truncate" x-text="todo.todo">
+                      <p class="text-gray-500 truncate"  >
                       </p>
                     </a>
                   </div>
                 </td>
   
-                  <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal">
+                  <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200 ">
+                  <span class="text-gray-200 font-normal" x-text="name">
                   </span>
                 </td>
 
@@ -68,10 +68,10 @@
                   </td>
   
                   <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
-                    <button class="focus:outline-none ">
+                    <button class="focus:outline-none" x-on:click="showModal = true">
                         <img src="images/user.svg" alt="" class="w-3 h-3 mx-2">
                       </button>
-                   <button class="focus:outline-none" x-on:click="editModal = true">
+                   <button class="focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
                     </svg>
@@ -84,22 +84,23 @@
                   </td>
               </tr>
               </tbody>
-              </template>
+              {{-- </template> --}}
             </table>
+            
           </div>
         </div>
       </div>
-      <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
+      {{-- <nav class="max-w-6xl  mx-auto px-4 lg:px-8 my-4  bg-white  md:flex md:items-center md:justify-between border-lighter-gray sm:px-6">
           <div
             class="mt-6 mb-6 flex flex-wrap justify-between items-center text-sm leading-5 text-gray"
           >
             <div
               class="w-full sm:w-auto text-center sm:text-right px-1"
-              x-show="pageCount() > 1"
+              
             >
             Showing
-              <span x-text="startResults()"></span> to
-              <span x-text="endResults()"></span>
+              <span ></span> to
+              <span ></span>
             </div>
   
             <div
@@ -121,20 +122,100 @@
         class=" flex justify-center items-center md:mt-0 mt-4 md:flex md:justify-end md:items-center"
         x-show="pageCount() > 1">
         <!--First Button-->
-        <button class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
+        <button class="border border-gray rounded py-1 px-2 mx-4 text-blue-100">
         Previous
        </button>
         <!--Last Button-->
-        <button class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.ceil(total/size)-1)" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
+        <button class="border border-gray rounded py-1 px-6 text-blue-100"
         >Next
         </button>
       </div>
-      </nav>
-      
+      </nav> --}}
+      {{-- test --}}
+     <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="showModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': showModal }">
+      <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
+        <div  class="p-6">
+        <div class="flex items-center justify-between border-b border-purple-100">
+          <div class="flex ">
+              <a class="inline-block  rounded-t py-2  text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100': openTab == '1' }" href="#" @click.prevent="openTab = 1">Profile</a>
+        
+           
+              <a class=" inline-block py-2 px-4 text-gray-200 text-base mx-2" :class="{ 'active border-b-2 border-blue-100 ': openTab == '2' }" href="#" @click.prevent="openTab = 2">Parent info</a>
+          </div>
+          <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="showModal = false">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg> 
+        </span>
+        </div>
+          <div class="w-full pt-4 text-gray-100">
+            <div x-show="openTab === 1" class="">
+              <div class="text-sm border-purple-100 border-b mt-4 ">
+               <div class="flex items-center ">
+               <p class=" w-1/3"> Name:<p> <span class="w-2/5">John Doe</span>
+               </div>
+              </div>
+              <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center ">
+                 <p class=" w-1/3"> Class: <p><span class="w-2/5">Junior School 1</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center ">
+                 <p class=" w-1/3"> Section:<p> <span class="w-2/5">A</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                <div class="flex items-center  ">
+                 <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
+                </div>
+               </div>
+            </div>
+            <div x-show="openTab === 2">
+              <div class="text-sm border-purple-100 border-b mt-4 ">
+                <div class="flex items-center ">
+                <p class=" w-1/3"> Parent Name:<p> <span class="w-2/5">John Doe</span>
+                </div>
+               </div>
+               <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center ">
+                  <p class=" w-1/3"> Parent Email: <p><span class="w-2/5">example@gmail.com</span>
+                 </div>
+                </div>
+                <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center ">
+                  <p class=" w-1/3"> Address:<p> <span class="w-2/5">3, trent avenue, bodija, IBADAN.</span>
+                 </div>
+                </div>
+                <div class="text-sm border-purple-100 border-b mt-4">
+                 <div class="flex items-center  ">
+                  <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
+                 </div>
+                </div>
+            </div>
+          </div>
+        </div>
+       
+      </div>
+    </div>
+      {{-- test --}}
       </div>
   
   </div>
   
   
+  <script>
+    function add() {
   
+  return {
+    openTab: 1,
+    showModal: false,
+    studentTable:[],
+    first_name:'',
+  
+  
+  };
+  
+  }
+  </script>
   
