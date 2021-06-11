@@ -6,6 +6,8 @@ use App\Actions\Tenant\Subject\SubjectTeacher\CreateNewSubjectTeacherAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
+use App\Models\Tenant\ClassSectionCategoryType;
+use App\Models\Tenant\ClassSectionType;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\Request;
 
@@ -15,8 +17,13 @@ class SubjectTeachersController extends Controller
     {
         $subject = Subject::query()->where('slug', $uuid)->firstOrFail();
 
+        $subjectTeachers = $subject->subjectTeacher->load(['teacher','classSection','classSectionCategory']);
+
         return view('tenant.pages.subject.teacher', [
             'subject' => $subject,
+            'subjectTeachers' => $subjectTeachers,
+            'classSectionCategoryType' => ClassSectionCategoryType::query()->get(['uuid','category_name']),
+            'classSectionType'         => ClassSectionType::query()->get(['uuid','section_name']),
         ]);
     }
 

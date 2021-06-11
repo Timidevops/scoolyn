@@ -6,6 +6,8 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,8 +20,18 @@ class SubjectTeacher extends Model
 
     protected $guarded = [];
 
-    public function schoolClass(): MorphTo
+    public function teacher(): HasOne
     {
-        return $this->morphTo();
+        return $this->hasOne(Teacher::class, 'uuid', 'teacher_id');
+    }
+
+    public function classSection(): BelongsTo
+    {
+        return $this->belongsTo(ClassSection::class, 'class_section_id', 'uuid');
+    }
+
+    public function classSectionCategory(): BelongsTo
+    {
+        return$this->belongsTo(ClassSectionCategory::class, 'class_section_category_id', 'uuid');
     }
 }

@@ -6,7 +6,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
       </svg>
     </span>
-        <span class="mx-2">Add Subject Teacher</span>
+        <span class="mx-1">Add Subject Teacher</span>
     </button>
     <form wire:submit.prevent="store" class="overflow-auto @if($isAddSubjectTeacherModalOpen) absolute inset-0 z-10 flex items-center justify-center @else hidden @endif" style="background-color:rgba(190,192,201,0.7);">
         @csrf

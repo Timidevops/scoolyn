@@ -29,7 +29,7 @@
               </thead>
               <template x-for="(item, index) in filteredSubjects" :key="item" >
               <tbody class="bg-white divide-y divide-primary">
-              <tr class="bg-white">
+                <tr class="bg-white">
 
                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                   <div class="flex">
@@ -40,9 +40,9 @@
                 </td>
 
                   <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="item.subject_name">
-                  </span>
-                </td>
+                      <span class="text-gray-200 font-normal"  x-text="item.subject_name">
+                      </span>
+                  </td>
 
                   <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
                     <a x-bind:href="`{{route('listSubjectTeacher','')}}/${item.slug}`">

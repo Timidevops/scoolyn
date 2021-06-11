@@ -21,11 +21,100 @@
         <livewire:tenant.subject.add-teacher :subject="$subject" />
         {{--/: add subject teacher --}}
     </div>
-{{--    @include('Tenant.partials.class._teacherTable')--}}
+    @include('Tenant.partials.subject._teacherTable')
 </div>
 
 <script>
     function subjectTeacher(){
-        return{}
+        return{
+            search: "",
+            pageNumber: 0,
+            size: 5,
+            total: "",
+            subjectTeachers: {!! $subjectTeachers !!},
+            getTableClassSection(classSection, classSectionCategory){
+                let _classSection = {!! $classSectionType !!};
+                let _classSectionCategory = {!! $classSectionCategoryType !!};
+
+                if( classSection && classSectionCategory ){
+                    let filterClassSection = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
+                    let filter = _classSectionCategory.filter(id => id.uuid === classSectionCategory.class_section_category_types_id);
+                    return `${filterClassSection[0]['section_name']} - ${filter[0]['category_name']}`;
+                }
+                else if(classSection && ! classSectionCategory){
+                    let filter = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
+                    return filter[0]['section_name'];
+                }
+                return 'All Sections'
+            },
+            get filteredSubjectTeachers() {
+                const start = this.pageNumber * this.size,
+                    end = start + this.size;
+
+                if (this.search === "") {
+                    this.total = this.subjectTeachers.length;
+                    return this.subjectTeachers.slice(start, end);
+                }
+
+                //Return the total results of the filters
+                this.total = this.subjectTeachers.filter((item) => {
+                    return item.subject_name
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase());
+                }).length;
+
+                //Return the filtered data
+                return this.subjectTeachers
+                    .filter((item) => {
+                        return item.subject_name
+                            .toLowerCase()
+                            .includes(this.search.toLowerCase());
+                    })
+                    .slice(start, end);
+            },
+
+            //Create array of all pages (for loop to display page numbers)
+            pages() {
+                return Array.from({
+                    length: Math.ceil(this.total / this.size),
+                });
+            },
+
+            //Next Page
+            nextPage() {
+                this.pageNumber++;
+            },
+
+            //Previous Page
+            prevPage() {
+                this.pageNumber--;
+            },
+
+            //Total number of pages
+            pageCount() {
+                return Math.ceil(this.total / this.size);
+            },
+
+            //Return the start range of the paginated results
+            startResults() {
+                return this.pageNumber * this.size + 1;
+            },
+
+            //Return the end range of the paginated results
+            endResults() {
+                let resultsOnPage = (this.pageNumber + 1) * this.size;
+
+                if (resultsOnPage <= this.total) {
+                    return resultsOnPage;
+                }
+
+                return this.total;
+            },
+
+            //Link to navigate to page
+            viewPage(index) {
+                this.pageNumber = index;
+            },
+        }
     }
 </script>
