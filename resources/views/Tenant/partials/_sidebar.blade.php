@@ -61,7 +61,7 @@
                                 </a>
                             </li>
                               <li>
-                                <a href="http://app.scoolyn.com.test/parents" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                <a href="/parents" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
                                  <span class="focus:text-white"></span> Parents
                                   </a>
                               </li>
