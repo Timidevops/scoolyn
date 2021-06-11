@@ -1,4 +1,4 @@
-<div>
+<div x-data="add()">
     <div>
         <div class="mt-2 text-xl text-gray-200">
             Parents
@@ -17,7 +17,7 @@
         </div>
     
        </div>
-       <a href="{{route('createStudent')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-4 md:w-1/4 text-sm relative" >
+       <a href="http://app.scoolyn.com.test/addParent" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-4 md:w-1/4 text-sm relative" >
         <span class="space-x-2 left-0 my-3 mx-2 inset-y-0 absolute">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 " fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
