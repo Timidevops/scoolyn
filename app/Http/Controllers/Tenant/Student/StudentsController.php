@@ -15,16 +15,20 @@ class StudentsController extends Controller
 {
     public function index()
     {
+        $students = Student::query()->get();
+
+        $students->load(['schoolClass', 'classSection', 'classSectionCategory']);
+        //dd($students);
         return view('Tenant.pages.student.student', [
             'totalStudents' => Student::query()->count(),
-            'students'      => Student::query()->get(['uuid']),
+            'students'      => $students,
         ]);
     }
 
     public function create()
     {
         return view('Tenant.pages.student.addStudent', [
-            'parents' => Parents::query()->get(['uuid', 'full_name']),
+            'parents' => Parents::query()->get(['uuid', 'first_name', 'last_name']),
         ]);
     }
 

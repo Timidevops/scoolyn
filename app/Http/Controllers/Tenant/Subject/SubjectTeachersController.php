@@ -17,13 +17,11 @@ class SubjectTeachersController extends Controller
     {
         $subject = Subject::query()->where('slug', $uuid)->firstOrFail();
 
-        $subjectTeachers = $subject->subjectTeacher->load(['teacher','classSection','classSectionCategory']);
+        $subjectTeachers = $subject->subjectTeacher->load(['teacher', 'schoolClass','classSection','classSectionCategory']);
 
         return view('tenant.pages.subject.teacher', [
             'subject' => $subject,
             'subjectTeachers' => $subjectTeachers,
-            'classSectionCategoryType' => ClassSectionCategoryType::query()->get(['uuid','category_name']),
-            'classSectionType'         => ClassSectionType::query()->get(['uuid','section_name']),
         ]);
     }
 

@@ -1,4 +1,4 @@
-<div x-data="add()">
+<div x-data="studentDetails()">
 <div>
     <div class="mt-2 text-xl text-gray-200">
       Student
@@ -31,3 +31,71 @@
 </div>
 </div>
 
+<script>
+    function studentDetails() {
+        return {
+            search: "",
+            pageNumber: 0,
+            size: 5,
+            total: "",
+            students: {!! $students !!},
+
+            get filteredStudentTable() {
+                const start = this.pageNumber * this.size,
+                    end = start + this.size;
+                if (this.search === "") {
+                    this.total = this.students.length;
+                    return this.students.slice(start, end);
+                }
+                //Return the total results of the filters
+                this.total = this.students.filter((item) => {
+                    return item.subject_name
+                        .toLowerCase()
+                        .includes(this.search.toLowerCase());
+                }).length;
+                //Return the filtered data
+                return this.students
+                    .filter((item) => {
+                        return item.subject_name
+                            .toLowerCase()
+                            .includes(this.search.toLowerCase());
+                    })
+                    .slice(start, end);
+            },
+            //Create array of all pages (for loop to display page numbers)
+            pages() {
+                return Array.from({
+                    length: Math.ceil(this.total / this.size),
+                });
+            },
+            //Next Page
+            nextPage() {
+                this.pageNumber++;
+            },
+            //Previous Page
+            prevPage() {
+                this.pageNumber--;
+            },
+            //Total number of pages
+            pageCount() {
+                return Math.ceil(this.total / this.size);
+            },
+            //Return the start range of the paginated results
+            startResults() {
+                return this.pageNumber * this.size + 1;
+            },
+            //Return the end range of the paginated results
+            endResults() {
+                let resultsOnPage = (this.pageNumber + 1) * this.size;
+                if (resultsOnPage <= this.total) {
+                    return resultsOnPage;
+                }
+                return this.total;
+            },
+            //Link to navigate to page
+            viewPage(index) {
+                this.pageNumber = index;
+            },
+        };
+    }
+</script>

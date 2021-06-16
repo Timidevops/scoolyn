@@ -56,16 +56,6 @@
                     return {
                         numberOfCA: 0,
                         numberOfCAObject: [],
-                        student: [
-                            {
-                                id: '1',
-                                name: 'john doe'
-                            },
-                            {
-                                id: '2',
-                                name: 'john lee'
-                            }
-                        ],
                         totalCAScore: 0,
                         onchangeNumberOfCA(){
                             if(this.numberOfCA >=1){

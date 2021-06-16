@@ -21,7 +21,8 @@ class ContinuousAssessmentStructure extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array'
+        'meta' => 'array',
+        'school_class' => 'array',
     ];
 
     public function getSlugOptions(): SlugOptions

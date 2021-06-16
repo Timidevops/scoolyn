@@ -24,15 +24,11 @@ Route::get('student', function () {
 });
 
 Route::get('addStudent', function () {
-    return view('Tenant.addStudent');
+    return view('Tenant.partials.users.student.defaultAddStudent');
 });
 
 Route::get('uploadExcel', function () {
     return view('Tenant.uploadExcel');
-});
-
-Route::get('parents', function () {
-    return view('Tenant.parents');
 });
 
 Route::get('addParent', function () {
@@ -41,6 +37,8 @@ Route::get('addParent', function () {
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
     Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('welcome');
@@ -76,12 +74,16 @@ Route::post('student', [\App\Http\Controllers\Tenant\Student\StudentsController:
 
 Route::post('student/subject', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'store'])->name('storeStudentSubject');
 
+Route::get('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'index'])->name('listParent');
+Route::get('parent/add-new', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'create'])->name('createParent');
 Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
 
+Route::get('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'index'])->name('listCAStructure');
 Route::get('result/continuous-assessment-format/add-new', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'create'])->name('createCAStructure');
 Route::post('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'store'])->name('storeCAStructure');
 
-Route::get('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'create'])->name('createAcademicBroadsheet');
+Route::get('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'index'])->name('listAcademicBroadsheet');
+Route::get('result/academic-broadsheet/{subject}/{class}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'create'])->name('createAcademicBroadsheet');
 Route::post('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'store'])->name('storeAcademicBroadsheet');
 
 Route::post('result/academic-report/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicReportsController::class, 'store'])->name('storeAcademicReport');

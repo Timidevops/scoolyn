@@ -12,7 +12,7 @@ class FilterFormInputAction
 
         for($i = 0; $i< $input['numberOfCA']; $i++){
             $format []= [
-                'name'  =>$input['caName'][$i],
+                'name'  => $input['caName'][$i],
                 'score' => $input['caScore'][$i],
             ];
         }

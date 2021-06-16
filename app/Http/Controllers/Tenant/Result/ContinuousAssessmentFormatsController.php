@@ -6,15 +6,25 @@ use App\Actions\Tenant\Result\ContinuousAssessment\CreateNewCAStructureAction;
 use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class ContinuousAssessmentFormatsController extends Controller
 {
+    public function index()
+    {
+        return view('Tenant.pages.result.caFormat.index', [
+            'totalCaFormat' => ContinuousAssessmentStructure::query()->count(),
+            'caFormats' => ContinuousAssessmentStructure::query()->get(['uuid','name','school_class']),
+        ]);
+    }
 
     public function create()
     {
-        return view('Tenant.testCreateCAStructure');
+        return view('Tenant.pages.result.caFormat.create', [
+            'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
+        ]);
     }
 
     public function store(Request $request): RedirectResponse
@@ -33,7 +43,7 @@ class ContinuousAssessmentFormatsController extends Controller
 
         $request['meta'] = $format;
 
-        (new CreateNewCAStructureAction())->execute(camel_to_snake($request->only('name', 'meta')));
+        (new CreateNewCAStructureAction())->execute( camel_to_snake( $request->only(['name', 'meta', 'schoolClass']) ) );
 
         return back();
     }

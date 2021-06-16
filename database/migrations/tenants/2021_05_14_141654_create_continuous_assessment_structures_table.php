@@ -19,6 +19,7 @@ class CreateContinuousAssessmentStructuresTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->json('meta');
+            $table->json('school_class');
             $table->timestamps();
             $table->softDeletes();
         });

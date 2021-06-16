@@ -6,9 +6,8 @@ use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class SubjectTeacher extends Model
@@ -25,13 +24,23 @@ class SubjectTeacher extends Model
         return $this->hasOne(Teacher::class, 'uuid', 'teacher_id');
     }
 
-    public function classSection(): BelongsTo
+    public function subject(): HasOne
     {
-        return $this->belongsTo(ClassSection::class, 'class_section_id', 'uuid');
+        return $this->hasOne(Subject::class, 'uuid', 'subject_id');
     }
 
-    public function classSectionCategory(): BelongsTo
+    public function schoolClass(): HasOne
     {
-        return$this->belongsTo(ClassSectionCategory::class, 'class_section_category_id', 'uuid');
+        return $this->hasOne(SchoolClass::class, 'uuid', 'school_class_id');
+    }
+
+    public function classSection(): HasOneThrough
+    {
+        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
+    }
+
+    public function classSectionCategory(): HasOneThrough
+    {
+        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
     }
 }

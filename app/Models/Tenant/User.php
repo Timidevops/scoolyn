@@ -5,6 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Multitenancy\Models\Tenant;
@@ -16,6 +17,7 @@ class User extends Authenticatable
     use HasFactory, Notifiable;
     use HasRoles;
     use ReceivesWelcomeNotification;
+    use SoftDeletes;
 
     const SUPER_ADMIN_USER ='super_admin';
     const ADMIN_USER = 'admin';

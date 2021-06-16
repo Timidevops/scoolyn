@@ -16,9 +16,13 @@ class CreateStudentsTable extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('matriculation_number')->unique();
+            $table->string('matriculation_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');
+            $table->string('other_name');
+            $table->string('gender');
+            $table->string('dob');
+            $table->string('address');
             $table->string('school_class_id');
             $table->string('class_section_id');
             $table->string('class_section_category_id')->nullable();
