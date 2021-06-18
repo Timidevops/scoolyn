@@ -24,8 +24,4 @@ class AcademicBroadSheet extends Model
         'meta' => 'array'
     ];
 
-    public function schoolClass(): MorphTo
-    {
-        return $this->morphTo('schoolClass');
-    }
 }

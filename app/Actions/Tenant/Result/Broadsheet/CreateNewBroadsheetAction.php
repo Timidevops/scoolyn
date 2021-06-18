@@ -9,9 +9,9 @@ use Ramsey\Uuid\Uuid;
 
 class CreateNewBroadsheetAction
 {
-    public function execute(Model $model, array $input)
+    public function execute(Model $classSubject, array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        $model->academicBroadsheet()->create($input);
+        $classSubject->academicBroadsheet()->create($input);
     }
 }

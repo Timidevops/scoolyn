@@ -35,57 +35,24 @@
                         {{$schoolClassLabel}}
                     </button>
                     <div class="border border-purple-100 @if(!$schoolClassDropdown)  hidden @endif">
-                        <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
-              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                        <ul class="py-1 overflow-auto text-base leading-6 border border-purple-100
+              rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
                             @foreach($schoolClasses as $schoolClass)
-                                <li wire:click="selectSchoolClass('{{$schoolClass->uuid}}', '{{$schoolClass->class_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    {{$schoolClass->class_name}}
+                                <li wire:click="selectSchoolClass('{{$schoolClass->uuid}}', '{{$schoolClass->schoolClass->class_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                    {{$schoolClass->schoolClass->class_name}}
                                 </li>
                             @endforeach
                         </ul>
                     </div>
                 </div>
 
-                <div class="my-6">
-                    <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
-                    <button wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
-                            class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
-                        {{$classSectionLabel}}
-                    </button>
-                    <div class="border border-purple-100 @if(!$classSectionDropdown)  hidden @endif">
-                        <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
-              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
-                            <li wire:click="selectClassSection('all', 'All Sections')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                All Sections
-                            </li>
-                            @foreach($classSections as $classSection)
-                                <li wire:click="selectClassSection('{{$classSection->uuid}}', '{{$classSection->classSectionType->section_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    {{$classSection->classSectionType->section_name}}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="my-6 @if(!$isClassSectionCategory) hidden @endif">
-                    <label for="service" class="block text-xs font-normal text-gray-100">Class Section Category</label>
-                    <button wire:click="$set('classSectionCategoryDropdown', {{!$classSectionCategoryDropdown}})" type="button"
-                            class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
-                        {{$classSectionCategoryLabel}}
-                    </button>
-                    <div class="border border-purple-100 @if(!$classSectionCategoryDropdown)  hidden @endif">
-                        <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
-              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
-                            <li wire:click="selectClassSectionCategory('all', 'All Section Categories')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                All Section Categories
-                            </li>
-                            @foreach($classSectionCategories as $classSectionCategory)
-                                <li wire:click="selectClassSectionCategory('{{$classSectionCategory->uuid}}', '{{$classSectionCategory->classSectionCategoryType->category_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    {{$classSectionCategory->classSectionCategoryType->category_name}}
-                                </li>
-                            @endforeach
-                        </ul>
-                    </div>
+                <div class="my-6 @if(! $isClassInfoShow) hidden @endif">
+                    <ul class="py-1 overflow-auto text-base leading-6 border border-purple-100
+              rounded-md shadow-xs  focus:outline-none sm:text-sm sm:leading-5">
+                        <li class="relative py-2 pl-3  text-gray-100 cursor-pointer select-none pr-9">
+                            Class name: {{$classSections}}
+                        </li>
+                    </ul>
                 </div>
 
                 <div class="my-6">
@@ -95,7 +62,7 @@
                         {{$teacherLabel}}
                     </button>
                     <div class="border border-purple-100 @if(!$teacherDropdown)  hidden @endif">
-                        <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
+                        <ul class="py-1 overflow-auto text-base leading-6 border border-purple-100
               rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                             @foreach($teachers as $teacher)
                                 <li wire:click="selectTeacher('{{$teacher->uuid}}', '{{$teacher->full_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">

@@ -20,4 +20,9 @@ class StudentSubject extends Model
     protected $casts = [
         'subjects' => 'array'
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'uuid');
+    }
 }

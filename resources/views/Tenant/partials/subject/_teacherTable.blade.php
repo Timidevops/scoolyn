@@ -38,10 +38,10 @@
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                         <p x-text="item.school_class.class_name"></p>
-                                        <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section, item.class_section_category)"></span>
+                                        <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section_type, item.class_section_category_type)"></span>
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                        <span class="text-gray-200 font-normal"  x-text="item.teacher.full_name"></span>
+                                        <span class="text-gray-200 font-normal"  x-text=" item.teacher ? item.teacher.full_name : 'not assigned' "></span>
                                     </td>
                                     <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
                                         <button class="focus:outline-none">

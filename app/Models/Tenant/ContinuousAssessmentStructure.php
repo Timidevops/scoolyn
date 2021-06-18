@@ -31,4 +31,15 @@ class ContinuousAssessmentStructure extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public function getSchoolClassName(array $schoolClasses)
+    {
+        $schoolClassesName = [];
+
+        foreach ( $schoolClasses as $schoolClass ){
+            $schoolClassesName [] = SchoolClass::query()->where('uuid', $schoolClass)->first()->class_name;
+        }
+
+        return $schoolClassesName;
+    }
 }

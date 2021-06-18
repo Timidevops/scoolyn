@@ -16,9 +16,7 @@ class CreateAcademicBroadSheetsTable extends Migration
         Schema::create('academic_broad_sheets', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->morphs('schoolClass');
-            $table->string('subject_id');
-            $table->string('teacher_id');
+            $table->string('class_subject_id');
             $table->json('meta');
             $table->timestamps();
             $table->softDeletes();

@@ -17,7 +17,7 @@ class SubjectTeachersController extends Controller
     {
         $subject = Subject::query()->where('slug', $uuid)->firstOrFail();
 
-        $subjectTeachers = $subject->subjectTeacher->load(['teacher', 'schoolClass','classSection','classSectionCategory']);
+        $subjectTeachers = $subject->classSubject->load(['teacher', 'schoolClass','classSectionType','classSectionCategoryType']);
 
         return view('tenant.pages.subject.teacher', [
             'subject' => $subject,

@@ -7,6 +7,8 @@ use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\SchoolClass;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -14,10 +16,29 @@ class ContinuousAssessmentFormatsController extends Controller
 {
     public function index()
     {
+        $caFormat = ContinuousAssessmentStructure::query()->get(['uuid','name','school_class']);
+
         return view('Tenant.pages.result.caFormat.index', [
             'totalCaFormat' => ContinuousAssessmentStructure::query()->count(),
-            'caFormats' => ContinuousAssessmentStructure::query()->get(['uuid','name','school_class']),
+            'caFormats'     => collect($this->getNewFormat($caFormat)),
         ]);
+    }
+
+    private function getNewFormat(Collection $caFormats)
+    {
+        $newCaFormats = [];
+
+        foreach ( $caFormats as $caFormat ){
+
+            $newCaFormats [] = [
+                'uuid' => $caFormat->uuid,
+                'name' => $caFormat->name,
+                'school_class' => $caFormat->getSchoolClassName($caFormat->school_class),
+            ];
+
+        }
+
+        return $newCaFormats;
     }
 
     public function create()

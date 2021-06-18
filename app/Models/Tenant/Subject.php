@@ -32,4 +32,9 @@ class Subject extends Model
     {
         return $this->hasMany(SubjectTeacher::class, 'subject_id', 'uuid');
     }
+
+    public function classSubject(): HasMany
+    {
+        return $this->hasMany(ClassSubject::class, 'subject_id', 'uuid');
+    }
 }

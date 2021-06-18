@@ -10,12 +10,8 @@
              id="tab_wrapper">
             <div class="h-screen py-10">
                 <div class="bg-white rounded-md ">
-                    <form action="{{route('storeAcademicBroadsheet')}}" method="post" x-data="test()" x-init="init()">
+                    <form action="{{route('storeAcademicBroadsheet',$classSubjectId)}}" method="post" x-data="test()" x-init="init()">
                         @csrf
-                        <input type="hidden" name="teacher">
-                        <input type="hidden" name="subject">
-                        <input type="hidden" name="classSection">
-                        <input type="hidden" name="classSectionCategory">
                         <div class="flex justify-end px-4 py-4">
                             <button type="submit" href=""
                                     class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2  text-sm">
@@ -63,13 +59,14 @@
                                             </td>
 
                                             <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                              <span class="text-gray-200 font-normal" x-text="item.name">
-                                              </span>
+                                                <span class="text-gray-200 font-normal" x-text="item.student.first_name"></span>
+                                                <span class="text-gray-200 font-normal" x-text="item.student.last_name"></span>
+{{--                                                <input type="hidden" x-bind:name="`broadsheet[${index}][student_id]`" x-bind:value="item.student.uuid">--}}
                                             </td>
                                             <template x-for="(ca, caIndex) in caAssessmentStructure" :key="ca">
                                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                                     <div class="mt-2">
-                                                        <input type="number" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(`totalScore_${index}`)" x-bind:name="`broadsheet[${item.name}][${ca.name}]`" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                                        <input type="number" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(`totalScore_${index}`)" x-bind:name="`broadsheet[${item.student.uuid}][${ca.name}]`" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                                     </div>
                                                 </td>
                                             </template>
@@ -91,15 +88,10 @@
                     return {
                         init(){
                         },
+                        {{--student: {!! $students !!},--}}
                         student: [
-                            {
-                                id: '1',
-                                name: 'john doe'
-                            },
-                            {
-                                id: '2',
-                                name: 'john lee'
-                            }
+                            {student: {uuid: '111', first_name:'mk', last_name: 'ok'}},
+                            {student: {uuid: '112', first_name:'jk', last_name: 'opk'}}
                         ],
                         caAssessmentStructure:{!! $caAssessmentStructure !!},
                         onchangeCAScore(id){

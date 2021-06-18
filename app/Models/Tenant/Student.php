@@ -25,9 +25,9 @@ class Student extends Model
         return $this->belongsTo(Parents::class, 'parent_id', 'uuid');
     }
 
-    public function subjects(): HasMany
+    public function subjects()
     {
-        return $this->hasMany(StudentSubject::class, 'student_id', 'uuid');
+        return $this->hasOne(StudentSubject::class, 'student_id', 'uuid');
     }
 
     public function academicReport(): HasMany

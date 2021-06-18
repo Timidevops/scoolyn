@@ -4,6 +4,8 @@ namespace App\Http\Livewire\Tenant\Subject;
 
 use App\Actions\Tenant\Subject\SubjectTeacher\CreateNewSubjectTeacherAction;
 use App\Models\Tenant\ClassSection;
+use App\Models\Tenant\ClassSectionCategory;
+use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Teacher;
 use Illuminate\Database\Eloquent\Model;
@@ -17,27 +19,22 @@ class AddTeacher extends Component
     public bool $schoolClassDropdown = false;
     public string $schoolClassLabel = '-- choose a class --';
 
-    public bool $classSectionDropdown = false;
-    public string $classSectionLabel = '-- choose a class section --';
-    public $classSections = [];
+    public Model $classSubject;
+    public bool $isClassInfoShow = false;
 
-    public bool $isClassSectionCategory = false;
-    public string $classSectionCategoryLabel = '-- choose a class section category --';
-    public bool $classSectionCategoryDropdown = false;
-    public $classSectionCategories = [];
+    public string $classSections = 'nil';
+    public string $classSectionCategories = 'nil';
 
     public bool $teacherDropdown = false;
     public string $teacherLabel = '-- choose a teacher --';
 
     public string $schoolClassId = '';
-    public string $classSectionId = '';
-    public string $classSectionCategoryId = '';
     public string $teacherId = '';
 
     public function render()
     {
         return view('livewire.tenant.subject.add-teacher', [
-            'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
+            'schoolClasses' => $this->subject->classSubject->whereNull('teacher_id'),
             'teachers' => Teacher::query()->get(['uuid', 'full_name']),
         ]);
     }
@@ -53,13 +50,10 @@ class AddTeacher extends Component
             return false;
         }
 
-        (new CreateNewSubjectTeacherAction())->execute([
-            'teacher_id' => $this->teacherId,
-            'subject_id' => $this->subject->uuid,
-            'school_class_id' => $this->schoolClassId,
-            'class_section_id' => $this->classSectionId == 'all' ? null : $this->classSectionId,
-            'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId,
-        ]);
+        // update class subject teacher_id
+
+        $this->classSubject->teacher_id = $this->teacherId;
+        $this->classSubject->save();
 
         return redirect()->route('listSubjectTeacher',$this->subject->slug);
     }
@@ -68,31 +62,23 @@ class AddTeacher extends Component
     {
         $this->schoolClassId = $classId;
 
+        $this->classSubject = $this->subject->classSubject->where('uuid', $classId)->first();
+
         $this->schoolClassLabel = $className;
 
         $this->schoolClassDropdown = false;
 
-        $this->classSections = ClassSection::query()->where('school_class_id', $classId)->get();
-    }
+        if( $this->classSubject->classSection && $this->classSubject->classSectionCategory ){
+            $this->classSections = "{$this->classSubject->classSectionType->section_name} - {$this->classSubject->classSectionCategoryType->category_name}";
+        }
+        elseif ( $this->classSubject->classSection && ! $this->classSubject->classSectionCategory ){
+            $this->classSections = $this->classSubject->classSectionType->section_name;
+        }
+        else{
+            $this->classSections = 'All Section';
+        }
 
-    public function selectClassSection (string $classSectionId, string $classSectionName)
-    {
-        $this->classSectionId = $classSectionId;
-
-        $this->classSectionLabel = $classSectionName;
-
-        $this->classSectionDropdown = false;
-
-        $this->getClassSectionCategory();
-    }
-
-    public function selectClassSectionCategory(string $classSectionCategoryId, string $classSectionCategoryName)
-    {
-        $this->classSectionCategoryId = $classSectionCategoryId;
-
-        $this->classSectionCategoryLabel = $classSectionCategoryName;
-
-        $this->classSectionCategoryDropdown = false;
+        $this->isClassInfoShow = true;
     }
 
     public function selectTeacher(string $teacherId, string $teacherName)
@@ -104,20 +90,4 @@ class AddTeacher extends Component
         $this->teacherDropdown = false;
     }
 
-    private function getClassSectionCategory(): void
-    {
-        $classSection = ClassSection::query()->where('uuid', $this->classSectionId)->first();
-
-        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
-
-            $this->classSectionCategories = $classSection->classSectionCategory;
-
-            $this->isClassSectionCategory = true;
-            return;
-        }
-
-        $this->classSectionCategories = [];
-
-        $this->isClassSectionCategory = false;
-    }
 }

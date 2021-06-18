@@ -9,9 +9,12 @@ use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\SchoolClass;
+use App\Models\Tenant\Student;
+use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Subject;
 use App\Models\Tenant\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 
 class AcademicBroadsheetsController extends Controller
 {
@@ -20,101 +23,65 @@ class AcademicBroadsheetsController extends Controller
         //@todo change to auth:teacher
         $teacher = Teacher::find(1);
 
-        $teacherSubject = $teacher->subjectTeacher->load(['subject', 'schoolClass', 'classSection', 'classSectionCategory']);
+        $teacherSubject = $teacher->subjectTeacher->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
 
         return view('Tenant.pages.result.academicBroadsheet.index', [
             'totalSubject' => $teacher->subjectTeacher->count(),
-            'subjects' => $teacherSubject,
+            'subjects'     => $teacherSubject,
         ]);
     }
 
-    public function create(string $subject, string $class, Request $request)
+    public function create(string $uuid)
     {
-        if(! $request['class-section'] && !$request['class-section-category'] && $request['class-section'] != 'all-section'){
-            abort(404);
-        }
-
-        $subject = Subject::query()->where('slug', $subject)->firstOrFail();
-        $class   = SchoolClass::query()->where('slug', $class)->firstOrFail();
-
         //@todo change to auth:teacher
         $teacher = Teacher::find(1);
 
-        //@
-        //todo remove Subject Teacher ::  Access via Class Subject ++ Teacher ID to Class Subject
-        // On Subject Teacher Page, select class from class subject, remove class sections dropdown...
-        // Below code not fully valid
-        // In student subject add ++ class_subject_uuid as JSON subject_id.
+        $classSubject = $teacher->subjectTeacher->where('uuid', $uuid)->first();
 
-        if( $request['class-section'] && $request['class-section'] != 'all-section' ){
-            $subjectTeacher = $teacher->subjectTeacher
-                ->whereIn('subject_id', $subject->uuid)
-                ->whereIn('school_class_id', $class->uuid)
-                ->whereIn('class_section_id', $request['class-section']);
-
-            $classSubject = ClassSubject::query()
-                ->where('subject_id', $subjectTeacher->first()->subject_id)
-                ->where('school_class_id', $subjectTeacher->first()->schoolClass->uuid)
-                ->where('class_section_id', $subjectTeacher->first()->classSection->laravel_through_key)->first();
-        }
-        elseif ($request['class-section-category']){
-            $subjectTeacher = $teacher->subjectTeacher
-                ->whereIn('subject_id', $subject->uuid)
-                ->whereIn('school_class_id', $class->uuid)
-                ->whereIn('class_section_category_id', $request['class-section-category']);
-
-            $classSubject = ClassSubject::query()
-                ->where('subject_id', $subjectTeacher->first()->subject_id)
-                ->where('school_class_id', $subjectTeacher->first()->schoolClass->uuid)
-                ->where('class_section_category_id', $subjectTeacher->first()->classSectionCategory->laravel_through_key)->first();
-        }
-        else{
-            $subjectTeacher = $teacher->subjectTeacher
-                ->whereIn('subject_id', $subject->uuid)
-                ->whereIn('school_class_id', $class->uuid);
-
-            $classSubject = ClassSubject::query()
-                ->where('subject_id', $subjectTeacher->first()->subject_id)
-                ->where('school_class_id', $subjectTeacher->first()->schoolClass->uuid)->first();
-        }
-
-        if( ! $subjectTeacher->first() || ! $classSubject){
+        if( ! $classSubject ){
             abort(404);
         }
 
-        dd($classSubject);
+        if(  $classSubject->academicBroadsheet ){
+            //@todo fill the broadsheet table with saved meta column..
 
+            $singleStudent =  $classSubject->academicBroadsheet;
 
-//        if( $request['class-section'] && $request['class-section'] != 'all-section' ){
-//            $classSubject = ClassSubject::query()->where('slug', $request['class-section'])->first();
-//        }
-//        elseif ($request['class-section-category']){
-//            $classSubject = ClassSectionCategory::query()->first();
-//        }
+            //dd( collect($singleStudent->meta)->get('111') );
 
-        $caAssessmentStructureArray = ContinuousAssessmentStructure::query()->first('meta')->toArray();
+            return true;
+        }
+
+        // get c.a format for class
+        $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first();
+
+        // get students offering subject
+        $students = StudentSubject::query()->whereJsonContains('subjects', $classSubject->uuid)->get();
+
+        $students->load('student');
+
         return view('Tenant.testCreateAcademicBroadsheet', [
-            'caAssessmentStructure' => collect($caAssessmentStructureArray['meta']),
+            'caAssessmentStructure' => collect($caFormat->meta),
+            'students'              => $students,
+            'classSubjectId'        => $uuid,
         ]);
     }
 
-    public function store(Request $request)
+    public function store(Request $request, string $uuid)
     {
-        dd($request->dd());
-        $class = ClassSection::query()->where('uuid', '=', $request->input('classSection'))->first();
+        //dd($request->all());
+        //@todo change to auth:teacher
+        $teacher = Teacher::find(1);
 
-        if( $request->input('classSectionCategory') ){
-            $class = ClassSectionCategory::query()->where('uuid', '=', $request->input('classSectionCategory'))->first();
-        }
+        $classSubject = $teacher->subjectTeacher->where('uuid', $uuid)->first();
 
-        (new CreateNewBroadsheetAction())->execute($class, [
-            'subject_id' => $request->input('subject'),
-            'teacher_id' => $request->input('teacher'),
-            'meta'       => $request->input('broadsheet')
+        (new CreateNewBroadsheetAction())->execute($classSubject, [
+            'meta'=> $request->input('broadsheet')
         ]);
 
         //@todo add status
 
-        return redirect('/');
+        return back();
     }
+
 }

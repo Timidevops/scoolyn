@@ -34,7 +34,7 @@
                                         <input name="schoolClass[]"
                                                type="checkbox"
                                                x-bind:checked="onCheckedClass(item.class_name)"
-                                               x-on:change="onToggleClass(item.class_name, event.target)"
+                                               x-on:change="onToggleClass(item.class_name, item.uuid, event.target)"
                                         >
                                         <span class="px-1"></span>
                                         <span x-text="item.class_name"></span>
@@ -119,14 +119,14 @@
             onCheckedClass(item){
                 return this.selectedClasses.indexOf(item) > -1;
             },
-            onToggleClass(item, event){
+            onToggleClass(item, value, event){
                 if (this.onCheckedClass(item)) {
                     let getIndex = (element) => element === item;
                     this.selectedClasses.splice( this.selectedClasses.findIndex(getIndex), 1);
                 }
                 else {
                     this.selectedClasses.push(item)
-                    event.value = item
+                    event.value = value
                 }
             }
         }
