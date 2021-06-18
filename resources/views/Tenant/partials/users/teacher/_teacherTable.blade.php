@@ -6,15 +6,14 @@
                     <table class="min-w-full divide-y  divide-purple-100">
                         <thead>
                         <tr>
-
                             <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
                                 SN
                             </th>
 
-                            <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
-                    <span class="flex items-center mx-1">
-                        Full Name
-                     <span>
+                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                            <span class="flex items-center mx-1">
+                            Full Name
+                            <span>
                     <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
                      </span>
                     </span>
@@ -22,6 +21,9 @@
 
                             <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                                 Staff Id
+                            </th>
+                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                Desgination
                             </th>
                             <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                                 Action
@@ -54,6 +56,10 @@
 
                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                     <span class="text-gray-200 font-normal" x-text="content.staff_id"></span>
+                                </td>
+
+                                <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
+                                    <span class="text-gray-200 font-normal" x-text="content.desgination"></span>
                                 </td>
 
                                 <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">

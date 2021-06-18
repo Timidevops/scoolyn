@@ -38,7 +38,6 @@
 
               </tr>
               </thead>
-              {{--  --}}
               <tbody>
                 <template x-for="(item, index) in filteredStudentTable" :key="index">
                     <tr class="bg-white divide-y divide-purple-100">
@@ -79,7 +78,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                                 </svg>
                             </a>
-                            <button class="focus:outline-none" x-on:click="showModal = true">
+                            <button class="focus:outline-none" @click="isStudentProfileModalOpen = true">
                                 <img src="{{asset('images/user.svg')}}" alt="" class="w-3 h-3 mx-2">
                             </button>
                             <button class="focus:outline-none">
@@ -143,6 +142,75 @@
                 </button>
             </div>
         </nav>
+
+        <!-- student profile -->
+        <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="isStudentProfileModalOpen" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': isStudentProfileModalOpen }">
+            <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
+                <div  class="p-6">
+                    <div class="flex items-center justify-between border-b border-purple-100">
+                        <div class="flex ">
+                            <span class="cursor-pointer inline-block  rounded-t py-2  text-gray-200 text-base" :class="{ 'active border-b-2 border-blue-100': studentProfileTab == '1' }" @click.prevent="studentProfileTab = 1">Profile</span>
+
+
+                            <span class="cursor-pointer inline-block py-2 px-4 text-gray-200 text-base mx-2" :class="{ 'active border-b-2 border-blue-100 ': studentProfileTab == '2' }" @click.prevent="studentProfileTab = 2">Parent info</span>
+                        </div>
+                        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isStudentProfileModalOpen = false">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </span>
+                    </div>
+                    <div class="w-full pt-4 text-gray-100">
+                        <div x-show="studentProfileTab === 1" class="">
+                            <div class="text-sm border-purple-100 border-b mt-4 ">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Name:<p> <span class="w-2/5">John Doe</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Class: <p><span class="w-2/5">Junior School 1</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Section:<p> <span class="w-2/5">A</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center  ">
+                                    <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div x-show="studentProfileTab === 2">
+                            <div class="text-sm border-purple-100 border-b mt-4 ">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Parent Name:<p> <span class="w-2/5">John Doe</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Parent Email: <p><span class="w-2/5">example@gmail.com</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center ">
+                                    <p class=" w-1/3"> Address:<p> <span class="w-2/5">3, trent avenue, bodija, IBADAN.</span>
+                                </div>
+                            </div>
+                            <div class="text-sm border-purple-100 border-b mt-4">
+                                <div class="flex items-center  ">
+                                    <p class=" w-1/3"> Phone Number:<p> <span class="w-2/5">090123456789</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!--/: student profile -->
 
       </div>
   </div>

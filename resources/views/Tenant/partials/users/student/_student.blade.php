@@ -34,6 +34,8 @@
 <script>
     function studentDetails() {
         return {
+            studentProfileTab: 1,
+            isStudentProfileModalOpen: false,
             search: "",
             pageNumber: 0,
             size: 5,
