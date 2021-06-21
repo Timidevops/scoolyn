@@ -91,6 +91,7 @@ Route::post('result/continuous-assessment-format', [\App\Http\Controllers\Tenant
 Route::get('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'index'])->name('listAcademicBroadsheet');
 Route::get('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'create'])->name('createAcademicBroadsheet');
 Route::post('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'store'])->name('storeAcademicBroadsheet');
+Route::patch('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'update'])->name('updateAcademicBroadsheet');
 
 Route::post('result/academic-report/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicReportsController::class, 'store'])->name('storeAcademicReport');
 

@@ -5,13 +5,11 @@ namespace App\Actions\Tenant\Result\Broadsheet;
 
 
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
 
-class CreateNewBroadsheetAction
+class UpdateBroadsheetAction
 {
     public function execute(Model $classSubject, array $input)
     {
-        $input['uuid'] = Uuid::uuid4();
-        return $classSubject->academicBroadsheet()->create($input);
+        $classSubject->academicBroadsheet()->update($input);
     }
 }

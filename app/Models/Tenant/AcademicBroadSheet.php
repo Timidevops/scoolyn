@@ -18,6 +18,11 @@ class AcademicBroadSheet extends Model
     use SchoolSessionTrait;
     use HasStatuses;
 
+    const CREATED_STATUS = 'created';
+    const SUBMITTED_STATUS = 'submitted';
+    const APPROVED_STATUS = 'approved';
+    const NOT_APPROVED_STATUS = 'not-approved';
+
     protected $guarded = [];
 
     protected $casts = [

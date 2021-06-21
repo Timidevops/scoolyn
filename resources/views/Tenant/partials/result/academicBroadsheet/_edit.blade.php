@@ -15,46 +15,50 @@
     <a href="{{route('listAcademicBroadsheet')}}"><span class="mt-2  text-sm text-gray-300">/!/ Broadsheets</span></a>
 </div>
 
-<div class="h-screen py-10">
+<div class="h-screen py-10" x-data="editBroadsheet()">
     <div class="bg-white rounded-md ">
-        <form action="{{route('storeAcademicBroadsheet',$classSubjectId)}}" method="post" x-data="broadsheet()">
+        <form id="broadsheetForm" action="{{route('updateAcademicBroadsheet',$classSubjectId)}}" method="post">
             @csrf
+            @method('PATCH')
             <div class="flex justify-end px-4 py-4">
-                <button type="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
+                <button type="submit" class="border-blue-100 border text-blue-100 rounded-md py-2 px-4 mx-2 text-sm">
                     Save Broadsheet
+                </button>
+                <button type="submit" name="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
+                    Submit Broadsheet
                 </button>
             </div>
             <div class="flex flex-col mt-2">
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
                     <table class="min-w-full divide-y  divide-purple-100">
                         <thead>
-                            <tr>
-                                <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                    SN
-                                </th>
-                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm ">
+                        <tr>
+                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
+                                SN
+                            </th>
+                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm ">
                                         <span class="flex items-center mx-1">
                                             Student
                                         </span>
+                            </th>
+                            <template x-for="(item, index) in caAssessmentStructure" :key="item">
+                                <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
+                                    <div>
+                                        <span x-text="item.name"></span>
+                                        <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
+                                    </div>
                                 </th>
-                                <template x-for="(item, index) in caAssessmentStructure" :key="item">
-                                    <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
-                                        <div>
-                                            <span x-text="item.name"></span>
-                                            <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
-                                        </div>
-                                    </th>
-                                </template>
-                                <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
-                                        <div class="text-center mx-1">
-                                            <span>Total</span>
-                                            <p class="text-gray-300">(100)</p>
-                                        </div>
-                                </th>
-                            </tr>
+                            </template>
+                            <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
+                                <div class="text-center mx-1">
+                                    <span>Total</span>
+                                    <p class="text-gray-300">(100)</p>
+                                </div>
+                            </th>
+                        </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-purple-100">
-                            <template x-for="(item, index) in students" :key="item">
+                            <template x-for="(item, index) in academicBroadsheets" :key="item">
                                 <tr>
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
@@ -65,21 +69,22 @@
                                         </div>
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                        <span class="text-gray-200 font-normal capitalize" x-text="item.student.first_name"></span>
-                                        <span class="text-gray-200 font-normal capitalize" x-text="item.student.last_name"></span>
+                                        <span class="text-gray-200 font-normal capitalize" x-text="item.studentName"></span>
                                     </td>
-                                    <template x-for="(ca, caIndex) in caAssessmentStructure" :key="ca">
+                                    <template x-for="(ca, caIndex) in getBroadsheet(item.broadsheet)" :key="ca">
                                         <td class="whitespace-nowrap text-xs text-gray-200">
                                             <div class="mt-2 text-center">
                                                 <label>
-                                                    <input type="number" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(index)" x-bind:name="`broadsheet[${item.student.uuid}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                                    <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(index)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                                 </label>
                                             </div>
                                         </td>
                                     </template>
                                     <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                                        <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">0</p>
-                                        <input type="hidden" x-bind:id="`totalScoreValue_${index}`" x-bind:name="`broadsheet[${item.student.uuid}][total]`" />
+                                        <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">
+                                            <span x-text="getInitialTotal(index)"></span>
+                                        </p>
+                                        <input type="hidden" x-bind:value="getInitialTotal(index)" x-bind:id="`totalScoreValue_${index}`" x-bind:name="`broadsheet[${item.studentId}][total]`" />
                                     </td>
                                 </tr>
                             </template>
@@ -93,10 +98,25 @@
 
 
 <script>
-    function broadsheet() {
+    function editBroadsheet() {
         return{
             caAssessmentStructure:{!! $caAssessmentStructure !!},
-            students: {!! $students !!},
+            academicBroadsheets: {!! $academicBroadsheets !!},
+            getBroadsheet(meta){
+                let broadsheet = [];
+
+                this.caAssessmentStructure.map((item, index)=>{
+                    broadsheet.push({
+                        name: item.name,
+                        score: meta[item.name]
+                    });
+                })
+
+                return broadsheet;
+            },
+            getInitialTotal(index){
+                return this.academicBroadsheets[index].broadsheet['total'];
+            },
             onchangeCAScore(id){
                 let scoreIdText = `totalScore_${id}`;
                 let scoreIdValue = `totalScoreValue_${id}`;
@@ -111,6 +131,7 @@
 
                     totalScore = totalScore + score;
                 });
+
 
                 document.getElementById(scoreIdText).innerText = totalScore;
                 document.getElementById(scoreIdValue).value = totalScore;
