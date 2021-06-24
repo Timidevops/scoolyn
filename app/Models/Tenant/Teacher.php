@@ -24,6 +24,11 @@ class Teacher extends Model
         return $this->hasOne(ClassTeacher::class,'teacher_id','uuid');
     }
 
+    public function getClassSubjects()
+    {
+        return ClassSubject::query()->where('school_class_id', $this->classTeacher->school_class_id)->get();
+    }
+
     public function subjectTeacher(): HasMany
     {
         return $this->hasMany(ClassSubject::class, 'teacher_id', 'uuid');

@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Tenant\Result;
 
 use App\Actions\Tenant\Result\Broadsheet\CreateNewBroadsheetAction;
 use App\Actions\Tenant\Result\Broadsheet\UpdateBroadsheetAction;
+use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
+use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentSubject;
@@ -93,22 +95,26 @@ class AcademicBroadsheetsController extends Controller
         // if status is submitted or approved :return _single page
         if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS || $classSubject->academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
 
-            $broadsheets = $this->getAcademicBroadsheet($classSubject->academicBroadsheet->meta, true);
+            // get grade format for class
+            $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first();
+
+            $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, true);
 
             return view('Tenant.pages.result.academicBroadsheet.single', [
-                'caAssessmentStructure' => collect($classSubject->academicBroadsheet->meta['caFormat']),
+                'caAssessmentStructure' => collect( $classSubject->academicBroadsheet->meta['caFormat'] ),
+                'gradeFormats'          => collect($gradeFormats->meta),
                 'classSubject'          => $classSubject,
                 'academicBroadsheets'   => collect($broadsheets),
                 'broadsheetStatus'      => (string) $classSubject->academicBroadsheet->status,
             ]);
         }
 
-        $broadsheets = $this->getAcademicBroadsheet($classSubject->academicBroadsheet->meta);
+        $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta);
 
         // if status is not-approved :return _edit page with generated format
         if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
 
-            $broadsheets = $this->getAcademicBroadsheet($classSubject->academicBroadsheet->meta, true);
+            $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, true);
 
         }
 
@@ -118,27 +124,6 @@ class AcademicBroadsheetsController extends Controller
             'classSubject'          => $classSubject,
             'academicBroadsheets'   => collect($broadsheets),
         ]);
-    }
-
-    private function getAcademicBroadsheet(array $meta, bool $generatedFormat = false): array
-    {
-        $broadsheets = [];
-
-        $meta = $generatedFormat ? collect($meta['academicBroadsheet']) : collect($meta);
-
-        for ( $int = 0; $int < count($meta); $int++ ){
-
-            $student = Student::query()->where('uuid',$meta->keys()[$int])->first();
-
-            $broadsheets [] = [
-                'studentId'   => $meta->keys()[$int],
-                'studentName' => "{$student->first_name} {$student->last_name}",
-                'broadsheet'  => $meta->values()[$int],
-            ];
-
-        }
-
-        return $broadsheets;
     }
 
     public function update(Request $request, string $uuid)

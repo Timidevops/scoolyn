@@ -174,8 +174,6 @@
                 </button>
             </div>
             <div class="mx-4">
-{{--                @include('Tenant.partials.users.parents._addParent', ['redirect' => 'false'] )--}}
-{{--                <livewire:tenant.parent.add-parent :addParentModal="$addParentModal" />--}}
                 @include('livewire.tenant.parent.add-parent')
             </div>
         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Result;
 
 use App\Actions\Tenant\Result\ContinuousAssessment\CreateNewCAStructureAction;
 use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
+use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\SchoolClass;
@@ -16,29 +17,12 @@ class ContinuousAssessmentFormatsController extends Controller
 {
     public function index()
     {
-        $caFormat = ContinuousAssessmentStructure::query()->get(['uuid','name','school_class']);
+        $caFormats = ContinuousAssessmentStructure::query()->get(['uuid','name','school_class','meta']);
 
         return view('Tenant.pages.result.caFormat.index', [
             'totalCaFormat' => ContinuousAssessmentStructure::query()->count(),
-            'caFormats'     => collect($this->getNewFormat($caFormat)),
+            'caFormats'     => collect( (new GetNewStructureFormat())->execute($caFormats) ),
         ]);
-    }
-
-    private function getNewFormat(Collection $caFormats)
-    {
-        $newCaFormats = [];
-
-        foreach ( $caFormats as $caFormat ){
-
-            $newCaFormats [] = [
-                'uuid' => $caFormat->uuid,
-                'name' => $caFormat->name,
-                'school_class' => $caFormat->getSchoolClassName($caFormat->school_class),
-            ];
-
-        }
-
-        return $newCaFormats;
     }
 
     public function create()

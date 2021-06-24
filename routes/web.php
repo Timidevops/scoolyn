@@ -74,7 +74,6 @@ Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController:
 
 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
 Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
-Route::post('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'store'])->name('storeStudent');
 
 Route::get('student/subject/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'index'])->name('listStudentSubject');
 Route::get('student/subject/add-new/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'create'])->name('createStudentSubject');
@@ -92,6 +91,14 @@ Route::get('result/academic-broadsheet', [\App\Http\Controllers\Tenant\Result\Ac
 Route::get('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'create'])->name('createAcademicBroadsheet');
 Route::post('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'store'])->name('storeAcademicBroadsheet');
 Route::patch('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'update'])->name('updateAcademicBroadsheet');
+
+Route::get('result/academic-result', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'index'])->name('listAcademicResult');
+Route::get('result/academic-result/{uuid}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'single'])->name('singleAcademicResult');
+Route::post('result/academic-result/{uuid}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'approval'])->name('academicResultApproval');
+
+Route::get('result/academic-grading', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'index'])->name('listGradeFormat');
+Route::get('result/academic-grading/add-new', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'create'])->name('createGradeFormat');
+Route::post('result/academic-grading', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'store'])->name('storeGradeFormat');
 
 Route::post('result/academic-report/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicReportsController::class, 'store'])->name('storeAcademicReport');
 

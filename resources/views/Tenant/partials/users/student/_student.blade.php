@@ -36,6 +36,28 @@
         return {
             studentProfileTab: 1,
             isStudentProfileModalOpen: false,
+            studentProfileDetail:[],
+            studentParentDetail: [],
+            onClickOpenStudentProfile(id){
+                let student = this.students.filter(uuid => uuid.uuid === id);
+
+                this.studentProfileDetail = {
+                    name: `${student[0].first_name} ${student[0].last_name}`,
+                    class: student[0].school_class.class_name,
+                    classSection: student[0].class_section.section_name,
+                    classSectionCategory: student[0].class_section_category ? `- ${student[0].class_section_category.category_name}` : '',
+                    matNum: student[0].matriculation_number ? student[0].matriculation_number : 'not present',
+                };
+
+                this.studentParentDetail = {
+                    parentName: `${student[0].parent.first_name} ${student[0].parent.last_name}`,
+                    parentEmail: student[0].parent.email,
+                    address: student[0].parent.address,
+                    phoneNumber: student[0].parent.phone_number,
+                };
+
+                this.isStudentProfileModalOpen = true;
+            },
             search: "",
             pageNumber: 0,
             size: 5,

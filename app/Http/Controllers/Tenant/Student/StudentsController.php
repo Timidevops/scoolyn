@@ -17,8 +17,8 @@ class StudentsController extends Controller
     {
         $students = Student::query()->get();
 
-        $students->load(['schoolClass', 'classSection', 'classSectionCategory']);
-        //dd($students);
+        $students->load(['parent', 'schoolClass', 'classSection', 'classSectionCategory']);
+
         return view('Tenant.pages.student.student', [
             'totalStudents' => Student::query()->count(),
             'students'      => $students,
@@ -32,27 +32,4 @@ class StudentsController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        if( $request->input('parent') ){
-            $parent = Parents::query()->where('uuid', '=', $request->input('parent'))->first();
-        }
-        else{
-            //create new parent action
-          $parent =  (new CreateNewParentAction())->execute([
-              'full_name' => $request->input('parentFullName'),
-          ]);
-        }
-
-        $request['school_class_id']           = $request->input('class');
-        $request['class_section_id']          = $request->input('classSection');
-        $request['class_section_category_id'] = $request->input('classSectionCategory') ?? null;
-
-
-        (new CreateNewStudentAction())->execute($parent, camel_to_snake($request->except([
-            '_token', 'parent', 'class', 'classSection', 'classSectionCategory', 'parentFullName'
-        ])));
-
-        return redirect('/');
-    }
 }
