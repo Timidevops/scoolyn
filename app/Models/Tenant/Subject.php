@@ -37,4 +37,9 @@ class Subject extends Model
     {
         return $this->hasMany(ClassSubject::class, 'subject_id', 'uuid');
     }
+
+    public function getRouteKeyName()
+    {
+        return "uuid";
+    }
 }

@@ -173,7 +173,7 @@
                 });
             },
             removeGradeFormatField(index){
-                this.gradeFormatField.splice(index, 1)
+                this.gradeFormatField.splice(index, 1);
             },
         }
     }

@@ -16,19 +16,19 @@
             </div>
             <div class="mt-2">
                 <label for="address" class="block text-sm font-normal text-gray-100">Address</label>
-                <input type="text" wire:model="address" id="address" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required>
+                <input type="text" wire:model="address" id="address" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
             </div>
         </div>
         <div class="px-4 pt-4">
             <label for="address" class="block text-sm font-normal text-gray-100">Choose teacher designation</label>
             <label class="flex items-center mt-3 space-x-2 text-gray-100 text-sm">
-                <input @click="toggleSelectAll(event.target)" type="checkbox" value="all">
+                <input id="selectAllDesignation" @click="toggleSelectAll(event.target)" type="checkbox" value="all">
                 <span>Select All</span>
             </label>
             <div class="flex items-center mt-3 space-x-2 text-gray-100 text-sm">
                 <template x-for="(item, index) in teacherCheckbox" :key="index">
                     <label class="flex items-center  space-x-2">
-                        <input @click="toggleSelectOption(event.target)" class="teacherDesignation" type="checkbox" x-bind:value="item.value">
+                        <input x-on:click="toggleSelectOption(event.target); $wire.setDesignation(item.value, event.target.checked)" class="teacherDesignation" type="checkbox" x-bind:value="item.value">
                         <span x-text="item.title"></span>
                     </label>
                 </template>
@@ -75,8 +75,21 @@
             isSelectSubjectModalOpen: false,
             toggleSelectOption(event){
                 let checked = event.checked;
-                if(event.value === 'class-teacher')   return this.isClassTeacherDivVisible   = checked;
-                if(event.value === 'subject-teacher') return this.isSubjectTeacherDivVisible = checked;
+                if(event.value === 'class-teacher') this.isClassTeacherDivVisible   = checked;
+                if(event.value === 'subject-teacher') this.isSubjectTeacherDivVisible = checked;
+
+                let totalChecked = 0;
+
+                document.querySelectorAll('.teacherDesignation').forEach(e => totalChecked +=  e.checked ? 1 : 0);
+
+                ! this.isClassTeacherDivVisible ?
+                    document.getElementById('selectAllDesignation').checked = false : null;
+
+                ! this.isSubjectTeacherDivVisible ?
+                    document.getElementById('selectAllDesignation').checked = false : null;
+
+                this.isClassTeacherDivVisible && this.isSubjectTeacherDivVisible && totalChecked === 2 ?
+                    document.getElementById('selectAllDesignation').checked = true : null;
             }
         }
     }

@@ -59,4 +59,9 @@ class ClassSubject extends Model
     {
         return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
     }
+
+    public function getRouteKeyName()
+    {
+        return 'uuid';
+    }
 }

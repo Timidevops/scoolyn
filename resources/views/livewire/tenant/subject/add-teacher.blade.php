@@ -50,7 +50,7 @@
                     <ul class="py-1 overflow-auto text-base leading-6 border border-purple-100
               rounded-md shadow-xs  focus:outline-none sm:text-sm sm:leading-5">
                         <li class="relative py-2 pl-3  text-gray-100 cursor-pointer select-none pr-9">
-                            Class name: {{$classSections}}
+                            Class section: {{$classSections}}
                         </li>
                     </ul>
                 </div>

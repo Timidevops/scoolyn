@@ -18,12 +18,12 @@
         <div class="mx-4" x-data="selectClass()">
             <div class="mt-6">
                 <label for="schoolClass" class="block text-xs font-normal text-gray-100">Class name</label>
-                <button type="button" x-on:click="schoolClassDropdown = ! schoolClassDropdown;" type="button"
+                <button type="button" x-on:click="schoolClassDropdown = ! schoolClassDropdown;"
                         class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                     <span x-text="schoolClassLabel"></span>
                 </button>
-                <div x-show="schoolClassDropdown" class="border border-purple-100">
-                    <ul  class="py-1 overflow-auto  text-base leading-6 border border-purple-100
+                <div x-show="schoolClassDropdown" class="relative border border-purple-100">
+                    <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
                         <template x-for="(item, index) in schoolClass" :key="index">
                             <li x-on:click="selectSchoolClass(item.class_name); $wire.getClassSection(item.uuid)"
@@ -36,12 +36,12 @@
             </div>
             <div class="my-6">
                 <label class="block text-xs font-normal text-gray-100">Class Section</label>
-                <button type="button" @if(!$isClassSectionEnabled) disabled @endif x-on:click="classSectionDropdown = ! classSectionDropdown;" type="button"
+                <button type="button" @if(!$isClassSectionEnabled) disabled @endif x-on:click="classSectionDropdown = ! classSectionDropdown;"
                         class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                     <span x-text="classSectionLabel"></span>
                 </button>
-                <div x-show="classSectionDropdown" class="border border-purple-100">
-                    <ul  class="py-1 overflow-auto  text-base leading-6 border border-purple-100
+                <div x-show="classSectionDropdown" class="border relative border-purple-100">
+                    <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($classSections as $classSection)
                             <li wire:click="getSectionCategory('{{$classSection->uuid}}', '{{$classSection->classSectionType->section_name}}')"
@@ -60,8 +60,8 @@
                 <button type="button" x-on:click="sectionCategoryDropdown = ! sectionCategoryDropdown" class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                                     <span x-text="sectionCategoryLabel"></span>
                 </button>
-                <div x-show="sectionCategoryDropdown" class="border border-purple-100">
-                    <ul  class="py-1 overflow-auto  text-base leading-6 border border-purple-100
+                <div x-show="sectionCategoryDropdown" class="relative border border-purple-100">
+                    <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($sectionCategories as $sectionCategory)
                             <li wire:click="selectSectionCategory('{{$sectionCategory->uuid}}', '{{$sectionCategory->classSectionCategoryType->category_name}}')"

@@ -1,5 +1,5 @@
 <div x-show="isSelectSubjectModalOpen" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);">
-    <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
+    <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-lg md:max-w-lg  bg-white rounded-lg shadow-md">
         <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
             <div class="block">
                 <span>Select Subject</span>
@@ -15,7 +15,124 @@
                 </svg>
             </button>
         </div>
-        <div class=" mx-4" >
+        <div class=" mx-4" x-data="selectSubject()">
+            <div class="mt-6">
+                <label for="schoolClass" class="block text-xs font-normal text-gray-100">Add subjects</label>
+            </div>
+
+            <div class="align-middle min-w-full">
+                <table class="min-w-full divide-y  divide-purple-100">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-normal text-gray-100">
+                                Subject
+                            </th>
+                            <th class="px-6 py-3 text-sm font-normal text-gray-100">
+                                Class name
+                            </th>
+                            <th class="px-6 py-3 text-sm font-normal text-gray-100">
+                                Class section
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-purple-100">
+                        @foreach($subjectHolders as $index => $subjectHolder)
+                            <tr class="bg-white">
+                                <td class="max-w-0  py-4 whitespace-nowrap">
+                                    <div>
+                                        <button x-on:click="subjectDropdownOpen('{{$index}}')"
+                                                type="button"
+                                                class="cursor-pointer w-full z-0 py-2 px-3 text-center text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                            <span>
+                                                {{(collect($selectedSubject)->isEmpty() ? '-- choose a subject --' :  ! collect($selectedSubject)->get($index) ) ? '-- choose a subject --' : $selectedSubject[$index]['subjectName'] }}
+                                            </span>
+                                        </button>
+                                        <div x-bind:id="`subjectDropdownId_{{$index}}`" class="relative hidden border border-purple-100">
+                                            <ul class="absolute z-10 bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
+              rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
+                                                @foreach($subjects as $subject)
+                                                    <li wire:click="selectSubject('{{$subject->uuid}}', '{{$index}}')"
+                                                        class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                                        {{$subject->subject_name}}
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="max-w-0  px-6 py-4 whitespace-nowrap">
+                                    <div>
+                                        <button x-bind:id="`schoolClassId_{{$index}}`"
+                                                x-on:click="schoolClassDropDownOpen('{{$index}}')"
+                                                type="button"
+                                                class="cursor-pointer  w-full z-0 py-2 px-3 text-center text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                                            <span>
+                                                {{(collect($selectedSubject)->isEmpty() ? 'choose a class' :  ! collect($selectedSubject)->get($index) ) ? 'choose a class' : $selectedSubject[$index]['className'] }}
+                                            </span>
+                                        </button>
+                                        <div x-bind:id="`schoolClassDropdownId_{{$index}}`" class="relative hidden border border-purple-100">
+                                            <ul class="absolute z-10 bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
+              rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
+                                                @if( !  collect($selectedSubject)->isEmpty() )
+                                                    @if( collect($selectedSubject)->get($index) )
+                                                        @foreach($selectedSubject[$index]['schoolClasses'] as $classSubject)
+                                                            <li wire:click="selectSchoolClass('{{$classSubject['uuid']}}', '{{$index}}')"
+                                                                class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                                                {{ collect( collect($classSubject)->get('school_class') )->get('class_name') }}
+                                                            </li>
+                                                        @endforeach
+                                                    @endif
+                                                @endif
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="max-w-0  px-6 py-4 whitespace-nowrap">
+                                    <div>
+                                        <span>
+                                            {{(collect($selectedSubject)->isEmpty() ? '---' :  ! collect($selectedSubject)->get($index) ) ? '---' : $selectedSubject[$index]['classSection'] }}
+                                        </span>
+                                    </div>
+                                </td>
+                                <td class="cursor-pointer">
+                                    <span wire:click="removeSubjectHolder('{{$index}}')">/!/</span>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="my-6 text-right">
+                <button wire:click="addSubjectHolder" type="button" class="bg-white text-grey-100 border border-grey-300 rounded-md py-2 px-2   text-sm">
+                    Add new subject
+                </button>
+            </div>
+
+        </div>
+        <div class="mx-4 mb-6">
+            <button x-on:click="isSelectSubjectModalOpen = false;" type="button" class="bg-blue-100 text-white w-full px-6 py-2 rounded-md text-base">
+                Set
+            </button>
         </div>
     </div>
 </div>
+
+
+<script>
+    function selectSubject() {
+        return{
+            subjectDropdownOpen(id){
+                let subjectDropdownId = `subjectDropdownId_${id}`;
+
+                document.getElementById(subjectDropdownId).classList.toggle('hidden')
+            },
+            schoolClassDropDownOpen(id){
+                let schoolClassDropdownId = `schoolClassDropdownId_${id}`;
+
+                document.getElementById(schoolClassDropdownId).classList.toggle('hidden')
+            },
+        }
+    }
+</script>
