@@ -23,7 +23,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($disapprovedBroadsheets as $key => $disapprovedBroadsheet)
+    @foreach($approvedBroadsheets as $key => $approvedBroadsheet)
         <tr>
             <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                 <div class="flex">
@@ -36,16 +36,16 @@
             </td>
             <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal capitalize">
-                        {{$disapprovedBroadsheet->subject['subject_name']}}
+                        {{$approvedBroadsheet->subject['subject_name']}}
                     </span>
             </td>
             <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal capitalize">
-                        {{$disapprovedBroadsheet->teacher['full_name']}}
+                        {{$approvedBroadsheet->teacher['full_name']}}
                     </span>
             </td>
             <td class="md:px-6 py-4 text-center whitespace-nowrap text-sm text-gray-200 ">
-                <a href="{{route('singleAcademicResult',$disapprovedBroadsheet->uuid)}}">
+                <a href="{{route('singleAcademicResult',$approvedBroadsheet->uuid)}}">
                     <button type="button" class="text-blue-100  text-sm " >
                         /!/
                     </button>
@@ -55,3 +55,4 @@
     @endforeach
     </tbody>
 </table>
+

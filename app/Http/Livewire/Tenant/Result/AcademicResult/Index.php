@@ -10,12 +10,15 @@ class Index extends Component
     public $classSubjects;
     public string $totalSubjects;
 
+    public int $totalApprovedBroadsheet = 0;
     public int $totalSubmittedBroadsheet = 0;
     public int $totalAwaitingBroadsheet = 0;
     public int $totalNotApprovedBroadsheet = 0;
 
+    public $approvedBroadsheets = [];
     public $submittedBroadsheets = [];
     public $awaitingBroadsheets = [];
+    public $disapprovedBroadsheets = [];
 
     public function mount($classSubjects)
     {
@@ -39,6 +42,10 @@ class Index extends Component
 
             if( $classSubject->academicBroadsheet ){
 
+                $this->totalApprovedBroadsheet +=
+                    $classSubject->academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ?
+                        1: 0;
+
                 $this->totalSubmittedBroadsheet +=
                     $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ?
                        1 : 0;
@@ -59,13 +66,21 @@ class Index extends Component
 
             if($classSubject->academicBroadsheet){
 
-                if($classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS) {
+                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
+                    $this->approvedBroadsheets [] = $classSubject;
+                }
+
+                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ){
                      $this->submittedBroadsheets [] = $classSubject;
                 }
 
 
-                if($classSubject->academicBroadsheet->status == AcademicBroadSheet::CREATED_STATUS ){
+                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::CREATED_STATUS ){
                     $this->awaitingBroadsheets [] = $classSubject;
+                }
+
+                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
+                    $this->disapprovedBroadsheets [] = $classSubject;
                 }
 
                 continue;

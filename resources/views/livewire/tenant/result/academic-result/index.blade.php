@@ -31,6 +31,10 @@
                                 <span class="absolute right-0 text-blue-100">{{$totalSubjects}}</span>
                             </p>
                             <p class="text-gray-300 text-sm py-1 relative">
+                                Total approved broadsheets:
+                                <span class="absolute right-0 text-blue-100">{{$totalApprovedBroadsheet}}</span>
+                            </p>
+                            <p class="text-gray-300 text-sm py-1 relative">
                                 Total submitted broadsheets:
                                 <span class="absolute right-0 text-blue-100">{{$totalSubmittedBroadsheet}}</span>
                             </p>
@@ -39,7 +43,7 @@
                                 <span class="absolute right-0 text-blue-100">{{$totalAwaitingBroadsheet}}</span>
                             </p>
                             <p class="text-gray-300 text-sm py-1 relative">
-                                Total not-approved broadsheets:
+                                Total disapproved broadsheets:
                                 <span class="absolute right-0 text-blue-100">{{$totalNotApprovedBroadsheet}}</span>
                             </p>
                         </div>
@@ -48,25 +52,31 @@
                                 <!-- tab header -->
                                     <div class="flex justify-between border-b pb-1 border-gray-300">
                                         <div>
-                                            <p x-on:click=" broadsheetTabOpen = '1' " :class="broadsheetTabOpen === '1' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Submitted broadsheet</p>
+                                            <p x-on:click=" broadsheetTabOpen = '1' " :class="broadsheetTabOpen === '1' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Approved broadsheet</p>
                                         </div>
                                         <div>
-                                            <p x-on:click=" broadsheetTabOpen = '2' " :class="broadsheetTabOpen === '2' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Awaiting broadsheet</p>
+                                            <p x-on:click=" broadsheetTabOpen = '2' " :class="broadsheetTabOpen === '2' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Submitted broadsheet</p>
                                         </div>
                                         <div>
-                                            <p x-on:click=" broadsheetTabOpen = '3' " :class="broadsheetTabOpen === '3' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Not approved broadsheet</p>
+                                            <p x-on:click=" broadsheetTabOpen = '3' " :class="broadsheetTabOpen === '3' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Awaiting broadsheet</p>
+                                        </div>
+                                        <div>
+                                            <p x-on:click=" broadsheetTabOpen = '4' " :class="broadsheetTabOpen === '4' ? 'text-blue-100' : 'text-gray-300' " class="text-sm cursor-pointer">Disapproved broadsheet</p>
                                         </div>
                                     </div>
                                 <!--/: tab header -->
                                 <!-- tab body -->
                                     <div class="pt-3">
                                         <div x-show="broadsheetTabOpen === '1'">
-                                            @include('Tenant.partials.result.academicResult.table._submitted')
+                                            @include('Tenant.partials.result.academicResult.table._approved')
                                         </div>
                                         <div x-show="broadsheetTabOpen === '2'">
-                                            @include('Tenant.partials.result.academicResult.table._awaiting')
+                                            @include('Tenant.partials.result.academicResult.table._submitted')
                                         </div>
                                         <div x-show="broadsheetTabOpen === '3'">
+                                            @include('Tenant.partials.result.academicResult.table._awaiting')
+                                        </div>
+                                        <div x-show="broadsheetTabOpen === '4'">
                                             @include('Tenant.partials.result.academicResult.table._notApproved')
                                         </div>
                                     </div>

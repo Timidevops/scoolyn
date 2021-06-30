@@ -37,9 +37,8 @@
 
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
-                                            <p class="group inline-flex space-x-2 truncate">
-                                            <p class="text-gray-500 truncate" x-text="index + 1">
-                                            </p>
+                                            <p class="group inline-flex space-x-2 truncate capitalize">
+                                                <span class="text-gray-500 truncate" x-text="index + 1"></span>
                                             </p>
                                         </div>
                                     </td>
@@ -48,8 +47,7 @@
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
                                             <p class="group inline-flex space-x-2 truncate">
-                                            <p class="text-gray-500 truncate" x-text="content.full_name">
-                                            </p>
+                                                <span class="text-gray-500 truncate capitalize" x-text="content.full_name"></span>
                                             </p>
                                         </div>
                                     </td>
@@ -59,7 +57,14 @@
                                     </td>
 
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                        <span class="text-gray-200 font-normal" x-text="content.school_class_by_class_teacher ? content.school_class_by_class_teacher.class_name : '' "></span>
+                                        <div class="italic cursor-pointer text-center text-blue-100 flex justify-between">
+                                            <div class="font-normal" :class="! content.class_teacher ? 'hidden': ''  ">
+                                                <span x-text="content.class_teacher ? 'Class Teacher' : '' "></span>
+                                            </div>
+                                            <div class="font-normal" :class="content.subject_teacher.length === 0 ? 'hidden': ''  ">
+                                                <span x-text="content.subject_teacher.length > 0 ? 'Subject Teacher' : '' "></span>
+                                            </div>
+                                        </div>
                                     </td>
 
                                     <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">

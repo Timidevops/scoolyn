@@ -32,6 +32,7 @@ class GetAcademicBroadsheet
 
             $student = Student::query()->where('uuid',$meta->keys()[$int])->first();
 
+
             $broadsheets [] = [
                 'studentId'   => $meta->keys()[$int],
                 'studentName' => "{$student->first_name} {$student->last_name}",

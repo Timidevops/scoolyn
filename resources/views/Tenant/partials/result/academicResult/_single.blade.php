@@ -19,29 +19,40 @@
     <div class="bg-white rounded-md ">
         <div>
             @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS )
-                <form class="flex justify-end px-4 py-4" action="{{route('academicResultApproval',$classSubject->uuid)}}">
-                    @csrf
-                    <button type="submit" class="text-gray-200 border border-gray-20 rounded py-2 px-4  text-sm flex items-center mx-2">
-                        <span class="mx-1">Disapprove</span>
-                        <span class="mx-1">
+
+                @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
+                    <form class="flex justify-end px-4 py-4" action="{{route('academicResultApproval',$classSubject->uuid)}}" method="post">
+                        @csrf
+                        <button name="{{\App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS}}" type="submit" class="text-gray-200 border border-gray-20 rounded py-2 px-4  text-sm flex items-center mx-2">
+                            <span class="mx-1">Disapprove</span>
+                            <span class="mx-1">
                           /!/
                     </span>
-                    </button>
-                    <button type="submit" class="text-white bg-blue-100 rounded py-2 px-4  text-sm flex items-center mx-2">
-                        <span class="mx-1">Approve</span>
-                        <span class="mx-1">
+                        </button>
+                        <button name="{{\App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS}}" type="submit" class="text-white bg-blue-100 rounded py-2 px-4  text-sm flex items-center mx-2">
+                            <span class="mx-1">Approve</span>
+                            <span class="mx-1">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    </button>
-                </form>
+                        </button>
+                    </form>
+                @endif
+
             @else
-                <p class="capitalize">Broadsheet {{$broadsheetStatus}}.</p>
+                <div class="px-4 py-4">
+                    <p class="capitalize">Broadsheet approved.</p>
+                </div>
             @endif
         </div>
-        <!-- broadsheet table with grades -->
-    @include('.Tenant.partials.result.helpers.table.broadsheetTableWithGrade')
-    <!--/: broadsheet table with grades -->
+        @if( $broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
+            @include('Tenant.partials.result.helpers.form.editBroadsheetWithSaveAndSubmitButton')
+        @else
+            <!-- broadsheet table with grades -->
+            @include('Tenant.partials.result.helpers.table.broadsheetTableWithGrade')
+            <!--/: broadsheet table with grades -->
+        @endif
     </div>
 </div>
+

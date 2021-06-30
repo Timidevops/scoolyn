@@ -16,7 +16,7 @@ class TeachersController extends Controller
     public function index()
     {
         $teachers = Teacher::query()->get(['full_name', 'staff_id', 'uuid']);
-        $teachers->load(['schoolClassByClassTeacher']);
+        $teachers->load(['classTeacher', 'subjectTeacher']);
 
         return view('tenant.pages.teacher.teacher', [
             'totalTeachers' => Teacher::query()->count(),

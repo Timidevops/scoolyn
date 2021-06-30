@@ -109,12 +109,13 @@ class AcademicBroadsheetsController extends Controller
             ]);
         }
 
-        $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta);
+        $generatedFormat = collect($classSubject->academicBroadsheet->meta)->has('caFormat');
+        $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, $generatedFormat);
 
         // if status is not-approved :return _edit page with generated format
         if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
 
-            $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, true);
+            $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, $generatedFormat);
 
         }
 
@@ -123,6 +124,7 @@ class AcademicBroadsheetsController extends Controller
             'classSubjectId'        => $this->uuid,
             'classSubject'          => $classSubject,
             'academicBroadsheets'   => collect($broadsheets),
+            'broadsheetStatus'      => (string) $classSubject->academicBroadsheet->status,
         ]);
     }
 
