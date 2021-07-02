@@ -30,7 +30,6 @@
 @include('Tenant.partials.users.student._studentTable')
 </div>
 </div>
-
 <script>
     function studentDetails() {
         return {
@@ -60,7 +59,7 @@
             },
             search: "",
             pageNumber: 0,
-            size: 5,
+            size: 10,
             total: "",
             students: {!! $students !!},
 

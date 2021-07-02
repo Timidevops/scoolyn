@@ -13,6 +13,6 @@
 
 <div class="h-screen py-10">
     <div class="bg-white rounded-md ">
-        <livewire:tenant.result.academic-result.index :classSubjects="$classSubjects" />
+        <livewire:tenant.result.academic-result.index :classArm="$classTeacher" :classSubjects="$classSubjects" />
     </div>
 </div>

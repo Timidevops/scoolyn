@@ -9,17 +9,24 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
 
-class AcademicReport extends Model
+class AcademicResult extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use HasStatuses;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+    use HasStatuses;
+
+    const PENDING_RESULT_STATUS = 'pending_result';
+    const APPROVED_RESULT_STATUS = 'approved_result';
+    const DISAPPROVED_RESULT_STATUS = 'disapproved_result';
 
     protected $guarded = [];
 
     protected $casts = [
-        'meta' => 'array',
+        'subjects' => 'array',
+        'ca_format' => 'array',
+        'grading_format' => 'array',
     ];
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Tenant\Student;
 
+use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Http\Controllers\Tenant\Parent\ParentsController;
 use App\Models\Tenant\ClassSection;
@@ -72,7 +73,7 @@ class AddStudent extends Component
             return false;
         }
 
-        (new CreateNewStudentAction)->execute($parent, [
+        $student = (new CreateNewStudentAction)->execute($parent, [
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
             'other_name' => $this->other_name,
@@ -83,6 +84,13 @@ class AddStudent extends Component
             'school_class_id' => $this->schoolClassId,
             'class_section_id' => $this->classSectionId,
             'class_section_category_id' => $this->classSectionCategoryId,
+        ]);
+
+        (new AttachStudentToClassArmAction())->execute([
+            'schoolClassId' => $this->schoolClassId,
+            'classSectionId' => $this->classSectionId,
+            'classSectionCategoryId' => $this->classSectionCategoryId,
+            'studentId' => (string) $student->uuid,
         ]);
 
          $this->redirectRoute('createStudent');

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcademicReportsTable extends Migration
+class CreateClassArmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,14 @@ class CreateAcademicReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_reports', function (Blueprint $table) {
+        Schema::create('class_arms', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('student_id');
-            $table->json('meta');
+            $table->string('class_teacher');
+            $table->json('students')->nullable();
+            $table->string('school_class_id');
+            $table->string('class_section_id')->nullable();
+            $table->string('class_section_category_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +33,6 @@ class CreateAcademicReportsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_reports');
+        Schema::dropIfExists('class_arms');
     }
 }

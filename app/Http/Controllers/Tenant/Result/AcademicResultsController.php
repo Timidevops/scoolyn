@@ -20,10 +20,12 @@ class AcademicResultsController extends Controller
     public function index()
     {
         //@todo get auth teacher
-        $teacher = Teacher::find(2);
+        $teacher = Teacher::find(8);
+
+        //dd($teacher->classArm->classSection);
 
         return view('Tenant.pages.result.academicResult.index', [
-           'classTeacher'  => $teacher->classTeacher,
+           'classTeacher'  => $teacher->classArm,
            'classSubjects' => $teacher->getClassSubjects()
         ]);
 
@@ -32,9 +34,9 @@ class AcademicResultsController extends Controller
     public function single(string $classSubjectId)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(2);
+        $teacher = Teacher::find(8);
 
-        $this->classTeacher = $teacher->classTeacher;
+        $this->classTeacher = $teacher->classArm;
 
         $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 
@@ -95,9 +97,9 @@ class AcademicResultsController extends Controller
     public function approval(string $classSubjectId, Request $request)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(2);
+        $teacher = Teacher::find(8);
 
-        $this->classTeacher = $teacher->classTeacher;
+        $this->classTeacher = $teacher->classArm;
 
         $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 

@@ -75,7 +75,8 @@ class AddTeacher extends Component
 
         if( collect($this->designation)->contains('class-teacher') == 'class-teacher' ){
             (new CreateNewClassTeacherAction())->execute([
-                'teacher_id' => (string) $teacher->uuid,
+                //'teacher_id' => (string) $teacher->uuid,
+                'class_teacher' => (string) $teacher->uuid,
                 'school_class_id' => $this->schoolClassId,
                 'class_section_id' => $this->classSectionId,
                 'class_section_category_id' => $this->sectionCategoryId,

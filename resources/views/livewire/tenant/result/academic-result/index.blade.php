@@ -11,14 +11,27 @@
             </div>
 
         </div>
-        <button type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
+        @if( $classArm->status == \App\Models\Tenant\ClassArm::RESULT_GENERATED_STATUS )
+            <p class="text-blue-100 text-sm py-1">Result generated.</p>
+        @else
+            @if( $classArm->status == \App\Models\Tenant\ClassArm::GENERATING_RESULT_STATUS || $classArm->status == \App\Models\Tenant\ClassArm::RESULT_INCOMPLETE_STATUS )
+                <p class="text-blue-100 text-sm py-1">
+                    {{$classArm->status == \App\Models\Tenant\ClassArm::GENERATING_RESULT_STATUS ? 'Result is been generated...' : ''}}
+                    <span class="text-red-100">
+                        {{$classArm->status == \App\Models\Tenant\ClassArm::RESULT_INCOMPLETE_STATUS ? 'Result is generation was not complete' : ''}}
+                    </span>
+                </p>
+            @else
+                <button wire:click="generateResult" type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
             <span class="mx-1">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
             </span>
-            <span class="mx-1">Submit Result</span>
-        </button>
+                    <span class="mx-1">Generate Result</span>
+                </button>
+            @endif
+        @endif
     </div>
     <div class="mt-1">
         <div class=" sm:block">

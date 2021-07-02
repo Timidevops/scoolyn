@@ -24,6 +24,11 @@ class Teacher extends Model
         return $this->hasOne(ClassTeacher::class,'teacher_id','uuid');
     }
 
+    public function classArm(): HasOne
+    {
+        return $this->hasOne(ClassArm::class, 'class_teacher', 'uuid');
+    }
+
     public function schoolClassByClassTeacher()
     {
         return $this->hasOneThrough(SchoolClass::class, ClassTeacher::class, 'teacher_id', 'uuid', 'uuid', 'school_class_id');
@@ -31,7 +36,7 @@ class Teacher extends Model
 
     public function getClassSubjects()
     {
-        return ClassSubject::query()->where('school_class_id', $this->classTeacher->school_class_id)->get();
+        return ClassSubject::query()->where('school_class_id', $this->classArm->school_class_id)->get();
     }
 
     public function subjectTeacher(): HasMany

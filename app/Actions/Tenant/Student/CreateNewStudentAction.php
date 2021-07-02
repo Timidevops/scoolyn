@@ -11,6 +11,7 @@ class CreateNewStudentAction
     public function execute(Model $parent, array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        $parent->ward()->create($input);
+
+        return $parent->ward()->create($input);
     }
 }

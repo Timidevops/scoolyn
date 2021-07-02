@@ -2,12 +2,16 @@
 
 namespace App\Http\Livewire\Tenant\Result\AcademicResult;
 
+use App\Jobs\Tenant\GenerateResultJob;
 use App\Models\Tenant\AcademicBroadSheet;
+use App\Models\Tenant\ClassArm;
 use Livewire\Component;
 
 class Index extends Component
 {
     public $classSubjects;
+    public $classArm;
+
     public string $totalSubjects;
 
     public int $totalApprovedBroadsheet = 0;
@@ -20,9 +24,11 @@ class Index extends Component
     public $awaitingBroadsheets = [];
     public $disapprovedBroadsheets = [];
 
-    public function mount($classSubjects)
+    public function mount($classSubjects, $classArm)
     {
         $this->classSubjects = $classSubjects;
+
+        $this->classArm = $classArm;
 
         $this->totalSubjects = count($classSubjects);
     }
@@ -34,6 +40,16 @@ class Index extends Component
         $this->getBroadsheets();
 
         return view('livewire.tenant.result.academic-result.index');
+    }
+
+    public function generateResult()
+    {
+        //initial class arm result status;
+        //$this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
+
+        GenerateResultJob::dispatch($this->classArm);
+
+        $this->redirectRoute('listAcademicResult');
     }
 
     private function getTotalValues()
