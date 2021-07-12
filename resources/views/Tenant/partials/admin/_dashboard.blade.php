@@ -73,22 +73,37 @@
             </div>
           </div>
       </div>
-        <div class="mt-4">
+        <div class="mt-4" x-data="{
+            Table: [
+               { date: '8am', subject: 'Maths' },
+              { date: '9am', subject: 'English' },
+              { date: '10am', subject: 'Science' },
+              { date: '11am', subject: 'Break Time' },
+              { date: '12pm', subject: 'Computer' },
+              { date: '1pm', subject: 'Social Studies' },
+              { date: '2pm', subject: 'Busines studies' },
+              { date: '3pm', subject: 'Computer' },
+              { date: '4pm', subject: 'Computer' },
+            ]
+          }">
             Time Table
             <div class="bg-white px-4 py-4 rounded">
                 <span>Tuesday, 23 day</span>
 
                 <div>
-                    <ul class="space-y-8">
-                        <li>8am</li>
-                        <li>9am</li>
-                        <li>10am</li>
-                        <li>11am</li>
-                        <li>12pm</li>
-                        <li>1pm</li>
-                        <li>2pm</li>
-                        <li>3pm</li>
-                        <li>4pm</li>
+                    <ul class="space-y-8" >
+                        <template x-for="(time, index) in Table" :key="time">
+                        <li >
+                            <span x-text="time.date" class="block"></span>
+                         <div class="flex flex-row space-x-2">
+                             <img src="/images/Group 172.svg" alt="Group 172"> 
+                             <div class="flex items-center space-x-4 bg-purple-100 px-2 py-2 rounded">
+                                 <img src="/images/Line 14.svg" alt="line">
+                                 <span x-text="time.subject" class=""></span>
+                                </div>
+                            </div>  
+                        </li>
+                        </template>
                     </ul>
                 </div>
             </div>
@@ -96,3 +111,18 @@
 
     </div>
 </div>
+
+{{-- <script>
+    function timeTable() {
+                return {
+                    Table:[
+                       {
+                            score_From:'8am',
+                          
+                        },
+                      
+                    ],
+                    
+                }
+            }
+    </script> --}}
