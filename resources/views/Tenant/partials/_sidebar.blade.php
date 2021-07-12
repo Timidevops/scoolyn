@@ -1,9 +1,9 @@
 <!-- Static sidebar for desktop -->
 <div class="hidden lg:flex lg:flex-shrink-0 max-h-screen w-auto" x-data="{navigationOpen: false, show: false}" >
     <div class="flex flex-col bg-white">
-        <button type="button" class="text-2xl font-bold p-2 mb-4 inline-flex ml-auto bg-blue-100 text-white focus:outline-none"
+        <button type="button" class="p-2  flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
-            <svg class="w-8 h-8" :class="{'transform rotate-180': navigationOpen == true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen == true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
         <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
             <div class="flex-shrink-0 px-4 py-2 mx-auto" :class="{'hidden': navigationOpen == true}">
