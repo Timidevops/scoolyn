@@ -80,8 +80,8 @@
               { date: '10am', subject: 'Science' },
               { date: '11am', subject: 'Break Time' },
               { date: '12pm', subject: 'Computer' },
-              { date: '1pm', subject: 'Social Studies' },
-              { date: '2pm', subject: 'Busines studies' },
+              { date: '1pm', subject: 'Computer' },
+              { date: '2pm', subject: 'Computer' },
               { date: '3pm', subject: 'Computer' },
               { date: '4pm', subject: 'Computer' },
             ]
@@ -91,7 +91,7 @@
                 <span>Tuesday, 23 day</span>
 
                 <div>
-                    <ul class="space-y-8" >
+                    <ul class="" >
                         <template x-for="(time, index) in Table" :key="time">
                         <li >
                             <span x-text="time.date" class="block"></span>
@@ -99,7 +99,7 @@
                              <img src="/images/Group 172.svg" alt="Group 172"> 
                              <div class="flex items-center space-x-4 bg-purple-100 px-2 py-2 rounded">
                                  <img src="/images/Line 14.svg" alt="line">
-                                 <span x-text="time.subject" class=""></span>
+                                 <span x-text="time.subject" class="text-xs"></span>
                                 </div>
                             </div>  
                         </li>
