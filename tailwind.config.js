@@ -13,9 +13,12 @@ module.exports = {
   colors: {
     'white': '#FFFFFF',
     'blue-100': '#020E83',
+    'blue-200':'#C4E4F7',
     'purple-100': '#EAECF4',
     'purple-200':'#7E74F9',
+    'purple-300': '#8144F9',
     'red-100':'#EC4F4F',
+    'red-200':'#EFCBD2',
     'green-100':'#037481',
     'gray-100':'#707070',
     'gray-200': '#1F2438',
