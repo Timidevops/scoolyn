@@ -75,7 +75,7 @@
       </div>
         <div class="mt-4" x-data="timeTable()">
             Time Table
-            <div class="bg-white px-4 py-4 rounded">
+            <div class="bg-white px-4 py-4 rounded-md">
                 <span>Tuesday, 23 day</span>
 
                 <div>
