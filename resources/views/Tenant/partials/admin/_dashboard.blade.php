@@ -15,7 +15,7 @@
               <div class="ml-5 w-0 flex-1">
                  
                 <dl>
-                  <dt class="text-xs font-medium text-gray-300 truncate">
+                  <dt class="text-xs font-light text-gray-300 truncate">
                     Updated 22.04.2021
                   </dt>
                   <dd>
@@ -37,7 +37,7 @@
                 </div>
                 <div class="ml-5 w-0 flex-1">
                   <dl>
-                    <dt class="text-xs font-medium text-gray-500 truncate">
+                    <dt class="text-xs font-light text-gray-500 truncate">
                         Updated 22.04.2021
                     </dt>
                     <dd>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="ml-5 w-0 flex-1">
                   <dl>
-                    <dt class="text-xs font-medium text-gray-500 truncate">
+                    <dt class="text-xs font-light text-gray-500 truncate">
                       Updated 22.04.2021
                     </dt>
                     <dd>
@@ -73,52 +73,28 @@
             </div>
           </div>
       </div>
-        <div class="mt-4">
+        <div class="mt-4" x-data="timeTable()">
             Time Table
             <div class="bg-white px-4 py-4 rounded">
                 <span>Tuesday, 23 day</span>
 
                 <div>
                     <ul class="" >
+                        <template x-for="item in timeTable" :key="item">
                         <li>
-                            <span class="text-xs block">8am</span>
+                            <span class="text-xs block" x-text="item.time"></span>
                          <div class="flex flex-row space-x-2">
-                             <img src="/images/Group 172.svg" alt="Group 172"> 
+                             <img :src="`${item.image}`" alt="Group 172"> 
                              <div class="flex items-center  bg-purple-300 px-2 py-2 rounded">
                                  <img src="/images/Line 14.svg" alt="line">
                                  <div class="mx-2">
-                                    <span class="text-xs block">8:30 am - 10 am</span>
-                                     <span class="text-xs block">Maths</span> 
+                                    <span class="text-xs block text-gray-300" x-text="item.duration"></span>
+                                     <span class="text-xs block" x-text="item.subject"></span> 
                                     </div>
                                 </div>
                             </div>  
                         </li>
-                        <li>
-                            <span class="text-xs block">9am</span>
-                         <div class="flex flex-row space-x-2">
-                             <img src="/images/Group 173.svg" alt="Group 172"> 
-                             <div class="flex items-center  bg-purple-300 px-2 py-2 rounded">
-                                 <img src="/images/Line 14.svg" alt="line">
-                                 <div class="mx-2">
-                                    <span class="text-xs block">8:30 am - 10 am</span>
-                                     <span class="text-xs block">English</span> 
-                                    </div>
-                                </div>
-                            </div>  
-                        </li>
-                        <li>
-                            <span class="text-xs block">10am</span>
-                         <div class="flex flex-row space-x-2">
-                             <img src="/images/Group 174.svg" alt="Group 172"> 
-                             <div class="flex items-center  bg-purple-300 px-2 py-2 rounded">
-                                 <img src="/images/Line 14.svg" alt="line">
-                                 <div class="mx-2">
-                                    <span class="text-xs block">8:30 am - 10 am</span>
-                                     <span class="text-xs block">Break Time</span> 
-                                    </div>
-                                </div>
-                            </div>  
-                        </li>
+                        </template>
                     </ul>
                 </div>
             </div>
@@ -129,12 +105,29 @@
     </div>
 </div>
 
-{{-- <script>
+<script>
     function timeTable() {
                 return {
-                    Table:[
+                    timeTable:[
                        {
-                            score_From:'8am',
+                           time:'8am',
+                           subject: 'Maths',
+                           duration:'8:30 am - 10 am',
+                           image: "/images/Group 172.svg",
+                          
+                        },
+                        {
+                           time:'9am',
+                           subject: 'English',
+                           duration:'8:30 am - 10 am',
+                           image: "/images/Group 173.svg",
+                          
+                        },
+                        {
+                           time:'10am',
+                           subject: 'Break Time',
+                           duration:'8:30 am - 10 am',
+                           image: "/images/Group 174.svg",
                           
                         },
                       
@@ -142,4 +135,4 @@
                     
                 }
             }
-    </script> --}}
+    </script>
