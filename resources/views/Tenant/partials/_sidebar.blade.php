@@ -1,6 +1,6 @@
 <!-- Static sidebar for desktop -->
-<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen" x-data="{navigationOpen: false, show: false}" >
-    <div class="flex flex-col bg-white">
+<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen " x-data="{navigationOpen: false, show: false}" >
+    <div class="flex flex-col bg-white w-auto ">
         <button type="button" class="p-2  flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
             <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen == true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
