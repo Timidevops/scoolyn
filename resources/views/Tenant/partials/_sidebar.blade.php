@@ -1,5 +1,5 @@
 <!-- Static sidebar for desktop -->
-<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen w-auto" x-data="{navigationOpen: false, show: false}" >
+<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen" x-data="{navigationOpen: false, show: false}" >
     <div class="flex flex-col bg-white">
         <button type="button" class="p-2  flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">

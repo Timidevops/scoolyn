@@ -77,7 +77,6 @@
             Time Table
             <div class="bg-white px-4 py-4 rounded-md">
                 <span>Tuesday, 23 day</span>
-
                 <div>
                     <ul class="" >
                         <template x-for="item in timeTable" :key="item">
