@@ -10,17 +10,14 @@
                                 S/N
                             </th>
                             <th class="px-6 py-3 w-full  text-left  font-medium text-gray-500 text-sm ">
-                  <span class="flex items-center mx-1">Subject name<span>
-                    <span>
-                      <img src="images/filter_alt_black_24dp.svg" alt="" class="w-4">
-                       </span>
-                   </span>
-                  </span>
+                              <span class="flex items-center mx-1">Subject name<span>
+                                <span>
+                                  <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
+                                   </span>
+                               </span>
+                              </span>
                             </th>
-                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                Class section
-                            </th>
-                            <th class="px-6 py-3 w-1/3  text-left text-sm font-medium text-gray-500">
+                            <th class="px-6 py-3 w-1/3  text-center text-sm font-medium text-gray-500">
                                 Action
                             </th>
 
@@ -40,15 +37,11 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="item.subject.subject_name">
-                  </span>
-                                </td>
-                                <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section, item.class_section_category)">
+                  <span class="text-gray-200 font-normal capitalize"  x-text="item.subject.subject_name">
                   </span>
                                 </td>
 
-                                <td class="md:px-6 py-4 text-right whitespace-nowrap text-sm text-gray-200 flex items-center">
+                                <td class="md:px-6 py-4  whitespace-nowrap text-sm text-gray-200 flex">
                                     <button type="button" class="focus:outline-none" x-on:click="editModal = true">
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>

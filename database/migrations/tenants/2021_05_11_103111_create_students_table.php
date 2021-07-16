@@ -23,9 +23,10 @@ class CreateStudentsTable extends Migration
             $table->string('gender');
             $table->string('dob');
             $table->string('address');
-            $table->string('school_class_id');
-            $table->string('class_section_id');
-            $table->string('class_section_category_id')->nullable();
+            $table->string('class_arm');
+//            $table->string('school_class_id');
+//            $table->string('class_section_id');
+//            $table->string('class_section_category_id')->nullable();
             $table->string('parent_id');
             //$table->string('user_id');
             $table->timestamps();

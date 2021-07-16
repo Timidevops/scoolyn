@@ -32,7 +32,7 @@
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-purple-100">
-            <template x-for="(item, index) in academicBroadsheets" :key="item">
+            <template x-for="(item, index) in {{$academicBroadsheets}}" :key="item">
                 <tr>
                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                         <div class="flex">
@@ -45,19 +45,19 @@
                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                         <span class="text-gray-200 font-normal capitalize" x-text="item.studentName"></span>
                     </td>
-                    <template x-for="(ca, caIndex) in getBroadsheet(item.broadsheet)" :key="ca">
+                    <template x-for="(ca, caIndex) in getBroadsheet({{$caAssessmentStructureFormat}}, item.broadsheet)" :key="ca">
                         <td class="whitespace-nowrap text-xs text-gray-200 text-center">
                             <span x-text="ca.score"></span>
                         </td>
                     </template>
                     <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
                         <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">
-                            <span x-text="getInitialTotal(index)"></span>
+                            <span x-text="item.broadsheet.total"></span>
                         </p>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
                         <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">
-                            <span class="capitalize" x-text="getGradeFormat(index)"></span>
+                            <span class="capitalize" x-text="getGradeFormat(item.broadsheet.total, {{$gradeFormats}})"></span>
                         </p>
                     </td>
                 </tr>
@@ -70,13 +70,13 @@
 <script>
     function broadsheets() {
         return{
-            caAssessmentStructure: {!! $caAssessmentStructure !!},
+            caAssessmentStructure: {!! $caAssessmentStructureFormat !!},
             gradeFormats: {!! $gradeFormats !!},
             academicBroadsheets: {!! $academicBroadsheets !!},
-            getBroadsheet(meta){
+            getBroadsheet(caAssessmentStructure, meta){
                 let broadsheet = [];
 
-                this.caAssessmentStructure.map((item, index)=>{
+                caAssessmentStructure.map((item)=>{
                     broadsheet.push({
                         name: item.name,
                         score: meta[item.name]
@@ -85,15 +85,11 @@
 
                 return broadsheet;
             },
-            getInitialTotal(index){
-                return this.academicBroadsheets[index].broadsheet['total'];
-            },
-            getGradeFormat(index){
-                let score  = parseInt( this.academicBroadsheets[index].broadsheet['total'] );
+            getGradeFormat(score, gradeFormats){
 
-                let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
+                 let format = gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
 
-                return format[0].grade;
+                 return format[0].grade;
             }
         }
     }

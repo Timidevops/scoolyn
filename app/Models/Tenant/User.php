@@ -21,8 +21,9 @@ class User extends Authenticatable
 
     const SUPER_ADMIN_USER ='super_admin';
     const ADMIN_USER = 'admin';
-    const TEACHER_USER = 'teacher';
-    const STUDENT_USER = 'student';
+    const CLASS_TEACHER_USER = 'class_teacher';
+    const SUBJECT_TEACHER_USER = 'subject_teacher';
+    //const STUDENT_USER = 'student';
     const PARENT_USER = 'parent';
 
     protected $guarded = [];

@@ -14,20 +14,24 @@ class StudentSubjectsController extends Controller
 
         $student = Student::query()->where('uuid', $uuid)->firstOrFail();
 
-        $studentSubject = [];
-        $totalSubject   = 0;
+        $studentSubject = $student->subjects
+            ? ClassSubject::query()->whereIn('uuid', $student->subjects->subjects)->get('subject_id')
+            : [];
 
-        if ($student->subjects){
 
-            $studentSubject = $this->getStudentSubject($student->subjects->subjects);
+        $student->subjects ? $studentSubject->load('subject') : null;
 
-            $totalSubject   = count($studentSubject);
-        }
+        $totalSubject   = count($studentSubject);
 
-        $classSubjects = ClassSubject::query()
-            ->where('school_class_id', $student->school_class_id)
-            ->orWhere('class_section_id', $student->class_section_id)
-            ->orWhere('class_section_category_id', $student->class_section_category_id)->get();
+        $studentSubjectIds = $student->subjects ? $student->subjects->subjects : [];
+
+        //@todo whereJsonContain [class_section_id,... ] etc
+        $classSubjects = ClassSubject::query()->whereNotIn('uuid', $studentSubjectIds)
+            ->where('school_class_id', $student->classArm->school_class_id)
+            //->Where('class_section_id', $student->class_section_id)
+            //->Where('class_section_category_id', $student->class_section_category_id)
+            ->get();
+
 
         $classSubjects->load('subject');
 
@@ -40,23 +44,6 @@ class StudentSubjectsController extends Controller
         ]);
     }
 
-    private function getStudentSubject(array $classSubjectId)
-    {
-        $studentClass = [];
-
-        for( $int = 0; $int < count($classSubjectId); $int++ ){
-
-            $classSubject = ClassSubject::query()->where('uuid', $classSubjectId[$int])->first();
-
-            $studentClass [] = [
-                'uuid'         => $classSubject->subject->uuid,
-                'subject_name' => $classSubject->subject->subject_name,
-            ];
-        }
-
-        return $studentClass;
-    }
-
     public function create(string $uuid)
     {
         $student = Student::query()->where('uuid', $uuid)->firstOrFail();
@@ -66,13 +53,26 @@ class StudentSubjectsController extends Controller
         ]);
     }
 
-    public function store(Request $request, string $uuid)
+    public function store(string $uuid, Request $request)
     {
+        $this->validate($request, [
+            'subjects' => ['required','array']
+        ]);
+
         $student = Student::query()->where('uuid', '=', $uuid)->first();
 
-        (new CreateNewStudentSubjectAction())->execute($student, [
-            'subjects' => $request->input('subjects'),
-        ]);
+        if( ! $student->subjects ){
+
+            (new CreateNewStudentSubjectAction())->execute($student, [
+                'subjects' => $request->input('subjects'),
+            ]);
+
+            return back();
+        }
+
+        $student->subjects->subjects = collect($student->subjects->subjects)->merge($request->input('subjects'));
+
+        $student->subjects->save();
 
         return back();
     }

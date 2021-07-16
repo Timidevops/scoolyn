@@ -38,7 +38,12 @@ class SchoolClass extends Model
 
     public function classSectionType(): HasManyThrough
     {
-        return $this->hasManyThrough(ClassSectionType::class,ClassSection::class, 'school_class_id', 'uuid', 'uuid','class_section_types_id');
+        return $this->hasManyThrough(ClassSectionType::class,ClassArm::class, 'school_class_id', 'uuid', 'uuid','class_section_id');
+    }
+
+    public function classArm()
+    {
+        return $this->hasMany(ClassArm::class, 'school_class_id', 'uuid');
     }
 
     public function subject(): HasMany
@@ -46,9 +51,10 @@ class SchoolClass extends Model
         return $this->hasMany(ClassSubject::class, 'school_class_id', 'uuid');
     }
 
-    public function classTeacher(): HasMany
-    {
-        return $this->hasMany(ClassTeacher::class, 'school_class_id', 'uuid');
-    }
+//    public function classTeacher()
+//    {
+//        return $this->hasMany(ClassArm::class,'school_class_id','uuid');
+//        //return $this->hasMany(ClassTeacher::class, 'school_class_id', 'uuid');
+//    }
 
 }

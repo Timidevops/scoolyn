@@ -40,19 +40,35 @@ class ClassArm extends Model
         return $this->belongsTo(SchoolClass::class, 'school_class_id', 'uuid');
     }
 
-    public function classSectionType(): HasOneThrough
+    public function classSection(): BelongsTo
     {
-        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
+        return $this->belongsTo(ClassSectionType::class, 'class_section_id', 'uuid');
     }
 
-    public function classSectionCategoryType(): HasOneThrough
+    public function classSectionCategory(): BelongsTo
     {
-        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
+        return $this->belongsTo(ClassSectionCategoryType::class, 'class_section_category_id', 'uuid');
     }
+
+//    public function classSectionType(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
+//    }
+//
+//    public function classSectionCategoryType(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
+//    }
 
     public function classSubject()
     {
         return $this->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id');
     }
+
+    public function teacher()
+    {
+        return $this->hasOne(Teacher::class, 'uuid', 'class_teacher');
+    }
+
 
 }

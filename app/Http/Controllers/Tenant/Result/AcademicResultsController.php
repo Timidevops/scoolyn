@@ -6,139 +6,241 @@ use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 
 class AcademicResultsController extends Controller
 {
-    public Model $classTeacher;
+    private Model $classTeacher;
+    private $classArm;
+    private $subjectBroadsheet;
 
     public function index()
     {
         //@todo get auth teacher
-        $teacher = Teacher::find(8);
+        $teacher = Teacher::find(3);
 
-        //dd($teacher->classArm->classSection);
+        $classArm = $teacher->classArm;
+
+        $classArm->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
         return view('Tenant.pages.result.academicResult.index', [
-           'classTeacher'  => $teacher->classArm,
-           'classSubjects' => $teacher->getClassSubjects()
+           //'classTeacher'  => $teacher->classArm,
+           //'classSubjects' => $teacher->getClassSubjects(),
+           'totalClass'    => count($classArm),
+            'classArm'     => $classArm,
         ]);
 
     }
 
-    public function single(string $classSubjectId)
+    public function single(string $classArmId)
+    {
+        $teacher = Teacher::find(3);
+
+        $classArm = $teacher->classArm->where('uuid', $classArmId)->first();
+
+        if( ! $classArm ){
+            abort(404);
+        }
+
+        $classSubject = $classArm->classSubject->filter(function ($classSubject) use($classArm){
+
+            if($classSubject->class_arm){
+                return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
+            }
+
+            return [];
+        });
+
+        return view('Tenant.pages.result.academicResult.single', [
+            'classArm' => $classArm,
+            'classSubjects' => $classSubject,
+        ]);
+    }
+
+    public function singleSubject(string $classArmId, string $classSubjectId)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(8);
+        $teacher = Teacher::find(3);
 
-        $this->classTeacher = $teacher->classArm;
+        $this->classArm = $teacher->classArm->where('uuid', $classArmId)->first();
 
-        $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
+        if( ! $this->classArm ){
+            abort(404);
+        }
+
+        $classSubjectInstance = ClassSubject::whereUuid($classSubjectId);
+
+        if($classSubjectInstance->class_arm){
+            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
+        }
+        else{
+            $classSubject = [];
+        }
+
+
+       // dd($classSubjectInstance);
+
+        //$this->classTeacher = $teacher->classArm->teacher;
+
+       // $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 
         if( ! $classSubject || ! $classSubject->academicBroadsheet ){
+
             abort(404);
         }
 
-        if( ! $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS || !  $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
+        $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+
+        ! $academicBroadsheet ? abort(404) : null;
+
+        if( ! $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS || !  $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
             abort(404);
         }
 
-        if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
-            return $this->edit($classSubject);
+        //dd($academicBroadsheet->status);
+        if( $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
+            //dd($classSubject);
+            return $this->edit($classSubject, $academicBroadsheet);
         }
 
         // get grade format for class
-        $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first();
+        $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
 
+        $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
 
-        $broadsheets = collect( $classSubject->academicBroadsheet->meta['academicBroadsheet'] );
+//        $isClassTeacherPerSection = $teacher->classArm->class_section_id
+//            ? $this->classArm->students
+//            : $this->subjectBroadsheet->keys();
+//
+//        $students = Student::query()->whereIn('uuid', $isClassTeacherPerSection)->get(['uuid','first_name','last_name']);
+//
+//        $broadsheets = $students->map(function ($item)use($subjectBroadsheet){
+//
+//            $item['studentName'] = "{$item->first_name} {$item->last_name}";
+//
+//            $item['studentId']   = $item->uuid;
+//
+//            $item['broadsheet']  = collect($subjectBroadsheet)->get($item->uuid);
+//
+//            return collect($item)->except(['first_name', 'last_name', 'uuid'])->toArray();
+//        });
 
-        // if class teacher is not for all sections
-        if( $this->classTeacher->class_section_id ){
+        //(new GetAcademicBroadsheet())->execute($broadsheets)
 
-            $broadsheets = $this->getBroadsheetPerClassSection($classSubject->academicBroadsheet->meta['academicBroadsheet']);
+        //dd(collect( $academicBroadsheet->meta['caFormat'] ));
 
-        }
-
-        return view('Tenant.pages.result.academicResult.single', [
-            'caAssessmentStructure' => collect( $classSubject->academicBroadsheet->meta['caFormat'] ),
+        return view('Tenant.pages.result.academicResult.singleSubject', [
+            'caAssessmentStructureFormat' => collect( $academicBroadsheet->meta['caFormat'] ),
             'gradeFormats'          => collect($gradeFormats->meta),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
-            'academicBroadsheets'   => collect( (new GetAcademicBroadsheet())->execute($broadsheets) ),
-            'broadsheetStatus'      => (string) $classSubject->academicBroadsheet->status,
+            'academicBroadsheets'   => collect( $this->getStudentBroadsheets() ),
+            'broadsheetStatus'      => (string) $academicBroadsheet->status,
+            'classArm'              => $this->classArm,
         ]);
 
     }
 
-    private function edit(Model $classSubject)
+    /**
+     * @return Builder[]|\Illuminate\Database\Eloquent\Collection|Collection
+     */
+    private function getStudentBroadsheets()
     {
-        $generatedFormat = collect($classSubject->academicBroadsheet->meta)->has('caFormat');
+        $isClassTeacherPerSection = $this->classArm->class_section_id
+            ? $this->classArm->students
+            : $this->subjectBroadsheet->keys();
 
-        $broadsheets = (new GetAcademicBroadsheet())->execute($classSubject->academicBroadsheet->meta, $generatedFormat);
+        $subjectBroadsheet = $this->subjectBroadsheet;
+
+        $students = Student::query()->whereIn('uuid', $isClassTeacherPerSection)->get(['uuid','first_name','last_name']);
+
+        return $students->map(function ($item)use($subjectBroadsheet){
+
+            $item['studentName'] = "{$item->first_name} {$item->last_name}";
+
+            $item['studentId']   = $item->uuid;
+
+            $item['broadsheet']  = collect($subjectBroadsheet)->get($item->uuid);
+
+            return collect($item)->except(['first_name', 'last_name', 'uuid'])->toArray();
+        });
+    }
+
+    private function edit( $classSubject, $academicBroadsheet)
+    {
+        //dd('here');
+        $generatedFormat = collect($academicBroadsheet->meta)->has('caFormat');
+
+        $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, $generatedFormat);
 
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first() ;
 
-        return view('Tenant.pages.result.academicResult.single', [
+        //dd($classSubject);
+
+        return view('Tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructure' => collect( $caFormat->meta ),
-            //'gradeFormats'          => collect($gradeFormats->meta),
+            //'gradeFormats'          => collect([]),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $broadsheets ),
-            'broadsheetStatus'      => (string) $classSubject->academicBroadsheet->status,
+            'broadsheetStatus'      => (string) $academicBroadsheet->status,
+            'classArm'              => $this->classArm,
         ]);
     }
 
-    public function approval(string $classSubjectId, Request $request)
+    public function approval(string $classArmId, string $classSubjectId, Request $request)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(8);
+        $teacher = Teacher::find(3);
 
-        $this->classTeacher = $teacher->classArm;
+        //$this->classTeacher = $teacher->classArm;
 
-        $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
+        $this->classArm = $teacher->classArm->where('uuid', $classArmId)->first();
+
+        if( ! $this->classArm ){
+            abort(404);
+        }
+
+        $classSubjectInstance = ClassSubject::whereUuid($classSubjectId);
+
+        if($classSubjectInstance->class_arm){
+            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
+        }
+        else{
+            $classSubject = [];
+        }
+
+        //$classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 
         if( ! $classSubject || ! $classSubject->academicBroadsheet ){
             return back();
         }
 
+        $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+
+        ! $academicBroadsheet ? abort(404) : null;
+
+
         if( $request->has(AcademicBroadSheet::NOT_APPROVED_STATUS) ){
 
-            $classSubject->academicBroadsheet->setStatus(AcademicBroadSheet::NOT_APPROVED_STATUS);
+            $academicBroadsheet->setStatus(AcademicBroadSheet::NOT_APPROVED_STATUS);
 
         }
 
         if ( $request->has(AcademicBroadSheet::APPROVED_STATUS) ){
 
-            $classSubject->academicBroadsheet->setStatus(AcademicBroadSheet::APPROVED_STATUS);
+            $academicBroadsheet->setStatus(AcademicBroadSheet::APPROVED_STATUS);
 
         }
 
         return back();
-    }
-
-    private function getBroadsheetPerClassSection(array $academicBroadsheets)
-    {
-        $broadsheets = [];
-
-        // filters students based on individual class teacher section...
-        foreach ( $academicBroadsheets as $key => $academicBroadsheet ){
-
-            $student = Student::query()->where('uuid', $key)
-                ->where('school_class_id', $this->classTeacher->school_class_id)
-                ->where('class_section_id', $this->classTeacher->class_section_id)
-                ->where('class_section_category_id', $this->classTeacher->class_section_category_id)->first();
-
-            $broadsheets [$student->uuid] = $academicBroadsheets[$student->uuid];
-
-        }
-
-        return $broadsheets;
     }
 
 }

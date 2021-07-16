@@ -28,6 +28,11 @@ class Subject extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function schoolSubject()
+    {
+        return $this->hasOne(SchoolSubject::class, 'subject_id', 'uuid');
+    }
+
     public function subjectTeacher(): HasMany
     {
         return $this->hasMany(SubjectTeacher::class, 'subject_id', 'uuid');

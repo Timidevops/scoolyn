@@ -86,8 +86,8 @@
                     <ul class="py-1 overflow-auto h-32 text-base leading-6
                    shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($classSections as $classSection)
-                            <li wire:click="selectClassSection('{{$classSection->uuid}}', '{{$classSection->classSectionType->section_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9 text-blue-100 hover:bg-purple-100">
-                                {{$classSection->classSectionType->section_name}}
+                            <li wire:click="selectClassSection('{{$classSection->classSection->uuid}}', '{{$classSection->uuid}}', '{{$classSection->classSection->section_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9 text-blue-100 hover:bg-purple-100">
+                                {{$classSection->classSection->section_name}}
                             </li>
                         @endforeach
                     </ul>
@@ -103,8 +103,8 @@
                     <ul class="py-1 overflow-auto h-32 text-base leading-6
                    shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($classSectionCategories as $classSectionCategory)
-                            <li wire:click="selectClassSectionCategory('{{$classSectionCategory->uuid}}', '{{$classSectionCategory->classSectionCategoryType->category_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9 text-blue-100 hover:bg-purple-100">
-                                {{$classSectionCategory->classSectionCategoryType->category_name}}
+                            <li wire:click="selectClassSectionCategory('{{$classSectionCategory->uuid}}', '{{$classSectionCategory->category_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9 text-blue-100 hover:bg-purple-100">
+                                {{$classSectionCategory->category_name}}
                             </li>
                         @endforeach
                     </ul>

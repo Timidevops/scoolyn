@@ -45,8 +45,9 @@ class Index extends Component
     public function generateResult()
     {
         //initial class arm result status;
-        //$this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
+       // $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
 
+       // dd($this->classArm);
         GenerateResultJob::dispatch($this->classArm);
 
         $this->redirectRoute('listAcademicResult');
@@ -56,18 +57,28 @@ class Index extends Component
     {
         foreach ($this->classSubjects as $classSubject){
 
-            if( $classSubject->academicBroadsheet ){
+           // dd($classSubject->academicBroadsheet->where('class_arm', $this->classArm->uuid)->first());
+
+            if( ! $classSubject->academicBroadsheet ){
+                continue;
+            }
+
+            $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $this->classArm->uuid)->first();
+
+            if( $academicBroadsheet ){
+
+                //dd($classSubject->classArm);
 
                 $this->totalApprovedBroadsheet +=
-                    $classSubject->academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ?
+                    $academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ?
                         1: 0;
 
                 $this->totalSubmittedBroadsheet +=
-                    $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ?
+                    $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ?
                        1 : 0;
 
                 $this->totalNotApprovedBroadsheet +=
-                    $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ?
+                    $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ?
                        1 : 0;
 
               continue;
@@ -80,22 +91,29 @@ class Index extends Component
     {
         foreach ($this->classSubjects as $classSubject){
 
-            if($classSubject->academicBroadsheet){
+            if( ! $classSubject->academicBroadsheet ){
+                continue;
+            }
 
-                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
+            $academicBroadsheet = $classSubject->academicBroadsheet
+                ->where('class_arm', $this->classArm->uuid)->first();
+
+            if($academicBroadsheet){
+
+                if( $academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
                     $this->approvedBroadsheets [] = $classSubject;
                 }
 
-                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ){
+                if( $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ){
                      $this->submittedBroadsheets [] = $classSubject;
                 }
 
 
-                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::CREATED_STATUS ){
+                if( $academicBroadsheet->status == AcademicBroadSheet::CREATED_STATUS ){
                     $this->awaitingBroadsheets [] = $classSubject;
                 }
 
-                if( $classSubject->academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
+                if( $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
                     $this->disapprovedBroadsheets [] = $classSubject;
                 }
 

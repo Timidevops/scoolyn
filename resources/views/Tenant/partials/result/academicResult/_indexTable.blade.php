@@ -13,14 +13,14 @@
 
                             <th class="px-6 py-3 w-64  text-left  font-medium text-gray-500 text-sm ">
                                 <span class="flex items-center mx-1">
-                                    Subject
+                                    Class
                                  <span>
                                 <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
                                  </span>
                                 </span>
                             </th>
-                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
-                                Class
+                            <th class="px-6 py-3  text-center  font-medium text-gray-500 text-sm">
+                                Class Section
                             </th>
                             <th class="px-6 py-3 w-  text-center text-sm font-medium text-gray-500">
                                 Action
@@ -28,7 +28,7 @@
 
                         </tr>
                         </thead>
-                        <template x-for="(content, index) in filteredSubjectTable" :key="index">
+                        <template x-for="(content, index) in filteredClassArmTable" :key="index">
                             <tbody class="bg-white divide-y divide-purple-100">
                             <tr class="bg-white">
 
@@ -43,20 +43,20 @@
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.subject.subject_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.school_class.class_name"></span>
                                         </p>
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4 text-left whitespace-nowrap text-gray-200">
-                                    <p class="text-xs" x-text="content.school_class.class_name"></p>
+                                <td class="px-6 py-4 text-center whitespace-nowrap text-gray-200">
+                                    <p class="text-xs" x-text="content.class_section ? content.class_section.section_name : '' "></p>
                                     <p class="group inline-flex space-x-2 truncate text-sm">
-                                        <span class="text-gray-500 truncate" x-text="getTableClassSection(content.class_section_type,content.class_section_category_type)"></span>
+                                        <span class="text-gray-500 truncate" x-text="content.class_section_category ?  content.class_section_category.category_name : '' "></span>
                                     </p>
                                 </td>
 
                                 <td class="md:px-6 py-4 text-center whitespace-nowrap text-sm text-gray-200">
-                                    <a x-bind:href="`{{route('createAcademicBroadsheet','')}}/${content.uuid}`">
+                                    <a x-bind:href="`{{route('singleAcademicResult','')}}/${content.uuid}`">
                                         <button
                                             class="focus:outline-none">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >

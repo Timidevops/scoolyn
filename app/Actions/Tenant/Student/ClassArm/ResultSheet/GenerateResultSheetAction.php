@@ -23,10 +23,9 @@ class GenerateResultSheetAction
         //get each student subject broadsheet
         $studentBroadsheets =[];
         foreach ($studentIds as $studentId){
-
             $student = Student::query()->where('uuid', $studentId)->first();
 
-            $studentBroadsheets [$studentId] = (new GetBroadsheetsAction())->execute($studentId, $student->subjects->subjects);
+            $studentBroadsheets [$studentId] = (new GetBroadsheetsAction())->execute($classArm->uuid, $studentId, $student->subjects->subjects);
         }
 
         if( count($studentIds) != count($studentBroadsheets) ){
@@ -40,9 +39,9 @@ class GenerateResultSheetAction
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-        //@todo add data to resultTable of each student
+        // add data to resultTable of each student
+        //@todo add ca and grading format...
         foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
-
             $input = $studentBroadsheet;
 
             $input['student_id'] = $key;
@@ -109,8 +108,10 @@ class GenerateResultSheetAction
     {
 
         foreach ($this->studentBroadsheets as $key => $broadsheet){
+            //dd($broadsheet);
             $this->getSubjectMetric($key, $broadsheet['subjects']);
         }
+
         return $this->studentBroadsheets;
     }
 
@@ -125,6 +126,5 @@ class GenerateResultSheetAction
             $this->studentBroadsheets[$studentId]['subjects'][$key] = (collect($this->studentBroadsheets[$studentId]['subjects'][$key]))
                 ->put('subjectMetric', $subjectMetric)->toArray();
         }
-
     }
 }

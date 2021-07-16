@@ -20,6 +20,10 @@ class ClassSubject extends Model
 
     protected $guarded = [];
 
+    protected $casts = [
+        'class_arm' => 'array'
+    ];
+
     public function academicBroadsheet()
     {
         return $this->hasOne(AcademicBroadSheet::class, 'class_subject_id', 'uuid');
@@ -33,6 +37,11 @@ class ClassSubject extends Model
     public function teacher(): HasOne
     {
         return $this->hasOne(Teacher::class, 'uuid', 'teacher_id');
+    }
+
+    public function getClassArm(string $uuid)
+    {
+        return ClassArm::query()->where('uuid', $uuid)->first();
     }
 
     public function schoolClass(): BelongsTo
@@ -63,5 +72,10 @@ class ClassSubject extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
     }
 }

@@ -29,12 +29,26 @@
         </div>
         <div class=" mx-4" >
             <div class="my-6">
-                <label for="service" class="block text-xs font-normal text-gray-100">Select Subjects</label>
+                <div class="flex items-center">
+                    <label for="service" class="block text-xs font-normal text-gray-100">
+                        Select Subjects
+                    </label>
+                    <label class="ml-2">
+                        <input id="selectAllSubjects"
+                               type="checkbox"
+                               x-on:change="onToggleAll(event.target)"><span class="px-1">Select all</span>
+                    </label>
+                </div>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
                     <template x-for="(item, index) in classSubjects" :key="index">
                         <div>
                             <label class="flex items-center">
-                                <input name="subjects[]" type="checkbox" x-on:change="onCheckedSubject(item.uuid, event.target)">
+                                <input class="subjectCheckbox"
+                                       name="subjects[]"
+                                       type="checkbox"
+                                       x-bind:value="item.uuid"
+                                       x-on:change="onCheckedSubject()"
+                                >
                                 <span x-text="item.subject.subject_name" class="text-sm font-medium pl-2 capitalize"></span>
                             </label>
                         </div>
@@ -57,10 +71,21 @@
         return{
             isAddSubjectModalOpen: false,
             classSubjects: {!! $classSubjects !!},
-            onCheckedSubject(value, event){
-                if(event.checked) return  event.value = value;
-                return  event.value = '';
-            }
+            onCheckedSubject(){
+                let allSubjectCount = document.querySelectorAll('.subjectCheckbox').length;
+
+                let selectedSubjectCount = 0;
+                document.querySelectorAll('.subjectCheckbox').forEach(e => selectedSubjectCount += e.checked ? 1 : 0)
+
+                allSubjectCount === selectedSubjectCount
+                    ? document.getElementById('selectAllSubjects').checked = true
+                    : document.getElementById('selectAllSubjects').checked = false;
+            },
+            onToggleAll(event){
+                let checked = event.checked;
+
+                document.querySelectorAll('.subjectCheckbox').forEach(e => e.checked = checked);
+            },
         }
     }
 </script>

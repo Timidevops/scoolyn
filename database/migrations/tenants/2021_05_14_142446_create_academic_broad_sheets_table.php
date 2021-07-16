@@ -17,6 +17,7 @@ class CreateAcademicBroadSheetsTable extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('class_subject_id');
+            $table->string('class_arm');
             $table->json('meta');
             $table->timestamps();
             $table->softDeletes();

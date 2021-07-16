@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Tenant\Student;
 use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Http\Controllers\Tenant\Parent\ParentsController;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Livewire\Component;
@@ -81,20 +83,29 @@ class AddStudent extends Component
             'matriculation_number' => $this->matriculation_number,
             'dob' => $this->dob,
             'address' => $this->address,
-            'school_class_id' => $this->schoolClassId,
-            'class_section_id' => $this->classSectionId,
-            'class_section_category_id' => $this->classSectionCategoryId,
+            'class_arm' => $this->getClassArm()->uuid,
+//            'school_class_id' => $this->schoolClassId,
+//            'class_section_id' => $this->classSectionId,
+//            'class_section_category_id' => $this->classSectionCategoryId,
         ]);
 
-        (new AttachStudentToClassArmAction())->execute([
-            'schoolClassId' => $this->schoolClassId,
-            'classSectionId' => $this->classSectionId,
-            'classSectionCategoryId' => $this->classSectionCategoryId,
+        (new AttachStudentToClassArmAction())->execute($this->getClassArm(), [
+//            'schoolClassId' => $this->schoolClassId,
+//            'classSectionId' => $this->classSectionId,
+//            'classSectionCategoryId' => $this->classSectionCategoryId,
             'studentId' => (string) $student->uuid,
         ]);
 
          $this->redirectRoute('createStudent');
          return  true;
+    }
+
+    public function getClassArm(): Model
+    {
+        return ClassArm::query()
+            ->where('school_class_id', $this->schoolClassId)
+            ->where('class_section_id', $this->classSectionId)
+            ->where('class_section_category_id', $this->classSectionCategoryId)->first();
     }
 
     public function selectGender(string $gender)
@@ -114,7 +125,7 @@ class AddStudent extends Component
 
         $this->schoolClassDropdown = false;
 
-        $this->classSections = ClassSection::query()->where('school_class_id', $schoolClassId)->get();
+        $this->classSections = SchoolClass::query()->where('uuid', $schoolClassId)->first()->classArm;
 
         $this->classSectionLabel = '-- choose a class section --';
 
@@ -127,7 +138,7 @@ class AddStudent extends Component
         $this->classSectionCategoryLabel = '-- choose a class section category --';
     }
 
-    public function selectClassSection(string $classSectionId, string $classSectionName)
+    public function selectClassSection(string $classSectionId, string $classArmId, string $classSectionName)
     {
         $this->classSectionId = $classSectionId;
 
@@ -135,11 +146,20 @@ class AddStudent extends Component
 
         $this->classSectionDropdown = false;
 
-        $this->classSectionCategoryDropdown = false;
-
         $this->classSectionCategoryLabel = '-- choose a class section category --';
 
-        $this->getClassSectionCategory();
+        $classSection = ClassArm::query()->where('uuid', $classArmId)->first();
+
+        if( $classSection && $classSection->classSectionCategory ){
+
+            $this->classSectionCategories = $classSection->classSectionCategory->get();
+
+            return $this->isClassSectionCategory = true;
+        }
+
+        $this->classSectionCategories = [];
+
+        return $this->isClassSectionCategory = false;
     }
 
     public function selectClassSectionCategory(string $classSectionCategoryId, string $classSectionCategoryName)
@@ -181,7 +201,7 @@ class AddStudent extends Component
             'address' => $this->parentAddress,
         ]);
 
-        $parent =  (new ParentsController())->store($request);
+        $parent = (new ParentsController())->store($request);
 
         $this->parentLabel = "{$parent->fisrt_name} {$parent->last_name}";
 
@@ -194,20 +214,20 @@ class AddStudent extends Component
         $this->addParentModal = false;
     }
 
-    private function getClassSectionCategory(): void
-    {
-        $classSection = ClassSection::query()->where('uuid', $this->classSectionId)->first();
-
-        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
-
-            $this->classSectionCategories = $classSection->classSectionCategory;
-
-            $this->isClassSectionCategory = true;
-            return;
-        }
-
-        $this->classSectionCategories = [];
-
-        $this->isClassSectionCategory = false;
-    }
+//    private function getClassSectionCategory(): void
+//    {
+//        $classSection = ClassSection::query()->where('uuid', $this->classSectionId)->first();
+//
+//        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
+//
+//            $this->classSectionCategories = $classSection->classSectionCategory;
+//
+//            $this->isClassSectionCategory = true;
+//            return;
+//        }
+//
+//        $this->classSectionCategories = [];
+//
+//        $this->isClassSectionCategory = false;
+//    }
 }

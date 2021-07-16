@@ -17,11 +17,18 @@ class StudentsController extends Controller
     {
         $students = Student::query()->get();
 
-        $students->load(['parent', 'schoolClass', 'classSection', 'classSectionCategory']);
+        $students->load(['parent']);
+
+        $classArm = $students->map(function ($student){
+            return $student->classArm;
+        });
+
+        $classArms = $classArm->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
         return view('Tenant.pages.student.student', [
             'totalStudents' => Student::query()->count(),
             'students'      => $students,
+            'classArm'      => $classArms,
         ]);
     }
 

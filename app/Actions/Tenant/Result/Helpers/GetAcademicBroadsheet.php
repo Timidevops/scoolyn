@@ -19,6 +19,8 @@ class GetAcademicBroadsheet
 
         $this->generatedFormat = $generatedFormat;
 
+        //dd($meta);
+
         return $this->getAcademicBroadsheet();
     }
 

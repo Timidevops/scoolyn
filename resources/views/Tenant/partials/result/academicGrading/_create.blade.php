@@ -161,7 +161,7 @@
                     }
                 });
                 this.selectedClasses = selectedClasses;
-                this.isClassDropdownOpen = false;
+                this.isClassDropdownOpen = ! checked;
             },
             gradeFormatField: [],
             addNewGradeFormatField(){

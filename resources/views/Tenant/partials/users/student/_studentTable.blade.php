@@ -60,7 +60,10 @@
                         </td>
 
                         <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                            <span class="text-gray-200 font-normal" x-text="item.school_class.class_name"></span>
+                            <span class="text-gray-200 font-normal" x-text="item.class_arm.school_class.class_name"></span>
+                            <p class="text-gray-200 font-normal" x-text="item.class_arm.class_section ? item.class_arm.class_section.section_name : '' "></p>
+                            &nbsp;
+                            <p class="text-gray-200 font-normal" x-text="item.class_arm.class_section_category ? `- ${item.class_arm.class_section_category.category_name}` : '' "></p>
                         </td>
 
                         <td class="px-6 py-4 whitespace-nowrap text-sm">

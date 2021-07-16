@@ -93,8 +93,9 @@ Route::post('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\R
 Route::patch('result/academic-broadsheet/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicBroadsheetsController::class, 'update'])->name('updateAcademicBroadsheet');
 
 Route::get('result/academic-result', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'index'])->name('listAcademicResult');
-Route::get('result/academic-result/{uuid}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'single'])->name('singleAcademicResult');
-Route::post('result/academic-result/{uuid}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'approval'])->name('academicResultApproval');
+Route::get('result/academic-result/{uuid}', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'single'])->name('singleAcademicResult');
+Route::get('result/academic-result/{classArmId}/{subjectId}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'singleSubject'])->name('singleAcademicResultBroadsheet');
+Route::post('result/academic-result/{classArmId}/{uuid}/broadsheet', [\App\Http\Controllers\Tenant\Result\AcademicResultsController::class, 'approval'])->name('academicResultApproval');
 
 Route::get('result/academic-grading', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'index'])->name('listGradeFormat');
 Route::get('result/academic-grading/add-new', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'create'])->name('createGradeFormat');

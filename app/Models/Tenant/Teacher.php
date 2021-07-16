@@ -19,25 +19,27 @@ class Teacher extends Model
 
     protected $guarded = [];
 
-    public function classTeacher(): HasOne
+//    public function classTeacher(): HasOne
+//    {
+//        return $this->hasOne(ClassTeacher::class,'teacher_id','uuid');
+//    }
+
+    public function classArm(): HasMany
     {
-        return $this->hasOne(ClassTeacher::class,'teacher_id','uuid');
+        return $this->hasMany(ClassArm::class, 'class_teacher', 'uuid');
     }
 
-    public function classArm(): HasOne
-    {
-        return $this->hasOne(ClassArm::class, 'class_teacher', 'uuid');
-    }
+//    public function schoolClassByClassTeacher()
+//    {
+//        return $this->hasOneThrough(SchoolClass::class, ClassTeacher::class, 'teacher_id', 'uuid', 'uuid', 'school_class_id');
+//    }
 
-    public function schoolClassByClassTeacher()
-    {
-        return $this->hasOneThrough(SchoolClass::class, ClassTeacher::class, 'teacher_id', 'uuid', 'uuid', 'school_class_id');
-    }
-
-    public function getClassSubjects()
-    {
-        return ClassSubject::query()->where('school_class_id', $this->classArm->school_class_id)->get();
-    }
+//    public function getClassSubjects()
+//    {
+//        return $this->classArm->map(function ($classArm){
+//            return ClassSubject::query()->where('school_class_id', $classArm->school_class_id)->get();
+//        });
+//    }
 
     public function subjectTeacher(): HasMany
     {

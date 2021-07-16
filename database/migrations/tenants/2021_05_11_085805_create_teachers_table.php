@@ -19,7 +19,8 @@ class CreateTeachersTable extends Migration
             $table->string('full_name');
             $table->string('email');
             $table->string('user_id');
-            $table->string('staff_id');
+            $table->string('staff_id')->nullable();
+            $table->string('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

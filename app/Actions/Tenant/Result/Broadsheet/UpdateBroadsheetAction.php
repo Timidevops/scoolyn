@@ -8,8 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class UpdateBroadsheetAction
 {
-    public function execute(Model $classSubject, array $input)
+    public function execute(Model $academicBroadsheet, array $input)
     {
-        $classSubject->academicBroadsheet()->update($input);
+        $academicBroadsheet->update($input);
     }
 }

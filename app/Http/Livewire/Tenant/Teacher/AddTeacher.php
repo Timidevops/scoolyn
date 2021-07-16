@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Tenant\Teacher;
 use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassTeacherAction;
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolClass;
@@ -68,19 +69,34 @@ class AddTeacher extends Component
             'full_name' => $this->fullName,
             'email' => $this->email,
             'staff_id' => $this->staffId,
-            'address' => $this->address,
+            //'address' => $this->address,
         ]);
 
         $this->teacherId = (string) $teacher->uuid;
 
         if( collect($this->designation)->contains('class-teacher') == 'class-teacher' ){
-            (new CreateNewClassTeacherAction())->execute([
-                //'teacher_id' => (string) $teacher->uuid,
-                'class_teacher' => (string) $teacher->uuid,
-                'school_class_id' => $this->schoolClassId,
-                'class_section_id' => $this->classSectionId,
-                'class_section_category_id' => $this->sectionCategoryId,
-            ]);
+
+            if($this->classSectionId == 'all'){
+                $classArms = ClassArm::query()->where('school_class_id', $this->schoolClassId)->get();
+
+                foreach ($classArms as $classArm){
+                    $this->attachClassTeacher($classArm->uuid);
+                }
+
+            }//@todo for all class section category :: else if
+            else{
+                $classArm = ClassArm::query()
+                    ->where('school_class_id', $this->schoolClassId)
+                    ->where('class_section_id', $this->classSectionId)
+                    ->where('class_section_category_id', $this->sectionCategoryId)->first();
+
+                if($classArm){
+
+                    $classArm->class_teacher = (string) $teacher->uuid;
+
+                    $classArm->save();
+                }
+            }
         }
 
         if (collect($this->designation)->contains('subject-teacher') == 'subject-teacher' ){
@@ -93,6 +109,15 @@ class AddTeacher extends Component
 
 
         $this->redirectRoute('createTeacher');
+    }
+
+    private function attachClassTeacher($classArmId)
+    {
+        $classArm = ClassArm::query()->where('uuid', $classArmId)->first();
+
+        $classArm->class_teacher = $this->teacherId;
+
+        $classArm->save();
     }
 
     private function attachSubjectTeacher($classSubjectId)
@@ -123,7 +148,7 @@ class AddTeacher extends Component
 
         $this->classSections = [];
 
-        $this->classSections = SchoolClass::query()->where('uuid', $uuid)->first()->classSection;
+        $this->classSections = SchoolClass::query()->where('uuid', $uuid)->first()->classArm;
 
         $this->isClassSectionEnabled = true;
 
@@ -132,17 +157,29 @@ class AddTeacher extends Component
         return $this->isSectionCategoryVisible = false;
     }
 
-    public function getSectionCategory(string $uuid, string $classSectionName)
+    /**
+     * @param string $uuid
+     * @param string $classArmId
+     * @param string $classSectionName
+     * @return bool|void
+     */
+    public function getSectionCategory(string $uuid, string $classArmId = '', string $classSectionName = '')
     {
+        if($uuid == 'all'){
+            $this->classSectionName = 'All Sections';
+            $this->classSectionId  = $uuid;
+            return;
+        }
+
         $this->classSectionId = $uuid;
 
         $this->classSectionName = $classSectionName;
 
-        $classSection = ClassSection::query()->where('uuid', $uuid)->first();
+        $classSection = ClassArm::query()->where('uuid', $classArmId)->first();
 
-        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
+        if( $classSection && $classSection->classSectionCategory ){
 
-            $this->sectionCategories = $classSection->classSectionCategory;
+            $this->sectionCategories = $classSection->classSectionCategory->get();
 
            return $this->isSectionCategoryVisible = true;
         }
@@ -152,7 +189,7 @@ class AddTeacher extends Component
         return $this->isSectionCategoryVisible = false;
     }
 
-    public function selectSectionCategory(string $sectionCategoryId,string $sectionCategory)
+    public function selectSectionCategory(string $sectionCategoryId, string $sectionCategory)
     {
         $this->sectionCategoryId = $sectionCategoryId;
 

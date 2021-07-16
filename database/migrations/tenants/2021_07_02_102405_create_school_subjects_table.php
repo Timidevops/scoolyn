@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassArmsTable extends Migration
+class CreateSchoolSubjectsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class CreateClassArmsTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_arms', function (Blueprint $table) {
+        Schema::create('school_subjects', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('class_teacher')->nullable();
-            $table->json('students')->nullable();
-            $table->string('school_class_id');
-            $table->string('class_section_id')->nullable();
-            $table->string('class_section_category_id')->nullable();
+            $table->string('subject_name');
+            $table->string('slug');
+            $table->string('subject_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -33,6 +31,6 @@ class CreateClassArmsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_arms');
+        Schema::dropIfExists('school_subjects');
     }
 }

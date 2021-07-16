@@ -43,12 +43,17 @@
                 <div x-show="classSectionDropdown" class="border relative border-purple-100">
                     <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
+                        <li wire:click="getSectionCategory('all')"
+                            x-on:click="selectClassSection();"
+                            class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                            All Sections
+                        </li>
                         @foreach($classSections as $classSection)
-                            <li wire:click="getSectionCategory('{{$classSection->uuid}}', '{{$classSection->classSectionType->section_name}}')"
+                            <li wire:click="getSectionCategory('{{$classSection->classSection->uuid}}', '{{$classSection->uuid}}', '{{$classSection->classSection->section_name}}')"
                                 x-on:click="selectClassSection();"
                                 class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
                                 <span>
-                                    {{$classSection->classSectionType->section_name}}
+                                    {{$classSection->classSection->section_name}}
                                 </span>
                             </li>
                         @endforeach
@@ -64,10 +69,10 @@
                     <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($sectionCategories as $sectionCategory)
-                            <li wire:click="selectSectionCategory('{{$sectionCategory->uuid}}', '{{$sectionCategory->classSectionCategoryType->category_name}}')"
+                            <li wire:click="selectSectionCategory('{{$sectionCategory->uuid}}', '{{$sectionCategory->category_name}}')"
                                 x-on:click="sectionCategoryDropdown = false;"
                                 class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                <span>{{$sectionCategory->classSectionCategoryType->category_name}}</span>
+                                <span>{{$sectionCategory->category_name}}</span>
                             </li>
                         @endforeach
                     </ul>

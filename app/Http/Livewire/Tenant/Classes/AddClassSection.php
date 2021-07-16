@@ -2,11 +2,13 @@
 
 namespace App\Http\Livewire\Tenant\Classes;
 
+use App\Actions\Tenant\ClassArm\CreateNewClassArmAction;
 use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassSectionCategoryTypeAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionCategoryAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionTypeAction;
 use App\Actions\Tenant\SchoolClass\CreateNewSchoolClassAction;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSectionCategoryType;
@@ -63,43 +65,59 @@ class AddClassSection extends Component
     {
         $this->validate();
 
-        $schoolClassId              = $this->schoolClass() ? $this->schoolClass()->uuid : null;
+        $schoolClassId              = $this->schoolClass() ? $this->schoolClass()->uuid : $this->schoolClass;
         $classSectionTypeId         = $this->classSection();
         $classSectionCategoryTypeId = $this->classSectionCategory();
 
-        if( ! $schoolClassId || ! $classSectionTypeId){
+        $isClassArmExist = ClassArm::query()
+            ->where('school_class_id', $schoolClassId)
+            ->where('class_section_id', $classSectionTypeId)
+            ->where('class_section_category_id', $classSectionCategoryTypeId)->exists();
+
+        if( ! $schoolClassId || $isClassArmExist){
             //@todo error message
             return false;
         }
 
-        //@todo filter duplicate
 
-        $classSection = ClassSection::query()
-            ->where('class_section_types_id', $classSectionTypeId)
-            ->where('school_class_id', $schoolClassId)
-            ->first();
+        // get class section instance
+//        $classSection = ClassSection::query()
+//            ->where('class_section_types_id', $classSectionTypeId)
+//            ->where('school_class_id', $schoolClassId)
+//            ->first();
+//
+//        //if doesn't exist, create new one...
+//        if( ! $classSection ){
+//            $classSection =  (new CreateNewClassSectionAction())->execute([
+//                'class_section_types_id' => $classSectionTypeId,
+//                'school_class_id'  =>$schoolClassId,
+//            ]);
+//        }
+//
+//        if( $classSectionCategoryTypeId ){
+//
+//            //get class section category instance
+//            $classSectionCategory = ClassSectionCategory::query()
+//                ->where('class_section_category_types_id', $classSectionCategoryTypeId)
+//                ->where('class_section_id', $classSection->uuid)
+//                ->first();
+//
+//            //if doesn't exist, create new one...
+//            if( ! $classSectionCategory ){
+//
+//                $classSectionCategory = (new CreateNewClassSectionCategoryAction())->execute([
+//                    'class_section_category_types_id' => $classSectionCategoryTypeId,
+//                    'class_section_id' => $classSection->uuid,
+//                ]);
+//            }
+//        }
 
-        if( ! $classSection ){
-            $classSection =  (new CreateNewClassSectionAction())->execute([
-                'class_section_types_id' => $classSectionTypeId,
-                'school_class_id'  =>$schoolClassId,
-            ]);
-        }
-
-        if( $classSectionCategoryTypeId ){
-
-            $classSectionCategory = ClassSectionCategory::query()
-                ->where('class_section_category_types_id', $classSectionCategoryTypeId)
-                ->where('class_section_id', $classSection->uuid)
-                ->first();
-
-            if( ! $classSectionCategory ){
-                (new CreateNewClassSectionCategoryAction())->execute([
-                    'class_section_category_types_id' => $classSectionCategoryTypeId,
-                    'class_section_id' => $classSection->uuid,
-                ]);
-            }
-        }
+        //create new class section
+        (new CreateNewClassArmAction())->execute([
+            'school_class_id' => $schoolClassId,
+            'class_section_id' => $classSectionTypeId,
+            'class_section_category_id' => $classSectionCategoryTypeId,
+        ]);
 
         $this->addClassModal = false;
 
@@ -128,7 +146,7 @@ class AddClassSection extends Component
 
         if( ! $classSectionType && $this->newClassSection ){
             $classSectionType = (new CreateNewClassSectionTypeAction())->execute([
-                'section_name' => $this->newClassSection ?? 'default_class',
+                'section_name' => $this->newClassSection, //?? 'default_class',
             ]);
 
             $classSectionType = $classSectionType->uuid;

@@ -1,6 +1,7 @@
-<form x-data="editBroadsheet()" id="broadsheetForm" action="{{route('updateAcademicBroadsheet',$classSubjectId)}}" method="post">
+<form x-data="editBroadsheet()" action="{{route('updateAcademicBroadsheet',$classSubjectId)}}" method="post">
     @csrf
     @method('PATCH')
+    <input type="hidden" name="classArm" value="{{$classArm}}">
     <div class="flex justify-end items-center px-4 py-4">
         @if($broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
             <div>
@@ -44,7 +45,7 @@
                 </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-purple-100">
-                <template x-for="(item, index) in academicBroadsheets" :key="item">
+                <template x-for="(item, index) in {{$academicBroadsheets}}" :key="item">
                     <tr>
                         <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                             <div class="flex">
@@ -61,16 +62,16 @@
                             <td class="whitespace-nowrap text-xs text-gray-200">
                                 <div class="mt-2 text-center">
                                     <label>
-                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(index)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$classArm}}`" @input="onchangeCAScore(index, '{{$classArm}}')" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                     </label>
                                 </div>
                             </td>
                         </template>
                         <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">
-                                <span x-text="getInitialTotal(index)"></span>
+                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$classArm}}`">
+                                <span x-text="item.broadsheet.total"></span>
                             </p>
-                            <input type="hidden" x-bind:value="getInitialTotal(index)" x-bind:id="`totalScoreValue_${index}`" x-bind:name="`broadsheet[${item.studentId}][total]`" />
+                            <input type="hidden" x-bind:value="item.broadsheet.total" x-bind:id="`totalScoreValue_${index}_{{$classArm}}`" x-bind:name="`broadsheet[${item.studentId}][total]`" />
                         </td>
                     </tr>
                 </template>
@@ -97,12 +98,9 @@
 
                 return broadsheet;
             },
-            getInitialTotal(index){
-                return this.academicBroadsheets[index].broadsheet['total'];
-            },
-            onchangeCAScore(id){
-                let scoreIdText = `totalScore_${id}`;
-                let scoreIdValue = `totalScoreValue_${id}`;
+            onchangeCAScore(id, classArm){
+                let scoreIdText = `totalScore_${id}_${classArm}`;
+                let scoreIdValue = `totalScoreValue_${id}_${classArm}`;
                 let totalScore = 0;
 
                 document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {

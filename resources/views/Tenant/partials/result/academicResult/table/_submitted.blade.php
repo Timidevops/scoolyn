@@ -45,7 +45,7 @@
                     </span>
                 </td>
                 <td class="md:px-6 py-4 text-center whitespace-nowrap text-sm text-gray-200 ">
-                    <a href="{{route('singleAcademicResult',$submittedBroadsheet->uuid)}}">
+                    <a href="{{route('singleAcademicResultBroadsheet',[$classArm->uuid, $submittedBroadsheet->uuid])}}">
                         <button type="button" class="text-blue-100  text-sm " >
                             /!/
                         </button>

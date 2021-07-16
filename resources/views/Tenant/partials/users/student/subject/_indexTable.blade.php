@@ -41,7 +41,7 @@
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-gray-500 truncate" x-text="content.subject_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.subject.subject_name"></span>
                                         </p>
                                     </div>
                                 </td>

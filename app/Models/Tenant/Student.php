@@ -50,18 +50,28 @@ class Student extends Model
         return $this->hasMany(SchoolReceipt::class, 'student_id', 'uuid');
     }
 
-    public function schoolClass(): BelongsTo
+//    public function schoolClass(): BelongsTo
+//    {
+//        return $this->belongsTo(SchoolClass::class, 'school_class_id', 'uuid');
+//    }
+
+    public function classArm()
     {
-        return $this->belongsTo(SchoolClass::class, 'school_class_id', 'uuid');
+        return $this->belongsTo(ClassArm::class, 'class_arm', 'uuid');
     }
 
-    public function classSection(): HasOneThrough
-    {
-        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
-    }
+//    public function classSection(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
+//    }
+//
+//    public function classSectionCategory(): HasOneThrough
+//    {
+//        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
+//    }
 
-    public function classSectionCategory(): HasOneThrough
+    public function getRouteKeyName()
     {
-        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
+        return 'uuid';
     }
 }

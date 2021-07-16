@@ -19,14 +19,11 @@ class ClassTeachersController extends Controller
     {
         $schoolClass = SchoolClass::query()->where('slug', '=', $uuid)->first();
 
-        $classSectionCategory = $schoolClass->classSection;
-
-        $classTeacher = $schoolClass->classTeacher->load(['teacher', 'classSection', 'classSectionCategory']);
+        $classArm    = $schoolClass->classArm->load(['teacher', 'classSection', 'classSectionCategory']);
 
         return view('tenant.pages.classes.teacher', [
             'schoolClass'          => $schoolClass,
-            'classSectionCategory' => $classSectionCategory,
-            'teachers'             => $classTeacher,
+            'teachers'             => $classArm,
             'classSectionCategoryType' => ClassSectionCategoryType::query()->get(['uuid','category_name']),
             'classSectionType'         => ClassSectionType::query()->get(['uuid','section_name']),
         ]);

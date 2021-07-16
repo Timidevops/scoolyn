@@ -10,7 +10,9 @@ use Livewire\Component;
 
 class AddSubject extends Component
 {
-    public Model $schoolClass;
+    public $schoolClass;
+    public $classArm;
+    public $classSubjects;
 
     public string $classSectionLabel = '-- choose a section --';
 
@@ -24,39 +26,52 @@ class AddSubject extends Component
     public bool $classSectionCategoryDropdown = false;
 
     public string $subjectLabel = '-- choose a subject --';
-    public bool $subjectDropdown = false;
+    public bool $isSubjectDropdownOpen = false;
 
     public string $classSectionId = '';
     public string $classSectionCategoryId = '';
-    public string $subjectId = '';
+    //public string $subjectId = '' == to remove if no error;
+    public array $subjectIds = [];
+
+    public function mount($schoolClass, $classSubjects)
+    {
+        $this->schoolClass = $schoolClass;
+
+        $this->classArm = $schoolClass->classArm;
+
+        $this->classSubjects = $classSubjects;
+    }
 
     public function render()
     {
-        return view('livewire.tenant.classes.add-subject', [
-            'classSections' => $this->schoolClass->classSection,
-            'subjects'      => Subject::query()->get(['uuid', 'subject_name']),
-        ]);
-    }
+        //@todo filter added subjects by class section and class section category
+        //$classSubjects = collect($this->schoolClass->subject)->pluck('subject_id');
+        //dd($this->classSubjects);
+//classArm
 
-    public function mount($schoolClass)
-    {
-        $this->schoolClass = $schoolClass;
+
+        return view('livewire.tenant.classes.add-subject', [
+            'classSections' => $this->classArm,//$this->schoolClass->classSection,
+            'subjects'      => Subject::query()->get(['uuid', 'subject_name'])->whereNotIn('uuid', $this->classSubjects),
+        ]);
     }
 
     public function store()
     {
-        if( ! $this->classSectionId || ! $this->subjectId){
+        if( ! $this->classSectionId || ! $this->subjectIds){
             return false;
         }
 
-        //@todo filter duplicate
-
-        (new CreateNewClassSubjectAction())->execute([
-            'subject_id'                => $this->subjectId,
-            'school_class_id'           => $this->schoolClass->uuid,
-            'class_section_id'          => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
-            'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
-        ]);
+        //@todo add Json array table...[all class section]
+        foreach($this->subjectIds as $subjectId){
+            (new CreateNewClassSubjectAction())->execute([
+                'subject_id'                => $subjectId,
+                'class_arm'                 => $this->classSectionId != 'all' ? [] : collect($this->classArm)->pluck('uuid'),
+                'school_class_id'           => $this->schoolClass->uuid,
+                'class_section_id'          => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
+                'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
+            ]);
+        }
 
         return redirect()->route('listClassSubject',$this->schoolClass->slug);
     }
@@ -81,29 +96,30 @@ class AddSubject extends Component
         $this->classSectionCategoryDropdown  = false;
     }
 
-    public function selectSubject(string $subjectId, string $subjectName)
+    public function selectSubject()
     {
-        $this->subjectId = $subjectId;
+        $this->subjectLabel = $this->subjectIds ? 'Subject selected' : '-- choose a subject --';
 
-        $this->subjectLabel = $subjectName;
+    }
 
-        $this->subjectDropdown = false;
+    public function onToggleAll(bool $checked)
+    {
+        $this->subjectIds = $checked ? Subject::query()->pluck('uuid')->toArray() : [];
+        $this->subjectLabel = $checked ? 'Select all' : '-- choose a subject --';
+        $this->isSubjectDropdownOpen  = ! $checked;
     }
 
     private function getClassSectionCategory(): void
     {
-        $classSection = ClassSection::query()->where('uuid', $this->classSectionId)->first();
+        $classSectionId = $this->classSectionId;
 
-        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
+        $this->classSectionCategories = collect($this->classArm)->filter(function ($item) use($classSectionId){
+            return $item->class_section_category_id && $item->class_section_id == $classSectionId
+                ? $item['classSectionCategory'] = $item->classSectionCategory
+                : [];
+        });
 
-            $this->classSectionCategories = $classSection->classSectionCategory;
+        $this->isClassSectionCategory = $this->classSectionCategories->isNotEmpty() && $this->classSectionId != 'all';
 
-            $this->isClassSectionCategory = true;
-            return;
-        }
-
-        $this->classSectionCategories = [];
-
-        $this->isClassSectionCategory = false;
     }
 }

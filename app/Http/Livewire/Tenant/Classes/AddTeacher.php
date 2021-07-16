@@ -52,7 +52,7 @@ class AddTeacher extends Component
         //@todo filter duplicate
 
         (new CreateNewClassTeacherAction())->execute([
-            'teacher_id' => $this->teacherId,
+            'class_teacher' => $this->teacherId,
             'school_class_id' => $this->schoolClass->uuid,
             'class_section_id' => $this->classSectionId,
             'class_section_category_id' => $this->classSectionCategoryId,

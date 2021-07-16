@@ -4,24 +4,40 @@ namespace App\Http\Controllers\Tenant\Subject;
 
 use App\Actions\Tenant\Subject\CreateNewSubjectAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class SubjectsController extends Controller
 {
-
     public function index()
     {
+        $schoolSubject = SchoolSubject::query()->pluck('subject_id');
+
         return view('Tenant.pages.subject.subject', [
-            'subjectTotal' => Subject::all()->count(),
-            'subjects'     => Subject::query()->get(['uuid', 'subject_name', 'slug']),
+            'subjectTotal'   => SchoolSubject::all()->count(),
+            'schoolSubjects' => SchoolSubject::query()->get(['uuid', 'subject_name', 'slug']),
+            'subjects'       => Subject::query()->get(['uuid', 'subject_name', 'slug'])->whereNotIn('uuid', $schoolSubject),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
-        (new CreateNewSubjectAction())->execute(camel_to_snake($request->except('_token')));
+        $this->validate($request, [
+            'subjects.*' => ['unique:school_subjects,subject_id'],
+            'subjects'   => ['required', 'array','min:1']
+        ]);
+
+        foreach( $request->input('subjects') as $subjectId){
+
+            $subject = Subject::query()->where('uuid', $subjectId)->first();
+
+            (new CreateNewSubjectAction())->execute([
+                'subject_name' => $subject->subject_name,
+                'subject_id'   => (string) $subjectId,
+            ]);
+        }
 
         return back();
     }

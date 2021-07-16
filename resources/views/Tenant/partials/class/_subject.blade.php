@@ -18,7 +18,7 @@
 
         </div>
         {{-- add subject --}}
-            <livewire:tenant.classes.add-subject :schoolClass="$schoolClass" />
+            <livewire:tenant.classes.add-subject :schoolClass="$schoolClass" :classSubjects="$classSubjects" />
         {{--/: add subject --}}
     </div>
 
@@ -38,19 +38,19 @@
             total: "",
             getTableClassSection(classSection, classSectionCategory){
 
-                let _classSection = {!! $classSectionType !!};
-                let _classSectionCategory = {!! $classSectionCategoryType !!};
+                {{--let _classSection = {!! $classSectionType !!};--}}
+                {{--let _classSectionCategory = {!! $classSectionCategoryType !!};--}}
 
-                if( classSection && classSectionCategory ){
-                    let filterClassSection = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
-                    let filter = _classSectionCategory.filter(id => id.uuid === classSectionCategory.class_section_category_types_id);
-                    return `${filterClassSection[0]['section_name']} - ${filter[0]['category_name']}`;
-                }
-                else if(classSection && ! classSectionCategory){
-                    let filter = _classSection.filter(id => id.uuid === classSection.class_section_types_id);
-                    return filter[0]['section_name'];
-                }
-                return 'All Sections'
+                {{--if( classSection && classSectionCategory ){--}}
+                {{--    let filterClassSection = _classSection.filter(id => id.uuid === classSection.class_section_types_id);--}}
+                {{--    let filter = _classSectionCategory.filter(id => id.uuid === classSectionCategory.class_section_category_types_id);--}}
+                {{--    return `${filterClassSection[0]['section_name']} - ${filter[0]['category_name']}`;--}}
+                {{--}--}}
+                {{--else if(classSection && ! classSectionCategory){--}}
+                {{--    let filter = _classSection.filter(id => id.uuid === classSection.class_section_types_id);--}}
+                {{--    return filter[0]['section_name'];--}}
+                {{--}--}}
+                {{--return 'All Sections'--}}
             },
             myForData: {!! $classSubjects !!},
 

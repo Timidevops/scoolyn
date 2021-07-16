@@ -36,21 +36,22 @@
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
-                                        <p class="text-gray-500 truncate" x-text="index + 1">
-                                        </p>
+                                            <span class="text-gray-500 truncate" x-text="index + 1"></span>
                                         </p>
                                     </div>
                                 </td>
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
-                                        <span class="text-gray-500 truncate" x-text="getTableClassSection(content.class_section, content.class_section_category)"></span>
+                                            <span class="text-gray-500 truncate" x-text="content.class_section ? content.class_section.section_name : '' "></span>
+                                            &nbsp;
+                                            <span class="text-gray-500 truncate" x-text="content.class_section_category ? `- ${content.class_section_category.category_name}` : '' "></span>
                                         </p>
                                     </div>
                                 </td>
 
                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                    <span class="text-gray-200 font-normal" x-text="content.teacher.full_name"></span>
+                                    <span class="text-gray-200 font-normal capitalize" x-text="content.teacher ? content.teacher.full_name : 'not assigned' "></span>
                                 </td>
 
                                 <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">

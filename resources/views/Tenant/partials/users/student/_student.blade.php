@@ -42,9 +42,9 @@
 
                 this.studentProfileDetail = {
                     name: `${student[0].first_name} ${student[0].last_name}`,
-                    class: student[0].school_class.class_name,
-                    classSection: student[0].class_section.section_name,
-                    classSectionCategory: student[0].class_section_category ? `- ${student[0].class_section_category.category_name}` : '',
+                    class: student[0].class_arm.school_class.class_name,
+                    classSection: student[0].class_arm.class_section ? student[0].class_arm.class_section.section_name : '',
+                    classSectionCategory: student[0].class_arm.class_section_category ? `- ${student[0].class_arm.class_section_category.category_name}` : '',
                     matNum: student[0].matriculation_number ? student[0].matriculation_number : 'not present',
                 };
 

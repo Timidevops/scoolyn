@@ -18,6 +18,7 @@
         </tr>
     </thead>
     <tbody>
+
     @foreach($awaitingBroadsheets as $key => $awaitingBroadsheet)
         <tr>
             <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
@@ -36,7 +37,7 @@
             </td>
             <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal capitalize">
-                        {{$awaitingBroadsheet->teacher['full_name']}}
+                        {{$awaitingBroadsheet->teacher ? $awaitingBroadsheet->teacher['full_name'] : 'not assigned'}}
                     </span>
             </td>
         </tr>

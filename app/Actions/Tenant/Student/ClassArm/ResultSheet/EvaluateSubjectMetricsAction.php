@@ -17,9 +17,20 @@ class EvaluateSubjectMetricsAction
 
         $classSubjectBroadsheet = [];
 
-        foreach ($classArm->classSubject as $classSubject){
+        $classSubjects = $classArm->classSubject->filter(function ($classSubject) use($classArm){
 
-            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($classSubject->academicBroadsheet->meta)->get('academicBroadsheet') );
+            if($classSubject->class_arm){
+                return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
+            }
+
+            return [];
+        });
+
+        foreach ($classSubjects as $classSubject){
+
+            $academicBroadsheet =  $classSubject->academicBroadsheet->where('class_arm', $classArm->uuid)->first();
+
+            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($academicBroadsheet->meta)->get('academicBroadsheet') );
         }
 
         return $classSubjectBroadsheet;

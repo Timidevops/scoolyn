@@ -3,8 +3,8 @@
         <div class="flex ">
             Broadsheet:
             <div class="pl-2">
-                <span>{{$classSubject->subject->subject_name}}</span>
-                <span class="font-medium text-xs text-gray-200">
+                <span class="capitalize">{{$classSubject->subject->subject_name}}</span>
+                <span class="font-medium text-xs text-gray-200 capitalize">
                     {{$classSubject->schoolClass->class_name}}
                     {{$classSubject->classSectionType ? "| {$classSubject->classSectionType->section_name}" : ''}}
                     {{$classSubject->classSectionCategoryType ? "| {$classSubject->classSectionCategoryType->category_name}" : ''}}
@@ -17,104 +17,33 @@
 
 <div class="h-screen py-10">
     <div class="bg-white rounded-md ">
-        <form action="{{route('storeAcademicBroadsheet',$classSubjectId)}}" method="post" x-data="broadsheet()">
-            @csrf
-            <div class="flex justify-end px-4 py-4">
-                <button type="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
-                    Save Broadsheet
-                </button>
-            </div>
-            <div class="flex flex-col mt-2">
-                <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
-                    <table class="min-w-full divide-y  divide-purple-100">
-                        <thead>
-                            <tr>
-                                <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                    SN
-                                </th>
-                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm ">
-                                        <span class="flex items-center mx-1">
-                                            Student
-                                        </span>
-                                </th>
-                                <template x-for="(item, index) in caAssessmentStructure" :key="item">
-                                    <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
-                                        <div>
-                                            <span x-text="item.name"></span>
-                                            <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
-                                        </div>
-                                    </th>
-                                </template>
-                                <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
-                                        <div class="text-center mx-1">
-                                            <span>Total</span>
-                                            <p class="text-gray-300">(100)</p>
-                                        </div>
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-purple-100">
-                            <template x-for="(item, index) in students" :key="item">
-                                <tr>
-                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
-                                        <div class="flex">
-                                            <a href="#" class="group inline-flex space-x-2 truncate">
-                                                <p class="text-gray-500 truncate" x-text="index+1">
-                                                </p>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                        <span class="text-gray-200 font-normal capitalize" x-text="item.student.first_name"></span>
-                                        <span class="text-gray-200 font-normal capitalize" x-text="item.student.last_name"></span>
-                                    </td>
-                                    <template x-for="(ca, caIndex) in caAssessmentStructure" :key="ca">
-                                        <td class="whitespace-nowrap text-xs text-gray-200">
-                                            <div class="mt-2 text-center">
-                                                <label>
-                                                    <input type="number" x-bind:class="`totalScore_${index}`" @input="onchangeCAScore(index)" x-bind:name="`broadsheet[${item.student.uuid}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
-                                                </label>
-                                            </div>
-                                        </td>
-                                    </template>
-                                    <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                                        <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}`">0</p>
-                                        <input type="hidden" x-bind:id="`totalScoreValue_${index}`" x-bind:name="`broadsheet[${item.student.uuid}][total]`" />
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </form>
+        @if($subjectPlacement == 'all')
+            @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
+        @endif
     </div>
 </div>
 
 
 <script>
-    function broadsheet() {
-        return{
-            caAssessmentStructure:{!! $caAssessmentStructure !!},
-            students: {!! $students !!},
-            onchangeCAScore(id){
-                let scoreIdText = `totalScore_${id}`;
-                let scoreIdValue = `totalScoreValue_${id}`;
-                let totalScore = 0;
+    function caAssessmentStructure() {
+        return {!! $caAssessmentStructure !!};
+    }
+    function onchangeCAScore(id, index) {
+        let scoreIdText = `totalScore_${id}_${index}`;
+        let scoreIdValue = `totalScoreValue_${id}_${index}`;
+        let totalScore = 0;
 
-                document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
-                    let score = parseInt(value.value);
+        document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
+            let score = parseInt(value.value);
 
-                    if(! score ){
-                        score = 0;
-                    }
+            if (!score) {
+                score = 0;
+            }
 
-                    totalScore = totalScore + score;
-                });
+            totalScore = totalScore + score;
+        });
 
-                document.getElementById(scoreIdText).innerText = totalScore;
-                document.getElementById(scoreIdValue).value = totalScore;
-            },
-        }
+        document.getElementById(scoreIdText).innerText = totalScore;
+        document.getElementById(scoreIdValue).value = totalScore;
     }
 </script>
