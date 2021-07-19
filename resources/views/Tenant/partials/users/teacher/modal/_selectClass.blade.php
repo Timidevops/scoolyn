@@ -68,6 +68,11 @@
                 <div x-show="sectionCategoryDropdown" class="relative border border-purple-100">
                     <ul  class="absolute bg-white w-full py-1 overflow-auto  text-base leading-6 border border-purple-100
               rounded-md shadow-xs focus:outline-none sm:text-sm sm:leading-5">
+                        <li wire:click="selectSectionCategory('all', 'All Section')"
+                            x-on:click="sectionCategoryDropdown = false;"
+                            class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                            All Section
+                        </li>
                         @foreach($sectionCategories as $sectionCategory)
                             <li wire:click="selectSectionCategory('{{$sectionCategory->uuid}}', '{{$sectionCategory->category_name}}')"
                                 x-on:click="sectionCategoryDropdown = false;"

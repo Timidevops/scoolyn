@@ -57,13 +57,15 @@ class Index extends Component
     {
         foreach ($this->classSubjects as $classSubject){
 
+
            // dd($classSubject->academicBroadsheet->where('class_arm', $this->classArm->uuid)->first());
 
             if( ! $classSubject->academicBroadsheet ){
+                $this->totalAwaitingBroadsheet += 1;
                 continue;
             }
 
-            $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $this->classArm->uuid)->first();
+            $academicBroadsheet = $classSubject->academicBroadsheet()->where('class_arm', $this->classArm->uuid)->first();
 
             if( $academicBroadsheet ){
 
@@ -76,6 +78,10 @@ class Index extends Component
                 $this->totalSubmittedBroadsheet +=
                     $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS ?
                        1 : 0;
+
+                $this->totalAwaitingBroadsheet +=
+                    $academicBroadsheet->status == AcademicBroadSheet::CREATED_STATUS ?
+                        1 : 0;
 
                 $this->totalNotApprovedBroadsheet +=
                     $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ?
@@ -92,10 +98,11 @@ class Index extends Component
         foreach ($this->classSubjects as $classSubject){
 
             if( ! $classSubject->academicBroadsheet ){
+                $this->awaitingBroadsheets [] = $classSubject;
                 continue;
             }
 
-            $academicBroadsheet = $classSubject->academicBroadsheet
+            $academicBroadsheet = $classSubject->academicBroadsheet()
                 ->where('class_arm', $this->classArm->uuid)->first();
 
             if($academicBroadsheet){

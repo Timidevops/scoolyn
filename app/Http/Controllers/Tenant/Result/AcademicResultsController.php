@@ -24,7 +24,7 @@ class AcademicResultsController extends Controller
     public function index()
     {
         //@todo get auth teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
         $classArm = $teacher->classArm;
 
@@ -41,9 +41,9 @@ class AcademicResultsController extends Controller
 
     public function single(string $classArmId)
     {
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
-        $classArm = $teacher->classArm->where('uuid', $classArmId)->first();
+        $classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
 
         if( ! $classArm ){
             abort(404);
@@ -52,11 +52,17 @@ class AcademicResultsController extends Controller
         $classSubject = $classArm->classSubject->filter(function ($classSubject) use($classArm){
 
             if($classSubject->class_arm){
+
                 return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
+            }
+            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
+                return  $classSubject->class_section_id == $classArm->class_section_id;
             }
 
             return [];
         });
+
+        //dd($classSubject);
 
         return view('Tenant.pages.result.academicResult.single', [
             'classArm' => $classArm,
@@ -67,36 +73,50 @@ class AcademicResultsController extends Controller
     public function singleSubject(string $classArmId, string $classSubjectId)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
-        $this->classArm = $teacher->classArm->where('uuid', $classArmId)->first();
+
+        $this->classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
 
         if( ! $this->classArm ){
             abort(404);
         }
 
-        $classSubjectInstance = ClassSubject::whereUuid($classSubjectId);
+        $classSubject = ClassSubject::whereUuid($classSubjectId);
 
-        if($classSubjectInstance->class_arm){
-            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
-        }
-        else{
-            $classSubject = [];
-        }
+        //dd($classSubjectId);
 
+        //dd($classSubjectInstance->subject->subject_name);
 
-       // dd($classSubjectInstance);
+//        if($classSubjectInstance->class_arm){
+//            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
+//        }
+//        elseif($classSubjectInstance->class_section_id && ! $classSubjectInstance->class_section_category_id){
+//            $classSubject = $classSubjectInstance->where('class_section_id', $this->classArm->class_section_id)->first();
+//        }
+//        else{
+//            $classSubject = [];
+//        }
+
+       // dd($classSubject->subject->subject_name);
+
+        $academicBroadsheet = AcademicBroadSheet::query()
+            ->where('class_arm', $classArmId)
+            ->where('class_subject_id', $classSubjectId)->first();
+
+        //dd($academicBroadsheet);
 
         //$this->classTeacher = $teacher->classArm->teacher;
 
        // $classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 
-        if( ! $classSubject || ! $classSubject->academicBroadsheet ){
+//        if( ! $classSubject || ! $classSubject->academicBroadsheet ){
+//
+//            abort(404);
+//        }
+//        dd('here');
 
-            abort(404);
-        }
-
-        $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+        //$academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
 
         ! $academicBroadsheet ? abort(404) : null;
 
@@ -198,24 +218,24 @@ class AcademicResultsController extends Controller
     public function approval(string $classArmId, string $classSubjectId, Request $request)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
         //$this->classTeacher = $teacher->classArm;
 
-        $this->classArm = $teacher->classArm->where('uuid', $classArmId)->first();
+        $this->classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
 
         if( ! $this->classArm ){
             abort(404);
         }
 
-        $classSubjectInstance = ClassSubject::whereUuid($classSubjectId);
+        $classSubject = ClassSubject::whereUuid($classSubjectId);
 
-        if($classSubjectInstance->class_arm){
-            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
-        }
-        else{
-            $classSubject = [];
-        }
+//        if($classSubjectInstance->class_arm){
+//            $classSubject = $classSubjectInstance->whereJsonContains('class_arm', $classArmId)->first();
+//        }
+//        else{
+//            $classSubject = [];
+//        }
 
         //$classSubject = ( collect($teacher->getClassSubjects())->whereIn('uuid', $classSubjectId) )->first();
 
@@ -223,10 +243,11 @@ class AcademicResultsController extends Controller
             return back();
         }
 
-        $academicBroadsheet = $classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+        $academicBroadsheet = AcademicBroadSheet::query()
+            ->where('class_arm', $classArmId)
+            ->where('class_subject_id', $classSubjectId)->first();//$classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
 
         ! $academicBroadsheet ? abort(404) : null;
-
 
         if( $request->has(AcademicBroadSheet::NOT_APPROVED_STATUS) ){
 

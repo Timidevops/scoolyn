@@ -28,7 +28,7 @@ class AcademicBroadsheetsController extends Controller
     public function index()
     {
         //@todo change to auth:teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
         $teacherSubject = $teacher->subjectTeacher->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
 
@@ -41,9 +41,9 @@ class AcademicBroadsheetsController extends Controller
     public function create(string $uuid)
     {
         //@todo change to auth:teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
-        $this->classSubject = $teacher->subjectTeacher->where('uuid', $uuid)->first();
+        $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
         if( ! $this->classSubject ){
             abort(404);
@@ -59,18 +59,22 @@ class AcademicBroadsheetsController extends Controller
 
         $studentSubjects->load('student');
 
+        //dd($student->first()->student->classArm);
+
+
+
         //get students if subject teacher is for all class arms
         if($this->classSubject->class_arm){
 
-            $this->students = collect($this->classSubject->class_arm)->map(function ($classArm) use($studentSubjects){
+            $this->students = collect($this->classSubject->class_arm)->map(function ($classArmId) use($studentSubjects){
 
-                $subjectDetail['classArm'] = $classArm;
+                $subjectDetail['classArm'] = $classArmId;
 
-                $subjectDetail['classSection'] = $this->classSubject->getClassArm($classArm)->classSection;
+                $subjectDetail['classSection'] = $this->classSubject->getClassArm($classArmId)->classSection;
 
-                $subjectDetail['classSectionCategory'] = $this->classSubject->getClassArm($classArm)->classSectionCategory;
+                $subjectDetail['classSectionCategory'] = $this->classSubject->getClassArm($classArmId)->classSectionCategory;
 
-                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArm)
+                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArmId)
                     ->load('student')->map(function ($student){
                         return $student->student;
                     });
@@ -83,9 +87,9 @@ class AcademicBroadsheetsController extends Controller
                     return  $subjectDetail;
                 }
 
-                if($this->classSubject->academicBroadsheet->where('class_arm', $classArm)->exists()){
+                if($this->classSubject->academicBroadsheet()->where('class_arm', $classArmId)->exists()){
 
-                    $academicBroadSheet = $this->classSubject->academicBroadsheet->where('class_arm', $classArm)->first();
+                    $academicBroadSheet = $this->classSubject->academicBroadsheet()->where('class_arm', $classArmId)->first();
 
                     $subjectDetail['academicBroadsheets'] = collect(collect($this->edit($academicBroadSheet))->get('broadsheets'));
 
@@ -117,7 +121,47 @@ class AcademicBroadsheetsController extends Controller
             //set subject placement to all class arms...
             $this->subjectPlacement = (bool) $this->classSubject->class_arm ? 'all' : '';
         }
+        // get students if subject teacher is for only all class sections
+        elseif ($this->classSubject->class_section_id && ! $this->classSubject->class_section_category_id){
 
+            $this->students = $this->classSubject->getClassArmsByClassSectionId()->map(function ($classArm) use($studentSubjects){
+                $subjectDetail['classArm'] = $classArm->uuid;
+
+                $subjectDetail['classSection'] = $classArm->classSection;
+
+                $subjectDetail['classSectionCategory'] = $classArm->classSectionCategory;
+
+                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArm->uuid)
+                    ->load('student')->map(function ($student){
+                        return $student->student;
+                    });
+
+                $subjectDetail['academicBroadsheets'] = null;
+
+                $subjectDetail['broadsheetStatus'] = null;
+
+                if( ! $this->classSubject->academicBroadsheet ){
+                    return  $subjectDetail;
+                }
+
+                if($this->classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->exists()){
+                    $academicBroadSheet = $this->classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->first();
+
+                    $subjectDetail['academicBroadsheets'] = collect(collect($this->edit($academicBroadSheet))->get('broadsheets'));
+
+                    $subjectDetail['caAssessmentStructureFormat'] = collect(collect($this->edit($academicBroadSheet))->get('caAssessmentStructure'));
+
+                    $subjectDetail['gradeFormats'] = collect(collect( collect($this->edit($academicBroadSheet))->get('gradeFormat') )->get('meta'));
+
+                    $subjectDetail['broadsheetStatus'] = $academicBroadSheet->status;
+                }
+                return $subjectDetail;
+            });
+
+            //set subject placement to all class arms...
+            $this->subjectPlacement = 'all';// $this->classSubject->class_arm ? 'all' : '';
+
+        }
         //dd($this->students);
 
 
@@ -141,12 +185,17 @@ class AcademicBroadsheetsController extends Controller
 
     public function store(Request $request, string $uuid)
     {
+
         //@todo change to auth:teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
-        $this->classSubject = $teacher->subjectTeacher->where('uuid', $uuid)->first();
+        $classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
-        $academicBroadsheet = (new CreateNewBroadsheetAction())->execute($this->classSubject, [
+        if( ! $classSubject ){
+            return back();
+        }
+
+        $academicBroadsheet = (new CreateNewBroadsheetAction())->execute($classSubject, [
             'meta'=> $request->input('broadsheet'),
             'class_arm' => $request->input('classArm'),
         ]);
@@ -207,11 +256,11 @@ class AcademicBroadsheetsController extends Controller
     public function update(Request $request, string $uuid)
     {
         //@todo change to auth:teacher
-        $teacher = Teacher::find(3);
+        $teacher = Teacher::find(5);
 
-        $this->classSubject = $teacher->subjectTeacher->where('uuid', $uuid)->first();
+        $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
-        $academicBroadsheet = $this->classSubject->academicBroadsheet
+        $academicBroadsheet = $this->classSubject->academicBroadsheet()
             ->where('class_arm', $request->input('classArm'))->first();
 
         if( ! $this->classSubject || ! $academicBroadsheet ){

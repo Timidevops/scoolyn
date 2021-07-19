@@ -44,6 +44,16 @@ class ClassSubject extends Model
         return ClassArm::query()->where('uuid', $uuid)->first();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getClassArmsByClassSectionId()
+    {
+        return ClassArm::query()
+            ->where('school_class_id', $this->school_class_id)
+            ->where('class_section_id', $this->class_section_id)->get();
+    }
+
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id', 'uuid');
@@ -51,7 +61,7 @@ class ClassSubject extends Model
 
     public function classSection(): BelongsTo
     {
-        return $this->belongsTo(ClassSection::class, 'class_section_id', 'uuid');
+        return $this->belongsTo(ClassSectionType::class, 'class_section_id', 'uuid');
     }
 
     public function classSectionCategory(): BelongsTo

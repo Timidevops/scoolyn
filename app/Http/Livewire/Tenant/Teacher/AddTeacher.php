@@ -80,10 +80,19 @@ class AddTeacher extends Component
                 $classArms = ClassArm::query()->where('school_class_id', $this->schoolClassId)->get();
 
                 foreach ($classArms as $classArm){
-                    $this->attachClassTeacher($classArm->uuid);
+                    $this->attachClassTeacher($classArm);
                 }
 
             }//@todo for all class section category :: else if
+            elseif ($this->sectionCategoryId == 'all'){
+                $classArms = ClassArm::query()
+                    ->where('school_class_id', $this->schoolClassId)
+                    ->where('class_section_id', $this->classSectionId)->get();
+
+                foreach ($classArms as $classArm){
+                    $this->attachClassTeacher($classArm);
+                }
+            }
             else{
                 $classArm = ClassArm::query()
                     ->where('school_class_id', $this->schoolClassId)
@@ -104,17 +113,14 @@ class AddTeacher extends Component
             foreach ($this->selectedSubject as $classSubject){
                 $this->attachSubjectTeacher($classSubject['classSubject']);
             }
-
         }
 
 
         $this->redirectRoute('createTeacher');
     }
 
-    private function attachClassTeacher($classArmId)
+    private function attachClassTeacher($classArm)
     {
-        $classArm = ClassArm::query()->where('uuid', $classArmId)->first();
-
         $classArm->class_teacher = $this->teacherId;
 
         $classArm->save();
