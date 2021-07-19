@@ -28,6 +28,7 @@ class GenerateResultSheetAction
             $studentBroadsheets [$studentId] = (new GetBroadsheetsAction())->execute($classArm->uuid, $studentId, $student->subjects->subjects);
         }
 
+
         if( count($studentIds) != count($studentBroadsheets) ){
             //@todo add log
             return;
@@ -38,6 +39,8 @@ class GenerateResultSheetAction
         $this->studentBroadsheets = $this->updateStudentBroadsheetsWithStudentPosition();
 
         $this->updateStudentBroadsheetWithStudentMetric();
+
+        //dd($this->studentBroadsheets);
 
         // add data to resultTable of each student
         //@todo add ca and grading format...
@@ -118,6 +121,8 @@ class GenerateResultSheetAction
     private function getSubjectMetric($studentId, array $subjectIds)
     {
         $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
+
+        //dd($subjectMetrics);
 
         foreach ($subjectIds as $key => $subjectId){
 

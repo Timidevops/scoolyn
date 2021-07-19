@@ -22,13 +22,17 @@ class EvaluateSubjectMetricsAction
             if($classSubject->class_arm){
                 return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
             }
+            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
+                return $classSubject->class_section_id == $classArm->class_section_id;
+            }
+
 
             return [];
         });
 
         foreach ($classSubjects as $classSubject){
 
-            $academicBroadsheet =  $classSubject->academicBroadsheet->where('class_arm', $classArm->uuid)->first();
+            $academicBroadsheet =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->first();
 
             $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($academicBroadsheet->meta)->get('academicBroadsheet') );
         }

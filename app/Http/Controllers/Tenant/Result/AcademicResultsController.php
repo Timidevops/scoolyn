@@ -24,7 +24,7 @@ class AcademicResultsController extends Controller
     public function index()
     {
         //@todo get auth teacher
-        $teacher = Teacher::find(5);
+        $teacher = Teacher::find(4);
 
         $classArm = $teacher->classArm;
 
@@ -41,7 +41,7 @@ class AcademicResultsController extends Controller
 
     public function single(string $classArmId)
     {
-        $teacher = Teacher::find(5);
+        $teacher = Teacher::find(4);
 
         $classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
 
@@ -73,7 +73,7 @@ class AcademicResultsController extends Controller
     public function singleSubject(string $classArmId, string $classSubjectId)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(5);
+        $teacher = Teacher::find(4);
 
 
         $this->classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
@@ -218,7 +218,7 @@ class AcademicResultsController extends Controller
     public function approval(string $classArmId, string $classSubjectId, Request $request)
     {
         //@todo auth teacher
-        $teacher = Teacher::find(5);
+        $teacher = Teacher::find(4);
 
         //$this->classTeacher = $teacher->classArm;
 

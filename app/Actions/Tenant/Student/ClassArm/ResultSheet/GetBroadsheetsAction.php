@@ -23,7 +23,7 @@ class GetBroadsheetsAction
 
             $classSubjects = ClassSubject::query()->where('uuid', $subjectId[$int])->first();
 
-            $academicBroadsheet = $classSubjects->academicBroadsheet->where('class_arm', $classArmId)->first();
+            $academicBroadsheet = $classSubjects->academicBroadsheet()->where('class_arm', $classArmId)->first();
 
             $broadsheets ['subjects'][$subjectId[$int]] = collect($academicBroadsheet->meta['academicBroadsheet'])->get($studentId);
 
