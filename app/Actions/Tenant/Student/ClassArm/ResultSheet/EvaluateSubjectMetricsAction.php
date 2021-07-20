@@ -27,7 +27,7 @@ class EvaluateSubjectMetricsAction
             }
 
 
-            return [];
+            return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
         });
 
         foreach ($classSubjects as $classSubject){

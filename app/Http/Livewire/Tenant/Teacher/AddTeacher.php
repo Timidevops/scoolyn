@@ -55,6 +55,7 @@ class AddTeacher extends Component
 
     public function store()
     {
+        //dd($this->classSectionId);
         $this->validate();
 
         $user = (new CreateUserAction())->execute([
@@ -77,6 +78,7 @@ class AddTeacher extends Component
         if( collect($this->designation)->contains('class-teacher') == 'class-teacher' ){
 
             if($this->classSectionId == 'all'){
+               // dd('all class');
                 $classArms = ClassArm::query()->where('school_class_id', $this->schoolClassId)->get();
 
                 foreach ($classArms as $classArm){
@@ -85,6 +87,7 @@ class AddTeacher extends Component
 
             }//@todo for all class section category :: else if
             elseif ($this->sectionCategoryId == 'all'){
+               // dd('all sect');
                 $classArms = ClassArm::query()
                     ->where('school_class_id', $this->schoolClassId)
                     ->where('class_section_id', $this->classSectionId)->get();
@@ -235,7 +238,7 @@ class AddTeacher extends Component
             $classSections = "{$classSubject->classSectionType->section_name} - {$classSubject->classSectionCategoryType->category_name}";
         }
         elseif ( $classSubject->classSection && ! $classSubject->classSectionCategory ){
-            $classSections = $classSubject->classSectionType->section_name;
+            $classSections = $classSubject->classSection->section_name;
         }
         else{
             $classSections = 'All Section';

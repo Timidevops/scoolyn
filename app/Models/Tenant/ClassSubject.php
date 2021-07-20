@@ -54,6 +54,14 @@ class ClassSubject extends Model
             ->where('class_section_id', $this->class_section_id)->get();
     }
 
+    public function getClassArmsByClassSectionCategoryId()
+    {
+        return ClassArm::query()
+            ->where('school_class_id', $this->school_class_id)
+            ->where('class_section_id', $this->class_section_id)
+            ->where('class_section_category_id', $this->class_section_category_id)->get();
+    }
+
     public function schoolClass(): BelongsTo
     {
         return $this->belongsTo(SchoolClass::class, 'school_class_id', 'uuid');
