@@ -69,10 +69,10 @@ class AddTeacher extends Component
         $this->schoolClassDropdown = false;
 
         if( $this->classSubject->classSection && $this->classSubject->classSectionCategory ){
-            $this->classSections = "{$this->classSubject->classSectionType->section_name} - {$this->classSubject->classSectionCategoryType->category_name}";
+            $this->classSections = "{$this->classSubject->classSection->section_name} - {$this->classSubject->classSectionCategory->category_name}";
         }
         elseif ( $this->classSubject->classSection && ! $this->classSubject->classSectionCategory ){
-            $this->classSections = $this->classSubject->classSectionType->section_name;
+            $this->classSections = $this->classSubject->classSection->section_name;
         }
         else{
             $this->classSections = 'All Section';

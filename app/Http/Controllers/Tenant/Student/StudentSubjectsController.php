@@ -25,13 +25,23 @@ class StudentSubjectsController extends Controller
 
         $studentSubjectIds = $student->subjects ? $student->subjects->subjects : [];
 
-        //@todo whereJsonContain [class_section_id,... ] etc
-        $classSubjects = ClassSubject::query()->whereNotIn('uuid', $studentSubjectIds)
-            ->where('school_class_id', $student->classArm->school_class_id)
-            //->Where('class_section_id', $student->class_section_id)
-            //->Where('class_section_category_id', $student->class_section_category_id)
-            ->get();
+        $classArm = $student->classArm;
 
+        $classSubjects = $student->classArm->classSubject->filter(function ($classSubject) use($classArm){
+
+            if($classSubject->class_arm){
+
+                return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
+            }
+            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
+                return  $classSubject->class_section_id == $classArm->class_section_id;
+            }
+
+            return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
+        });
+
+
+        $classSubjects = $classSubjects->whereNotIn('uuid', $studentSubjectIds);
 
         $classSubjects->load('subject');
 
@@ -44,14 +54,14 @@ class StudentSubjectsController extends Controller
         ]);
     }
 
-    public function create(string $uuid)
-    {
-        $student = Student::query()->where('uuid', $uuid)->firstOrFail();
-
-        return view('Tenant.pages.student.subject.create', [
-            'studentId' => $student->uuid,
-        ]);
-    }
+//    public function create(string $uuid)
+//    {
+//        $student = Student::query()->where('uuid', $uuid)->firstOrFail();
+//
+//        return view('Tenant.pages.student.subject.create', [
+//            'studentId' => $student->uuid,
+//        ]);
+//    }
 
     public function store(string $uuid, Request $request)
     {

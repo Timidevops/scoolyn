@@ -47,9 +47,23 @@ class AddTeacher extends Component
 
     public function render()
     {
+        $classArms = ClassArm::query()->whereNull('class_teacher')->get();
+
+        $classArms = $classArms->map(function ($classArm){
+            $uuid [] = $classArm->schoolClass->uuid;
+            return $uuid;
+        });
+
+        $classSubjects = ClassSubject::query()->whereNull('teacher_id')->get();
+
+        $classSubjects = $classSubjects->map(function ($classSubject){
+            $uuid [] = $classSubject->subject->uuid;
+            return $uuid;
+        });
+
         return view('livewire.tenant.teacher.add-teacher', [
-            'schoolClass'   => SchoolClass::query()->get(['uuid', 'class_name']),
-            'subjects'      => Subject::query()->get(['uuid', 'subject_name']),
+            'schoolClass'   => SchoolClass::query()->whereIn('uuid', $classArms)->get(['uuid', 'class_name']),
+            'subjects'      => Subject::query()->whereIn('uuid', $classSubjects)->get(['uuid', 'subject_name']),
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tenant\Classes;
 
 use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassTeacherAction;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\Teacher;
@@ -33,7 +34,7 @@ class AddTeacher extends Component
     public function render()
     {
         return view('livewire.tenant.classes.add-teacher', [
-            'classSections' => $this->schoolClass->classSection,
+            'classSections' => $this->schoolClass->classArm()->whereNull('class_teacher')->get(),
             'teachers' => Teacher::query()->get(['uuid', 'full_name']),
         ]);
     }
@@ -46,19 +47,58 @@ class AddTeacher extends Component
     public function store()
     {
         if( ! $this->classSectionId || ! $this->teacherId ){
-            return false;
+            return back();
         }
 
         //@todo filter duplicate
 
-        (new CreateNewClassTeacherAction())->execute([
-            'class_teacher' => $this->teacherId,
-            'school_class_id' => $this->schoolClass->uuid,
-            'class_section_id' => $this->classSectionId,
-            'class_section_category_id' => $this->classSectionCategoryId,
-        ]);
+//        (new CreateNewClassTeacherAction())->execute([
+//            'class_teacher' => $this->teacherId,
+//            'school_class_id' => $this->schoolClass->uuid,
+//            'class_section_id' => $this->classSectionId,
+//            'class_section_category_id' => $this->classSectionCategoryId,
+//        ]);
+
+        if( $this->classSectionId == 'all' ){
+           $classArms = ClassArm::query()->where('school_class_id', $this->schoolClass->uuid)->get();
+
+           foreach ($classArms as $classArm){
+                $this->attachClassTeacher($classArm);
+           }
+        }
+        elseif( $this->classSectionCategoryId == 'all' ){
+            $classArms = ClassArm::query()
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)->get();
+
+            foreach ($classArms as $classArm){
+                $this->attachClassTeacher($classArm);
+            }
+        }
+        else{
+            $classArm = ClassArm::query()
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)
+                ->where('class_section_category_id', $this->classSectionCategoryId)->first();
+
+            //dd($this->classSectionId);
+
+            if( $classArm ){
+                //dd('here');
+                $classArm->class_teacher = (string) $this->teacherId;
+
+                $classArm->save();
+            }
+        }
 
         return redirect()->route('classTeacher',$this->schoolClass->slug);
+    }
+
+    private function attachClassTeacher($classArm)
+    {
+        $classArm->class_teacher = $this->teacherId;
+
+        $classArm->save();
     }
 
     public function selectClassSection(string $classSectionId, string $classSectionName)

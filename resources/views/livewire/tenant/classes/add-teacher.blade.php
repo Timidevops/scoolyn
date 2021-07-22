@@ -31,19 +31,21 @@
 
                 <div class="mt-6">
                     <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
-                    <button wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
+                    <button @if(count($classSections) == 0) disabled @endif wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
                             class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                         {{$classSectionLabel}}
                     </button>
                     <div class="border border-purple-100 @if(!$classSectionDropdown)  hidden @endif">
                         <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
               rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                            @if(count($classSections) > 0)
                             <li wire:click="selectClassSection('all', 'All Sections')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                All Section
+                                All Section{!! $classSections !!}
                             </li>
+                            @endif
                             @foreach($classSections as $classSection)
-                                <li wire:click="selectClassSection('{{$classSection->uuid}}', '{{$classSection->classSectionType->section_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    {{$classSection->classSectionType->section_name}}
+                                <li wire:click="selectClassSection('{{$classSection->classSection->uuid}}', '{{$classSection->classSection->section_name}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                    {{$classSection->classSection->section_name}}
                                 </li>
                             @endforeach
                         </ul>

@@ -25,19 +25,19 @@ class SubjectTeachersController extends Controller
         ]);
     }
 
-    public function store(Request $request)
-    {
-        $class = ClassSection::query()->where('uuid', '=', $request->input('classSection'))->first();
-
-        if( $request->input('classSectionCategory') ){
-            $class = ClassSectionCategory::query()->where('uuid', '=', $request->input('classSectionCategory'))->first();
-        }
-
-        (new CreateNewSubjectTeacherAction())->execute($class, [
-            'teacher_id' => $request->input('teacher'),
-            'subject_id' => $request->input('subject'),
-        ]);
-
-        return redirect('/');
-    }
+//    public function store(Request $request)
+//    {
+//        $class = ClassSection::query()->where('uuid', '=', $request->input('classSection'))->first();
+//
+//        if( $request->input('classSectionCategory') ){
+//            $class = ClassSectionCategory::query()->where('uuid', '=', $request->input('classSectionCategory'))->first();
+//        }
+//
+//        (new CreateNewSubjectTeacherAction())->execute($class, [
+//            'teacher_id' => $request->input('teacher'),
+//            'subject_id' => $request->input('subject'),
+//        ]);
+//
+//        return redirect('/');
+//    }
 }
