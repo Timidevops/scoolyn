@@ -78,15 +78,15 @@ class ClassSubject extends Model
         return$this->belongsTo(ClassSectionCategory::class, 'class_section_category_id', 'uuid');
     }
 
-//    public function classSectionType(): HasOneThrough
-//    {
-//        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
-//    }
-//
-//    public function classSectionCategoryType(): HasOneThrough
-//    {
-//        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
-//    }
+    public function classSectionType(): HasOneThrough
+    {
+        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
+    }
+
+    public function classSectionCategoryType(): HasOneThrough
+    {
+        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
+    }
 
     public function getRouteKeyName()
     {
