@@ -19,11 +19,18 @@ class SchoolClassesController extends Controller
     public function index()
     {
         $schoolClasses = (SchoolClass::all());
-        $schoolClasses->load(['classSectionType']);
+        //$schoolClasses->load(['classSectionType']);
+
+        $classArms = $schoolClasses->map(function ($schoolClass){
+            $schoolClass['class_section'] = $schoolClass->classSectionType->unique();
+            return $schoolClass;
+        });
+
+       // dd($classArms);
 
         return view('Tenant.classes', [
             'totalClass'               => SchoolClass::all()->count(),
-            'schoolClasses'            => collect($schoolClasses),
+            'schoolClasses'            => collect($classArms),
             'classSectionType'         => ClassSectionType::query()->get(['section_name', 'uuid']),
             'classSectionCategoryType' => ClassSectionCategoryType::query()->get(['category_name', 'uuid']),
         ]);

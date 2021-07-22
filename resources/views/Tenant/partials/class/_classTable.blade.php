@@ -42,8 +42,8 @@
                 </span>
               </td>
               <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                  <template x-for="item in item.class_section_type">
-                      <span x-text="item.section_name"></span>
+                  <template x-for="item in item.class_section">
+                      <p x-text="item.section_name"></p>
                   </template>
                 </td>
 

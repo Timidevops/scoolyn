@@ -58,11 +58,11 @@
 
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                         <div class="italic cursor-pointer text-center text-blue-100 flex justify-between">
-                                            <div class="font-normal" :class="! content.class_teacher ? 'hidden': ''  ">
-                                                <span x-text="content.class_teacher ? 'Class Teacher' : '' "></span>
+                                            <div class="font-normal" :class="content.class_arm.length === 0 && 'hidden'  ">
+                                                <span x-text="content.class_arm.length > 0 && 'Class Teacher' "></span>
                                             </div>
-                                            <div class="font-normal" :class="content.subject_teacher.length === 0 ? 'hidden': ''  ">
-                                                <span x-text="content.subject_teacher.length > 0 ? 'Subject Teacher' : '' "></span>
+                                            <div class="font-normal" :class="content.subject_teacher.length === 0 && 'hidden'  ">
+                                                <span x-text="content.subject_teacher.length > 0 && 'Subject Teacher' "></span>
                                             </div>
                                         </div>
                                     </td>

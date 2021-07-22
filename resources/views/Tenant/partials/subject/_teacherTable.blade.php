@@ -38,7 +38,7 @@
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                         <p x-text="item.school_class.class_name"></p>
-                                        <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section_type, item.class_section_category_type)"></span>
+                                        <span class="text-gray-200 font-normal"  x-text="getTableClassSection(item.class_section, item.class_section_category)"></span>
                                     </td>
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                         <span class="text-gray-200 font-normal"  x-text=" item.teacher ? item.teacher.full_name : 'not assigned' "></span>
