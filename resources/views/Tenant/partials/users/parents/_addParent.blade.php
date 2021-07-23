@@ -54,7 +54,7 @@
 
 
           <div class="px-4 py-4">
-            <button type="submit" href="" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" x-on:click=addDetails()>
+            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
                 Add parent
             </button>
         </div>
@@ -83,16 +83,7 @@
                           value:'Others',
                           },
                   ],
-                  // test
-                  addDetails() {
 
-                          console.log('called addDetails()');
-                          this.items.push(name); name = ''
-                      },
-
-                  // test
-
-                //   parents: {!! $parents ?? '' !!},
                         };
                         }
     </script>

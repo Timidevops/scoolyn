@@ -49,6 +49,7 @@ Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
     Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
 });
 
+Route::get('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
 Route::post('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');
 
 Route::post('academic-term', [\App\Http\Controllers\Tenant\AcademicTerm\AcademicTermsController::class, 'store'])->name('storeAcademicTerm');
@@ -108,6 +109,8 @@ Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsControll
 Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
 
 Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
+
+Route::get('settings', [\App\Http\Controllers\Tenant\Setting\SettingsController::class, 'index'])->name('listSetting');
 
 //Route::middleware('tenant')->group(function() {
 //    Route::get('/', function () {

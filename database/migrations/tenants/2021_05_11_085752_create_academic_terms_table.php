@@ -18,6 +18,7 @@ class CreateAcademicTermsTable extends Migration
             $table->uuid('uuid');
             $table->string('term_name');
             $table->string('slug');
+            $table->integer('current_term');
             $table->timestamps();
             $table->softDeletes();
         });
