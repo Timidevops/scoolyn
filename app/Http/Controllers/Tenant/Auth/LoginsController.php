@@ -16,7 +16,7 @@ class LoginsController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'exists:users,email'],
             'password' => ['required'],
         ]);
 
