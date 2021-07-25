@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -35,9 +36,9 @@ class Student extends Model
         return $this->hasMany(AcademicReport::class, 'student_id', 'uuid');
     }
 
-    public function studentFee(): HasMany
+    public function studentFee(): HasOne
     {
-        return $this->hasMany(StudentFee::class, 'student_id', 'uuid');
+        return $this->hasOne(StudentFee::class, 'student_id', 'uuid');
     }
 
     public function schoolFee(): HasMany
@@ -73,6 +74,11 @@ class Student extends Model
     public function getRouteKeyName()
     {
         return 'uuid';
+    }
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
     }
 }
 
