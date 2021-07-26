@@ -49,9 +49,8 @@ Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
 
 
 Route::middleware('auth')->group(function (){
-    Route::get('dashboard', function () {
-        return view('Tenant.dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
+    Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout');
 
     Route::get('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
     Route::post('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');

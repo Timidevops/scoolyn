@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     @yield('headerMeta')
-    <link rel="stylesheet" href="/css/app.css">
-    <link rel="stylesheet" href="/css/font/stylesheet.css" type="text/css" charset="utf-8"/>
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('css/font/stylesheet.css')}}" type="text/css" charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Scoolyn</title>
     @livewireStyles
@@ -20,6 +20,16 @@
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
 
-
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    @if(\Illuminate\Support\Facades\Session::has('successFlash') || \Illuminate\Support\Facades\Session::has('errorFlash'))
+        <script>
+            @if(\Illuminate\Support\Facades\Session::has('successFlash'))
+                swal("Success!", "{{\Illuminate\Support\Facades\Session::get('successFlash')}}", "success");
+            @endif
+            @if(\Illuminate\Support\Facades\Session::has('errorFlash'))
+            swal("Error!", "{{\Illuminate\Support\Facades\Session::get('errorFlash')}}", "error");
+            @endif
+        </script>
+    @endif
 </body>
 </html>

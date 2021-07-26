@@ -19,8 +19,22 @@ class CreateAcademicBroadSheetsTable extends Migration
             $table->string('class_subject_id');
             $table->string('class_arm');
             $table->json('meta');
+            $table->string('academic_session_id');
+            $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('academic_session_id')
+                ->on('academic_sessions')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('academic_term_id')
+                ->on('academic_terms')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

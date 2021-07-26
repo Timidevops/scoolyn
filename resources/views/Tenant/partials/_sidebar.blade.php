@@ -27,62 +27,34 @@
                     </a>
                 </div>
 
-                    <div class=""
-                    >
-                        <a href="{{route('listSubject')}}" class=" {{url()->current() == url()->route('listSubject') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                            <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" x-show="navigationOpen === true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                           <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Subject</span>
-                        </a >
-                    </div>
+                    @can('read a subject')
+                        <div class=""
+                        >
+                            <a href="{{route('listSubject')}}" class=" {{url()->current() == url()->route('listSubject') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" x-show="navigationOpen === true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Subject</span>
+                            </a >
+                        </div>
+                    @endcan
 
-                    <div class="">
-                        <a href="{{route('listClass')}}" class=" {{url()->current() == url()->route('listClass') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                            <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"  x-show="navigationOpen === true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span class="focus:text-white" :class="{'hidden': navigationOpen == true}">Classes</span>
-                        </a >
-                    </div>
-
-
-                    <div class="">
-                        <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="isUserDropDownOpen = !isUserDropDownOpen">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
-
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                           <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Users</span>
-                        </button >
-                          <ul class="" x-show="isUserDropDownOpen">
-                              <li>
-                                  <a href="{{route('listTeacher')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                      <span class="focus:text-white">Teacher</span>
-                                  </a>
-                              </li>
-                              <li>
-                              <a href="{{route('listStudent')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                <span class="focus:text-white">Student</span>
-                                </a>
-                            </li>
-                              <li>
-                                <a href="{{route('listParent')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-
-                                 <span class="focus:text-white"></span> Parents
-                                  </a>
-                              </li>
-                          </ul>
-                    </div>
+                    @can('read a class arm')
+                        <div class="">
+                            <a href="{{route('listClass')}}" class=" {{url()->current() == url()->route('listClass') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"  x-show="navigationOpen === true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="focus:text-white" :class="{'hidden': navigationOpen == true}">Classes</span>
+                            </a >
+                        </div>
+                    @endcan
 
                     <div class="">
                         <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="isResultDropDownOpen = !isResultDropDownOpen">
@@ -95,40 +67,87 @@
                             <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Results</span>
                         </button >
                         <ul class="" x-show="isResultDropDownOpen">
-                            <li>
-                                <a href="{{route('listCAStructure')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Continuous Assessment Format</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('listAcademicBroadsheet')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Academic Broadsheet</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('listAcademicResult')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Academic Results</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{{route('listGradeFormat')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Academic Grading Format</span>
-                                </a>
-                            </li>
+                            @can('read a c.a format')
+                                <li>
+                                    <a href="{{route('listCAStructure')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Continuous Assessment Format</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic broadsheet')
+                                <li>
+                                    <a href="{{route('listAcademicBroadsheet')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Broadsheet</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic result')
+                                <li>
+                                    <a href="{{route('listAcademicResult')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Results</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic grading format')
+                                <li>
+                                    <a href="{{route('listGradeFormat')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Grading Format</span>
+                                    </a>
+                                </li>
+                            @endcan
+
                         </ul>
                     </div>
 
-                    <div class="">
-                        <a href="{{route('listFeeStructure')}}" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                              </svg>
-                              <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-                              </svg>
-                            <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Payments/Bills</span>
-                        </a >
-                    </div>
+                    @can('read a user')
+                        <div class="">
+                            <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="isUserDropDownOpen = !isUserDropDownOpen">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
+
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Users</span>
+                            </button >
+                            <ul class="" x-show="isUserDropDownOpen">
+                                <li>
+                                    <a href="{{route('listTeacher')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Teacher</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('listStudent')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Student</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{route('listParent')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+
+                                        <span class="focus:text-white"></span> Parents
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    @endcan
+
+                    @can('read a fee structure')
+                        <div class="">
+                            <a href="{{route('listFeeStructure')}}" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                                </svg>
+                                <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Payments/Bills</span>
+                            </a >
+                        </div>
+                    @endcan
 
                     <div class="">
                         <a href="{{route('listSetting')}}" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show" >
@@ -143,11 +162,13 @@
                             <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Settings</span>
                         </a >
                     </div>
+
                 </div>
 
                 <div class="mt-16 pt-6 ">
                     <div class="px-2 space-y-1">
-                        <a href="" class="cursor-pointer flex items-center   px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                        <p onclick=" return document.getElementById('logout-form').submit()"
+                           class="cursor-pointer flex items-center   px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                               </svg>
@@ -155,7 +176,10 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                               </svg>
                               <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">LogOut</span>
-                        </a >
+                        </p >
+                        <form id="logout-form" action="{{route('logout')}}" method="POST">
+                            @csrf
+                        </form>
                     </div>
                 </div>
             </nav>

@@ -11,6 +11,12 @@
                 <a href="{{route('academicSession')}}">
                     <span>Set Academic Session</span>
                 </a>
+                <p class="text-sm text-gray-100">
+                    Current Academic Session: {{$currentAcademicSession}}
+                </p>
+            </td>
+            <td>
+
             </td>
         </tr>
     </table>

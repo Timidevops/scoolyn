@@ -2,8 +2,7 @@
 
 namespace App\Models\Tenant;
 
-use App\Http\Traits\Tenant\SchoolSessionTrait;
-use App\Http\Traits\Tenant\SchoolTermTrait;
+use App\Http\Traits\Tenant\AcademicSessionTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -15,13 +14,12 @@ class ClassSubject extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SchoolTermTrait;
-    use SchoolSessionTrait;
+    use AcademicSessionTrait;
 
     protected $guarded = [];
 
     protected $casts = [
-        'class_arm' => 'array'
+        'class_arm' => 'array',
     ];
 
     public function academicBroadsheet()

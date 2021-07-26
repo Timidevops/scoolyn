@@ -4,6 +4,7 @@ namespace App\Models\Tenant;
 
 use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -25,5 +26,13 @@ class AcademicSession extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('session_name')
             ->saveSlugsTo('slug');
+    }
+
+    /**
+     * @return Builder|Model|object|null
+     */
+    public static function currentAcademicSession()
+    {
+        return self::query()->where('current_session', 1)->first();
     }
 }

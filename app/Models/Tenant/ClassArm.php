@@ -2,8 +2,7 @@
 
 namespace App\Models\Tenant;
 
-use App\Http\Traits\Tenant\SchoolSessionTrait;
-use App\Http\Traits\Tenant\SchoolTermTrait;
+use App\Http\Traits\Tenant\AcademicSessionTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,8 +15,7 @@ class ClassArm extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SchoolTermTrait;
-    use SchoolSessionTrait;
+    use AcademicSessionTrait;
     use HasStatuses;
 
     const GENERATING_RESULT_STATUS = 'generating_result';

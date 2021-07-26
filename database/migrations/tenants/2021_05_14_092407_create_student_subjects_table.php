@@ -18,8 +18,22 @@ class CreateStudentSubjectsTable extends Migration
             $table->uuid('uuid');
             $table->string('student_id');
             $table->json('subjects');
+            $table->string('academic_session_id');
+            $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('academic_session_id')
+                ->on('academic_sessions')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('academic_term_id')
+                ->on('academic_terms')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
