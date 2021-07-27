@@ -14,6 +14,7 @@ use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSectionCategoryType;
 use App\Models\Tenant\ClassSectionType;
 use App\Models\Tenant\SchoolClass;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class AddClassSection extends Component
@@ -79,39 +80,6 @@ class AddClassSection extends Component
             return false;
         }
 
-
-        // get class section instance
-//        $classSection = ClassSection::query()
-//            ->where('class_section_types_id', $classSectionTypeId)
-//            ->where('school_class_id', $schoolClassId)
-//            ->first();
-//
-//        //if doesn't exist, create new one...
-//        if( ! $classSection ){
-//            $classSection =  (new CreateNewClassSectionAction())->execute([
-//                'class_section_types_id' => $classSectionTypeId,
-//                'school_class_id'  =>$schoolClassId,
-//            ]);
-//        }
-//
-//        if( $classSectionCategoryTypeId ){
-//
-//            //get class section category instance
-//            $classSectionCategory = ClassSectionCategory::query()
-//                ->where('class_section_category_types_id', $classSectionCategoryTypeId)
-//                ->where('class_section_id', $classSection->uuid)
-//                ->first();
-//
-//            //if doesn't exist, create new one...
-//            if( ! $classSectionCategory ){
-//
-//                $classSectionCategory = (new CreateNewClassSectionCategoryAction())->execute([
-//                    'class_section_category_types_id' => $classSectionCategoryTypeId,
-//                    'class_section_id' => $classSection->uuid,
-//                ]);
-//            }
-//        }
-
         //create new class section
         (new CreateNewClassArmAction())->execute([
             'school_class_id' => $schoolClassId,
@@ -120,6 +88,8 @@ class AddClassSection extends Component
         ]);
 
         $this->addClassModal = false;
+
+        Session::flash('successFlash', 'Class added successfully!!!');
 
         return redirect()->route('listClass');
     }

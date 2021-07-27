@@ -8,7 +8,9 @@ use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class AddTeacher extends Component
@@ -54,6 +56,10 @@ class AddTeacher extends Component
 
         $this->classSubject->teacher_id = $this->teacherId;
         $this->classSubject->save();
+
+        Teacher::whereUuid($this->teacherId)->user->assignRole(User::SUBJECT_TEACHER_USER);
+
+        Session::flash('successFlash', 'Subject teacher added successfully!!!');
 
         return redirect()->route('listSubjectTeacher',$this->subject->slug);
     }

@@ -18,18 +18,18 @@ class AuthController extends BaseController
 
     public function __construct()
     {
-     $this->getCurrentAcademicSession();
+    // $this->getCurrentAcademicSession();
     }
-    private function getCurrentAcademicSession()
-    {
-        $academicSession = AcademicSession::currentAcademicSession()
-            ? AcademicSession::currentAcademicSession()->session_name
-            : '-';
-
-        $academicTerm = AcademicTerm::currentAcademicTerm()
-            ? AcademicTerm::currentAcademicTerm()->term_name
-            : '-';
-
-        $this->currentAcademicSession = "{$academicSession}, {$academicTerm}";
-    }
+//    private function getCurrentAcademicSession()
+//    {
+//        $academicSession = AcademicSession::currentAcademicSession()
+//            ? AcademicSession::currentAcademicSession()->session_name
+//            : '-';
+//
+//        $academicTerm = AcademicTerm::currentAcademicTerm()
+//            ? AcademicTerm::currentAcademicTerm()->term_name
+//            : '-';
+//
+//        $this->currentAcademicSession = "{$academicSession}, {$academicTerm}";
+//    }
 }

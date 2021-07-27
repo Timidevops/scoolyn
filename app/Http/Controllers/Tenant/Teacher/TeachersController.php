@@ -31,6 +31,7 @@ class TeachersController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        dd('here');
         $user = (new CreateUserAction())->execute([
             'name'      => $request->input('fullName'),
             'email'     => $request->input('email'),

@@ -21,7 +21,6 @@ class StudentSubject extends Model
 
     public function student()
     {
-        //@todo change to school subject
         return $this->belongsTo(Student::class, 'student_id', 'uuid');
     }
 }

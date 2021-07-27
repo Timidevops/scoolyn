@@ -4,9 +4,13 @@ namespace App\Http\Livewire\Tenant\Classes;
 
 use App\Actions\Tenant\SchoolClass\ClassSubject\CreateNewClassSubjectAction;
 use App\Models\Tenant\ClassSection;
+use App\Models\Tenant\ClassSubject;
+use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
+use function Webmozart\Assert\Tests\StaticAnalysis\null;
 
 class AddSubject extends Component
 {
@@ -30,29 +34,22 @@ class AddSubject extends Component
 
     public string $classSectionId = '';
     public string $classSectionCategoryId = '';
-    //public string $subjectId = '' == to remove if no error;
     public array $subjectIds = [];
 
     public function mount($schoolClass, $classSubjects)
     {
         $this->schoolClass = $schoolClass;
 
-        $this->classArm = $schoolClass->classArm;
+        $this->classArm = $schoolClass->classArm->unique('class_section_id');
 
         $this->classSubjects = $classSubjects;
     }
 
     public function render()
     {
-        //@todo filter added subjects by class section and class section category
-        //$classSubjects = collect($this->schoolClass->subject)->pluck('subject_id');
-        //dd($this->classSubjects);
-//classArm
-
-
         return view('livewire.tenant.classes.add-subject', [
             'classSections' => $this->classArm,//$this->schoolClass->classSection,
-            'subjects'      => Subject::query()->get(['uuid', 'subject_name'])->whereNotIn('uuid', $this->classSubjects),
+            'subjects'      => SchoolSubject::query()->get(['uuid', 'subject_name']),
         ]);
     }
 
@@ -62,16 +59,29 @@ class AddSubject extends Component
             return false;
         }
 
-        //@todo add Json array table...[all class section]
         foreach($this->subjectIds as $subjectId){
+
+            $isClassSubjectExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->whereJsonContains('class_arm', $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid')->toArray())
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId == 'all' ? null : $this->classSectionId ?? null)
+                ->where('class_section_category_id', $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null)->first();
+
+            if($isClassSubjectExists){
+                continue;
+            }
+
             (new CreateNewClassSubjectAction())->execute([
                 'subject_id'                => $subjectId,
-                'class_arm'                 => $this->classSectionId != 'all' ? [] : collect($this->classArm)->pluck('uuid'),
+                'class_arm'                 => $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid'),
                 'school_class_id'           => $this->schoolClass->uuid,
                 'class_section_id'          => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
                 'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
             ]);
         }
+
+        Session::flash('successFlash', 'Subject added successfully!!!');
 
         return redirect()->route('listClassSubject',$this->schoolClass->slug);
     }

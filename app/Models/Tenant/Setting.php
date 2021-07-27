@@ -28,4 +28,33 @@ class Setting extends Model
             ->generateSlugsFrom('setting_name')
             ->saveSlugsTo('slug');
     }
+
+    public static function getCurrentAcademicSessionId()
+    {
+        $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
+
+        return $setting->meta['session'];
+    }
+
+    public static function getCurrentAcademicTermId()
+    {
+        $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
+
+        return $setting->meta['term'];
+    }
+
+    public static function getCurrentAcademicCalendarInWord(): String
+    {
+        $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
+
+        if( ! $setting ){
+            return  'current session not set.';
+        }
+
+        $academicSession = AcademicSession::query()->where('uuid', $setting->meta['session'])->first();
+
+        $academicTerm = AcademicTerm::query()->where('uuid', $setting->meta['term'])->first();
+
+        return "$academicSession->session_name, $academicTerm->term_name";
+    }
 }

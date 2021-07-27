@@ -11,6 +11,7 @@ use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 use Livewire\Component;
 
@@ -96,8 +97,11 @@ class AddStudent extends Component
             'studentId' => (string) $student->uuid,
         ]);
 
-         $this->redirectRoute('createStudent');
-         return  true;
+        Session::flash('successFlash', 'Student added successfully!!!');
+
+        $this->redirectRoute('createStudent');
+
+        return  true;
     }
 
     public function getClassArm(): Model
@@ -203,7 +207,7 @@ class AddStudent extends Component
 
         $parent = (new ParentsController())->store($request);
 
-        $this->parentLabel = "{$parent->fisrt_name} {$parent->last_name}";
+        $this->parentLabel = "{$parent->first_name} {$parent->last_name}";
 
         $this->parentId = $parent->uuid;
 

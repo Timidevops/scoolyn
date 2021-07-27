@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Tenant\AcademicSession;
 
 use App\Actions\Tenant\AcademicSession\CreateNewAcademicSessionAction;
 use App\Actions\Tenant\AcademicTerm\CreateNewAcademicTermAction;
+use App\Actions\Tenant\Setting\SetCurrentAcademicCalendarAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AcademicSessionsController extends Controller
 {
@@ -17,15 +20,28 @@ class AcademicSessionsController extends Controller
 
     public function store(Request $request)
     {
-//        $this->validate($request, [
-//            ''
-//        ]);
+        $this->validate($request, [
+            'termName'    => ['required'],
+            'sessionName' => ['required'],
+            'sessionYear' => ['required'],
+        ]);
 
-        (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->except('_token', 'termName')));
+        $academicSession =  (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear')));
 
-        $request['currentTerm'] = $request->input('currentSession');
+        $academicTerm    =  (new CreateNewAcademicTermAction())->execute(camel_to_snake($request->only('termName')));
 
-        (new CreateNewAcademicTermAction())->execute(camel_to_snake($request->only('termName', 'currentTerm')));
+        if($request->has('currentSession')){
+
+            (new SetCurrentAcademicCalendarAction())->execute([
+                'setting_name' => Setting::ACADEMIC_CALENDAR_SETTING,
+                'meta' => [
+                    'session' => (string) $academicSession->uuid,
+                    'term'    => (string) $academicTerm->uuid,
+                ],
+            ]);
+        }
+
+        Session::flash('successFlash', 'Current Academic Calendar set Successfully!!!');
 
         return back();
     }

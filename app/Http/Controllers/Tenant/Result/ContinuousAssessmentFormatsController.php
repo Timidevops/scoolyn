@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ContinuousAssessmentFormatsController extends Controller
 {
@@ -39,7 +40,7 @@ class ContinuousAssessmentFormatsController extends Controller
 
         $request['name'] = $request->input('name') ?? "continuous_assessment_format{$lastEntryId}";
 
-        //@todo get format :/ returns array
+        // get format :/ returns array
         $format = (new FilterFormInputAction())->execute([
             'numberOfCA' => $request->input('numberOfCA'),
             'caName'     => $request->input('caName'),
@@ -49,6 +50,8 @@ class ContinuousAssessmentFormatsController extends Controller
         $request['meta'] = $format;
 
         (new CreateNewCAStructureAction())->execute( camel_to_snake( $request->only(['name', 'meta', 'schoolClass']) ) );
+
+        Session::flash('successFlash', 'Continuous assessment format added successfully!!!');
 
         return back();
     }

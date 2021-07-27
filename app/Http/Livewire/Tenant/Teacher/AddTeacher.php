@@ -2,17 +2,16 @@
 
 namespace App\Http\Livewire\Tenant\Teacher;
 
-use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassTeacherAction;
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Models\Tenant\ClassArm;
-use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolClass;
-use App\Models\Tenant\Subject;
+use App\Models\Tenant\SchoolSubject;
+use App\Models\Tenant\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
-use function Livewire\str;
 
 class AddTeacher extends Component
 {
@@ -63,45 +62,46 @@ class AddTeacher extends Component
 
         return view('livewire.tenant.teacher.add-teacher', [
             'schoolClass'   => SchoolClass::query()->whereIn('uuid', $classArms)->get(['uuid', 'class_name']),
-            'subjects'      => Subject::query()->whereIn('uuid', $classSubjects)->get(['uuid', 'subject_name']),
+            'subjects'      => SchoolSubject::query()->whereIn('uuid', $classSubjects)->get(['uuid', 'subject_name']),
         ]);
     }
 
     public function store()
     {
-        //dd($this->classSectionId);
         $this->validate();
 
         $user = (new CreateUserAction())->execute([
             'name'      => $this->fullName,
             'email'     => $this->email,
-            'password'  => Hash::make(random_number(1,9,5)),
+            'password'  => Hash::make('password')//Hash::make(random_number(1,9,5)),
         ]);
-
-        //@todo assign role
 
         $teacher =  (new CreateNewTeacherAction())->execute($user, [
             'full_name' => $this->fullName,
             'email' => $this->email,
             'staff_id' => $this->staffId,
-            //'address' => $this->address,
+            'address' => $this->address,
         ]);
 
         $this->teacherId = (string) $teacher->uuid;
 
         if( collect($this->designation)->contains('class-teacher') == 'class-teacher' ){
 
-            if($this->classSectionId == 'all'){
-               // dd('all class');
+            if($this->classSectionId == ''){
+                return;
+            }
+
+            if( $this->classSectionId == 'all' ){
+
                 $classArms = ClassArm::query()->where('school_class_id', $this->schoolClassId)->get();
 
                 foreach ($classArms as $classArm){
                     $this->attachClassTeacher($classArm);
                 }
 
-            }//@todo for all class section category :: else if
+            }
             elseif ($this->sectionCategoryId == 'all'){
-               // dd('all sect');
+
                 $classArms = ClassArm::query()
                     ->where('school_class_id', $this->schoolClassId)
                     ->where('class_section_id', $this->classSectionId)->get();
@@ -111,27 +111,45 @@ class AddTeacher extends Component
                 }
             }
             else{
+
                 $classArm = ClassArm::query()
                     ->where('school_class_id', $this->schoolClassId)
                     ->where('class_section_id', $this->classSectionId)
                     ->where('class_section_category_id', $this->sectionCategoryId)->first();
 
-                if($classArm){
-
-                    $classArm->class_teacher = (string) $teacher->uuid;
-
-                    $classArm->save();
+                if( ! $classArm){
+                    return;
                 }
+
+                $classArm->class_teacher = (string) $teacher->uuid;
+
+                $classArm->save();
+
             }
+
+            $user->assignRole(User::CLASS_TEACHER_USER);
         }
 
         if (collect($this->designation)->contains('subject-teacher') == 'subject-teacher' ){
 
+            if(collect($this->selectedSubject)->isEmpty()){
+                return;
+            }
+
             foreach ($this->selectedSubject as $classSubject){
+                if( ! $classSubject['classSubject'] ){
+                    return;
+                }
+
                 $this->attachSubjectTeacher($classSubject['classSubject']);
             }
+
+            $user->assignRole(User::SUBJECT_TEACHER_USER);
         }
 
+        //@todo welcome email notification
+
+        Session::flash('successFlash', 'Teacher added successfully!!!');
 
         $this->redirectRoute('createTeacher');
     }
@@ -171,7 +189,7 @@ class AddTeacher extends Component
 
         $this->classSections = [];
 
-        $this->classSections = SchoolClass::query()->where('uuid', $uuid)->first()->classArm;
+        $this->classSections = SchoolClass::query()->where('uuid', $uuid)->first()->classArm->unique('class_section_id');
 
         $this->isClassSectionEnabled = true;
 
@@ -231,7 +249,7 @@ class AddTeacher extends Component
         array_splice($this->subjectHolders, $index, 1);
     }
 
-    public function selectSubject(Subject $subject, $index)
+    public function selectSubject(SchoolSubject $subject, $index)
     {
         $classSubject = $subject->classSubject->whereNull('teacher_id');
         $classSubject->load(['schoolClass']);
@@ -241,6 +259,7 @@ class AddTeacher extends Component
             'schoolClasses' => ($classSubject),
             'className'     => 'choose a class',
             'classSection'  => '---',
+            'classSubject'  => [],
         ];
     }
 

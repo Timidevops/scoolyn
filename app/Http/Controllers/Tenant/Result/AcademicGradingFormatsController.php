@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class AcademicGradingFormatsController extends Controller
 {
@@ -37,6 +38,9 @@ class AcademicGradingFormatsController extends Controller
 
        (new CreateNewGradingFormat())->execute(camel_to_snake($request->except('_token')));
 
-       return back();
+        Session::flash('successFlash', 'Academic grading format added successfully!!!');
+
+
+        return back();
     }
 }

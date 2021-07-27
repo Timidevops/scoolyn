@@ -28,11 +28,4 @@ class AcademicSession extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * @return Builder|Model|object|null
-     */
-    public static function currentAcademicSession()
-    {
-        return self::query()->where('current_session', 1)->first();
-    }
 }

@@ -10,6 +10,7 @@ use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class ParentsController extends Controller
 {
@@ -52,6 +53,8 @@ class ParentsController extends Controller
         if( $request['indirect'] ){
             return $parent;
         }
+
+        Session::flash('successFlash', 'Parent added successfully!!!');
 
         return back();
     }

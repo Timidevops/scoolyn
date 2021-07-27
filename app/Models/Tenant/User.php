@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany(Parents::class, 'user_id', 'uuid');
     }
 
+    public function getUserFullName()
+    {
+        return $this->name;
+    }
+
     /**
      * The attributes that should be hidden for arrays.
      *

@@ -26,7 +26,7 @@
 
                         </tr>
                         </thead>
-                        <template x-for="(content, index) in filteredstudentSubjectTable" :key="index">
+                        <template x-for="(content, index) in filteredStudentSubjectTable" :key="index">
                             <tbody class="bg-white divide-y divide-purple-100">
                             <tr class="bg-white">
 

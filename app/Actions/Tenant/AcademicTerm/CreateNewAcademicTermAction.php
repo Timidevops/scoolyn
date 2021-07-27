@@ -12,6 +12,6 @@ class CreateNewAcademicTermAction
     public function execute(array $input)
     {
         $input['uuid'] = Uuid::uuid4();
-        AcademicTerm::query()->create($input);
+        return AcademicTerm::query()->create($input);
     }
 }

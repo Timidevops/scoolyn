@@ -13,9 +13,11 @@ use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class AcademicBroadsheetsController extends Controller
 {
@@ -25,10 +27,10 @@ class AcademicBroadsheetsController extends Controller
     protected string $uuid;
     private Model $classSubject;
 
+
     public function index()
     {
-        //@todo change to auth:teacher
-        $teacher = Teacher::find(12);
+        $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
         $teacherSubject = $teacher->subjectTeacher->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
 
@@ -40,8 +42,7 @@ class AcademicBroadsheetsController extends Controller
 
     public function create(string $uuid)
     {
-        //@todo change to auth:teacher
-        $teacher = Teacher::find(12);
+        $teacher = Teacher::whereUserId(Auth::user()->uuid);
         //dd($teacher->subjectTeacher);
         $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->firstOrFail();
 
@@ -219,9 +220,7 @@ class AcademicBroadsheetsController extends Controller
 
     public function store(Request $request, string $uuid)
     {
-
-        //@todo change to auth:teacher
-        $teacher = Teacher::find(12);
+        $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
         $classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
@@ -289,8 +288,8 @@ class AcademicBroadsheetsController extends Controller
 
     public function update(Request $request, string $uuid)
     {
-        //@todo change to auth:teacher
-        $teacher = Teacher::find(12);
+        //@todo if user is the class teacher; update the broadsheet...
+        $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
         $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 

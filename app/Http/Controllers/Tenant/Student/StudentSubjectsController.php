@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class StudentSubjectsController extends Controller
 {
@@ -49,7 +50,7 @@ class StudentSubjectsController extends Controller
             'studentId'      => $student->uuid,
             'totalSubject'   => $totalSubject,
             'studentName'    => "{$student->first_name} {$student->last_name}",
-            'classSubjects'  => $classSubjects,
+            'classSubjects'  => collect($classSubjects)->values(),
             'studentSubject' => collect($studentSubject),
         ]);
     }
@@ -66,8 +67,10 @@ class StudentSubjectsController extends Controller
     public function store(string $uuid, Request $request)
     {
         $this->validate($request, [
-            'subjects' => ['required','array']
+            'subjects.*' => ['unique:school_subjects,subject_id'],
+            'subjects'   => ['required', 'array','min:1']
         ]);
+
 
         $student = Student::query()->where('uuid', '=', $uuid)->first();
 
@@ -77,12 +80,16 @@ class StudentSubjectsController extends Controller
                 'subjects' => $request->input('subjects'),
             ]);
 
+            Session::flash('successFlash', 'Subject added successfully!!!');
+
             return back();
         }
 
         $student->subjects->subjects = collect($student->subjects->subjects)->merge($request->input('subjects'));
 
         $student->subjects->save();
+
+        Session::flash('successFlash', 'Subject added successfully!!!');
 
         return back();
     }

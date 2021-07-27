@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class FeeStructuresController extends Controller
 {
@@ -28,6 +29,8 @@ class FeeStructuresController extends Controller
         foreach( $request->input('fee') as $fee ){
             (new CreateNewFeeStructureAction())->execute(camel_to_snake($fee));
         }
+
+        Session::flash('successFlash', 'Fee added successfully!!!');
 
         return back();
     }

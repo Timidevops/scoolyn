@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class StudentFeesController extends Controller
 {
@@ -40,6 +41,8 @@ class StudentFeesController extends Controller
         (new CreateNewStudentFeeAction())->execute($student, [
             'fee_structure_id' => $request->input('feeStructureId'),
         ]);
+
+        Session::flash('successFlash', 'Student fee added succesfully!!!');
 
         return back();
     }

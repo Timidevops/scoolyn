@@ -7,7 +7,9 @@ use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class AddTeacher extends Component
@@ -50,14 +52,6 @@ class AddTeacher extends Component
             return back();
         }
 
-        //@todo filter duplicate
-
-//        (new CreateNewClassTeacherAction())->execute([
-//            'class_teacher' => $this->teacherId,
-//            'school_class_id' => $this->schoolClass->uuid,
-//            'class_section_id' => $this->classSectionId,
-//            'class_section_category_id' => $this->classSectionCategoryId,
-//        ]);
 
         if( $this->classSectionId == 'all' ){
            $classArms = ClassArm::query()->where('school_class_id', $this->schoolClass->uuid)->get();
@@ -90,6 +84,10 @@ class AddTeacher extends Component
                 $classArm->save();
             }
         }
+
+        Teacher::whereUuid($this->teacherId)->user->assignRole(User::CLASS_TEACHER_USER);
+
+        Session::flash('successFlash', 'Class teacher added successfully!!!');
 
         return redirect()->route('classTeacher',$this->schoolClass->slug);
     }

@@ -40,7 +40,7 @@
               rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                             @if(count($classSections) > 0)
                             <li wire:click="selectClassSection('all', 'All Sections')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                All Section{!! $classSections !!}
+                                All Section
                             </li>
                             @endif
                             @foreach($classSections as $classSection)

@@ -8,6 +8,7 @@ use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSectionCategoryType;
 use App\Models\Tenant\ClassSectionType;
+use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class SubjectTeachersController extends Controller
 {
     public function index(string $uuid)
     {
-        $subject = Subject::query()->where('slug', $uuid)->firstOrFail();
+        $subject = SchoolSubject::query()->where('slug', $uuid)->firstOrFail();
 
         $subjectTeachers = $subject->classSubject->load(['teacher', 'schoolClass','classSection','classSectionCategory']);
 

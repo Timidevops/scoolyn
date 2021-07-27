@@ -4,6 +4,7 @@ namespace App\Http\Traits\Tenant;
 
 use App\Models\Tenant\AcademicSession;
 use App\Models\Tenant\AcademicTerm;
+use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Builder;
 
 trait AcademicSessionTrait{
@@ -12,8 +13,8 @@ trait AcademicSessionTrait{
     {
         static::addGlobalScope('academicSession', function (Builder $builder) {
             $builder
-                ->where('academic_session_id', AcademicSession::currentAcademicSession()->uuid)
-                ->where('academic_term_id', AcademicTerm::currentAcademicTerm()->uuid);
+                ->where('academic_session_id', Setting::getCurrentAcademicSessionId())
+                ->where('academic_term_id', Setting::getCurrentAcademicTermId());
         });
     }
 

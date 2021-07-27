@@ -33,7 +33,7 @@
             pageNumber: 0,
             size: 5,
             total: "",
-            get filteredstudentSubjectTable() {
+            get filteredStudentSubjectTable() {
                 const start = this.pageNumber * this.size,
                     end = start + this.size;
                 if (this.search === "") {

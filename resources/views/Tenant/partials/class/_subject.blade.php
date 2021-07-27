@@ -82,7 +82,7 @@
             //Create array of all pages (for loop to display page numbers)
             pages() {
                 return Array.from({
-                    length: Math.round(this.total / this.size),
+                    length: Math.ceil(this.total / this.size),
                 });
             },
             //Next Page
@@ -95,7 +95,7 @@
             },
             //Total number of pages
             pageCount() {
-                return Math.round(this.total / this.size);
+                return Math.ceil(this.total / this.size);
             },
             //Return the start range of the paginated results
             startResults() {

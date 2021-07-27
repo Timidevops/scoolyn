@@ -28,11 +28,4 @@ class AcademicTerm extends Model
             ->saveSlugsTo('slug');
     }
 
-    /**
-     * @return Builder|Model|object|null
-     */
-    public static function currentAcademicTerm()
-    {
-        return self::query()->where('current_term', 1)->first();
-    }
 }

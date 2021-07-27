@@ -29,8 +29,7 @@ class ClassSubject extends Model
 
     public function subject(): BelongsTo
     {
-        //@todo change to school subject
-        return $this->belongsTo(Subject::class, 'subject_id', 'uuid');
+        return $this->belongsTo(SchoolSubject::class, 'subject_id', 'uuid');
     }
 
     public function teacher(): HasOne

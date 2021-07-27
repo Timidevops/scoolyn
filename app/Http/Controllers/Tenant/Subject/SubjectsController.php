@@ -8,6 +8,7 @@ use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class SubjectsController extends Controller
 {
@@ -38,6 +39,8 @@ class SubjectsController extends Controller
                 'subject_id'   => (string) $subjectId,
             ]);
         }
+
+        Session::flash('successFlash', 'Subject added successfully!!!');
 
         return back();
     }
