@@ -23,6 +23,12 @@ class CreateStudentSubjectsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('student_id')
+                ->on('students')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
                 ->references('uuid')

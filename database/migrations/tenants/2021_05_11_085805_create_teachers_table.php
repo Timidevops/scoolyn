@@ -15,7 +15,7 @@ class CreateTeachersTable extends Migration
     {
         Schema::create('teachers', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->string('full_name');
             $table->string('email');
             $table->string('user_id');
@@ -23,6 +23,12 @@ class CreateTeachersTable extends Migration
             $table->string('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

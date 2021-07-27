@@ -15,7 +15,7 @@ class CreateParentsTable extends Migration
     {
         Schema::create('parents', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->string('user_id');
             $table->string('first_name');
             $table->string('last_name');
@@ -25,6 +25,12 @@ class CreateParentsTable extends Migration
             $table->text('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')
+                ->on('users')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

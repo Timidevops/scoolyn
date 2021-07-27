@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateClassArmsTable extends Migration
+class CreateAcademicResultsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,31 @@ class CreateClassArmsTable extends Migration
      */
     public function up()
     {
-        Schema::create('class_arms', function (Blueprint $table) {
+        Schema::create('academic_results', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
-            $table->string('class_teacher')->nullable();
-            $table->json('students')->nullable();
-            $table->string('school_class_id');
-            $table->string('class_section_id')->nullable();
-            $table->string('class_section_category_id')->nullable();
+            $table->string('class_arm');
+            $table->string('student_id');
+            $table->string('class_position');
+            $table->string('total_mark_attainable');
+            $table->string('total_mark_obtained');
+            $table->json('subjects');
+            $table->json('ca_format')->nullable();
+            $table->json('grading_format')->nullable();
             $table->string('academic_session_id');
             $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('class_arm')
+                ->on('class_arms')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('student_id')
+                ->on('students')
+                ->references('uuid');
 
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
@@ -47,6 +60,6 @@ class CreateClassArmsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('class_arms');
+        Schema::dropIfExists('academic_results');
     }
 }

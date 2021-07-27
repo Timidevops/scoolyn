@@ -21,6 +21,12 @@ class CreateSchoolSubjectsTable extends Migration
             $table->string('subject_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('subject_id')
+                ->on('subjects')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAcademicResultsTable extends Migration
+class CreateClassArmsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,21 +13,28 @@ class CreateAcademicResultsTable extends Migration
      */
     public function up()
     {
-        Schema::create('academic_results', function (Blueprint $table) {
+        Schema::create('class_arms', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
-            $table->string('class_arm');
-            $table->string('student_id');
-            $table->string('class_position');
-            $table->string('total_mark_attainable');
-            $table->string('total_mark_obtained');
-            $table->json('subjects');
-            $table->json('ca_format')->nullable();
-            $table->json('grading_format')->nullable();
+            $table->uuid('uuid')->unique();
+            $table->string('class_teacher')->nullable();
+            $table->json('students')->nullable();
+            $table->string('school_class_id');
+            $table->string('class_section_id')->nullable();
+            $table->string('class_section_category_id')->nullable();
             $table->string('academic_session_id');
             $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('school_class_id')
+                ->on('school_classes')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('class_teacher')
+                ->on('teachers')
+                ->references('uuid');
 
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
@@ -50,6 +57,6 @@ class CreateAcademicResultsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('academic_results');
+        Schema::dropIfExists('class_arms');
     }
 }

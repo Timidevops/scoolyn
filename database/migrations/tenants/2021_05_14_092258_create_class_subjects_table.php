@@ -15,7 +15,7 @@ class CreateClassSubjectsTable extends Migration
     {
         Schema::create('class_subjects', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->string('subject_id');
             $table->json('class_arm')->nullable();
             $table->string('school_class_id')->nullable();

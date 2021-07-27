@@ -24,6 +24,16 @@ class CreateAcademicBroadSheetsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->foreign('class_subject_id')
+                ->on('class_subjects')
+                ->references('uuid');
+
+            $table->foreign('class_arm')
+                ->on('class_arms')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
                 ->references('uuid')

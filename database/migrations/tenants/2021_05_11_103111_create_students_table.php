@@ -15,7 +15,7 @@ class CreateStudentsTable extends Migration
     {
         Schema::create('students', function (Blueprint $table) {
             $table->id();
-            $table->uuid('uuid');
+            $table->uuid('uuid')->unique();
             $table->string('matriculation_number')->nullable();
             $table->string('first_name');
             $table->string('last_name');
@@ -24,13 +24,21 @@ class CreateStudentsTable extends Migration
             $table->string('dob');
             $table->string('address');
             $table->string('class_arm');
-//            $table->string('school_class_id');
-//            $table->string('class_section_id');
-//            $table->string('class_section_category_id')->nullable();
             $table->string('parent_id');
-            //$table->string('user_id');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('parent_id')
+                ->on('parents')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+
+            $table->foreign('class_arm')
+                ->on('class_arms')
+                ->references('uuid')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
