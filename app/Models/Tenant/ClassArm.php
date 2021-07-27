@@ -15,7 +15,7 @@ class ClassArm extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use AcademicSessionTrait;
+    //use AcademicSessionTrait;
     use HasStatuses;
 
     const GENERATING_RESULT_STATUS = 'generating_result';

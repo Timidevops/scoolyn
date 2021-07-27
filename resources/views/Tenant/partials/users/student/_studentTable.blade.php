@@ -126,15 +126,14 @@
                     <span class="ml-4"> No results!!</span>
                 </div>
             </div>
-            <div
-                class=" flex justify-center items-center md:mt-0 mt-4 md:flex md:justify-end md:items-center"
-                x-show="pageCount() > 1">
+            <div class=" flex justify-center items-center md:mt-0 mt-4  md:flex md:justify-end md:items-center"
+                 x-show="pageCount() > 1">
                 <!--First Button-->
-                <button class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
+                <button type="button" class="border border-gray rounded py-1 px-2 mx-4  text-blue-100" x-on:click="viewPage(Math.round( pageNumber - 1 ))" :disabled="pageNumber===0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber===0 }">
                     Previous
                 </button>
                 <!--Last Button-->
-                <button class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.ceil(total/size)-1)" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
+                <button type="button" class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.round(pageCount() - (pageCount() - 1) + pageNumber))" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
                 >Next
                 </button>
             </div>

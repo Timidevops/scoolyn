@@ -14,7 +14,7 @@ class ClassSubject extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use AcademicSessionTrait;
+    //use AcademicSessionTrait;
 
     protected $guarded = [];
 

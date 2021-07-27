@@ -104,18 +104,17 @@
             <span class="ml-4"> No results!!</span>
           </div>
         </div>
-      <div
-      class=" flex justify-center items-center md:mt-0 mt-4 md:flex md:justify-end md:items-center"
-      x-show="pageCount() > 1">
-      <!--First Button-->
-      <button class="border border-gray rounded py-1 px-2 mx-4 text-blue-100" x-on:click="viewPage(0)" :disabled="pageNumber==0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber==0 }">
-      Previous
-     </button>
-      <!--Last Button-->
-      <button class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.ceil(total/size)-1)" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
-      >Next
-      </button>
-    </div>
+        <div class=" flex justify-center items-center md:mt-0 mt-4  md:flex md:justify-end md:items-center"
+             x-show="pageCount() > 1">
+            <!--First Button-->
+            <button type="button" class="border border-gray rounded py-1 px-2 mx-4  text-blue-100" x-on:click="viewPage(Math.round( pageNumber - 1 ))" :disabled="pageNumber===0" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber===0 }">
+                Previous
+            </button>
+            <!--Last Button-->
+            <button type="button" class="border border-gray rounded py-1 px-6 text-blue-100" x-on:click="viewPage(Math.round(pageCount() - (pageCount() - 1) + pageNumber))" :disabled="pageNumber >= pageCount() -1" :class="{ 'disabled cursor-not-allowed text-gray-100' : pageNumber >= pageCount() -1 }"
+            >Next
+            </button>
+        </div>
     </nav>
         {{-- edit modal --}}
         <div class="overflow-auto" style="background-color:rgba(190,192,201,0.7);" x-show="editModal" :class="{ 'absolute inset-0 z-10 flex items-center justify-center': editModal }">
