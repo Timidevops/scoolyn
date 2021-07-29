@@ -8,6 +8,11 @@
 <div class="bg-white rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
     <form action="{{route('storeAcademicSession')}}" method="post">
         @csrf
+        <div class="px-4 py-4">
+            <p>Add new session or
+                <span class="text-blue-100 border-b border-dashed cursor-pointer">select from saved sessions</span>
+            </p>
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
             <div class="mt-2">
                 <label for="sessionName" class="block text-sm font-normal text-gray-100">Session name</label>
@@ -32,7 +37,7 @@
         </div>
         <div class="px-4 py-4">
             <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
-                Add Academic Session
+                Save Academic Session
             </button>
         </div>
     </form>

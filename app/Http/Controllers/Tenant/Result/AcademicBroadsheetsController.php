@@ -18,12 +18,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class AcademicBroadsheetsController extends Controller
 {
-    private $caFormat;
-    private Collection $students;
-    private string $subjectPlacement;
+
+//    private $caFormat;
+//    private Collection $students;
+//    private string $subjectPlacement;
     protected string $uuid;
     private Model $classSubject;
 
@@ -43,7 +45,7 @@ class AcademicBroadsheetsController extends Controller
     public function create(string $uuid)
     {
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
-        //dd($teacher->subjectTeacher);
+
         $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->firstOrFail();
 
         $this->uuid = $uuid;
@@ -55,10 +57,6 @@ class AcademicBroadsheetsController extends Controller
         $studentSubjects = StudentSubject::query()->whereJsonContains('subjects', $this->classSubject->uuid)->get('student_id');
 
         $studentSubjects->load('student');
-
-        //dd($student->first()->student->classArm);
-
-
 
         //get students if subject teacher is for all class arms
         if($this->classSubject->class_arm){
@@ -97,21 +95,8 @@ class AcademicBroadsheetsController extends Controller
                     $subjectDetail['broadsheetStatus'] = $academicBroadSheet->status;
                 }
 
-                //dd(collect(collect($this->edit($academicBroadSheet))->get('gradeFormat'))['meta']);
-
                 return $subjectDetail;
 
-//                if( ! $classArmInstance->classSectionCategory ){
-//
-//                    $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArm)
-//                        ->load('student')->map(function ($student){
-//                            return $student->student;
-//                        });
-//
-//                    return $subjectDetail;
-//                }
-
-                //return $subjectDetail;
 
             })->values();
 
@@ -197,18 +182,6 @@ class AcademicBroadsheetsController extends Controller
             $this->subjectPlacement = 'all';
         }
 
-        //dd($this->students);
-
-
-//        if( $this->classSubject->academicBroadsheet ){
-//
-//            //$singleStudent =  $this->classSubject->academicBroadsheet;
-//
-//            //dd( collect($singleStudent->meta)->get('111') );
-//
-//            return $this->edit($this->classSubject);
-//        }
-
         return view('Tenant.pages.result.academicBroadsheet.create', [
             'caAssessmentStructure' => collect($this->caFormat->meta),
             'students'              => $this->students,
@@ -236,6 +209,8 @@ class AcademicBroadsheetsController extends Controller
         //add status
         $academicBroadsheet->setStatus(AcademicBroadSheet::CREATED_STATUS);
 
+        Session::flash('successFlash', 'Broadsheet saved successfully!!!');
+
         return back();
     }
 
@@ -256,16 +231,10 @@ class AcademicBroadsheetsController extends Controller
                 'caAssessmentStructure' => collect( $academicBroadsheet->meta['caFormat'] ),
             ];
 
-            return view('Tenant.pages.result.academicBroadsheet.single', [
-                'caAssessmentStructure' => collect( $this->classSubject->academicBroadsheet->meta['caFormat'] ),
-                'gradeFormats'          => collect($gradeFormats->meta),
-                'classSubject'          => $this->classSubject,
-                'academicBroadsheets'   => collect($broadsheets),
-                'broadsheetStatus'      => (string) $this->classSubject->academicBroadsheet->status,
-            ]);
         }
 
-        $generatedFormat = collect($academicBroadsheet->meta)->has('caFormat');
+        $generatedFormat = (bool) collect($academicBroadsheet->meta)->has('caFormat');
+
         $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, $generatedFormat);
 
         // if status is not-approved :return _edit page with generated format
@@ -277,13 +246,6 @@ class AcademicBroadsheetsController extends Controller
 
         return ['broadsheets' => $broadsheets];
 
-        return view('Tenant.pages.result.academicBroadsheet.edit', [
-            'caAssessmentStructure' => collect($this->caFormat->meta),
-            'classSubjectId'        => $this->uuid,
-            'classSubject'          => $this->classSubject,
-            'academicBroadsheets'   => collect($broadsheets),
-            'broadsheetStatus'      => (string) $this->classSubject->academicBroadsheet->status,
-        ]);
     }
 
     public function update(Request $request, string $uuid)
@@ -309,6 +271,8 @@ class AcademicBroadsheetsController extends Controller
             return $this->submitAcademicBroadsheet($this->classSubject, $academicBroadsheet);
         }
 
+        Session::flash('successFlash', 'Broadsheet saved successfully!!!');
+
         return back();
     }
 
@@ -322,11 +286,12 @@ class AcademicBroadsheetsController extends Controller
             'academicBroadsheet' => $academicBroadsheet->meta,
             ];
 
-        // save academic broadsheet as generated format
         $academicBroadsheet->save();
 
         // change status
         $academicBroadsheet->setStatus(AcademicBroadSheet::SUBMITTED_STATUS);
+
+        Session::flash('successFlash', 'Broadsheet submitted successfully!!!');
 
         return back();
     }

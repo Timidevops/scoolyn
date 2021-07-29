@@ -105,6 +105,9 @@ Route::middleware('auth')->group(function (){
     Route::get('result/academic-grading/add-new', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'create'])->name('createGradeFormat');
     Route::post('result/academic-grading', [\App\Http\Controllers\Tenant\Result\AcademicGradingFormatsController::class, 'store'])->name('storeGradeFormat');
 
+    Route::get('result/report-sheet/{uuid}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'index'])->name('listReportSheet');
+    Route::get('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'single'])->name('singleReportSheet');
+
     Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
     Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
     Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');

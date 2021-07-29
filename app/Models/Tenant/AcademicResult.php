@@ -27,4 +27,24 @@ class AcademicResult extends Model
         'ca_format' => 'array',
         'grading_format' => 'array',
     ];
+
+    public function student()
+    {
+        return $this->belongsTo(Student::class, 'student_id', 'uuid');
+    }
+
+    public function classArm()
+    {
+        return $this->belongsTo(ClassArm::class, 'class_arm', 'uuid');
+    }
+
+    public function academicSession()
+    {
+        return $this->hasOne(AcademicSession::class, 'uuid', 'academic_session_id');
+    }
+
+    public function academicTerm()
+    {
+        return $this->hasOne(AcademicTerm::class, 'uuid', 'academic_term_id');
+    }
 }

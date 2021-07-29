@@ -28,6 +28,8 @@ class GetBroadsheetsAction
             $broadsheets ['subjects'][$subjectId[$int]] = collect($academicBroadsheet->meta['academicBroadsheet'])->get($studentId);
 
             $score += $this->getTotalMarkObtained( collect($academicBroadsheet->meta['academicBroadsheet'])->get($studentId) );
+
+            $broadsheets['caFormat'] = $academicBroadsheet->meta['caFormat'];
         }
 
         $broadsheets['totalMarkAttainable'] = 100 * count($subjectId);

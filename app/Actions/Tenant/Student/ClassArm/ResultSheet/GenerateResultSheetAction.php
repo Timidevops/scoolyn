@@ -3,6 +3,7 @@
 
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
+use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\Student;
@@ -21,13 +22,12 @@ class GenerateResultSheetAction
         $studentIds = $classArm->students;
 
         //get each student subject broadsheet
-        $studentBroadsheets =[];
+        $studentBroadsheets = [];
         foreach ($studentIds as $studentId){
             $student = Student::query()->where('uuid', $studentId)->first();
 
             $studentBroadsheets [$studentId] = (new GetBroadsheetsAction())->execute($classArm->uuid, $studentId, $student->subjects->subjects);
         }
-
 
         if( count($studentIds) != count($studentBroadsheets) ){
             //@todo add log
@@ -40,16 +40,15 @@ class GenerateResultSheetAction
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-        //dd($this->studentBroadsheets);
-
         // add data to resultTable of each student
-        //@todo add ca and grading format...
         foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
             $input = $studentBroadsheet;
 
-            $input['student_id'] = $key;
+            $input['studentId'] = $key;
 
-            $input['class_arm'] = (string) $classArm->uuid;
+            $input['classArm'] = (string) $classArm->uuid;
+
+            $input['gradingFormat'] = $this->getGradingFormat()->meta;
 
             $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
 
@@ -111,7 +110,6 @@ class GenerateResultSheetAction
     {
 
         foreach ($this->studentBroadsheets as $key => $broadsheet){
-            //dd($broadsheet);
             $this->getSubjectMetric($key, $broadsheet['subjects']);
         }
 
@@ -122,8 +120,6 @@ class GenerateResultSheetAction
     {
         $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
 
-        //dd($subjectMetrics);
-
         foreach ($subjectIds as $key => $subjectId){
 
             $subjectMetric = collect( collect( $subjectMetrics )->get($key) )->get($studentId) ;
@@ -131,5 +127,11 @@ class GenerateResultSheetAction
             $this->studentBroadsheets[$studentId]['subjects'][$key] = (collect($this->studentBroadsheets[$studentId]['subjects'][$key]))
                 ->put('subjectMetric', $subjectMetric)->toArray();
         }
+    }
+
+    private function getGradingFormat()
+    {
+        return AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+
     }
 }

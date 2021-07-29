@@ -68,29 +68,11 @@ if(! function_exists('camel_to_snake')){
     }
 }
 
+if(! function_exists('strOrdinal')){
+    function strOrdinal(string $number)
+    {
+        $numberFormat = new NumberFormatter('en_us', NumberFormatter::ORDINAL);
 
-    if(! function_exists('encrypt')){
-        function encrypt($value)
-        {
-            $iv   = config('env.app.encryption_iv');
-            $salt = config('env.app.encryption_salt');
-
-            return openssl_encrypt(
-                $value, 'aes-256-cbc', $salt, null, $iv
-            );
-        }
+        return $numberFormat->format($number);
     }
-
-    if(! function_exists('decrypt')){
-        function decrypt($encryptedValue)
-        {
-            $components    = explode( ':', $encryptedValue );
-            $iv            = config('env.app.encryption_iv');
-            $encrypted_msg = $components[0];
-            $salt          = config('env.app.encryption_salt');
-
-            return openssl_decrypt(
-                $encrypted_msg, 'aes-256-cbc', $salt, null, $iv
-            );
-        }
-    }
+}

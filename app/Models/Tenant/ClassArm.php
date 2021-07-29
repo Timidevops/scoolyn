@@ -15,7 +15,7 @@ class ClassArm extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    //use AcademicSessionTrait;
+    use AcademicSessionTrait;
     use HasStatuses;
 
     const GENERATING_RESULT_STATUS = 'generating_result';
@@ -48,16 +48,6 @@ class ClassArm extends Model
         return $this->belongsTo(ClassSectionCategoryType::class, 'class_section_category_id', 'uuid');
     }
 
-//    public function classSectionType(): HasOneThrough
-//    {
-//        return $this->hasOneThrough(ClassSectionType::class,ClassSection::class, 'uuid', 'uuid', 'class_section_id','class_section_types_id');
-//    }
-//
-//    public function classSectionCategoryType(): HasOneThrough
-//    {
-//        return $this->hasOneThrough(ClassSectionCategoryType::class,ClassSectionCategory::class, 'uuid', 'uuid','class_section_category_id', 'class_section_category_types_id');
-//    }
-
     public function classSubject()
     {
         return $this->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id');
@@ -67,6 +57,5 @@ class ClassArm extends Model
     {
         return $this->hasOne(Teacher::class, 'uuid', 'class_teacher');
     }
-
 
 }

@@ -2,10 +2,8 @@
 
 namespace App\Http\Livewire\Tenant\Classes;
 
-use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassTeacherAction;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSection;
-use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\Teacher;
 use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
@@ -75,10 +73,8 @@ class AddTeacher extends Component
                 ->where('class_section_id', $this->classSectionId)
                 ->where('class_section_category_id', $this->classSectionCategoryId)->first();
 
-            //dd($this->classSectionId);
-
             if( $classArm ){
-                //dd('here');
+
                 $classArm->class_teacher = (string) $this->teacherId;
 
                 $classArm->save();

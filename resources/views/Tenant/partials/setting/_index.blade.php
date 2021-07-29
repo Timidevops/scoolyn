@@ -5,21 +5,34 @@
 </div>
 
 <div class="bg-white rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
-    <table>
+    <table class="w-full">
         @can('read set academic session')
             <tr>
                 <td>
                     <a href="{{route('academicSession')}}">
                         <span>Set Academic Session</span>
                     </a>
-                    <p class="text-sm text-gray-100">
+                    <p class="text-sm text-gray-100 py-3">
                         Current Academic Session: {{$currentAcademicSession}}
                     </p>
                 </td>
                 <td>
-
+                    @if($currentAcademicSession != '')
+                        <a class="">
+                            <button class="bg-blue-100 text-white rounded-md px-5 py-3 text-sm flex items-center">
+                                View all sessions
+                            </button>
+                        </a>
+                    @endif
                 </td>
             </tr>
         @endcan
+            <tr>
+                <td>
+                    <a href="{{route('academicSession')}}">
+                        <span>Change password</span>
+                    </a>
+                </td>
+            </tr>
     </table>
 </div>

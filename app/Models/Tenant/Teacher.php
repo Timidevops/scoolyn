@@ -32,12 +32,12 @@ class Teacher extends Model
 
     public static function whereUserId(string $uuid)
     {
-        return self::query()->where('user_id', $uuid)->first();
+        return self::query()->where('user_id', $uuid)->firstOrFail();
     }
 
     public static function whereUuid(string $uuid)
     {
-        return self::query()->where('uuid', $uuid)->first();
+        return self::query()->where('uuid', $uuid)->firstOrFail();
     }
 
     public function user()

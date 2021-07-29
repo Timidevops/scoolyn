@@ -39,4 +39,9 @@ class SchoolSubject extends Model
     {
         return "uuid";
     }
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
+    }
 }

@@ -23,7 +23,6 @@ class User extends Authenticatable
     const ADMIN_USER = 'admin';
     const CLASS_TEACHER_USER = 'class_teacher';
     const SUBJECT_TEACHER_USER = 'subject_teacher';
-    //const STUDENT_USER = 'student';
     const PARENT_USER = 'parent';
 
     protected $guarded = [];
@@ -43,21 +42,12 @@ class User extends Authenticatable
         return $this->name;
     }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
+
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

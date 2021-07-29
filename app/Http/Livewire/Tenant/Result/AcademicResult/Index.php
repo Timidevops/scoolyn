@@ -5,12 +5,15 @@ namespace App\Http\Livewire\Tenant\Result\AcademicResult;
 use App\Jobs\Tenant\GenerateResultJob;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\ClassArm;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class Index extends Component
 {
-    public $classSubjects;
-    public $classArm;
+    public Collection $classSubjects;
+    public Model $classArm;
 
     public string $totalSubjects;
 
@@ -19,10 +22,10 @@ class Index extends Component
     public int $totalAwaitingBroadsheet = 0;
     public int $totalNotApprovedBroadsheet = 0;
 
-    public $approvedBroadsheets = [];
-    public $submittedBroadsheets = [];
-    public $awaitingBroadsheets = [];
-    public $disapprovedBroadsheets = [];
+    public array $approvedBroadsheets = [];
+    public array $submittedBroadsheets = [];
+    public array $awaitingBroadsheets = [];
+    public array $disapprovedBroadsheets = [];
 
     public function mount($classSubjects, $classArm)
     {
@@ -45,10 +48,11 @@ class Index extends Component
     public function generateResult()
     {
         //initial class arm result status;
-       // $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
+        $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
 
-       // dd($this->classArm);
         GenerateResultJob::dispatch($this->classArm);
+
+        Session::flash('successFlash', 'Result generating!!!');
 
         $this->redirectRoute('listAcademicResult');
     }
@@ -56,9 +60,6 @@ class Index extends Component
     private function getTotalValues()
     {
         foreach ($this->classSubjects as $classSubject){
-
-
-           // dd($classSubject->academicBroadsheet->where('class_arm', $this->classArm->uuid)->first());
 
             if( ! $classSubject->academicBroadsheet ){
                 $this->totalAwaitingBroadsheet += 1;
@@ -68,8 +69,6 @@ class Index extends Component
             $academicBroadsheet = $classSubject->academicBroadsheet()->where('class_arm', $this->classArm->uuid)->first();
 
             if( $academicBroadsheet ){
-
-                //dd($classSubject->classArm);
 
                 $this->totalApprovedBroadsheet +=
                     $academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ?
