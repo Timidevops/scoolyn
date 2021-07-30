@@ -29,7 +29,7 @@
         @endcan
             <tr>
                 <td>
-                    <a href="{{route('academicSession')}}">
+                    <a href="{{route('changeAuthPassword')}}">
                         <span>Change password</span>
                     </a>
                 </td>

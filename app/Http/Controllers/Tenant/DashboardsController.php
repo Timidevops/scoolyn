@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +14,11 @@ class DashboardsController extends Controller
 {
     public function index()
     {
+
+        if( Auth::user()->roles->contains( 'name', User::PARENT_USER) ){
+            return false;
+        }
+
         return view('Tenant.dashboard', [
             'totalTeachers' => Teacher::query()->count(),
             'totalStudents' => Student::query()->count(),
