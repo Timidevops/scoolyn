@@ -11,7 +11,7 @@
                             </th>
 
                             <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
-                                <span class="flex items-center mx-1">
+                                <span class="flex items-center mx-1 uppercase">
                                     Full Name
                                     <span>
                                         <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
@@ -19,16 +19,23 @@
                                 </span>
                             </th>
 
-                            <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
+                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
+                                Academic Session
+                            </th>
+
+                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
+                                Academic Term
+                            </th>
+
+                            <th class="px-6 py-3 uppercase text-left text-sm font-medium text-gray-500">
                                 Action
                             </th>
 
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-purple-100">
-                        <template x-for="(content, index) in filteredWardTable" :key="index">
-                            <tr class="bg-white">
-
+                        <template x-for="(content, index) in filteredResultTable" :key="index">
+                            <tr>
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate capitalize">
@@ -36,27 +43,33 @@
                                         </p>
                                     </div>
                                 </td>
-
-
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.first_name"></span>
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.last_name"></span>
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.other_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.student.first_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.student.last_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.student.other_name"></span>
                                         </p>
                                     </div>
                                 </td>
-
+                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                    <div class="flex">
+                                        <p class="group inline-flex space-x-2 truncate capitalize">
+                                            <span class="text-gray-500 truncate" x-text="content.academic_session.session_name"></span>
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                    <div class="flex">
+                                        <p class="group inline-flex space-x-2 truncate capitalize">
+                                            <span class="text-gray-500 truncate" x-text="content.academic_term.term_name"></span>
+                                        </p>
+                                    </div>
+                                </td>
                                 <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
-                                    <a :href="`{{route('listWardResult')}}?ward=${content.uuid}`">
+                                    <a :href="`{{route('singleWardResult',['',''])}}/${content.uuid}/${content.student_id}`">
                                         <button class="focus:outline-none">
-                                            result
-                                        </button>
-                                    </a>
-                                    <a :href="`{{route('listWardFee')}}?ward=${content.uuid}`" class="mx-2">
-                                        <button class="focus:outline-none h-4 w-4">
-                                            fees
+                                            /!/
                                         </button>
                                     </a>
                                 </td>
@@ -107,11 +120,5 @@
                 </button>
             </div>
         </nav>
-
     </div>
-
 </div>
-
-
-
-

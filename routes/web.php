@@ -139,7 +139,7 @@ Route::get('fees/{uuid}')->name('singleWardFee');
 Route::post('fees/payment/{uuid}')->name('payWardFee');
 
 Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
-Route::get('result/{uuid}')->name('singleWardResult');
+Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');
 
 Route::get('profile')->name('parentProfile');
 Route::patch('profile')->name('updateParentProfile');

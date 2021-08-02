@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Student extends Model
@@ -33,7 +32,7 @@ class Student extends Model
 
     public function academicReport(): HasMany
     {
-        return $this->hasMany(AcademicReport::class, 'student_id', 'uuid');
+        return $this->hasMany(AcademicResult::class, 'student_id', 'uuid');
     }
 
     public function studentFee(): HasOne

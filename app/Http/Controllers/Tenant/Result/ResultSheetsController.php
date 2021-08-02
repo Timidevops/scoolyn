@@ -44,11 +44,11 @@ class ResultSheetsController extends Controller
 
         $subjects = collect($academicResult->subjects)->map(function ($subject, $key){
             return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->subject->subject_name);
-        });
+        })->values();
 
         return view('Tenant.pages.result.academicResultSheet.single', [
             'academicResult' => $academicResult,
-            'subjects'       => $subjects->values(),
+            'subjects'       => $subjects,
         ]);
 
     }
