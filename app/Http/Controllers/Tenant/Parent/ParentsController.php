@@ -38,7 +38,7 @@ class ParentsController extends Controller
         $user = (new CreateUserAction())->execute([
             'name'     => "{$request->input('firstName')} {$request->input('lastName')}",
             'email'    => $request->input('email'),
-            'password' => Hash::make(random_number(1,9,5)),
+            'password' => Hash::make('password'),//Hash::make(random_number(1,9,5)),
         ]);
 
         // assign student role

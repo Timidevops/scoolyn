@@ -6,13 +6,11 @@ use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Http\Controllers\Tenant\Parent\ParentsController;
 use App\Models\Tenant\ClassArm;
-use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\URL;
 use Livewire\Component;
 
 class AddStudent extends Component
@@ -85,15 +83,9 @@ class AddStudent extends Component
             'dob' => $this->dob,
             'address' => $this->address,
             'class_arm' => $this->getClassArm()->uuid,
-//            'school_class_id' => $this->schoolClassId,
-//            'class_section_id' => $this->classSectionId,
-//            'class_section_category_id' => $this->classSectionCategoryId,
         ]);
 
         (new AttachStudentToClassArmAction())->execute($this->getClassArm(), [
-//            'schoolClassId' => $this->schoolClassId,
-//            'classSectionId' => $this->classSectionId,
-//            'classSectionCategoryId' => $this->classSectionCategoryId,
             'studentId' => (string) $student->uuid,
         ]);
 
@@ -218,20 +210,4 @@ class AddStudent extends Component
         $this->addParentModal = false;
     }
 
-//    private function getClassSectionCategory(): void
-//    {
-//        $classSection = ClassSection::query()->where('uuid', $this->classSectionId)->first();
-//
-//        if( $classSection && ! $classSection->classSectionCategory->isEmpty() ){
-//
-//            $this->classSectionCategories = $classSection->classSectionCategory;
-//
-//            $this->isClassSectionCategory = true;
-//            return;
-//        }
-//
-//        $this->classSectionCategories = [];
-//
-//        $this->isClassSectionCategory = false;
-//    }
 }

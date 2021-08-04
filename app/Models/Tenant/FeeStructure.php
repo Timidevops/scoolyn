@@ -26,4 +26,9 @@ class FeeStructure extends Model
             ->generateSlugsFrom('name')
             ->saveSlugsTo('slug');
     }
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
+    }
 }

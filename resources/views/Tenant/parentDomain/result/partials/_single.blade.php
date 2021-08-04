@@ -10,11 +10,11 @@
             </div>
         </div>
     </div>
-{{--    <a href="{{route('listReportSheet', $result->classArm->uuid)}}"><span class="mt-2  text-sm text-gray-300">/!/ Academic report sheets</span></a>--}}
+    <a href="{{route('listWardResult')}}"><span class="mt-2  text-sm text-gray-300">/!/ Results</span></a>
 </div>
 
 
-<div class="bg-white rounded-md py-6 px-2">
+<div class="bg-white rounded-md py-6 px-2 mt-5">
 
     <div class="pl-2">
         <span class="capitalize">{{$result->classArm->schoolClass->class_name}}</span>

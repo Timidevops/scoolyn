@@ -47,8 +47,8 @@
                                     <div class="flex">
                                         <p class="group inline-flex space-x-2 truncate">
                                             <span class="text-gray-500 truncate capitalize" x-text="content.student.first_name"></span>
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.student.last_name"></span>
                                             <span class="text-gray-500 truncate capitalize" x-text="content.student.other_name"></span>
+                                            <span class="text-gray-500 truncate capitalize" x-text="content.student.last_name"></span>
                                         </p>
                                     </div>
                                 </td>

@@ -16,7 +16,7 @@ class DashboardsController extends Controller
     {
 
         if( Auth::user()->roles->contains( 'name', User::PARENT_USER) ){
-            return false;
+            return view('Tenant.parentDomain.dashboard');
         }
 
         return view('Tenant.dashboard', [

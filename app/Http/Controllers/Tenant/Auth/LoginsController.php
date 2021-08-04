@@ -21,6 +21,7 @@ class LoginsController extends Controller
         ]);
 
         if( ! Auth::attempt($request->only(['email', 'password'])) ){
+            dd('here');
             return back()->withErrors('');
         }
 

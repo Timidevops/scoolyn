@@ -7,17 +7,17 @@ use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Parents;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ResultsController extends Controller
 {
     public function index(Request $request)
     {
-        //@todo change to auth parent...
-        $parent = Parents::find(1);
+        $parent = Auth::user()->parent;
 
         $wards  =  $parent->ward()->get('uuid')->toArray();
 
-        $results = AcademicResult::query()->where('student_id', $wards)->get();
+        $results = AcademicResult::query()->whereIn('student_id', $wards)->get();
 
         $results->load(['student', 'academicSession', 'academicTerm']);
 
@@ -29,8 +29,7 @@ class ResultsController extends Controller
 
     public function single(string $uuid, string $studentId)
     {
-        //@todo change to auth parent...
-        $parent = Parents::find(1);
+        $parent = Auth::user()->parent;
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 

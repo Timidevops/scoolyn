@@ -11,7 +11,7 @@
                     <img class="h-12 mx-auto" src="{{asset('images/pexels-teddy-joseph-2955375.png')}}" alt="">
                 </a>
                 <div class="text-lg text-center text-gray-200 pt-2">
-                    <p class="capitalize"> Parent Name </p>
+                    <p class="capitalize"> {{\Illuminate\Support\Facades\Auth::user()->name}} </p>
                 </div>
             </div>
 

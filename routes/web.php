@@ -14,21 +14,8 @@ use Spatie\WelcomeNotification\WelcomesNewUsers;
 |
 */
 
-
-Route::get('student', function () {
-    return view('Tenant.student');
-});
-
-Route::get('addStudent', function () {
-    return view('Tenant.partials.users.student.defaultAddStudent');
-});
-
 Route::get('uploadExcel', function () {
     return view('Tenant.uploadExcel');
-});
-
-Route::get('addParent', function () {
-    return view('Tenant.addParent');
 });
 
 Route::get('results', function () {
@@ -130,19 +117,20 @@ Route::middleware('auth')->group(function (){
 
     });
 
+    Route::get('wards', [\App\Http\Controllers\Tenant\ParentDomain\Ward\WardsController::class, 'index'])->name('listWard');
+
+    Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
+    Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
+    Route::post('fees/payment/{uuid}')->name('payWardFee');
+
+    Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
+    Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');
+
+    Route::get('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'single'])->name('parentProfile');
+    Route::patch('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'update'])->name('updateParentProfile');
+
+
 });
-
-Route::get('wards', [\App\Http\Controllers\Tenant\ParentDomain\Ward\WardsController::class, 'index'])->name('listWard');
-
-Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
-Route::get('fees/{uuid}')->name('singleWardFee');
-Route::post('fees/payment/{uuid}')->name('payWardFee');
-
-Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
-Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');
-
-Route::get('profile')->name('parentProfile');
-Route::patch('profile')->name('updateParentProfile');
 
 //Route::middleware('tenant')->group(function() {
 //    Route::get('/', function () {

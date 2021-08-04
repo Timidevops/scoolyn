@@ -5,6 +5,7 @@ namespace App\Models\Tenant;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -32,9 +33,9 @@ class User extends Authenticatable
         return $this->hasMany(Teacher::class, 'user_id', 'uuid');
     }
 
-    public function parent(): HasMany
+    public function parent(): HasOne
     {
-        return $this->hasMany(Parents::class, 'user_id', 'uuid');
+        return $this->hasOne(Parents::class, 'user_id', 'uuid');
     }
 
     public function getUserFullName()
