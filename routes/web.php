@@ -121,7 +121,13 @@ Route::middleware('auth')->group(function (){
 
     Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
     Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
-    Route::post('fees/payment/{uuid}')->name('payWardFee');
+    Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
+
+    Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('callback.verify');
+    Route::post('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
+        'callback.verify',
+        'callback.webhook'
+    ]);
 
     Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
     Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');

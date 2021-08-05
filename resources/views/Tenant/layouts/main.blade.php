@@ -21,13 +21,16 @@
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
 
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-    @if(\Illuminate\Support\Facades\Session::has('successFlash') || \Illuminate\Support\Facades\Session::has('errorFlash'))
+    @if(\Illuminate\Support\Facades\Session::has('successFlash') || \Illuminate\Support\Facades\Session::has('errorFlash') || \Illuminate\Support\Facades\Session::has('warningFlash'))
         <script>
             @if(\Illuminate\Support\Facades\Session::has('successFlash'))
                 swal("Success!", "{{\Illuminate\Support\Facades\Session::get('successFlash')}}", "success");
             @endif
             @if(\Illuminate\Support\Facades\Session::has('errorFlash'))
             swal("Error!", "{{\Illuminate\Support\Facades\Session::get('errorFlash')}}", "error");
+            @endif
+            @if(\Illuminate\Support\Facades\Session::has('warningFlash'))
+            swal("Info!", "{{\Illuminate\Support\Facades\Session::get('warningFlash')}}", "warning");
             @endif
         </script>
     @endif

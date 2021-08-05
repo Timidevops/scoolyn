@@ -57,7 +57,7 @@
                 <div></div>
                 <div class="py-5">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
-                        <form>
+                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">
                             @csrf
                             <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
                                 Proceed to payment

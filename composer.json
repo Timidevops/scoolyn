@@ -18,7 +18,8 @@
         "spatie/laravel-prefixed-ids": "^1.0",
         "spatie/laravel-sluggable": "^3.0",
         "spatie/laravel-welcome-notification": "^2.2",
-      "ext-intl": "*"
+      "ext-intl": "*",
+        "ext-json": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
