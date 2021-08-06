@@ -51,6 +51,13 @@
                 </td>
             </tr>
         </table>
+        <div class="py-5">
+            <a target="_blank" href="{{route('printWardResult',[$result->uuid, $result->student_id])}}">
+                <button type="button" class="bg-blue-100 text-white w-1/6 rounded-md py-3 px-3  text-sm" >
+                    Print
+                </button>
+            </a>
+        </div>
     </div>
 
     <div x-data="reportCard()" class="pl-2 py-3">

@@ -122,6 +122,8 @@ Route::middleware('auth')->group(function (){
     Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
     Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
     Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
+    Route::get('fees/print-payment-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
+
 
     Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('callback.verify');
     Route::post('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
@@ -131,6 +133,8 @@ Route::middleware('auth')->group(function (){
 
     Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
     Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');
+    Route::get('result/print/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\PrintController::class, 'store'])->name('printWardResult');
+
 
     Route::get('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'single'])->name('parentProfile');
     Route::patch('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'update'])->name('updateParentProfile');

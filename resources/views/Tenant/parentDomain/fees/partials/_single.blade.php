@@ -54,8 +54,8 @@
                 </div>
             </div>
             <div class="flex justify-between">
-                <div></div>
-                <div class="py-5">
+                <div class="w-1/2"></div>
+                <div class="py-5 w-1/2">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
                         <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">
                             @csrf
@@ -64,9 +64,11 @@
                             </button>
                         </form>
                     @else
-                        <button type="button" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
-                            Print
-                        </button>
+                        <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}">
+                            <button type="button" class="bg-blue-100 w-full text-white rounded-md py-3 px-3  text-sm" >
+                                Print
+                            </button>
+                        </a>
                     @endif
                 </div>
             </div>
