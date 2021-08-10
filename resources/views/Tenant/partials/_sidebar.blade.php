@@ -1,5 +1,5 @@
 <!-- Static sidebar for desktop -->
-<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen" x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
+<div class="hidden md:flex md:flex-shrink-0 max-h-screen" x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
     <div class="flex flex-col bg-white  w-auto">
         <button type="button" class="p-2 flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
@@ -209,7 +209,7 @@
  <div class="border-b border-blue-100 shadow-lg">
     <div class="mx-4 my-4 flex items-center justify-between">
         <div class="text-blue-100 text-2xl font-bold">
-            Scoolyn
+           <a href=""> Scoolyn</a>
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100 " fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen" :class="{'hidden': isOpen === true}">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -231,7 +231,7 @@
             </div>
             <div class=" flex items-center justify-between mx-4">
             <div class="flex-shrink-0 text-blue-100 text-2xl font-bold px-4">
-                Scoolyn 
+                <a href=""> Scoolyn</a>
             </div>
             <button x-on:click="isOpen=!isOpen">
             <svg class="h-6 w-6 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -239,9 +239,9 @@
             </svg>
         </button>
            </div>
-            <div class="flex-shrink-0 px-4 py-2 mx-auto">
+            <div class="flex-shrink-0 px-4 py-4 mx-auto">
                 <a href="#">
-                    <img class="h-12 mx-auto" src="images/pexels-teddy-joseph-2955375.png" alt="">
+                    <img class="h-12 mx-auto" src="{{asset('images/pexels-teddy-joseph-2955375.png')}}" alt="">
                 </a>
                <div class="text-lg text-center text-gray-200 pt-2">John Doe</div>
                <span class="text-base text-center mx-3 text-gray-300">SSS 1b</span>

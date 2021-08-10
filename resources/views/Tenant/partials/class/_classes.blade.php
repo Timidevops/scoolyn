@@ -7,7 +7,7 @@
 </div>
 <div class="bg-white rounded-md">
 <div class="md:flex md:items-center md:mt-2 ">
-<div class="py-6 px-2 relative w-full">
+<div class="py-6 px-2 relative lg:w-full">
     <div class="">
      <input type="search" name="" id="" class="py-3 px-10 w-full border border-purple-100 rounded-md  bg-white"  placeholder="Search">
      <span class="absolute inset-y-0 left-0 pl-6 py-10"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
