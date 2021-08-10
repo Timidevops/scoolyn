@@ -9,6 +9,6 @@
         <div class="flex-1 overflow-auto bg-purple-100 focus:outline-none px-4 py-8" tabindex="0" @keydown.escape="showModal = false" @keydown.escape="showSuccess = false" x-cloak id="tab_wrapper">
             @include('Tenant.partials.subject._teacher')
         </div>
-        {{-- @include('Tenant.partials._notification') --}}
+{{--        @include('Tenant.partials._notification')--}}
     </div>
 @endsection

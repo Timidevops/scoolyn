@@ -16,6 +16,6 @@
             </div>
             @include('Tenant.partials.users.parents._addParent')
         </div>
-        @include('Tenant.partials._notification')
+{{--        @include('Tenant.partials._notification')--}}
     </div>
 @endsection

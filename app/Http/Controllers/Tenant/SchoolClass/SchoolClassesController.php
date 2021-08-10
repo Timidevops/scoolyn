@@ -11,6 +11,7 @@ class SchoolClassesController extends Controller
 {
     public function index()
     {
+
         $schoolClasses = (SchoolClass::all());
 
         $classArms = $schoolClasses->map(function ($schoolClass){
@@ -18,7 +19,7 @@ class SchoolClassesController extends Controller
             return $schoolClass;
         });
 
-        return view('Tenant.classes', [
+        return view('Tenant.pages.classes.classes', [
             'totalClass'               => SchoolClass::all()->count(),
             'schoolClasses'            => collect($classArms),
             'classSectionType'         => ClassSectionType::query()->get(['section_name', 'uuid']),
