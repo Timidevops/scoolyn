@@ -1,4 +1,5 @@
-<div class="md:mt-8 mb-4">
+<div class="px-4 sm:px-6 lg:px-8">
+  <div class="md:mt-8 mb-4">
     <div class="mt-2 text-xl text-gray-200">
         Classes
     </div>
@@ -22,4 +23,5 @@
 </div>
 
 @include('Tenant.partials.class._classTable')
+</div>
 </div>

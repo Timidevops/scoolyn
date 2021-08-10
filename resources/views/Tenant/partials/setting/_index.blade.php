@@ -1,3 +1,4 @@
+<div class="px-4 sm:px-6 lg:px-8">
 <div>
     <div class="mt-2 text-xl text-gray-200">
         Settings
@@ -35,4 +36,5 @@
                 </td>
             </tr>
     </table>
+</div>
 </div>
