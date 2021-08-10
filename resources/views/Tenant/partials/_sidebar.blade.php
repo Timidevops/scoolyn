@@ -1,7 +1,7 @@
 <!-- Static sidebar for desktop -->
-<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen " x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
-    <div class="flex flex-col bg-white w-auto ">
-        <button type="button" class="p-2  flex ml-auto bg-blue-100 text-white focus:outline-none"
+<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen w-auto" x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
+    <div class="flex flex-col bg-white">
+        <button type="button" class="p-2 flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
             <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen === true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
@@ -17,7 +17,7 @@
             <nav class="mt-8 flex-1 flex flex-col mx-auto overflow-y-auto" aria-label="Sidebar">
                 <div class="px-2 space-y-1 ">
                    <div class=""  >
-                    <a href="{{route('dashboard')}}" class="text-gray-300 flex items-center  px-8 py-4 text-base  leading-6 font-medium rounded-md focus:outline-none focus:bg-blue-100 focus:text-white">
+                    <a href="{{route('dashboard')}}" class="{{url()->current() == url()->route('dashboard') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                           </svg>
@@ -58,19 +58,27 @@
                     @endcan
 
                     <div class="">
-                        <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="isResultDropDownOpen = !isResultDropDownOpen">
+                        <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="isResultDropDownOpen = !isResultDropDownOpen">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
-                            <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Results</span>
+                           <div class="flex items-center space-x-8" :class="{'hidden': navigationOpen === true}">
+                            <span class="focus:text-white">Resunlts</span>
+                            <span class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
+                                :class="{'rotate-180': isResultDropDownOpen}" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                              </svg>
+                            </span>
+                           </div>
                         </button >
                         <ul class="" x-show="isResultDropDownOpen">
                             @can('read a c.a format')
                                 <li>
-                                    <a href="{{route('listCAStructure')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listCAStructure')}}" class="{{url()->current() == url()->route('listCAStructure') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Continuous Assessment Format</span>
                                     </a>
                                 </li>
@@ -78,7 +86,7 @@
 
                             @can('read an academic broadsheet')
                                 <li>
-                                    <a href="{{route('listAcademicBroadsheet')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listAcademicBroadsheet')}}" class="{{url()->current() == url()->route('listAcademicBroadsheet') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Academic Broadsheet</span>
                                     </a>
                                 </li>
@@ -86,7 +94,7 @@
 
                             @can('read an academic result')
                                 <li>
-                                    <a href="{{route('listAcademicResult')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listAcademicResult')}}" class="{{url()->current() == url()->route('listAcademicResult') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Academic Results</span>
                                     </a>
                                 </li>
@@ -94,7 +102,7 @@
 
                             @can('read an academic grading format')
                                 <li>
-                                    <a href="{{route('listGradeFormat')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listGradeFormat')}}" class="{{url()->current() == url()->route('listGradeFormat') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Academic Grading Format</span>
                                     </a>
                                 </li>
@@ -105,7 +113,7 @@
 
                     @can('read a user')
                         <div class="">
-                            <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="isUserDropDownOpen = !isUserDropDownOpen">
+                            <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 " x-on:click="isUserDropDownOpen = !isUserDropDownOpen">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
 
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -117,17 +125,17 @@
                             </button >
                             <ul class="" x-show="isUserDropDownOpen">
                                 <li>
-                                    <a href="{{route('listTeacher')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listTeacher')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Teacher</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('listStudent')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listStudent')}}" class="{{url()->current() == url()->route('listStudent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                         <span class="focus:text-white">Student</span>
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('listParent')}}" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                                    <a href="{{route('listParent')}}" class="{{url()->current() == url()->route('listParent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
 
                                         <span class="focus:text-white"></span> Parents
                                     </a>
