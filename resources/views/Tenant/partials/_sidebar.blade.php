@@ -1,6 +1,6 @@
 <!-- Static sidebar for desktop -->
-<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen w-auto" x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
-    <div class="flex flex-col bg-white">
+<div class="hidden lg:flex lg:flex-shrink-0 max-h-screen" x-data="{navigationOpen: false, isUserDropDownOpen: false, isResultDropDownOpen: false,}" >
+    <div class="flex flex-col bg-white  w-auto">
         <button type="button" class="p-2 flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
             <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen === true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
@@ -14,7 +14,7 @@
                    <p class="capitalize">{{Auth::user()->getUserFullName()}}</p>
                </div>
             </div>
-            <nav class="mt-8 flex-1 flex flex-col mx-auto overflow-y-auto" aria-label="Sidebar">
+            <nav class="mt-8 flex-1 flex flex-col  overflow-y-auto" aria-label="Sidebar">
                 <div class="px-2 space-y-1 ">
                    <div class=""  >
                     <a href="{{route('dashboard')}}" class="{{url()->current() == url()->route('dashboard') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
@@ -66,7 +66,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
                            <div class="flex items-center space-x-8" :class="{'hidden': navigationOpen === true}">
-                            <span class="focus:text-white">Resunlts</span>
+                            <span class="focus:text-white">Results</span>
                             <span class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
                                 :class="{'rotate-180': isResultDropDownOpen}" viewBox="0 0 20 20" fill="currentColor">
