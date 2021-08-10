@@ -211,7 +211,7 @@
         <div class="text-blue-100 text-2xl font-bold">
             Scoolyn
         </div>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100 " fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-100 " fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isOpen=!isOpen" :class="{'hidden': isOpen === true}">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
           </svg>
         </div>
@@ -220,23 +220,31 @@
 
     <div class="fixed inset-0 flex z-40">
 
-        <div class="fixed inset-0">
+        {{-- <div class="fixed inset-0">
             <div class="absolute inset-0 bg-gray-300 opacity-75"></div>
-        </div>
+        </div> --}}
 
         <div class=" flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
             <div class="absolute top-0 right-0 -mr-12 pt-2">
                 <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none  focus:ring-inset focus:ring-white"  x-on:click="isOpen=!isOpen">
                     <span class="sr-only">Close sidebar</span>
                     <!-- Heroicon name: x -->
-                    <svg class="h-6 w-6 text-gray-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <svg class="h-6 w-6 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
+            <div class=" flex items-center justify-between mx-4">
             <div class="flex-shrink-0 text-blue-100 text-2xl font-bold px-4">
                 Scoolyn
+               
             </div>
+            <button x-on:click="isOpen=!isOpen">
+            <svg class="h-6 w-6 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+           </div>
             <div class="flex-shrink-0 px-4 py-2 mx-auto">
                 <a href="#">
                     <img class="h-12 mx-auto" src="images/pexels-teddy-joseph-2955375.png" alt="">
@@ -270,9 +278,9 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                            <span class="focus:text-white">Classes</span>
-                        </a >
-                    </div>
-                    {{-- test --}}
+                        </a>
+                    </div> 
+                    
                     <div class="" x-data="{ show: false}">
                         <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -297,8 +305,7 @@
                                 </a>
                             </li>
                           </ul>
-                    </div>
-                    {{-- test --}}
+                    </div> 
 
                     <div class="" x-data="{ show: false }">
                         <a href="http://app.scoolyn.com.test/results" class="cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show" >
