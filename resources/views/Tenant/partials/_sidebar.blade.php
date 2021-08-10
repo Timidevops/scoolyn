@@ -218,12 +218,7 @@
  </div>
   <div class="bg-gray-100 flex items-center" x-show="isOpen">
 
-    <div class="fixed inset-0 flex z-40">
-
-        {{-- <div class="fixed inset-0">
-            <div class="absolute inset-0 bg-gray-300 opacity-75"></div>
-        </div> --}}
-
+    <div class="fixed inset-0 flex z-40"> 
         <div class=" flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
             <div class="absolute top-0 right-0 -mr-12 pt-2">
                 <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none  focus:ring-inset focus:ring-white"  x-on:click="isOpen=!isOpen">
@@ -236,8 +231,7 @@
             </div>
             <div class=" flex items-center justify-between mx-4">
             <div class="flex-shrink-0 text-blue-100 text-2xl font-bold px-4">
-                Scoolyn
-               
+                Scoolyn 
             </div>
             <button x-on:click="isOpen=!isOpen">
             <svg class="h-6 w-6 text-blue-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -255,7 +249,7 @@
              <nav class="mt-8 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
                 <div class="px-2 space-y-1 ">
                    <div class="" x-data="{ show: false }" >
-                    <a href="http://app.scoolyn.com.test/dashboard#" class="text-gray-300 flex items-center  px-8 py-4 text-base  leading-6 font-medium rounded-md focus:outline-none focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                    <a href="{{route('dashboard')}}" class="{{url()->current() == url()->route('dashboard') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                         <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                           </svg>
@@ -264,7 +258,7 @@
                 </div>
 
                     <div class="" x-data="{ show: false }">
-                        <a href="http://app.scoolyn.com.test/subject#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                        <a href="{{route('listSubject')}}" class="{{url()->current() == url()->route('listSubject') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                               </svg>
@@ -273,7 +267,7 @@
                     </div>
 
                     <div class="" x-data="{ show: false}">
-                        <a href="http://app.scoolyn.com.test/classes#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                        <a href="{{route('listClass')}}" class="{{url()->current() == url()->route('listClass') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                             <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
@@ -282,39 +276,70 @@
                     </div> 
                     
                     <div class="" x-data="{ show: false}">
-                        <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                        <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
-                           <span class="focus:text-white">Users</span>
+                          <div class="flex items-center space-x-8" >
+                                <span class="focus:text-white">Results</span>
+                                <span class=" ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-8 h-5 w-5 transform"
+                                    :class="{'rotate-180': show}" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                               </div>
                         </a >
-                          <ul class="" x-show="show">
+                          <ul class="space-y-2" x-show="show">
                          <li>
-                                <a href="{{route('listTeacher')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Teacher</span>
+                                <a href="{{route('listCAStructure')}}" class="{{url()->current() == url()->route('listCAStructure') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                    <span class="focus:text-white">Continuous Assessment Format</span>
                                 </a>
                             </li>
                             <li>
-                            <a href="{{route('listStudent')}}" class=" flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                              <span class="focus:text-white">Student</span>
+                            <a href="{{route('listAcademicBroadsheet')}}" class="{{url()->current() == url()->route('listAcademicBroadsheet') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">Academic Broadsheet</span>
                               </a>
                           </li>
                             <li>
-                              <a href="http://app.scoolyn.com.test/parents" class=" flex items-center px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
-                               <span class="focus:text-white"></span> Parents
+                              <a href="{{route('listAcademicResult')}}" class="{{url()->current() == url()->route('listAcademicResult') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                               <span class="focus:text-white">Academic Results</span>
                                 </a>
                             </li>
                           </ul>
                     </div> 
 
-                    <div class="" x-data="{ show: false }">
-                        <a href="http://app.scoolyn.com.test/results" class="cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md  text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show" >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                    <div class="" x-data="{ show: false}">
+                        <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
-                            <span class="focus:text-white">Result</span>
+                          <div class="flex items-center space-x-8" >
+                                <span class="focus:text-white">Users</span>
+                                <span class=" ">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-11 h-5 w-5 transform"
+                                    :class="{'rotate-180': show}" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                  </svg>
+                                </span>
+                               </div>
                         </a >
-                    </div>
+                          <ul class="space-y-2" x-show="show">
+                         <li>
+                                <a href="{{route('listTeacher')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                    <span class="focus:text-white">Teacher</span>
+                                </a>
+                            </li>
+                            <li>
+                            <a href="{{route('listStudent')}}" class="{{url()->current() == url()->route('listStudent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">Student</span>
+                              </a>
+                          </li>
+                            <li>
+                              <a href="{{route('listParent')}}" class="{{url()->current() == url()->route('listParent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                               <span class="focus:text-white">Parents</span> 
+                                </a>
+                            </li>
+                          </ul>
+                    </div> 
 
                     <div class="" x-data="{ show: false }">
                         <a href="" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">

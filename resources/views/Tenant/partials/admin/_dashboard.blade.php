@@ -1,7 +1,7 @@
 <div class="mt-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="block text-2xl leading-6 font-medium text-gray-900 capitalize">
-          Hellso, {{Auth::user()->getUserFullName()}}
+          Hello, {{Auth::user()->getUserFullName()}}
       </h2>
       <span class="block text-base text-gray-100 font-light">
           Look up your school's info.
