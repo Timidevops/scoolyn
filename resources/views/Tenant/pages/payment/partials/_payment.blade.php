@@ -16,7 +16,7 @@
                 <h1 class="block text-center font-bold md:text-3xl text-2xl text-blue-100 ">
                     Product selection: Intro N5,000/month 
                 </h1>
-                <span class="block text-justify text-sm text-gray-300 regular">
+                <span class="block text-justify text-sm text-gray-300 regular leading-normal">
                     Lorem ipsum dolor ipsum dolo ripsum ipsum doloripsum. Lorem ipsum dolor ipsum dolo ripsum ipsum doloripsum. 
                     Lorem ipsum dolor ipsum dolo ripsum ipsum doloripsum. Lorem ipsum dolor ipsum dolo ripsum ipsum doloripsum.  
                 </span> 
@@ -31,25 +31,25 @@
                             <div class="block text-sm bold">
                                 Available Features 
                             </div>
-                            <li class="flex regular py-2 px-3 bg-purple-100"> 
+                            <li class="flex regular py-2 px-3 bg-purple-100 text-sm"> 
                               <img class="flex-shrink-0 w-4 h-4" src="/images/Icon awesome-check-circle.png" alt="">
                               <span class="ml-3">For 0-100 students</span>
                             </li>
               
-                            <li class="flex regular py-2 px-3 bg-purple-100">
+                            <li class="flex regular py-2 px-3 bg-purple-100 text-sm">
                                 <img class="flex-shrink-0 w-4 h-4" src="/images/Icon awesome-check-circle.png" alt="">
                               <span class="ml-3">Chat support</span>
                             </li>
               
-                            <li class="flex regular py-2 px-3 bg-purple-100"> 
+                            <li class="flex regular py-2 px-3 bg-purple-100 text-sm"> 
                               <img class="flex-shrink-0 w-4 h-4" src="/images/Icon awesome-check-circle.png" alt="">
                               <span class="ml-3 ">Payment report</span>
                             </li> 
-                            <li class="flex regular py-2 px-3 bg-purple-100"> 
+                            <li class="flex regular py-2 px-3 bg-purple-100 text-sm"> 
                                 <img class="flex-shrink-0 w-4 h-4" src="/images/Icon awesome-check-circle.png" alt="">
                                 <span class="ml-3">Payment report</span>
                               </li> 
-                              <li class="flex regular py-2 px-3 bg-purple-100"> 
+                              <li class="flex regular py-2 px-3 bg-purple-100 text-sm"> 
                                 <img class="flex-shrink-0 w-4 h-4" src="/images/Icon awesome-check-circle.png" alt="">
                                 <span class="ml-3">Payment report</span>
                               </li> 
