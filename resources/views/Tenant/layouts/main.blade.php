@@ -8,7 +8,7 @@
     <title>Scoolyn</title>
     @livewireStyles
 </head>
-<body style="font-family: 'Circular Std'; font-family: 'Circular Std Book'" >
+<body class="medium" >
     @yield('topNav')
     @yield('content')
 
@@ -47,7 +47,7 @@
           font-family: "CircularStd-Bold";
           src: url('css/fonts/CircularStd-Bold.ttf') format('truetype');
       }
-        body.medium{
+        div.medium{
             font-family:'CircularStd-Medium';  
         }
         ul.regular,a.regular,li.regular,div.regular,span.regular,button.regular{
@@ -55,9 +55,7 @@
         }
        div.bold{
         font-family: "CircularStd-Bold";
-        }
-    
-    
+        }  
     </style>
 </body>
 </html>

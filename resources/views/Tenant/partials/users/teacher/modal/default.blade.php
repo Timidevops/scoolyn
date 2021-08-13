@@ -1,4 +1,4 @@
-<div x-show="isSelectSubjectModalOpen" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);">
+<div x-show="isSelectSubjectModalOpen" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7); display:none">
     <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-lg md:max-w-lg  bg-white rounded-lg shadow-md">
         <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
             <div class="block">

@@ -25,9 +25,9 @@
                 <input id="selectAllDesignation" @click="toggleSelectAll(event.target)" type="checkbox" value="all">
                 <span>Select All</span>
             </label>
-            <div class="flex items-center mt-3 space-x-2 text-gray-100 text-sm">
+            <div class="flex items-center mt-3  text-gray-100 text-sm">
                 <template x-for="(item, index) in teacherCheckbox" :key="index">
-                    <label class="flex items-center  space-x-2">
+                    <label class="flex items-center  space-x-2 mr-2">
                         <input x-on:click="toggleSelectOption(event.target); $wire.setDesignation(item.value, event.target.checked)" class="teacherDesignation" type="checkbox" x-bind:value="item.value">
                         <span x-text="item.title"></span>
                     </label>
