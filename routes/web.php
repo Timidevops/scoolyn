@@ -25,7 +25,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
+Route::get('payment', function () {
+    return view('Tenant.pages.payment.index');
+});
 Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form']);
 Route::post('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'login'])->name('login');
 
