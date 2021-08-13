@@ -34,5 +34,30 @@
             @endif
         </script>
     @endif
+    <style> 
+        @font-face {
+        font-family: "CircularStd-Medium";
+        src: url('css/fonts/CircularStd-Medium.ttf') format('truetype');
+      }
+      @font-face{
+          font-family: "CircularStd-Book";
+          src:url('css/fonts/CircularStd-Book.ttf') format('truetype');
+      }
+      @font-face{
+          font-family: "CircularStd-Bold";
+          src: url('css/fonts/CircularStd-Bold.ttf') format('truetype');
+      }
+        body.medium{
+            font-family:'CircularStd-Medium';  
+        }
+        ul.regular,a.regular,li.regular,div.regular,span.regular,button.regular{
+        font-family: "CircularStd-Book";
+        }
+       div.bold{
+        font-family: "CircularStd-Bold";
+        }
+    
+    
+    </style>
 </body>
 </html>
