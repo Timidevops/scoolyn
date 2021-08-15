@@ -1,4 +1,4 @@
-<div>
+            <div>
     <div class="mt-2 text-xl text-gray-200">
         <div class="flex ">
             Academic Result:

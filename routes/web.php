@@ -35,6 +35,18 @@ Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
 });
 
 
+Route::middleware('landlord.checkOnboard')->group(function (){
+    Route::get('onboarding/{uuid}', [\App\Http\Controllers\Landlord\OnboardingsController::class, 'create'])->name('appOnboarding');
+    Route::post('onboarding');
+});
+
+//Route::get('checkout/payment');
+Route::get('checkout/payment', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'store']);
+
+//@todo add middleware...
+Route::get('checkout/payment/call-back', [\App\Http\Controllers\Landlord\SubscriptionPaymentCallbacksController::class, 'update']);
+Route::post('checkout/payment/call-back');
+
 Route::middleware('auth')->group(function (){
 
     Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
@@ -134,7 +146,6 @@ Route::middleware('auth')->group(function (){
     Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
     Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');
     Route::get('result/print/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\PrintController::class, 'store'])->name('printWardResult');
-
 
     Route::get('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'single'])->name('parentProfile');
     Route::patch('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'update'])->name('updateParentProfile');

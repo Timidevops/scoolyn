@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackWebhookMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'callback.verify' => VerifyCallbackMiddleware::class,
         'callback.webhook' => VerifyCallbackWebhookMiddleware::class,
+        'landlord.checkOnboard' => CheckOnboardMiddleware::class,
     ];
 }

@@ -10,6 +10,8 @@ class ScoolynTenant extends Tenant
 {
     use HasFactory;
 
+    protected $guarded = [];
+
     public static function booted()
     {
         static::creating(fn(ScoolynTenant $model) => $model->database = $model->createDatabase());
@@ -17,6 +19,6 @@ class ScoolynTenant extends Tenant
 
     public function createDatabase()
     {
-        return (new CreateTenantDatabaseAction())->execute($this->short_name);
+        return (new CreateTenantDatabaseAction())->execute($this->name);
     }
 }
