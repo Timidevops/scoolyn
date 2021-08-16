@@ -85,11 +85,9 @@
                                     <button class="mx-auto bg-blue py-2 px-5 text-white text-sm rounded-md regular">Continue to pay</button>
                                    </div> 
                             </div> 
+                          
                         </div>
-                   </div>
-                   {{-- <div class="mt-8 mx-auto flex">
-                    <button class="mx-auto py-2 px-5 text-white text-sm rounded-md regular">Go BACK</button>
-                   </div>  --}}
+                   </div> 
             </div>
         </div>
       </div>  
