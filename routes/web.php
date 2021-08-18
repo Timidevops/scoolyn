@@ -29,6 +29,10 @@ Route::get('schoolDetails', function () {
     return view('Tenant.welcome.schoolDetails.index');
 });
 
+Route::get('admissionForm', function () {
+    return view('Tenant.welcome.admissionForm.index');
+});
+
 Route::get('welcomePage', function () {
     return view('Tenant.welcome.welcomePage.index');
 });
