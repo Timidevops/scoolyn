@@ -87,8 +87,8 @@
               </div> 
           </div> 
        <form>
-            {{-- @include('Tenant.welcome.admissionForm.partials._accountRegistration') --}}
-            @include('Tenant.welcome.admissionForm.partials._signUp')
+            {{-- @include('Tenant.welcome.schoolDetails.partials._accountRegistration') --}}
+            @include('Tenant.welcome.schoolDetails.partials._signUp')
        </form>
     </div> 
       </div>
