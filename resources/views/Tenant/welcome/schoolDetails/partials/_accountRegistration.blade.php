@@ -56,8 +56,9 @@
            </div>
        </div>
     </div>
-    <div class="flex justify-end">
-        <button type="button" class="bg-blue-100 text-white px-6 py-2 rounded-md text-sm">
+    <div class="flex justify-end py-4">
+        <button type="button" class="bg-blue-100 text-white px-6 py-2 rounded-md text-sm"
+        x-on:click="Open=true">
            Next
         </button>
     </div> 
