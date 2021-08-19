@@ -27,6 +27,9 @@
            <label for="nameOfBranches" class="block text-sm font-medium text-gray-300">Number of branches</label>
            <div class="mt-1">
            <select type="number" name="nameOfBranches" id="nameOfBranches" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border">
+            <option>branch 1</option>
+            <option selected>branch 2</option>
+            <option>branch 3</option>
            </select>
            </div>
        </div>
@@ -40,13 +43,15 @@
            <label for="privateGovernment" class="block text-sm font-medium text-gray-300">Private/Government</label>
            <div class="mt-1">
            <select type="number" name="privateGovernment" id="privateGovernment" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border">
+            <option>Private</option>
+            <option selected>Public</option> 
            </select>
            </div>
        </div>
        <div>
-           <label for="privateGovernment" class="block text-sm font-medium text-gray-300">Lorem Ipsum</label>
+           <label for="text" class="block text-sm font-medium text-gray-300">Lorem Ipsum</label>
            <div class="mt-1">
-           <input type="text" name="privateGovernment" id="privateGovernment" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border"> 
+           <input type="text" name="text" id="text" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border"> 
            </div>
        </div>
        <div>
