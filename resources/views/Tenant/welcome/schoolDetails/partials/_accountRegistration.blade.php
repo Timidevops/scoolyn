@@ -1,4 +1,10 @@
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2"
+        x-show="accountRegistration" 
+        x-transition:enter="transition-transition ease-out duration-200" 
+        x-transition:enter-start="opacity-0 translate-y-1" 
+        x-transition:enter-end="opacity-100 translate-y-0"
+        x-transition:leave="transition ease-in duration-150"
+        x-transition:leave-end="opacity-0 translate-y-1">
        <div>
            <label for="name" class="block text-sm font-medium text-gray-300">Name of School</label>
            <div class="mt-1">
