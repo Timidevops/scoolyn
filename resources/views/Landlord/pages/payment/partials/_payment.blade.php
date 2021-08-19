@@ -28,9 +28,9 @@
                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                     <div class="space-y-4 col-span-2 ">
                         <ul role="list" class="space-y-2 text-blue-100">
-                            <div class="block text-sm bold">
-                                Available Features
-                            </div>
+                            <li >
+                                <span class="block text-sm font-bold">Available Features</span>
+                            </li >
                             <li class="flex regular py-2 px-3 bg-purple-100 text-sm">
                               <img class="flex-shrink-0 w-4 h-4" src="{{asset('/images/Icon awesome-check-circle.png')}}" alt="">
                               <span class="ml-3">For 0-100 students</span>
