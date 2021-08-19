@@ -35,6 +35,9 @@
                 <label for="previousClass" class="block text-sm font-medium text-gray-300">Previous class</label>
                 <div class="mt-1">
                 <select type="number" name="previousClass" id="previousClass" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border">
+                    <option>JSS1</option>
+                    <option selected>JSS2</option> 
+                    <option>SSS1</option> 
                 </select>
                 </div>
             </div>
@@ -79,8 +82,7 @@
             <div>
                 <label for="address" class="block text-sm font-medium text-gray-300">Address</label>
                 <div class="mt-1">
-                <select type="text" name="address" id="address" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border">
-                </select>
+                <input type="text" name="address" id="address" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border"> 
                 </div>
             </div> 
             <div>
