@@ -99,7 +99,7 @@
                     <div class="mt-8 mx-auto flex">
                     <button class="mx-auto py-2 px-5 bg-blue-100 text-white text-sm rounded-md regular">Go BACK</button>
                    </div>
-            </div>
+           </div>
         </div>
       </div>
     </div>

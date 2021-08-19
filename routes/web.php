@@ -25,6 +25,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('schoolDetails', function () {
+    return view('Tenant.welcome.schoolDetails.index');
+});
+
+Route::get('admissionForm', function () {
+    return view('Tenant.welcome.admissionForm.index');
+});
+
+Route::get('welcomePage', function () {
+    return view('Tenant.welcome.welcomePage.index');
+});
+
+Route::get('payment', function () {
+    return view('Tenant.pages.payment.index');
+});
+
 Route::get('plan/payment/{uuid}', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'create']);
 Route::post('plan/payment', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'store'])->name('storePlan');
 
@@ -42,7 +58,7 @@ Route::middleware('tenant.admissionOn.confirm')->group(function (){
     Route::post('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'store']);
 });
 
-Route::middleware('guest')->group(function (){
+Route::middleware('guest')->group(function () {
 
     Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form']);
     Route::post('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'login'])->name('login');
