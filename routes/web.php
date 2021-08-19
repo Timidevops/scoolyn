@@ -29,9 +29,6 @@ Route::get('schoolDetails', function () {
     return view('Tenant.welcome.schoolDetails.index');
 });
 
-Route::get('admissionForm', function () {
-    return view('Tenant.welcome.admissionForm.index');
-});
 
 Route::get('welcomePage', function () {
     return view('Tenant.welcome.welcomePage.index');
@@ -50,12 +47,12 @@ Route::post('checkout/payment/call-back');
 
 Route::middleware('landlord.checkOnboard')->group(function (){
     Route::get('onboarding/{uuid}', [\App\Http\Controllers\Landlord\OnboardingsController::class, 'create'])->name('appOnboarding');
-    Route::post('onboarding');
+    Route::post('onboarding/{uuid}', [\App\Http\Controllers\Landlord\OnboardingsController::class, 'store'])->name('storeAppOnboarding');
 });
 
 Route::middleware('tenant.admissionOn.confirm')->group(function (){
     Route::get('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'create']);
-    Route::post('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'store']);
+    Route::post('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'store'])->name('storeAdmission');
 });
 
 Route::middleware('guest')->group(function () {

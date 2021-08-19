@@ -16,7 +16,9 @@ class CreateAdmissionApplicantsTable extends Migration
         Schema::create('admission_applicants', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('student_name');
+            $table->string('student_first_name');
+            $table->string('student_last_name');
+            $table->string('student_other_name');
             $table->string('student_dob');
             $table->string('student_gender');
             $table->string('student_religion');
@@ -30,6 +32,7 @@ class CreateAdmissionApplicantsTable extends Migration
             $table->string('guardian_contact_number');
             $table->string('guardian_contact_email')->nullable();
             $table->string('guardian_address');
+            $table->string('guardian_relationship');
             $table->string('guardian_profession')->nullable();
             $table->text('extra_information')->nullable();
             $table->string('academic_session_id');

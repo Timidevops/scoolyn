@@ -53,7 +53,7 @@
         ul.regular,a.regular,li.regular,div.regular,span.regular,button.regular{
         font-family: "CircularStd-Book";
         }
-       div.bold{
+       div.bold,svg.bold{
         font-family: "CircularStd-Bold";
         }  
     </style>
