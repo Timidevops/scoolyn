@@ -57,7 +57,7 @@
        </div>
     </div>
     <div class="flex justify-end">
-        <button class="bg-blue-100 text-white px-6 py-2 rounded-md text-sm">
+        <button type="button" class="bg-blue-100 text-white px-6 py-2 rounded-md text-sm">
            Next
         </button>
     </div> 
