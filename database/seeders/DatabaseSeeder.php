@@ -22,6 +22,11 @@ class DatabaseSeeder extends Seeder
     public function runTenantSpecificSeeders()
     {
         // run tenant specific seeders
+        $this->call([
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            SubjectSeeders::class,
+        ]);
     }
 
     public function runLandlordSpecificSeeders()

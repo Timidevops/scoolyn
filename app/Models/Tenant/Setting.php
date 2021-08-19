@@ -14,7 +14,11 @@ class Setting extends Model
     use SoftDeletes;
     use HasSlug;
 
-    const ACADEMIC_CALENDAR_SETTING = 'current academic calendar';
+    const ACADEMIC_CALENDAR_SETTING = 'current_academic_calendar';
+    const SCHOOL_NAME_SETTING = 'school_name';
+    const SCHOOL_LOCATION_SETTING = 'school_location';
+    const PAYMENT_CURRENCY = 'payment_currency_';
+    const ADMISSION_STATUS = 'admission_status';
 
     protected $guarded = [];
 
@@ -27,6 +31,11 @@ class Setting extends Model
         return SlugOptions::create()
             ->generateSlugsFrom('setting_name')
             ->saveSlugsTo('slug');
+    }
+
+    public static function whereSettingName(string $settingName)
+    {
+        return self::query()->where('setting_name', $settingName);
     }
 
     public static function getCurrentAcademicSessionId()
@@ -56,5 +65,12 @@ class Setting extends Model
         $academicTerm = AcademicTerm::query()->where('uuid', $setting->meta['term'])->first();
 
         return "$academicSession->session_name, $academicTerm->term_name";
+    }
+
+    public static function isAdmissionOn() : bool
+    {
+        $setting = self::query()->where('setting_name', self::ADMISSION_STATUS)->first();
+
+        return (bool) $setting->setting_value;
     }
 }

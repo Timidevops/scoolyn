@@ -40,17 +40,12 @@ class SubscriptionPaymentCallbacksController extends Controller
             return view('');
         }
 
-
         //create school admin
         $schoolAdmin = $this->createNewSchoolAdmin([
             'uuid' => (string) Uuid::uuid4(),
             'email' => $transaction->user_reference,
+            'initial_plan' => $transaction->subscription_id
         ]);
-
-        //@todo add the subscription
-        $subscription = Plan::find($transaction->subscription_id);
-
-        $schoolAdmin->newSubscription('pro', $subscription);
 
         //@todo send email to school admin
 

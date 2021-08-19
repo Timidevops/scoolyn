@@ -4,9 +4,11 @@ namespace App\Models\Landlord;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
+use Rinvex\Subscriptions\Models\Plan as UsePlan;
 
-class Plan extends \Rinvex\Subscriptions\Models\Plan
+class Plan extends UsePlan
 {
     use HasFactory;
-    protected $connection = 'landlord';
+    use UsesLandlordConnection;
 }

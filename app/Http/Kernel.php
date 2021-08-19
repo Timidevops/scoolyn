@@ -3,8 +3,10 @@
 namespace App\Http;
 
 use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
+use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackWebhookMiddleware;
+use App\Http\Middleware\Tenant\VerifyPasswordResetMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -68,8 +70,10 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'callback.verify' => VerifyCallbackMiddleware::class,
-        'callback.webhook' => VerifyCallbackWebhookMiddleware::class,
+        'tenant.callback.verify' => VerifyCallbackMiddleware::class,
+        'tenant.callback.webhook' => VerifyCallbackWebhookMiddleware::class,
+        'tenant.admissionOn.confirm' => CheckIfAdmissionIsOnMiddleware::class,
+        'tenant.verifyPassword.reset' => VerifyPasswordResetMiddleware::class,
         'landlord.checkOnboard' => CheckOnboardMiddleware::class,
     ];
 }

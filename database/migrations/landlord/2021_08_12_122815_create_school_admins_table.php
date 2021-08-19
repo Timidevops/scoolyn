@@ -18,6 +18,7 @@ class CreateSchoolAdminsTable extends Migration
             $table->uuid('uuid')->unique();
             $table->string('tenant_id')->nullable();
             $table->string('email');
+            $table->integer('initial_plan');
             $table->integer('setup_complete')->default(0);
             $table->timestamps();
             $table->softDeletes();

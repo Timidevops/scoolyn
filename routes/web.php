@@ -25,27 +25,42 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('plan/payment/{uuid}', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'create']);
+Route::post('plan/payment', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'store'])->name('storePlan');
 
-Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form']);
-Route::post('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'login'])->name('login');
-
-Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
-    Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('welcome');
-    Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
-});
-
+//@todo add middleware...
+Route::get('checkout/payment/call-back', [\App\Http\Controllers\Landlord\SubscriptionPaymentCallbacksController::class, 'update']);
+Route::post('checkout/payment/call-back');
 
 Route::middleware('landlord.checkOnboard')->group(function (){
     Route::get('onboarding/{uuid}', [\App\Http\Controllers\Landlord\OnboardingsController::class, 'create'])->name('appOnboarding');
     Route::post('onboarding');
 });
 
-//Route::get('checkout/payment');
-Route::get('checkout/payment', [\App\Http\Controllers\Landlord\SubscriptionPaymentsController::class, 'store']);
+Route::middleware('tenant.admissionOn.confirm')->group(function (){
+    Route::get('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'create']);
+    Route::post('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'store']);
+});
 
-//@todo add middleware...
-Route::get('checkout/payment/call-back', [\App\Http\Controllers\Landlord\SubscriptionPaymentCallbacksController::class, 'update']);
-Route::post('checkout/payment/call-back');
+Route::middleware('guest')->group(function (){
+
+    Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form']);
+    Route::post('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'login'])->name('login');
+
+    Route::get('forget-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'create']);
+    Route::post('forget-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'store']);
+
+    Route::get('reset-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'edit'])
+        ->name('password.reset')
+        ->middleware('tenant.verifyPassword.reset');
+    Route::post('reset-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'update']);
+
+});
+
+Route::group(['middleware' => ['web','guest', WelcomesNewUsers::class]], function (){
+    Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('welcome');
+    Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
+});
 
 Route::middleware('auth')->group(function (){
 
@@ -137,10 +152,10 @@ Route::middleware('auth')->group(function (){
     Route::get('fees/print-payment-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
 
-    Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('callback.verify');
+    Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify');
     Route::post('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
-        'callback.verify',
-        'callback.webhook'
+        'tenant.callback.verify',
+        'tenant.callback.webhook'
     ]);
 
     Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
@@ -152,11 +167,3 @@ Route::middleware('auth')->group(function (){
 
 
 });
-
-//Route::middleware('tenant')->group(function() {
-//    Route::get('/', function () {
-//    return view('welcome');
-//});
-//});
-
-//Route::domain('');

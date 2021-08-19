@@ -7,16 +7,29 @@ use App\Models\Landlord\Plan;
 use App\Models\Landlord\Transaction;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class SubscriptionPaymentsController extends Controller
 {
+    public function create(string $uuid)
+    {
+        $plan = Plan::query()->where('uuid', $uuid)->firstOrFail();
+
+        return view('Landlord.pages.payment.index', [
+            'plan' => $plan,
+        ]);
+    }
+
     public function store(Request $request)
     {
-        //@todo get subscription
-        $subscription = Plan::find(1);
+        $this->validate($request, [
+            'planId'  => ['required', "exists:App\Models\Landlord\Plan,uuid"],
+            'email' => ['required', 'email'],
+        ]);
+
+        //get subscription
+        $subscription = Plan::query()->where('uuid', $request->input('planId'))->first();
 
         //call checkout endpoint
         $client = new Client(['base_uri' => config('env.checkout.url')]);
@@ -32,14 +45,13 @@ class SubscriptionPaymentsController extends Controller
                     'form_params' => [
                         'amount'          => $subscription->price,
                         'currency'        => 'ngn',
-                        'receiptEmail'    => 'abc@gmail.com',//$request->input('email'),
+                        'receiptEmail'    => $request->input('email'),
                         'clientReference' => $reference,
                         'callbackUrl'     => config('env.app_url') . '/checkout/payment/call-back',
                     ]
                 ]);
         } catch (GuzzleException $e) {
             Session::flash('errorFlash', 'Error processing request');
-            dd($e);
             return back();
         }
 
@@ -49,7 +61,7 @@ class SubscriptionPaymentsController extends Controller
             'amount' => $subscription->price,
             'currency' => 'ngn',
             'subscription_id' => $subscription->id,
-            'user_reference' => 'abc@gmail.com',//$request->input('email'),
+            'user_reference' => $request->input('email'),
         ]);
 
         $responseData = (json_decode($response->getBody(),true)['data']['attributes']);

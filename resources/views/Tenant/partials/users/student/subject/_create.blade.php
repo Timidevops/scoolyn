@@ -9,7 +9,7 @@
             <span class="mx-2">Add Subject</span>
     </button>
 
-    <form action="{{route('storeStudentSubject',$studentId)}}" method="post" x-show="isAddSubjectModalOpen" class="absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);">
+    <form action="{{route('storeStudentSubject',$studentId)}}" method="post" x-show="isAddSubjectModalOpen" class="absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7); display:none">
     @csrf
     <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
         <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">

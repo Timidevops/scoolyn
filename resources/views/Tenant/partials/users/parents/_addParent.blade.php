@@ -1,4 +1,4 @@
-<div class="py-10">
+<div class="py-10 lg:px-8 px-4">
     <div class="bg-white rounded-md">
         <form x-data="add()" action="{{route('storeParent')}}" method="post">
             @csrf
