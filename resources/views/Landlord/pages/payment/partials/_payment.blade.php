@@ -87,8 +87,13 @@
                                         <input name="planId" type="hidden" value="{{$plan->uuid}}">
                                         <div class="pb-4">
                                             <label>
-                                                <input class="border-blue-100 border w-full rounded-md" name="email" type="email" placeholder="Enter email">
+                                                <input class="@error('email') border-red-100 @else border-blue-100 @enderror border w-full rounded-md p-2" name="email" type="email" placeholder="Enter email">
                                             </label>
+                                            @error('email')
+                                                <p class="text-red-100 text-sm font-bold">
+                                                    {{$message}}
+                                                </p>
+                                            @enderror
                                         </div>
                                         <button type="submit" class="mx-auto bg-blue-100 py-2 px-5 text-white text-sm rounded-md regular">Continue to pay</button>
                                     </form>

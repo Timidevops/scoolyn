@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Ramsey\Uuid\Uuid;
 
 class OnboardingsController extends Controller
@@ -21,31 +22,43 @@ class OnboardingsController extends Controller
 
     public function create(string $uuid)
     {
-        //@todo return view
+        $schoolAdmin  = SchoolAdmin::query()->where('uuid', $uuid)->first();
 
-        return $this->store($uuid);
+        return view('Landlord.pages.onboarding.index', [
+            'id' => $uuid,
+            'domain' => (string) config('env.app_domain'),
+            'email' => $schoolAdmin->email,
+        ]);
     }
 
-    public function store(string $uuid)
+    public function store(string $uuid, Request $request)
     {
-        //@todo validate request
+        $this->validate($request, [
+            'schoolName' => ['required'],
+            'schoolType' => ['required', Rule::in(['private', 'public'])],
+            'schoolLocation' => ['required'],
+            'contactNumber' => ['required'],
+            'schoolEmail' => ['nullable'],
+            'hasPayment' => ['required', Rule::in(['yes', 'no'])],
+            'paymentCurrency' => ['nullable', Rule::in(['ngn'])],
+            'domainName' => ['required'],
+            'adminPassword' => ['required','min:8','confirmed'],
+        ]);
 
-        $request = [
-            'schoolName' => 'digikraaft high school',
-            'schoolLocation' => 'ibadan',
-            'paymentCurrency' => 'ngn',
-            'domainName' => 'dhc',
-            'adminName' => 'admin',
-            'adminPassword' => 'asd',
-            'adminEmail' => 'admin@dhc.com',
-        ];
+        $inputDomain = str_replace(' ', '-', $request->input('domainName'));
+
+        $schoolDomain = (string) $inputDomain.'.'.config('env.app_domain');
+
+        if( $this->validateDomain($schoolDomain) ){
+            return back()->withInput($request->input())->withErrors([
+                'domainName' => 'Domain already exist.'
+            ]);
+        }
 
         $schoolAdmin = SchoolAdmin::query()->where('uuid', $uuid)->first();
 
-        $schoolDomain = $request['domainName'].'.'.config('env.app_domain');
-
         //@todo filter name to under_score helper function regex
-        $schoolName = str_replace(' ', '_', $request['schoolName']);
+        $schoolName = str_replace(' ', '_', $request->input('schoolName'));
 
         //create new tenant
         $this->tenant = $this->createNewTenant([
@@ -73,13 +86,13 @@ class OnboardingsController extends Controller
         //create new admin user
         $this->createNewAdminUser([
             'uuid' => Uuid::uuid4(),
-            'name' => $request['adminName'],
-            'email' => $request['adminEmail'],
+            'name' => 'Administrator',
+            'email' => $schoolAdmin->email,
             'password' => Hash::make($request['adminPassword']),
         ]);
 
         //create initial settings
-        $this->runInitialSettings(camel_to_snake($request));
+        $this->runInitialSettings(camel_to_snake($request->all()));
 
         //update onboard process to complete and add tenant id
         $schoolAdmin->update([
@@ -90,7 +103,12 @@ class OnboardingsController extends Controller
         //update initial subscription transaction
         $this->updateTransaction($schoolAdmin->email);
 
-        return redirect()->to("http://${$schoolDomain}");
+        return redirect()->to("http://{$schoolDomain}/login");
+    }
+
+    private function validateDomain(string $domain) : bool
+    {
+        return ScoolynTenant::query()->where('domain', $domain)->exists();
     }
 
     /**
@@ -131,9 +149,26 @@ class OnboardingsController extends Controller
         ]);
 
         Setting::query()->create([
-            'setting_name' => Setting::PAYMENT_CURRENCY,
-            'setting_value' => $input['payment_currency'],
+            'setting_name' => Setting::CONTACT_NUMBER_SETTING,
+            'setting_value' => $input['contact_number'],
         ]);
+
+        Setting::query()->create([
+            'setting_name' => Setting::CONTACT_EMAIL_SETTING,
+            'setting_value' => $input['school_email'],
+        ]);
+
+        Setting::query()->create([
+            'setting_name' => Setting::SCHOOL_TYPE_SETTING,
+            'setting_value' => $input['school_type'],
+        ]);
+
+        if($input['has_payment'] == 'yes'){
+            Setting::query()->create([
+                'setting_name' => Setting::PAYMENT_CURRENCY,
+                'setting_value' => $input['payment_currency'],
+            ]);
+        }
 
         Setting::query()->create([
             'setting_name' => Setting::ADMISSION_STATUS,

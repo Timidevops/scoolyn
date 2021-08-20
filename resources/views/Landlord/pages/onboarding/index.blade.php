@@ -4,7 +4,7 @@
 @section('topNav')
 @endsection
 @section('content')
-       <div class="max-h-full">
-        @include('Landlord.pages.onboarding.partials._schoolDetails')
-       </div>
+    <div class="max-h-full">
+        @include('Tenant.welcome.schoolDetails.partials._schoolDetails')
+    </div>
 @endsection

@@ -25,7 +25,7 @@ class ApplicantsController extends Controller
 
     public function store(Request $request)
     {
-        //@todo validate request
+        //validate request
         $this->validate($request, [
             'studentFirstName' => ['required'],
             'studentLastName' => ['required'],

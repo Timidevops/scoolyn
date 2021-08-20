@@ -17,6 +17,9 @@ class Setting extends Model
     const ACADEMIC_CALENDAR_SETTING = 'current_academic_calendar';
     const SCHOOL_NAME_SETTING = 'school_name';
     const SCHOOL_LOCATION_SETTING = 'school_location';
+    const CONTACT_NUMBER_SETTING = 'contact_number';
+    const CONTACT_EMAIL_SETTING = 'contact_email';
+    const SCHOOL_TYPE_SETTING = 'school_type';
     const PAYMENT_CURRENCY = 'payment_currency_';
     const ADMISSION_STATUS = 'admission_status';
 

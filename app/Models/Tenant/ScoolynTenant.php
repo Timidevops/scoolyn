@@ -5,11 +5,14 @@ namespace App\Models\Tenant;
 use App\Actions\Tenant\CreateTenantDatabaseAction;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Rinvex\Subscriptions\Traits\HasSubscriptions;
+use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 use Spatie\Multitenancy\Models\Tenant;
 
 class ScoolynTenant extends Tenant
 {
     use HasFactory;
+
+    use UsesLandlordConnection;
 
     use HasSubscriptions;
 

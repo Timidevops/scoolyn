@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\Landlord;
 
 use App\Http\Controllers\Controller;
+use App\Mail\Landlord\SchoolAdmin\OnboardMail;
 use App\Models\Landlord\Plan;
 use App\Models\Landlord\SchoolAdmin;
 use App\Models\Landlord\Transaction;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Ramsey\Uuid\Uuid;
 
 class SubscriptionPaymentCallbacksController extends Controller
@@ -47,7 +49,8 @@ class SubscriptionPaymentCallbacksController extends Controller
             'initial_plan' => $transaction->subscription_id
         ]);
 
-        //@todo send email to school admin
+        //send email to school admin
+        Mail::to($transaction->user_reference)->send(new OnboardMail($schoolAdmin));
 
         return redirect()->route('appOnboarding', $schoolAdmin->uuid);
     }
@@ -73,6 +76,10 @@ class SubscriptionPaymentCallbacksController extends Controller
         return json_decode($response->getBody(),true);
     }
 
+    /**
+     * @param array $input
+     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
+     */
     private function createNewSchoolAdmin(array $input)
     {
         return SchoolAdmin::query()->create($input);

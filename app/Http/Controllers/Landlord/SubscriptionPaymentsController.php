@@ -25,7 +25,7 @@ class SubscriptionPaymentsController extends Controller
     {
         $this->validate($request, [
             'planId'  => ['required', "exists:App\Models\Landlord\Plan,uuid"],
-            'email' => ['required', 'email'],
+            'email' => ['required', 'email', 'unique:App\Models\Landlord\SchoolAdmin,email'],
         ]);
 
         //get subscription
