@@ -8,27 +8,18 @@ use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
-use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ContinuousAssessmentStructure;
-use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Teacher;
-use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class AcademicBroadsheetsController extends Controller
 {
-
-//    private $caFormat;
-//    private Collection $students;
-//    private string $subjectPlacement;
     protected string $uuid;
     private Model $classSubject;
-
 
     public function index()
     {
@@ -52,6 +43,11 @@ class AcademicBroadsheetsController extends Controller
 
         // get c.a format for class
         $this->caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
+
+        if( ! $this->caFormat ){
+            Session::flash('warningFlash', 'Cannot process request, kindly contact school admin.');
+            return back();
+        }
 
         // get students offering subject
         $studentSubjects = StudentSubject::query()->whereJsonContains('subjects', $this->classSubject->uuid)->get('student_id');
@@ -193,11 +189,21 @@ class AcademicBroadsheetsController extends Controller
 
     public function store(Request $request, string $uuid)
     {
+        $this->validate($request, [
+            'classArm' => ['required'],
+            'broadsheet.*.total' => ['required', 'min:0','max:100']
+        ],[
+            'broadsheet.*.total.required' => 'Kindly input fields',
+            'broadsheet.*.total.min' => 'Kindly input fields',
+            'broadsheet.*.total.max' => 'Kindly input correct fields',
+        ]);
+
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
         $classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
         if( ! $classSubject ){
+            Session::flash('errorFlash', 'Error processing request.');
             return back();
         }
 
@@ -216,12 +222,16 @@ class AcademicBroadsheetsController extends Controller
 
     private function edit(Model $academicBroadsheet)
     {
-
         // if status is submitted or approved :return _single page
         if( $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS || $academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
 
             // get grade format for class
             $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
+
+            if( ! $gradeFormats ){
+                Session::flash('warningFlash','Error completing request.');
+                return redirect()->route('listAcademicBroadsheet');
+            }
 
             $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, true);
 
@@ -250,6 +260,16 @@ class AcademicBroadsheetsController extends Controller
 
     public function update(Request $request, string $uuid)
     {
+        $this->validate($request, [
+            'classArm' => ['required'],
+            'broadsheet.*.total' => ['required','gt:0', 'min:1','max:100']
+        ],[
+            'broadsheet.*.total.required' => 'Kindly input fields',
+            'broadsheet.*.total.gt' => 'Kindly input correct fields',
+            'broadsheet.*.total.min' => 'Kindly input correct fields',
+            'broadsheet.*.total.max' => 'Kindly input correct fields',
+        ]);
+
         //@todo if user is the class teacher; update the broadsheet...
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 

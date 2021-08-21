@@ -55,10 +55,13 @@
                     </template>
                 </div>
             </div>
+
             <div class="px-4 py-4">
-                <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">
-                    Add subject
-                </button>
+                @if( count($classSubjects) > 0 )
+                    <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">
+                        Add subject
+                    </button>
+                @endif
             </div>
         </div>
     </div>

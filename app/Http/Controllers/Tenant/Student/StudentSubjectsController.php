@@ -55,19 +55,11 @@ class StudentSubjectsController extends Controller
         ]);
     }
 
-//    public function create(string $uuid)
-//    {
-//        $student = Student::query()->where('uuid', $uuid)->firstOrFail();
-//
-//        return view('Tenant.pages.student.subject.create', [
-//            'studentId' => $student->uuid,
-//        ]);
-//    }
-
     public function store(string $uuid, Request $request)
     {
+
         $this->validate($request, [
-            'subjects.*' => ['unique:school_subjects,subject_id'],
+            'subjects.*' => ['required','unique:school_subjects,subject_id'],
             'subjects'   => ['required', 'array','min:1']
         ]);
 

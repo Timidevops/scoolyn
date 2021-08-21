@@ -10,6 +10,15 @@
 </div>
 
 <div class="h-screen py-10">
+    @if($errors->any())
+        <div class="mt-1 mb-5 bg-red-100 p-5">
+            @foreach ($errors->all() as $error)
+                <p class="text-white">
+                    {!! $error !!}
+                </p>
+            @endforeach
+        </div>
+    @endif
     <div class="bg-white rounded-md " x-data="createCaFormat()">
         <form action="{{route('storeCAStructure')}}" method="post">
             @csrf
@@ -67,10 +76,11 @@
 
             <div class="p-4">
                 <p>Total Continuous assessment score: <span x-text="totalCAScore"></span>/100</p>
+                <input type="hidden" name="totalCAScore" x-model="totalCAScore">
             </div>
 
             <div class="px-4 py-4">
-                <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/5 text-sm">
+                <button  type="submit" class="bg-blue-100 disabled text-white rounded-md py-3 px-2  md:w-1/5 text-sm">
                     Save
                 </button>
             </div>
@@ -84,6 +94,7 @@
             numberOfCA: 0,
             numberOfCAObject: [],
             totalCAScore: 0,
+            disableButton: true,
             onchangeNumberOfCA(){
                 if(this.numberOfCA >=1){
                     this.numberOfCAObject = [];

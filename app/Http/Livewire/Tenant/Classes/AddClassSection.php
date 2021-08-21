@@ -23,6 +23,9 @@ class AddClassSection extends Component
     public string $classSection = '', $newClassSection = '';
     public string $classSectionCategory = '', $newClassSectionCategory = '';
 
+    public bool $errorDiv = false;
+    public string $errorMessage = '';
+
     public bool $addClassModal = false;
 
     public string $classLabel = '-- choose a class --';
@@ -75,8 +78,17 @@ class AddClassSection extends Component
             ->where('class_section_id', $classSectionTypeId)
             ->where('class_section_category_id', $classSectionCategoryTypeId)->exists();
 
-        if( ! $schoolClassId || $isClassArmExist){
-            //@todo error message
+        if( $isClassArmExist ){
+            $this->errorDiv = true;
+            $this->errorMessage = 'Class Arm already exist';
+
+            return false;
+        }
+
+        if( ! $schoolClassId || ! $classSectionTypeId){
+            $this->errorDiv = true;
+            $this->errorMessage = 'Kindly select a class, section or section category';
+
             return false;
         }
 

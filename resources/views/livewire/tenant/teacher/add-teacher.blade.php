@@ -22,8 +22,8 @@
         <div class="px-4 pt-4">
             <label for="address" class="block text-sm font-normal text-gray-100">Choose teacher designation</label>
             <label class="flex items-center mt-3 space-x-2 text-gray-100 text-sm">
-                <input id="selectAllDesignation" @click="toggleSelectAll(event.target)" type="checkbox" value="all">
-                <span>Select All</span>
+                <input disabled id="selectAllDesignation" @click="toggleSelectAll(event.target)" type="checkbox" value="all">
+{{--                <span>Select All</span>--}}
             </label>
             <div class="flex items-center mt-3  text-gray-100 text-sm">
                 <template x-for="(item, index) in teacherCheckbox" :key="index">

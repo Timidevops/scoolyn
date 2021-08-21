@@ -14,8 +14,17 @@
             </span>
         </a>
     </div>
-    
+
     <div class="h-screen py-10">
+        @if($errors->any())
+            <div class="mt-1 mb-5 bg-red-100 p-5">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
         <div class="bg-white rounded-md " x-data="createGradingFormat()">
             <form action="{{route('storeGradeFormat')}}" method="post">
                 @csrf
@@ -59,13 +68,13 @@
                         </div>
                     </div>
                 </div>
-    
+
                 <div class="p-4 w-2/5">
                     <div class="mt-2">
                         <label for="" class="block text-sm font-normal text-gray-100">Academic Grading</label>
                     </div>
                 </div>
-    
+
                 <div class="grid grid-cols-1 md:grid-cols-5 gap-6 p-4 border-b border-gray-300 pb-1">
                     <div class="mt-2">
                         <label class="block text-sm font-normal text-gray-100">From</label>
@@ -82,7 +91,7 @@
                     <div class="mt-2">
                     </div>
                 </div>
-    
+
                 <template x-for="(item, index) in gradeFormatField" :key="index">
                     <div class="grid grid-cols-1 md:grid-cols-5 gap-6 p-4 border-b border-gray-300 items-center">
                         <div class="mt-1">
@@ -112,19 +121,19 @@
                         </div>
                     </div>
                 </template>
-    
+
                 <div class="px-4 py-4 text-right">
                     <button @click="addNewGradeFormatField()" type="button" class="bg-white text-grey-100 border border-grey-300 rounded-md py-2 px-2  md:w-1/5 text-sm">
                         Add new grade
                     </button>
                 </div>
-    
+
                 <div class="px-4 py-4">
                     <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/3 text-sm">
                         Submit
                     </button>
                 </div>
-    
+
             </form>
         </div>
     </div>

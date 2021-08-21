@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ResultSheetsController extends Controller

@@ -8,11 +8,10 @@ use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\SchoolClass;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class ContinuousAssessmentFormatsController extends Controller
 {
@@ -35,6 +34,15 @@ class ContinuousAssessmentFormatsController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->validate($request, [
+            'numberOfCA' => ['required', 'gt:0'],
+            'schoolClass' => ['required'],
+            'schoolClass.*' => ['exists:school_classes,uuid'],
+            'caName.*' => ['required'],
+            'caScore.*' => ['required'],
+            'totalCAScore' => [ Rule::in('100')]
+        ]);
+
         $lastEntry   = ContinuousAssessmentStructure::all();
         $lastEntryId = $lastEntry->isEmpty() ? '' : "_{$lastEntry->last()->id}";
 

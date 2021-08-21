@@ -62,7 +62,7 @@
                             <td class="whitespace-nowrap text-xs text-gray-200">
                                 <div class="mt-2 text-center">
                                     <label>
-                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$classArm}}`" @input="onchangeCAScore(index, '{{$classArm}}')" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$classArm}}`" @input="onchangeCAScore(index, '{{$classArm}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                     </label>
                                 </div>
                             </td>
@@ -92,19 +92,30 @@
                 this.caAssessmentStructure.map((item, index)=>{
                     broadsheet.push({
                         name: item.name,
-                        score: meta[item.name]
+                        score: meta[item.name],
+                        caScore: item.score,
                     });
                 })
 
                 return broadsheet;
             },
-            onchangeCAScore(id, classArm){
+            onchangeCAScore(id, classArm, ca, value){
                 let scoreIdText = `totalScore_${id}_${classArm}`;
                 let scoreIdValue = `totalScoreValue_${id}_${classArm}`;
                 let totalScore = 0;
 
+                if( parseFloat(value.target.value) > parseFloat(ca.caScore) ){
+                    value.target.classList.remove('border-purple-100')
+                    value.target.classList.add('border-red-100')
+                    value.target.value = 0;
+
+                }else{
+                    value.target.classList.remove('border-red-100')
+                    value.target.classList.add('border-purple-100')
+                }
+
                 document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
-                    let score = parseInt(value.value);
+                    let score = parseFloat(value.value);
 
                     if(! score ){
                         score = 0;
@@ -114,8 +125,8 @@
                 });
 
 
-                document.getElementById(scoreIdText).innerText = totalScore;
-                document.getElementById(scoreIdValue).value = totalScore;
+                document.getElementById(scoreIdText).innerText = totalScore > 100 ? '0' : totalScore;
+                document.getElementById(scoreIdValue).value = totalScore > 100 ? '0' : totalScore;
             },
         }
     }

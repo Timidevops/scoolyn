@@ -11,7 +11,6 @@ class SchoolClassesController extends Controller
 {
     public function index()
     {
-
         $schoolClasses = (SchoolClass::all());
 
         $classArms = $schoolClasses->map(function ($schoolClass){

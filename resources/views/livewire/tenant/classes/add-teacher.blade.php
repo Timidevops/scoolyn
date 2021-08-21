@@ -27,6 +27,13 @@
                     </svg>
                 </button>
             </div>
+            @if($errorDiv)
+                <div class="mx-4 bg-red-100 p-4">
+                    <p class="text-white text-sm">
+                        {{$errorMessage}}
+                    </p>
+                </div>
+            @endif
             <div class=" mx-4" >
 
                 <div class="mt-6">

@@ -16,6 +16,9 @@ class AddTeacher extends Component
 
     public bool $isAddTeacherModalOpen = false;
 
+    public bool $errorDiv = false;
+    public string $errorMessage = '';
+
     public string $classSectionLabel = '-- choose a section --';
     public bool $classSectionDropdown = false;
 
@@ -24,7 +27,7 @@ class AddTeacher extends Component
     public bool $isClassSectionCategory = false;
     public bool $classSectionCategoryDropdown = false;
 
-    public string $teacherLabel = '-- choose a category --';
+    public string $teacherLabel = '-- choose a teacher --';
     public bool $teacherDropdown = false;
 
     public string $classSectionId = '';
@@ -47,7 +50,10 @@ class AddTeacher extends Component
     public function store()
     {
         if( ! $this->classSectionId || ! $this->teacherId ){
-            return back();
+            $this->errorDiv = true;
+            $this->errorMessage = 'Kindly select a class, section or section category and teacher';
+
+            return false;
         }
 
 

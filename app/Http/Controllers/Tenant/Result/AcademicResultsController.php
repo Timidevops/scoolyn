@@ -11,7 +11,6 @@ use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -92,6 +91,12 @@ class AcademicResultsController extends Controller
 
         // get grade format for class
         $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+
+        if( ! $gradeFormats ){
+            Session::flash('warningFlash', 'Error processing request, contact school admin.');
+
+            return back();
+        }
 
         $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
 

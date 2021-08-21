@@ -32,9 +32,11 @@
             </template>
             </div>
             <div class="px-4 py-4">
-                <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/3 text-sm">
-                    Submit
-                </button>
+                @if( count($feesStructures) > 0 )
+                    <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/3 text-sm">
+                        Submit
+                    </button>
+                @endif
             </div>
         </div>
 

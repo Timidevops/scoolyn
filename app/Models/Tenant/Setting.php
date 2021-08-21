@@ -60,7 +60,7 @@ class Setting extends Model
         $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
 
         if( ! $setting ){
-            return  'current session not set.';
+            return  'current academic calendar not set.';
         }
 
         $academicSession = AcademicSession::query()->where('uuid', $setting->meta['session'])->first();
@@ -68,6 +68,11 @@ class Setting extends Model
         $academicTerm = AcademicTerm::query()->where('uuid', $setting->meta['term'])->first();
 
         return "$academicSession->session_name, $academicTerm->term_name";
+    }
+
+    public static function isAcademicCalendarSet(): bool
+    {
+        return self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->exists();
     }
 
     public static function isAdmissionOn() : bool

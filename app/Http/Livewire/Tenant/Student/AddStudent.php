@@ -57,6 +57,15 @@ class AddStudent extends Component
     public string $parentGender = '';
     public string $parentAddress = '';
 
+    protected $rules = [
+        'first_name' => ['required'],
+        'last_name' => ['required'],
+        'other_name' => ['required'],
+        'gender' => ['required'],
+        'dob' => ['required'],
+        'address' => ['required'],
+    ];
+
     public function render()
     {
         $this->parents = Parents::query()->get(['uuid', 'first_name', 'last_name']);
@@ -71,6 +80,10 @@ class AddStudent extends Component
         $parent = Parents::query()->where('uuid', '=', $this->parentId)->first();
 
         if( ! $parent ){
+            return false;
+        }
+
+        if( ! $this->getClassArm() ){
             return false;
         }
 

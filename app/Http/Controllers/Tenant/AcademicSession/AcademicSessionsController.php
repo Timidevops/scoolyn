@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rule;
 
 class AcademicSessionsController extends Controller
 {
@@ -21,10 +22,14 @@ class AcademicSessionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'termName'    => ['required'],
+            'termName'    => ['required', Rule::in(['1','2','3'])],
             'sessionName' => ['required'],
             'sessionYear' => ['required'],
         ]);
+
+        $sessionName = str_replace(' ', '/', $request->input('sessionName'));
+
+        $request['sessionName'] = str_replace('-', '/', $sessionName);
 
         $academicSession =  (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear')));
 

@@ -1,5 +1,14 @@
 
 <div x-data="allClassArm()">
+    @if($errors->any())
+        <div class="mt-1 mb-5 bg-red-100 p-5">
+            @foreach ($errors->all() as $error)
+                <p class="text-white">
+                    {!! $error !!}
+                </p>
+            @endforeach
+        </div>
+    @endif
     <!-- tab section -->
 
     <!-- tab header -->
@@ -50,9 +59,11 @@
                        @csrf
                        <input type="hidden" name="classArm" value="{{$student['classArm']}}">
                        <div class="flex justify-end px-4 py-4">
-                           <button type="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
-                               Save Broadsheet
-                           </button>
+                           @if( count($student['students']) > 0 )
+                               <button type="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
+                                   Save Broadsheet
+                               </button>
+                           @endif
                        </div>
                        <div class="flex flex-col mt-2">
                            <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
@@ -102,7 +113,7 @@
                                                <td class="whitespace-nowrap text-xs text-gray-200">
                                                    <div class="mt-2 text-center">
                                                        <label>
-                                                           <input type="number" x-bind:class="`totalScore_${index}_{{$index}}`" @input="onchangeCAScore(index,'{{$index}}')" x-bind:name="`broadsheet[${item.uuid}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                                           <input type="number" x-bind:class="`totalScore_${index}_{{$index}}`" @input="onchangeCAScore(index,'{{$index}}',ca, event)" x-bind:name="`broadsheet[${item.uuid}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                                        </label>
                                                    </div>
                                                </td>
@@ -132,8 +143,20 @@
         return{
             broadsheetTabOpen: '0',
             caAssessmentStructure: caAssessmentStructure(),
-            onchangeCAScore(id,index){
-                onchangeCAScore(id, index)
+            onchangeCAScore(id,index,ca,value){
+
+                if( parseFloat(value.target.value) > parseFloat(ca.score) ){
+                    value.target.classList.remove('border-purple-100')
+                    value.target.classList.add('border-red-100')
+                    value.target.value = 0;
+                    onchangeCAScore(id, index);
+                    return false;
+                }
+
+                value.target.classList.remove('border-red-100')
+                value.target.classList.add('border-purple-100')
+
+                onchangeCAScore(id, index);
             },
         };
     }

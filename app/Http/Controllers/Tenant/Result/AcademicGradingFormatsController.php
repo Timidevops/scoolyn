@@ -31,15 +31,22 @@ class AcademicGradingFormatsController extends Controller
 
     public function store(Request $request)
     {
-       $lastEntry   = AcademicGradingFormat::query()->latest();
-       $lastEntryId = $lastEntry->exists() ? "_{$lastEntry->first()->id}" : '';
+        $this->validate($request, [
+            'schoolClass' => ['required'],
+            'meta' => ['required']
+        ], [
+            'meta.required' => 'Academic grading is required'
+        ]);
 
-       $request['name'] = $request->input('name') ?? "academic_grading_format{$lastEntryId}";
+        $lastEntry   = AcademicGradingFormat::query()->latest();
 
-       (new CreateNewGradingFormat())->execute(camel_to_snake($request->except('_token')));
+        $lastEntryId = $lastEntry->exists() ? "_{$lastEntry->first()->id}" : '';
+
+        $request['name'] = $request->input('name') ?? "academic_grading_format{$lastEntryId}";
+
+        (new CreateNewGradingFormat())->execute(camel_to_snake($request->except('_token')));
 
         Session::flash('successFlash', 'Academic grading format added successfully!!!');
-
 
         return back();
     }

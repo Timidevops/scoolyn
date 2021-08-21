@@ -18,6 +18,9 @@ class AddSubject extends Component
     public $classArm;
     public $classSubjects;
 
+    public bool $errorDiv = false;
+    public string $errorMessage = '';
+
     public string $classSectionLabel = '-- choose a section --';
 
     public $classSectionCategories = [];
@@ -56,6 +59,9 @@ class AddSubject extends Component
     public function store()
     {
         if( ! $this->classSectionId || ! $this->subjectIds){
+            $this->errorDiv = true;
+            $this->errorMessage = 'Kindly select a class, section or section category and subject(s)';
+
             return false;
         }
 

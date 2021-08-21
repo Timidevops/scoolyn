@@ -28,7 +28,14 @@
                     </svg>
                 </button>
             </div>
-            <div class=" mx-4" >
+            @if($errorDiv)
+                <div class="mx-4 bg-red-100 p-4">
+                    <p class="text-white text-sm">
+                        {{$errorMessage}}
+                    </p>
+                </div>
+            @endif
+            <div class="mx-4" >
 
                 <div class="mt-6">
                     <label for="service" class="block text-xs font-normal text-gray-100">Class name</label>
@@ -104,7 +111,7 @@
                 </div>
 
                 <div class="my-6">
-                    <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
+                    <label for="service" class="block text-xs font-normal text-gray-100">Section category name</label>
                     <button wire:click="toggleClassSectionCategory('{{!$sectionCategoryDropdown}}', '{{!$sectionCategoryDropdownOption}}')" type="button" name="className"
                             class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                         {{$sectionCategoryLabel}}

@@ -6,6 +6,16 @@
     <a href="{{route('listStudent')}}"><span class="mt-2 text-xs text-gray-300">/!/ Students</span></a>
 </div>
 
+@if($errors->any())
+    <div class="mt-1 mb-5 bg-red-100 p-5">
+        @foreach ($errors->all() as $error)
+            <p class="text-white">
+                {!! $error !!}
+            </p>
+        @endforeach
+    </div>
+@endif
+
 <div class="bg-white rounded-md" x-data="student()">
     <div class="md:flex md:items-center md:mt-2">
         <div class="py-6 px-2 relative w-full">

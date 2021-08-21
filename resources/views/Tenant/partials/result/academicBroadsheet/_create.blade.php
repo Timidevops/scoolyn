@@ -34,7 +34,7 @@
         let totalScore = 0;
 
         document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
-            let score = parseInt(value.value);
+            let score = parseFloat(value.value);
 
             if (!score) {
                 score = 0;
@@ -43,7 +43,7 @@
             totalScore = totalScore + score;
         });
 
-        document.getElementById(scoreIdText).innerText = totalScore;
-        document.getElementById(scoreIdValue).value = totalScore;
+        document.getElementById(scoreIdText).innerText = totalScore > 100 ? '0' : totalScore;
+        document.getElementById(scoreIdValue).value = totalScore > 100 ? '0' : totalScore;
     }
 </script>
