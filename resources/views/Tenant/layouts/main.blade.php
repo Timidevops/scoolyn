@@ -47,7 +47,7 @@
           font-family: "CircularStd-Bold";
           src: url('css/fonts/CircularStd-Bold.ttf') format('truetype');
       }
-        div.medium{
+        div.medium,ul.medium{
             font-family:'CircularStd-Medium';  
         }
         ul.regular,a.regular,li.regular,div.regular,span.regular,button.regular{

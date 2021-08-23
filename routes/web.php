@@ -37,6 +37,10 @@ Route::get('welcomePage', function () {
     return view('Tenant.welcome.welcomePage.index');
 });
 
+Route::get('accountSetup', function () {
+    return view('Tenant.accountSetup');
+});
+
 Route::get('payment', function () {
     return view('Tenant.pages.payment.index');
 });
