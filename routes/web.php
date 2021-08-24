@@ -84,14 +84,13 @@ Route::middleware('auth')->group(function (){
 
     Route::prefix('auth')->group(function (){
 
-        Route::get('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
-        Route::post('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');
-
         Route::middleware('tenant.academicCalendar.confirm')->group(function (){
 
             Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
             Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
 
+            Route::get('admission/applicant', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'index'])->name('listApplicant');
+            Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
 
             Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
 
@@ -151,9 +150,26 @@ Route::middleware('auth')->group(function (){
 
         });
 
-        Route::get('settings', [\App\Http\Controllers\Tenant\Setting\SettingsController::class, 'index'])->name('listSetting');
+        Route::prefix('settings')->group(function (){
 
-        Route::get('settings/change-password', [\App\Http\Controllers\Tenant\Setting\ChangePasswordsController::class, 'edit'])->name('changeAuthPassword');
+            Route::get('/', [\App\Http\Controllers\Tenant\Setting\SettingsController::class, 'index'])->name('listSetting');
+
+            Route::get('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
+            Route::post('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');
+
+            Route::get('admission', [\App\Http\Controllers\Tenant\Setting\AdmissionSettingsController::class, 'edit'])->name('admissionSetting')->middleware('tenant.academicCalendar.confirm');
+            Route::post('admission', [\App\Http\Controllers\Tenant\Setting\AdmissionSettingsController::class, 'update'])->name('storeAdmissionSetting')->middleware('tenant.academicCalendar.confirm');
+
+            Route::get('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'edit'])->name('schoolDetailsSettings');
+            Route::post('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'update'])->name('updateSchoolDetailsSettings');
+
+            Route::post('school-detail/principal', [\App\Http\Controllers\Tenant\Setting\PrincipalDetailsController::class, 'update'])->name('updateSchoolPrincipal');
+
+            Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
+
+            Route::get('change-password', [\App\Http\Controllers\Tenant\Setting\ChangePasswordsController::class, 'edit'])->name('changeAuthPassword');
+
+        });
 
     });
 

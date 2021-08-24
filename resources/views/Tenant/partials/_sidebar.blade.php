@@ -57,6 +57,18 @@
                     @endcan
 
                     <div class="">
+                        <a href="{{route('listApplicant')}}" class="{{url()->current() == url()->route('listApplicant') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                            <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"  x-show="navigationOpen === true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="focus:text-white" :class="{'hidden': navigationOpen == true}">Admission</span>
+                        </a >
+                    </div>
+
+                    <div class="">
                         <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="isResultDropDownOpen = !isResultDropDownOpen">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
@@ -218,7 +230,7 @@
  </div>
   <div class="bg-gray-100 flex items-center" x-show="isOpen">
 
-    <div class="fixed inset-0 flex z-40"> 
+    <div class="fixed inset-0 flex z-40">
         <div class=" flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
             <div class="absolute top-0 right-0 -mr-12 pt-2">
                 <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none  focus:ring-inset focus:ring-white"  x-on:click="isOpen=!isOpen">
@@ -273,8 +285,8 @@
                             </svg>
                            <span class="focus:text-white">Classes</span>
                         </a>
-                    </div> 
-                    
+                    </div>
+
                     <div class="" x-data="{ show: false}">
                         <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -306,7 +318,7 @@
                                 </a>
                             </li>
                           </ul>
-                    </div> 
+                    </div>
 
                     <div class="" x-data="{ show: false}">
                         <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
@@ -335,11 +347,11 @@
                           </li>
                             <li>
                               <a href="{{route('listParent')}}" class="{{url()->current() == url()->route('listParent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                               <span class="focus:text-white">Parents</span> 
+                               <span class="focus:text-white">Parents</span>
                                 </a>
                             </li>
                           </ul>
-                    </div> 
+                    </div>
 
                     <div class="" x-data="{ show: false }">
                         <a href="" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">

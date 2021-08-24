@@ -12,20 +12,17 @@ class ApplicantsController extends Controller
 {
     public function index()
     {
-        //@todo return view
-        dd('');
-        return view('', [
+        return view('Tenant.pages.admission.index', [
             'applicants' => AdmissionApplicant::query()->get(),
+            'totalApplicants' => AdmissionApplicant::query()->count(),
         ]);
     }
 
     public function single(string $uuid)
     {
         $applicant = AdmissionApplicant::query()->where('uuid', $uuid)->firstOrFail();
-        //@todo return view
-        dd('');
 
-        return view('', [
+        return view('Tenant.pages.admission.single', [
             'applicant' => $applicant,
         ]);
     }

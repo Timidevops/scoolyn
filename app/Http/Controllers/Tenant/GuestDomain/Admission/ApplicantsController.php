@@ -46,7 +46,7 @@ class ApplicantsController extends Controller
             'guardianProfession' => ['nullable', 'string'],
         ]);
 
-        //@todo store admission
+        //store admission
         $this->createNewAdmission(camel_to_snake($request->except('_token')));
 
         //@todo integrate payment option

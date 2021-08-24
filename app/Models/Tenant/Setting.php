@@ -20,8 +20,11 @@ class Setting extends Model
     const CONTACT_NUMBER_SETTING = 'contact_number';
     const CONTACT_EMAIL_SETTING = 'contact_email';
     const SCHOOL_TYPE_SETTING = 'school_type';
-    const PAYMENT_CURRENCY = 'payment_currency_';
+    const PAYMENT_CURRENCY = 'payment_currency';
+    const PAYMENT_STATUS = 'payment_status';
     const ADMISSION_STATUS = 'admission_status';
+    const PRINCIPAL_INFO = 'principal_info';
+    const SCHOOL_LOGO = 'school_logo';
 
     protected $guarded = [];
 
@@ -39,6 +42,38 @@ class Setting extends Model
     public static function whereSettingName(string $settingName)
     {
         return self::query()->where('setting_name', $settingName);
+    }
+
+    public static function schoolDetails(): array
+    {
+        return [
+            'schoolName' => self::whereSettingName(self::SCHOOL_NAME_SETTING)->first()->setting_value,
+            'schoolLocation' => self::whereSettingName(self::SCHOOL_LOCATION_SETTING)->first()->setting_value,
+            'contactNumber' => self::whereSettingName(self::CONTACT_NUMBER_SETTING)->first()->setting_value,
+            'contactEmail' => self::whereSettingName(self::CONTACT_EMAIL_SETTING)->first()->setting_value,
+            'schoolType' => self::whereSettingName(self::SCHOOL_TYPE_SETTING)->first()->setting_value,
+        ];
+    }
+
+    public static function getSchoolLogo()
+    {
+        return self::whereSettingName(self::SCHOOL_LOGO)->exists()
+            ? self::whereSettingName(self::SCHOOL_LOGO)->first()
+            : '';
+    }
+
+    public static function getSchoolPrincipal(): array
+    {
+        $principal = self::whereSettingName(self::PRINCIPAL_INFO)->first();
+
+        if ( ! $principal ){
+            return [];
+        }
+
+        return [
+            'principalName' => $principal->meta['principal_name'],
+            'principalSignature' => $principal->meta['principal_signature'],
+        ];
     }
 
     public static function getCurrentAcademicSessionId()
@@ -67,7 +102,7 @@ class Setting extends Model
 
         $academicTerm = AcademicTerm::query()->where('uuid', $setting->meta['term'])->first();
 
-        return "$academicSession->session_name, $academicTerm->term_name";
+        return "$academicSession->session_name, ".strOrdinal($academicTerm->term_name)." term";
     }
 
     public static function isAcademicCalendarSet(): bool

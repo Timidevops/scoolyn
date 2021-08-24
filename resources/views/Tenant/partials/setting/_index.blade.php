@@ -30,6 +30,20 @@
         @endcan
             <tr>
                 <td>
+                    <a href="{{route('schoolDetailsSettings')}}">
+                        <span>School Details</span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{route('admissionSetting')}}">
+                        <span>Change Admission Setting</span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <a href="{{route('changeAuthPassword')}}">
                         <span>Change password</span>
                     </a>
