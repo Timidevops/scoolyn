@@ -76,6 +76,10 @@
             viewPage(index) {
                 this.pageNumber = index;
             },
+            onSelectAllApplicants(event){
+                let checked = event.checked;
+                document.querySelectorAll('.applicantCheckbox').forEach(e => e.checked = checked);
+            }
         }
     }
 </script>

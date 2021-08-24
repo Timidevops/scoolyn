@@ -129,6 +129,9 @@
                             </p>
                         </div>
                         @enderror
+                        @if($principalDetails['principalSignature'])
+                            <img src="" width="200" alt="school-logo">
+                        @endif
                     </div>
                 </div>
                 <div class="px-4 py-4">

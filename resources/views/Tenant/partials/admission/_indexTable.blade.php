@@ -3,84 +3,110 @@
         <div class="max-w-6xl mx-auto  sm:px-6 ">
             <div class="flex flex-col mt-2">
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
-                    <table class="min-w-full divide-y  divide-purple-100">
-                        <thead>
-                        <tr>
-                            <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
-                                SN
-                            </th>
+                    <form>
+                        @csrf
+                        <div class="pb-3 pt-3 flex items-center">
+                            <div class="w-1/2 px-1">
+                                <label for="admissionStatus" class="block text-sm font-normal text-gray-100">Change Admission Status</label>
+                                <select id="admissionStatus" name="admissionStatus" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                    <option>-- Select Status --</option>
+                                </select>
+                            </div>
+                            <div class="w-1/2 px-1">
+                                <label for="examDate" class="block text-sm font-normal text-gray-100">Schedule Exam Date</label>
+                                <input type="date" id="examDate" name="examDate" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
+                            </div>
+                            <div class="w-2/5 px-1">
+                                <button type="submit" class="bg-blue-100 w-full text-white rounded-md py-3 px-3  text-sm" >
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                        <table class="min-w-full divide-y  divide-purple-100">
+                            <thead>
+                            <tr>
+                                <th>
+                                    <input id="" @click="onSelectAllApplicants(event.target)" type="checkbox">
+                                </th>
+                                <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
+                                    SN
+                                </th>
 
-                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                             <span class="flex items-center mx-1">
                             Applicant Name
                             <span>
                     <img src="{{asset('images/filter_alt_black_24dp.svg')}}" alt="" class="w-4">
                      </span>
                     </span>
-                            </th>
+                                </th>
 
-                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
-                                Status
-                            </th>
-                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
-                                Class Applying To
-                            </th>
-                            <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
-                                Action
-                            </th>
+                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                    Status
+                                </th>
+                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                    Class Applying To
+                                </th>
+                                <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
+                                    Action
+                                </th>
 
-                        </tr>
-                        </thead>
-                        <tbody class="bg-white divide-y divide-purple-100">
-                        <template x-for="(content, index) in applicantTable" :key="index">
-                            <tr class="bg-white">
-
-                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
-                                    <div class="flex">
-                                        <p class="group inline-flex space-x-2 truncate capitalize">
-                                            <span class="text-gray-500 truncate" x-text="index + 1"></span>
-                                        </p>
-                                    </div>
-                                </td>
-
-
-                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
-                                    <div class="flex">
-                                        <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.student_first_name"></span>
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.student_other_name"></span>
-                                            <span class="text-gray-500 truncate capitalize" x-text="content.student_last_name"></span>
-                                        </p>
-                                    </div>
-                                </td>
-
-                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
-                                    <div class="flex">
-                                        <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-blue-100 truncate capitalize" x-text="content.status"></span>
-                                        </p>
-                                    </div>
-                                </td>
-
-                                <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
-                                    <div class="flex">
-                                        <p class="group inline-flex space-x-2 truncate">
-                                            <span class="text-blue-100 truncate capitalize" x-text="content.class.replace('-', ' ')"></span>
-                                        </p>
-                                    </div>
-                                </td>
-
-                                <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
-                                    <a :href=`{{route('singleApplicant','')}}/${content.uuid}`>
-                                        <button class="focus:outline-none" x-on:click="editModal = true">
-                                            /!/
-                                        </button>
-                                    </a>
-                                </td>
                             </tr>
-                        </template>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-purple-100">
+                            <template x-for="(content, index) in applicantTable" :key="index">
+                                <tr class="bg-white">
+
+                                    <td>
+                                        <input type="checkbox" class="applicantCheckbox">
+                                    </td>
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                        <div class="flex">
+                                            <p class="group inline-flex space-x-2 truncate capitalize">
+                                                <span class="text-gray-500 truncate" x-text="index + 1"></span>
+                                            </p>
+                                        </div>
+                                    </td>
+
+
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                        <div class="flex">
+                                            <p class="group inline-flex space-x-2 truncate">
+                                                <span class="text-gray-500 truncate capitalize" x-text="content.student_first_name"></span>
+                                                <span class="text-gray-500 truncate capitalize" x-text="content.student_other_name"></span>
+                                                <span class="text-gray-500 truncate capitalize" x-text="content.student_last_name"></span>
+                                            </p>
+                                        </div>
+                                    </td>
+
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                        <div class="flex">
+                                            <p class="group inline-flex space-x-2 truncate">
+                                                <span class="text-blue-100 truncate capitalize" x-text="content.status"></span>
+                                            </p>
+                                        </div>
+                                    </td>
+
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                        <div class="flex">
+                                            <p class="group inline-flex space-x-2 truncate">
+                                                <span class="text-blue-100 truncate capitalize" x-text="content.class.replace('-', ' ')"></span>
+                                            </p>
+                                        </div>
+                                    </td>
+
+                                    <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
+                                        <a :href=`{{route('singleApplicant','')}}/${content.uuid}`>
+                                            <button class="focus:outline-none" x-on:click="editModal = true">
+                                                /!/
+                                            </button>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </template>
+                            </tbody>
+                        </table>
+                    </form>
                 </div>
             </div>
         </div>
