@@ -9,13 +9,15 @@ use Illuminate\Support\Facades\Session;
 
 class ScheduleExamsController extends Controller
 {
-    public function update(Request $request)
+    public function update(array $input)
     {
-        //@todo validate request
+        if( ! $input['applicantIds'] ){
+            Session::flash('errorFlash', 'Kindly select at least one applicant');
 
-        $applicantIds = $request->input('applicantId');
+            return;
+        }
 
-        foreach ($applicantIds as $applicantId){
+        foreach ($input['applicantIds'] as $applicantId){
 
             $applicant = AdmissionApplicant::query()->where('uuid', $applicantId)->first();
 
@@ -23,13 +25,12 @@ class ScheduleExamsController extends Controller
                 continue;
             }
 
-            $applicant['exam_schedule'] = $request->input('examSchedule');
+            $applicant['exam_schedule'] = $input['examSchedule'];
+
+            $applicant['status'] = AdmissionApplicant::EXAM_SCHEDULED_STATUS;
 
             $applicant->save();
         }
 
-        Session::flash('successFlash', 'Applicants exam date scheduled successfully!!!');
-
-        return back();
     }
 }

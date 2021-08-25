@@ -15,8 +15,8 @@ class AdmissionApplicant extends Model
 
     const APPLIED_STATUS = 'applied';
     const EXAM_SCHEDULED_STATUS = 'exam_scheduled';
-    const ADMITTED_STATUS = 'admitted_status';
-    const REJECTED_STATUS = 'rejected_status';
+    const ADMITTED_STATUS = 'admitted';
+    const REJECTED_STATUS = 'rejected';
 
     protected $guarded = [];
 }

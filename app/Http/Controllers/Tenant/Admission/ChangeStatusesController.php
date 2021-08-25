@@ -10,13 +10,15 @@ use Illuminate\Support\Facades\Session;
 
 class ChangeStatusesController extends Controller
 {
-    public function update(Request $request)
+    public function update(array $input)
     {
-        //@todo validate request
+        if( ! $input['applicantIds'] ){
+            Session::flash('errorFlash', 'Kindly select at least one applicant');
 
-        $applicantIds = $request->input('applicantId');
+            return;
+        }
 
-        foreach ($applicantIds as $applicantId){
+        foreach ($input['applicantIds'] as $applicantId){
 
             $applicant = AdmissionApplicant::query()->where('uuid', $applicantId)->first();
 
@@ -24,13 +26,12 @@ class ChangeStatusesController extends Controller
                 continue;
             }
 
-            $applicant['status'] = $request->input('status');
+            //@todo transfer applicant information to student if status is admitted
+
+            $applicant['status'] = $input['status'];
 
             $applicant->save();
         }
 
-        Session::flash('successFlash', 'Applicants status updated successfully!!!');
-
-        return back();
     }
 }

@@ -3,18 +3,25 @@
         <div class="max-w-6xl mx-auto  sm:px-6 ">
             <div class="flex flex-col mt-2">
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
-                    <form>
+                    <form action="{{route('updateApplicants')}}" method="post">
                         @csrf
-                        <div class="pb-3 pt-3 flex items-center">
+                        <input type="hidden" id="selectedId" x-model="selectedId" >
+                        <div class="pb-3 pt-3 flex items-end">
                             <div class="w-1/2 px-1">
                                 <label for="admissionStatus" class="block text-sm font-normal text-gray-100">Change Admission Status</label>
-                                <select id="admissionStatus" name="admissionStatus" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
-                                    <option>-- Select Status --</option>
+                                <select id="admissionStatus" name="admissionStatus" class="w-full capitalize text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                    <option value="">-- Select Status --</option>
+                                    <option value="{{\App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS}}">
+                                        {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS)}}
+                                    </option>
+                                    <option value="{{\App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS}}">
+                                        {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS)}}
+                                    </option>
                                 </select>
                             </div>
                             <div class="w-1/2 px-1">
                                 <label for="examDate" class="block text-sm font-normal text-gray-100">Schedule Exam Date</label>
-                                <input type="date" id="examDate" name="examDate" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
+                                <input type="date" id="examDate" name="examDate" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
                             </div>
                             <div class="w-2/5 px-1">
                                 <button type="submit" class="bg-blue-100 w-full text-white rounded-md py-3 px-3  text-sm" >
@@ -47,6 +54,9 @@
                                 <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                                     Class Applying To
                                 </th>
+                                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                    Exam Date
+                                </th>
                                 <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                                     Action
                                 </th>
@@ -58,7 +68,7 @@
                                 <tr class="bg-white">
 
                                     <td>
-                                        <input type="checkbox" class="applicantCheckbox">
+                                        <input name="selectedId[]" :value="content.uuid" type="checkbox" class="applicantCheckbox">
                                     </td>
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
@@ -67,8 +77,6 @@
                                             </p>
                                         </div>
                                     </td>
-
-
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
                                             <p class="group inline-flex space-x-2 truncate">
@@ -82,7 +90,7 @@
                                     <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                         <div class="flex">
                                             <p class="group inline-flex space-x-2 truncate">
-                                                <span class="text-blue-100 truncate capitalize" x-text="content.status"></span>
+                                                <span class="text-blue-100 truncate capitalize" x-text="content.status.replace('_',' ')"></span>
                                             </p>
                                         </div>
                                     </td>
@@ -95,9 +103,17 @@
                                         </div>
                                     </td>
 
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                        <div class="flex">
+                                            <p class="group inline-flex space-x-2 truncate">
+                                                <span class="text-blue-100 truncate capitalize" x-text="content.exam_schedule ?? 'not assigned' "></span>
+                                            </p>
+                                        </div>
+                                    </td>
+
                                     <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
                                         <a :href=`{{route('singleApplicant','')}}/${content.uuid}`>
-                                            <button class="focus:outline-none" x-on:click="editModal = true">
+                                            <button type="button" class="focus:outline-none" x-on:click="editModal = true">
                                                 /!/
                                             </button>
                                         </a>

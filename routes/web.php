@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function (){
 
             Route::get('admission/applicant', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'index'])->name('listApplicant');
             Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
+            Route::post('admission/applicant-update', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'store'])->name('updateApplicants');
 
             Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
 

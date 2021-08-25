@@ -76,10 +76,15 @@
             viewPage(index) {
                 this.pageNumber = index;
             },
+            selectedId: [],
             onSelectAllApplicants(event){
                 let checked = event.checked;
-                document.querySelectorAll('.applicantCheckbox').forEach(e => e.checked = checked);
-            }
+
+                document.querySelectorAll('.applicantCheckbox').forEach(function (e) {
+                    e.checked = checked;
+                });
+            },
+
         }
     }
 </script>
