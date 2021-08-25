@@ -1,18 +1,18 @@
 <div class="mt-8">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="block text-2xl leading-6 font-medium text-gray-900 capitalize">
-          Hello, {{Auth::user()->getUserFullName()}}
+        Hello, John Doe
       </h2>
       <span class="block text-base text-gray-100 font-light">
-          Look up your school's info.
+        Kindly complete your account setup.
       </span>
-        @can('read a user')
-            <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+         
+            {{-- <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                 <div class="bg-purple-300 overflow-hidden rounded-lg ">
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 text-3xl font-light text-blue-100">
-                                {{$totalStudents}}
+                                
                             </div>
 
                             <div class="ml-5 w-0 flex-1">
@@ -36,7 +36,7 @@
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 text-3xl font-light text-blue-100">
-                                {{$totalTeachers}}
+                                
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
@@ -58,7 +58,8 @@
                     <div class="p-5">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 text-3xl font-light text-blue-100">
-                                {{$totalParents}}
+                               
+                                
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
@@ -75,82 +76,54 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        @endcan
-
-{{--        <div class="mt-4" x-data="timeTable()">--}}
-{{--            Time Table--}}
-{{--            <div class="bg-white px-4 py-4 rounded-md">--}}
-{{--                <span>Tuesday, 23 day</span>--}}
-{{--                <div>--}}
-{{--                    <ul class="" >--}}
-{{--                        <template x-for="item in timeTable" :key="item">--}}
-{{--                        <li>--}}
-{{--                            <span class="text-xs block" x-text="item.time"></span>--}}
-{{--                         <div class="flex flex-row space-x-2">--}}
-{{--                             <img :src="`${item.image}`" alt="Group 172">--}}
-{{--                             <div class="flex items-center  bg-purple-300 px-2 py-2 rounded">--}}
-{{--                                 <img src="/images/Line 14.svg" alt="line">--}}
-{{--                                 <div class="mx-2">--}}
-{{--                                    <span class="text-xs block text-gray-300" x-text="item.duration"></span>--}}
-{{--                                     <span class="text-xs block" x-text="item.subject"></span>--}}
-{{--                                    </div>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
-{{--                        </li>--}}
-{{--                        </template>--}}
-{{--                    </ul>--}}
-{{--                </div>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-
-
-        <div class="mt-4">
-            <div class="bg-white px-6 py-8 rounded-md">
-                <ul class="space-y-4 text-gray-300 medium text-base" >
-                    {{-- <template x-for="item in timeTable" :key="item"> --}}
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+            </div>  --}}
+        <div class="mt-4" x-data="timeTable()"> 
+            <div class="bg-white px-6 py-8 rounded-md">  
+                    <ul class="space-y-4 text-gray-300 medium text-base" >
+                        {{-- <template x-for="item in timeTable" :key="item"> --}}
+                        <li class="flex items-center space-x-4 ">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                              </svg>
+                            </div>
+                            <div>Go to settings and complete your account details</div> 
+                        </li>
+                        <li class="flex items-center space-x-4 ">
+                            <div> 
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                              </svg>
+                            </div>
+                            <div>Go to settings and complete your account details</div> 
+                        </li>
+                        <li class="flex items-center space-x-4 ">
+                            <div> 
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    {{-- </template> --}}
-                </ul>
-                <div class="space-x-2 relative flex justify-end text-gray-300">
-                    <span class="pr-10 py-1"> Not now</span>
-                    <span class="absolute px-6 pt-1.5">
+                              </svg>
+                            </div>
+                            <div>Go to settings and complete your account details</div> 
+                        </li>
+                        {{-- </template> --}}
+                    </ul>
+                    <div class="space-x-2 relative flex justify-end text-gray-300">
+                       <span class="pr-10 py-1"> Not now</span>
+                        <span class="absolute px-6 pt-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                           </svg>
                         </span>
-                </div>
+                    </div>
             </div>
         </div>
+
 
 
     </div>
 </div>
 
-<script>
+{{-- <script>
     function timeTable() {
                 return {
                     timeTable:[
@@ -180,4 +153,4 @@
 
                 }
             }
-    </script>
+    </script> --}}

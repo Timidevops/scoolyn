@@ -25,13 +25,8 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 });
 
-Route::get('schoolDetails', function () {
-    return view('Tenant.welcome.schoolDetails.index');
-});
-
-
-Route::get('welcomePage', function () {
-    return view('Tenant.welcome.welcomePage.index');
+Route::get('accountSetup', function () {
+    return view('Tenant.welcome.accountSetup.index');
 });
 
 Route::get('payment', function () {
