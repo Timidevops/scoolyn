@@ -77,6 +77,8 @@ class AddStudent extends Component
 
     public function store()
     {
+        $this->validate();
+
         $parent = Parents::query()->where('uuid', '=', $this->parentId)->first();
 
         if( ! $parent ){

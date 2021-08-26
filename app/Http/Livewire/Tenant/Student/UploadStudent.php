@@ -1,0 +1,134 @@
+<?php
+
+namespace App\Http\Livewire\Tenant\Student;
+
+use App\Actions\Tenant\File\ExcelFileReaderAction;
+use App\Exceptions\FileNotFoundException;
+use App\Exceptions\InvalidFileFormatException;
+use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\SchoolClass;
+use Livewire\Component;
+use Livewire\WithFileUploads;
+
+class UploadStudent extends Component
+{
+    use WithFileUploads;
+
+    public $file;
+
+    public string $schoolClassId = '';
+    public string $classSectionId = '';
+    public string $classSectionCategoryId = '';
+
+    public bool $schoolClassDropdown = false;
+    public string $schoolClassLabel = '-- choose a class --';
+
+    public bool $classSectionDropdown = false;
+    public string $classSectionLabel = '-- choose a class section --';
+    public $classSections = [];
+
+    public bool $isClassSectionCategory = false;
+    public bool $classSectionCategoryDropdown = false;
+    public string $classSectionCategoryLabel = '-- choose a class section category --';
+    public $classSectionCategories = [];
+
+    private array $studentsDetail = [];
+
+    protected $rules = [
+        'file' => ['required']
+    ];
+
+    public function render()
+    {
+        return view('livewire.tenant.student.upload-student',[
+            'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
+        ]);
+    }
+
+    public function store()
+    {
+        $this->validate();
+
+        $file = $this->file->store('temp');
+
+        $file = str_replace('temp/', '', $file);
+
+        $format = [
+            'first_name',
+            'last_name',
+            'other_name',
+            'gender',
+            'dob',
+            'address'
+        ];
+
+        try {
+            $this->studentsDetail = (new ExcelFileReaderAction())->execute($file, $format);
+        } catch (FileNotFoundException | InvalidFileFormatException $e) {
+
+            return false;
+        }
+
+        dd($this->studentsDetail);
+
+        //@
+        // todo add new student with dummy parent..
+        // foreach loop
+    }
+
+
+    public function selectSchoolClass(string $schoolClassId, string $schoolClassName)
+    {
+        $this->schoolClassId = $schoolClassId;
+
+        $this->schoolClassLabel = $schoolClassName;
+
+        $this->schoolClassDropdown = false;
+
+        $this->classSections = SchoolClass::query()->where('uuid', $schoolClassId)->first()->classArm;
+
+        $this->classSectionLabel = '-- choose a class section --';
+
+        $this->classSectionDropdown = false;
+
+        $this->isClassSectionCategory = false;
+
+        $this->classSectionCategoryDropdown = false;
+
+        $this->classSectionCategoryLabel = '-- choose a class section category --';
+    }
+
+    public function selectClassSection(string $classSectionId, string $classArmId, string $classSectionName)
+    {
+        $this->classSectionId = $classSectionId;
+
+        $this->classSectionLabel = $classSectionName;
+
+        $this->classSectionDropdown = false;
+
+        $this->classSectionCategoryLabel = '-- choose a class section category --';
+
+        $classSection = ClassArm::query()->where('uuid', $classArmId)->first();
+
+        if( $classSection && $classSection->classSectionCategory ){
+
+            $this->classSectionCategories = $classSection->classSectionCategory->get();
+
+            return $this->isClassSectionCategory = true;
+        }
+
+        $this->classSectionCategories = [];
+
+        return $this->isClassSectionCategory = false;
+    }
+
+    public function selectClassSectionCategory(string $classSectionCategoryId, string $classSectionCategoryName)
+    {
+        $this->classSectionCategoryId = $classSectionCategoryId;
+
+        $this->classSectionCategoryLabel = $classSectionCategoryName;
+
+        $this->classSectionCategoryDropdown = false;
+    }
+
+}

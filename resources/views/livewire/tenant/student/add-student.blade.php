@@ -51,15 +51,17 @@
             </div>
             <div class="mt-2">
                 <label class="block text-sm font-normal text-gray-100">Class name</label>
-                <button wire:click="$set('schoolClassDropdown', {{!$schoolClassDropdown}})" type="button"
-                        class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                <div class="relative inline-block w-full rounded-md">
+                    <button wire:click="$set('schoolClassDropdown', {{!$schoolClassDropdown}})" type="button"
+                            class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                     <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                       </svg>
                       </span>
-                    {{$schoolClassLabel}}
-                </button>
+                        {{$schoolClassLabel}}
+                    </button>
+                </div>
                 <div class="border border-purple-100 @if(!$schoolClassDropdown)  hidden @endif">
                     <ul class="py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
               rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
@@ -73,16 +75,18 @@
             </div>
             <div class="mt-2 relative">
                 <label for="Second name" class="block text-sm font-normal text-gray-100">Class section</label>
-                <button @if(!$classSections) disabled @endif wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
-                        class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                <div class="relative inline-block w-full rounded-md">
+                    <button @if(!$classSections) disabled @endif wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
+                            class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
                     <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 my-2 "  fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                       </svg>
                       </span>
-                    {{$classSectionLabel}}
-                </button>
-                <div class="border border-purple-100 absolute w-full bg-white @if(!$classSectionDropdown)  hidden @endif">
+                        {{$classSectionLabel}}
+                    </button>
+                </div>
+                <div class="border border-purple-100 w-full bg-white @if(!$classSectionDropdown)  hidden @endif">
                     <ul class="py-1 overflow-auto h-32 text-base leading-6
                    shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                         @foreach($classSections as $classSection)
@@ -93,12 +97,14 @@
                     </ul>
                 </div>
             </div>
-            <div class="mt-2 relative @if(!$isClassSectionCategory) hidden @endif">
+            <div class="mt-2 @if(!$isClassSectionCategory) hidden @endif">
                 <label class="block text-sm font-normal text-gray-100">Class section category</label>
-                <button @if(!$classSectionCategories) disabled @endif wire:click="$set('classSectionCategoryDropdown', {{!$classSectionCategoryDropdown}})" type="button"
-                        class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
-                    {{$classSectionCategoryLabel}}
-                </button>
+                <div class="relative inline-block w-full rounded-md">
+                    <button @if(!$classSectionCategories) disabled @endif wire:click="$set('classSectionCategoryDropdown', {{!$classSectionCategoryDropdown}})" type="button"
+                            class="cursor-pointer z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                        {{$classSectionCategoryLabel}}
+                    </button>
+                </div>
                 <div class="border border-purple-100 absolute w-full bg-white @if(!$classSectionCategoryDropdown)  hidden @endif">
                     <ul class="py-1 overflow-auto h-32 text-base leading-6
                    shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">

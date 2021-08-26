@@ -103,6 +103,7 @@ Route::middleware('auth')->group(function (){
 
             Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
             Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
+            Route::get('student/upload-student', [\App\Http\Controllers\Tenant\Student\UploadStudentsController::class, 'create'])->name('uploadStudent');
 
             Route::get('student/subject/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'index'])->name('listStudentSubject');
             Route::get('student/subject/add-new/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'create'])->name('createStudentSubject');

@@ -76,3 +76,10 @@ if(! function_exists('strOrdinal')){
         return $numberFormat->format($number);
     }
 }
+
+if(! function_exists('in_array_all')){
+    function in_array_all(array $expectedKeys, array $arrayOfData) : bool
+    {
+        return ! array_diff_key(array_flip($expectedKeys), $arrayOfData);
+    }
+}

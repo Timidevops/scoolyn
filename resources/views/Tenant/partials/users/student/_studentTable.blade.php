@@ -179,6 +179,9 @@
                             </div>
                         </div>
                         <div x-show="studentProfileTab === 2">
+                            <div x-show="studentParentDetail.length === 0 ">
+                                <a class="text-blue-100 text-sm border-b border-dashed border-blue-100 pb-1" href="{{route('listParent')}}">Add parent to this student</a>
+                            </div>
                             <div class="text-sm border-purple-100 border-b mt-4 ">
                                 <div class="flex items-center ">
                                     <p class=" w-1/3"> Parent Name:<p> <span class="w-2/5 capitalize" x-text="studentParentDetail.parentName"></span>

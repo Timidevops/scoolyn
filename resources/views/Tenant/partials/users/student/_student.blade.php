@@ -48,12 +48,15 @@
                     matNum: student[0].matriculation_number ? student[0].matriculation_number : 'not present',
                 };
 
-                this.studentParentDetail = {
-                    parentName: `${student[0].parent.first_name} ${student[0].parent.last_name}`,
-                    parentEmail: student[0].parent.email,
-                    address: student[0].parent.address,
-                    phoneNumber: student[0].parent.phone_number,
-                };
+                if( student[0].parent ){
+                    this.studentParentDetail = {
+                        parentName: `${student[0].parent.first_name} ${student[0].parent.last_name}`,
+                        parentEmail: student[0].parent.email,
+                        address: student[0].parent.address,
+                        phoneNumber: student[0].parent.phone_number,
+                    };
+                }
+
 
                 this.isStudentProfileModalOpen = true;
             },
