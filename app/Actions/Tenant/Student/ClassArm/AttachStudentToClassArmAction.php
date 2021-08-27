@@ -16,15 +16,8 @@ class AttachStudentToClassArmAction
          * class section and class section category.
         **/
 
-//        $classArm = ClassArm::query()
-//            ->where('school_class_id', $input['schoolClassId'])
-//            ->where('class_section_id', $input['classSectionId'])
-//            ->where('class_section_category_id', $input['classSectionCategoryId'])->first();
-
-
         $classArm->students = $classArm->students == null ? [$input['studentId']]
             : [...$classArm->students,$input['studentId']];
-
 
         $classArm->save();
 

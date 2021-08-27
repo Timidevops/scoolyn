@@ -104,38 +104,23 @@
 {{--            </div>--}}
 {{--        </div>--}}
 
-
-        <div class="mt-4">
+        @can('update school details')
+            <div class="mt-4">
             <div class="bg-white px-6 py-8 rounded-md">
                 <ul class="space-y-4 text-gray-300 medium text-base" >
-                    {{-- <template x-for="item in timeTable" :key="item"> --}}
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="green">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    <li class="flex items-center space-x-4 ">
-                        <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                            </svg>
-                        </div>
-                        <div>Go to settings and complete your account details</div>
-                    </li>
-                    {{-- </template> --}}
+                    @foreach($todoLists->meta as $todoList)
+                        <li class="flex items-center space-x-4 ">
+                            <div>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="{{\App\Models\Tenant\OnboardingTodoList::isTodoItemCompleted($todoList['name']) ? 'green' : 'currentColor'}}">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                            <div>Go to settings and complete your account details {{$todoList['name']}}</div>
+                        </li>
+                    @endforeach
                 </ul>
-                <div class="space-x-2 relative flex justify-end text-gray-300">
+                @if( $todoListComplete )
+                    <div class="space-x-2 relative flex justify-end text-gray-300">
                     <span class="pr-10 py-1"> Don't show again</span>
                     <span class="absolute px-6 pt-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -143,9 +128,10 @@
                           </svg>
                         </span>
                 </div>
+                @endif
             </div>
         </div>
-
+        @endcan
 
     </div>
 </div>

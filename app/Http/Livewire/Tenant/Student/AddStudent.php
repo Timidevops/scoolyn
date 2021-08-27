@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire\Tenant\Student;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Http\Controllers\Tenant\Parent\ParentsController;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
@@ -57,6 +59,9 @@ class AddStudent extends Component
     public string $parentGender = '';
     public string $parentAddress = '';
 
+    public bool $errorDiv = false;
+    public string $errorMessage = '';
+
     protected $rules = [
         'first_name' => ['required'],
         'last_name' => ['required'],
@@ -82,11 +87,15 @@ class AddStudent extends Component
         $parent = Parents::query()->where('uuid', '=', $this->parentId)->first();
 
         if( ! $parent ){
-            return false;
+            $this->errorDiv = true;
+            $this->errorMessage = 'Parent not selected or invalid parent details';
+            return;
         }
 
         if( ! $this->getClassArm() ){
-            return false;
+            $this->errorDiv = true;
+            $this->errorMessage = 'Kindly select correct class arm';
+            return;
         }
 
         $student = (new CreateNewStudentAction)->execute($parent, [
@@ -104,11 +113,15 @@ class AddStudent extends Component
             'studentId' => (string) $student->uuid,
         ]);
 
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_STUDENT
+        ]);
+
         Session::flash('successFlash', 'Student added successfully!!!');
 
         $this->redirectRoute('createStudent');
 
-        return  true;
     }
 
     public function getClassArm(): Model

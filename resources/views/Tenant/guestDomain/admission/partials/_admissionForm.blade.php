@@ -10,6 +10,15 @@
             <h4 class="text-md text-blue-100 font-medium">Admission Form</h4>
         </div>
     </div>
+        @if($errors->any())
+            <div class="mx-8 bg-red-100 p-4">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
   <form action="{{route('storeAdmission')}}" method="post">
       @csrf
       <div class="mt-4">

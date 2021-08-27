@@ -57,7 +57,10 @@ class ApplicantsController extends Controller
 
     public function update(string $uuid, Request $request)
     {
-        //@todo validate request
+        $this->validate($request, [
+            'admissionStatus' => ['nullable', Rule::in([AdmissionApplicant::ADMITTED_STATUS, AdmissionApplicant::REJECTED_STATUS])],
+            'examDate' => ['nullable', 'date'],
+        ]);
 
         $applicant = AdmissionApplicant::query()->where('uuid', $uuid)->first();
 
@@ -67,7 +70,10 @@ class ApplicantsController extends Controller
             return back();
         }
 
-        (new UpdateAdmissionAction())->execute($applicant, camel_to_snake($request->except(['_token', '_method'])));
+        (new UpdateAdmissionAction())->execute($applicant, [
+            'status' => $request->input('admissionStatus') ?? $applicant->status,
+            'exam_schedule' => $request->input('examDate') ?? $applicant->exam_schedule,
+        ]);
 
         Session::flash('successFlash', 'Applicant updated successfully!!!');
 

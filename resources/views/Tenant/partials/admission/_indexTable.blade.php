@@ -5,7 +5,6 @@
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
                     <form action="{{route('updateApplicants')}}" method="post">
                         @csrf
-                        <input type="hidden" id="selectedId" x-model="selectedId" >
                         <div class="pb-3 pt-3 flex items-end">
                             <div class="w-1/2 px-1">
                                 <label for="admissionStatus" class="block text-sm font-normal text-gray-100">Change Admission Status</label>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Tenant\Classes;
 
 use App\Actions\Tenant\ClassArm\CreateNewClassArmAction;
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\SchoolClass\ClassTeacher\CreateNewClassSectionCategoryTypeAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionCategoryAction;
@@ -13,6 +14,7 @@ use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSectionCategory;
 use App\Models\Tenant\ClassSectionCategoryType;
 use App\Models\Tenant\ClassSectionType;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
@@ -97,6 +99,11 @@ class AddClassSection extends Component
             'school_class_id' => $schoolClassId,
             'class_section_id' => $classSectionTypeId,
             'class_section_category_id' => $classSectionCategoryTypeId,
+        ]);
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_SCHOOL_CLASSES
         ]);
 
         $this->addClassModal = false;

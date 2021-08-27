@@ -1,27 +1,20 @@
 <?php
 
-namespace App\Http\Livewire\Tenant\Student;
+namespace App\Http\Livewire\Tenant\Admission;
 
-use App\Actions\Tenant\File\ExcelFileReaderAction;
-use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
-use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
-use App\Actions\Tenant\Student\CreateNewStudentAction;
-use App\Exceptions\FileNotFoundException;
-use App\Exceptions\InvalidFileFormatException;
+use App\Actions\Tenant\Admission\ConvertToStudentAction;
+use App\Models\Tenant\AdmissionApplicant;
 use App\Models\Tenant\ClassArm;
-use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 
-class UploadStudent extends Component
+class ConvertToStudent extends Component
 {
-    use WithFileUploads;
+    public string $applicant;
 
-    public $file;
+    public bool $addClassModal = false;
 
     public string $schoolClassId = '';
     public string $classSectionId = '';
@@ -39,80 +32,37 @@ class UploadStudent extends Component
     public string $classSectionCategoryLabel = '-- choose a class section category --';
     public $classSectionCategories = [];
 
-    private array $studentsDetail = [];
-
     public bool $errorDiv = false;
     public string $errorMessage = '';
 
-    protected $rules = [
-        'file' => ['required']
-    ];
+    public function mount(string $applicant)
+    {
+        $this->applicant = $applicant;
+    }
 
     public function render()
     {
-        return view('livewire.tenant.student.upload-student',[
+        return view('livewire.tenant.admission.convert-to-student', [
             'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
         ]);
     }
 
     public function store()
     {
-        $this->validate();
-
         if( ! $this->getClassArm() ){
             $this->errorDiv = true;
             $this->errorMessage = 'Kindly select correct class arm';
             return;
         }
 
-        $file = $this->file->store('temp');
-
-        $file = str_replace('temp/', '', $file);
-
-        $format = [
-            'first_name',
-            'last_name',
-            'other_name',
-            'gender',
-            'dob',
-            'address'
-        ];
-
-        try {
-            $this->studentsDetail = (new ExcelFileReaderAction())->execute($file, $format);
-        } catch (FileNotFoundException | InvalidFileFormatException $e) {
-
-            return;
-        }
-
-        $dummyParent = Parents::withoutGlobalScope('dummyParent')->find(1);
-
-        //add new student with dummy parent..
-        foreach ($this->studentsDetail as $student){
-            $newStudent = (new CreateNewStudentAction())->execute($dummyParent, [
-                'first_name' => $student['first_name'],
-                'last_name' => $student['last_name'],
-                'other_name' => $student['other_name'],
-                'gender' => $student['gender'],
-                'dob' => $student['dob'],
-                'address' => $student['address'],
-                'class_arm' => $this->getClassArm()->uuid,
-            ]);
-
-            (new AttachStudentToClassArmAction())->execute($this->getClassArm(), [
-                'studentId' => (string) $newStudent->uuid,
-            ]);
-
-        }
-
-        //set marker
-        (new UpdateTodoItemAction())->execute([
-            'name' => OnboardingTodoList::ADD_STUDENT
+        (new ConvertToStudentAction)->execute([
+            'applicantId' => $this->applicant,
+            'classArmId' => $this->getClassArm()->uuid,
         ]);
 
-        Session::flash('successFlash', 'Student uploaded successfully!!!');
+        Session::flash('successFlash', 'Applicant added to class a student successfully!!!');
 
-        $this->redirectRoute('listStudent');
+        $this->redirectRoute('singleApplicant', $this->applicant);
     }
 
     /**
@@ -179,5 +129,4 @@ class UploadStudent extends Component
 
         $this->classSectionCategoryDropdown = false;
     }
-
 }

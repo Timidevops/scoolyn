@@ -26,4 +26,5 @@ class Parents extends Model
     {
         return $this->hasMany(Student::class, 'parent_id', 'uuid');
     }
+
 }

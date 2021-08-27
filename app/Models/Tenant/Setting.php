@@ -25,6 +25,7 @@ class Setting extends Model
     const ADMISSION_STATUS = 'admission_status';
     const PRINCIPAL_INFO = 'principal_info';
     const SCHOOL_LOGO = 'school_logo';
+    const INITIAL_TODO_SETTING = 'initial_todo';
 
     protected $guarded = [];
 
@@ -112,8 +113,11 @@ class Setting extends Model
 
     public static function isAdmissionOn() : bool
     {
-        $setting = self::query()->where('setting_name', self::ADMISSION_STATUS)->first();
+        return self::query()->where('setting_name', self::ADMISSION_STATUS)->first()->setting_value;
+    }
 
-        return (bool) $setting->setting_value;
+    public static function isPaymentStatusOn()
+    {
+        return (bool) self::query()->where('setting_name', self::PAYMENT_STATUS)->first()->setting_value;
     }
 }

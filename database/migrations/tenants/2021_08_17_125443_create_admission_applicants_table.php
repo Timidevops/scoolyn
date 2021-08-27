@@ -39,6 +39,7 @@ class CreateAdmissionApplicantsTable extends Migration
             $table->string('academic_term_id');
             $table->string('status');
             $table->dateTime('exam_schedule')->nullable();
+            $table->string('passport');
             $table->timestamps();
             $table->softDeletes();
 

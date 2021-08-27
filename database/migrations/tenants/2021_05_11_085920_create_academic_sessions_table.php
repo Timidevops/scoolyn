@@ -19,6 +19,7 @@ class CreateAcademicSessionsTable extends Migration
             $table->string('session_name');
             $table->string('slug');
             $table->string('session_year');
+            $table->string('term');
             $table->timestamps();
             $table->softDeletes();
         });

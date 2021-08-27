@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Landlord\Plan;
 use App\Models\Landlord\SchoolAdmin;
 use App\Models\Landlord\Transaction;
+use App\Models\Tenant\OnboardingTodoList;
+use App\Models\Tenant\Parents;
 use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\User;
@@ -19,6 +21,8 @@ use Ramsey\Uuid\Uuid;
 class OnboardingsController extends Controller
 {
     protected Model $tenant;
+
+    protected $adminUser;
 
     public function create(string $uuid)
     {
@@ -84,7 +88,7 @@ class OnboardingsController extends Controller
         ]);
 
         //create new admin user
-        $this->createNewAdminUser([
+        $this->adminUser = $this->createNewAdminUser([
             'uuid' => Uuid::uuid4(),
             'name' => 'Administrator',
             'email' => $schoolAdmin->email,
@@ -93,6 +97,9 @@ class OnboardingsController extends Controller
 
         //create initial settings
         $this->runInitialSettings(camel_to_snake($request->all()));
+
+        //create dummy parent
+        $this->createDummyParent();
 
         //update onboard process to complete and add tenant id
         $schoolAdmin->update([
@@ -125,6 +132,8 @@ class OnboardingsController extends Controller
         $admin =  User::query()->create($input);
 
         $admin->assignRole(User::SUPER_ADMIN_USER);
+
+        return $admin;
     }
 
     private function updateTransaction(string $userReference)
@@ -163,7 +172,11 @@ class OnboardingsController extends Controller
             'setting_value' => $input['school_type'],
         ]);
 
+        $paymentStatus = 0;
         if($input['has_payment'] == 'yes'){
+
+            $paymentStatus = 1;
+
             Setting::query()->create([
                 'setting_name' => Setting::PAYMENT_CURRENCY,
                 'setting_value' => $input['payment_currency'],
@@ -171,8 +184,87 @@ class OnboardingsController extends Controller
         }
 
         Setting::query()->create([
+            'setting_name' => Setting::PAYMENT_STATUS,
+            'setting_value' => (string) $paymentStatus,
+        ]);
+
+        Setting::query()->create([
             'setting_name' => Setting::ADMISSION_STATUS,
             'setting_value' => '0',
+        ]);
+
+        Setting::query()->create([
+            'setting_name' => Setting::INITIAL_TODO_SETTING,
+            'setting_value' => '0',
+            'meta' =>  [
+                [
+                    'name' => OnboardingTodoList::SET_ACADEMIC_CALENDAR,
+                    'done' => 0,
+                    'description' => 'Goto settings to set academic calendar',
+                    'url' => 'academicSession',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_SCHOOL_CLASSES,
+                    'done' => 0,
+                    'description' => 'Goto Classes to add class arm',
+                    'url' => 'listClass',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_SUBJECT,
+                    'done' => 0,
+                    'description' => 'Goto subject to add subject',
+                    'url' => 'listSubject',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_CA_FORMAT,
+                    'done' => 0,
+                    'description' => 'Goto Results / Continuous assessment format to c.a format',
+                    'url' => 'createCAStructure',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_GRADING_FORMAT,
+                    'done' => 0,
+                    'description' => 'Goto Results / Academic grading format to add grading format',
+                    'url' => 'createGradeFormat',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_STUDENT,
+                    'done' => 0,
+                    'description' => 'Goto Users / Student to add student',
+                    'url' => 'createStudent',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_PARENT,
+                    'done' => 0,
+                    'description' => 'Goto Users / Student to add parent',
+                    'url' => 'createParent',
+                ],
+                [
+                    'name' => OnboardingTodoList::ADD_TEACHER,
+                    'done' => 0,
+                    'description' => 'Goto Users / Student to add teacher',
+                    'url' => 'createTeacher',
+                ],
+                [
+                    'name' => OnboardingTodoList::SET_SCHOOL_DETAIL,
+                    'done' => 0,
+                    'description' => 'Goto settings / School details to set school details',
+                    'url' => 'schoolDetailsSettings',
+                ],
+            ],
+        ]);
+    }
+
+    private function createDummyParent()
+    {
+        Parents::query()->create([
+            'uuid' => Uuid::uuid4(),
+            'user_id' => (string) $this->adminUser->uuid,
+            'first_name' => 'dummy',
+            'last_name' => 'parent',
+            'email' => 'dummy@scoolyn.com',
+            'phone_number' => '12345',
+            'gender' => 'male',
         ]);
     }
 }

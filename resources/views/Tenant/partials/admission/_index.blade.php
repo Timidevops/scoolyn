@@ -15,24 +15,27 @@
 <script>
     function applicants() {
         return{
+            applicantTable: {!! $applicants !!},
             search: "",
             pageNumber: 0,
-            size: 5,
+            size: 10,
             total: "",
-            applicantTable: {!! $applicants !!},
             get filteredApplicantTable() {
                 const start = this.pageNumber * this.size,
                     end = start + this.size;
+
                 if (this.search === "") {
                     this.total = this.applicantTable.length;
                     return this.applicantTable.slice(start, end);
                 }
+
                 //Return the total results of the filters
                 this.total = this.applicantTable.filter((item) => {
                     return item.subject_name
                         .toLowerCase()
                         .includes(this.search.toLowerCase());
                 }).length;
+
                 //Return the filtered data
                 return this.applicantTable
                     .filter((item) => {
@@ -48,30 +51,38 @@
                     length: Math.ceil(this.total / this.size),
                 });
             },
+
             //Next Page
             nextPage() {
                 this.pageNumber++;
             },
+
             //Previous Page
             prevPage() {
                 this.pageNumber--;
             },
+
             //Total number of pages
             pageCount() {
                 return Math.ceil(this.total / this.size);
             },
+
             //Return the start range of the paginated results
             startResults() {
                 return this.pageNumber * this.size + 1;
             },
+
             //Return the end range of the paginated results
             endResults() {
                 let resultsOnPage = (this.pageNumber + 1) * this.size;
+
                 if (resultsOnPage <= this.total) {
                     return resultsOnPage;
                 }
+
                 return this.total;
             },
+
             //Link to navigate to page
             viewPage(index) {
                 this.pageNumber = index;

@@ -18,7 +18,7 @@
                 <select name="schoolType" id="schoolType" class="border-purple-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md p-2 border" required>
                     <option value="">-- Select Option --</option>
                     <option value="private">Private</option>
-                    <option value="public">Public</option>
+                    <option value="public">Government</option>
                 </select>
             </div>
         </div>

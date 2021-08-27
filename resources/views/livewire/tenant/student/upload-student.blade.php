@@ -2,6 +2,24 @@
 <form wire:submit.prevent="store">
     @csrf
 
+    @if($errorDiv)
+        <div class="mx-8 bg-red-100 p-4">
+            <p class="text-white text-sm">
+                {{$errorMessage}}
+            </p>
+        </div>
+    @endif
+
+    @if($errors->any())
+        <div class="mx-8 bg-red-100 p-4">
+            @foreach ($errors->all() as $error)
+                <p class="text-white">
+                    {!! $error !!}
+                </p>
+            @endforeach
+        </div>
+    @endif
+
     <div class="p-4 lg:px-8">
         <div class="grid grid-cols-1 bg-white md:grid-cols-2 gap-6 p-3">
             <div class="mt-2 ">

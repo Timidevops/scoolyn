@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Tenant\Subject;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Subject\CreateNewSubjectAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\RedirectResponse;
@@ -39,6 +41,11 @@ class SubjectsController extends Controller
                 'subject_id'   => (string) $subjectId,
             ]);
         }
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_SUBJECT
+        ]);
 
         Session::flash('successFlash', 'Subject added successfully!!!');
 

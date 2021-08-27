@@ -77,6 +77,15 @@ class PermissionSeeder extends Seeder
             ['name' => 'update set academic session'],
             ['name' => 'delete set set academic session'],
 
+            ['name' => 'update admission'],
+
+            ['name' => 'update school details'],
+
+            ['name' => 'create payment option'],
+            ['name' => 'read payment option'],
+            ['name' => 'update payment option'],
+            ['name' => 'delete payment option'],
+
         ];
 
         foreach ($permissions as $permission)

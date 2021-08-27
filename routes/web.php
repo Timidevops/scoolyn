@@ -85,8 +85,10 @@ Route::middleware('auth')->group(function (){
             Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
 
             Route::get('admission/applicant', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'index'])->name('listApplicant');
-            Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
             Route::post('admission/applicant-update', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'store'])->name('updateApplicants');
+
+            Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
+            Route::patch('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'update'])->name('updateApplicant');
 
             Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
 
@@ -99,7 +101,6 @@ Route::middleware('auth')->group(function (){
             Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
             Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
             Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
-
 
             Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
             Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
@@ -151,6 +152,7 @@ Route::middleware('auth')->group(function (){
 
             Route::get('/', [\App\Http\Controllers\Tenant\Setting\SettingsController::class, 'index'])->name('listSetting');
 
+            Route::get('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'index'])->name('listAcademicCalendar');
             Route::get('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
             Route::post('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');
 

@@ -19,7 +19,7 @@
                 </td>
                 <td>
                     @if($currentAcademicSession != '')
-                        <a class="">
+                        <a href="{{route('listAcademicCalendar')}}">
                             <button class="bg-blue-100 text-white rounded-md px-5 py-3 text-sm flex items-center">
                                 View all sessions
                             </button>

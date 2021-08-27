@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\Parents;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
 use App\Models\Tenant\User;
@@ -20,9 +22,11 @@ class DashboardsController extends Controller
         }
 
         return view('Tenant.dashboard', [
-            'totalTeachers' => Teacher::query()->count(),
-            'totalStudents' => Student::query()->count(),
-            'totalParents'  => Parents::query()->count(),
+            'totalTeachers'    => Teacher::query()->count(),
+            'totalStudents'    => Student::query()->count(),
+            'totalParents'     => Parents::query()->count(),
+            'todoLists'        => OnboardingTodoList::setting(),
+            'todoListComplete' => OnboardingTodoList::isTodoListCompleted(),
         ]);
     }
 

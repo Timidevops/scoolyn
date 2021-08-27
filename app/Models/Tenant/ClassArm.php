@@ -58,6 +58,9 @@ class ClassArm extends Model
         return $this->hasOne(Teacher::class, 'uuid', 'class_teacher');
     }
 
-    public static function whereUuid(string $uuid){}
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid);
+    }
 
 }

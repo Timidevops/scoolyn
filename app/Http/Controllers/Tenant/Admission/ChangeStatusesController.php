@@ -26,7 +26,9 @@ class ChangeStatusesController extends Controller
                 continue;
             }
 
-            //@todo transfer applicant information to student if status is admitted
+            if( $applicant->status == AdmissionApplicant::ADMITTED_STATUS || $applicant->status == AdmissionApplicant::CLASS_ARM_ADDED ){
+                continue;
+            }
 
             $applicant['status'] = $input['status'];
 
