@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Tenant\Result\AcademicResult;
 use App\Jobs\Tenant\GenerateResultJob;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
@@ -47,6 +48,16 @@ class Index extends Component
 
     public function generateResult()
     {
+        $schoolLogo = Setting::whereSettingName(Setting::SCHOOL_LOGO)->first();
+
+        if( count(Setting::getSchoolPrincipal()) == 0 || ! $schoolLogo  ){
+
+            Session::flash('warningFlash', 'Error processing request, contact admin.');
+
+            return redirect()->route('singleAcademicResult', $this->classArm->uuid);
+
+        }
+
         //initial class arm result status;
         $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
 
@@ -54,7 +65,7 @@ class Index extends Component
 
         Session::flash('successFlash', 'Result generating!!!');
 
-        $this->redirectRoute('listAcademicResult');
+        return redirect()->route('listAcademicResult');
     }
 
     private function getTotalValues()

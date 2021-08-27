@@ -8,6 +8,7 @@ use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Teacher;
@@ -19,25 +20,32 @@ use Illuminate\Support\Facades\Session;
 class AcademicBroadsheetsController extends Controller
 {
     protected string $uuid;
-    private Model $classSubject;
+    private $classSubject;
 
     public function index()
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
+        $teacherSubject = ClassSubject::all();
 
-        $teacherSubject = $teacher->subjectTeacher->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
+        if ( $teacherSubject->isEmpty() ){
+            abort(404);
+        }
+
+        $teacherSubject->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
 
         return view('Tenant.pages.result.academicBroadsheet.index', [
-            'totalSubject' => $teacher->subjectTeacher->count(),
+            'totalSubject' => $teacherSubject->count(),
             'subjects'     => $teacherSubject,
         ]);
     }
 
     public function create(string $uuid)
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->firstOrFail();
+        $this->classSubject = ClassSubject::whereUuid($uuid)->first();
+
+        if( ! $this->classSubject ){
+            abort(404);
+        }
 
         $this->uuid = $uuid;
 
@@ -200,7 +208,7 @@ class AcademicBroadsheetsController extends Controller
 
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
+        $classSubject = ClassSubject::whereUuid($uuid); //$teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
         if( ! $classSubject ){
             Session::flash('errorFlash', 'Error processing request.');
@@ -273,7 +281,7 @@ class AcademicBroadsheetsController extends Controller
         //@todo if user is the class teacher; update the broadsheet...
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $this->classSubject = $teacher->subjectTeacher()->where('uuid', $uuid)->first();
+        $this->classSubject = ClassSubject::whereUuid($uuid)->withoutGlobalScope('teacher')->first(); //$teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
         $academicBroadsheet = $this->classSubject->academicBroadsheet()
             ->where('class_arm', $request->input('classArm'))->first();

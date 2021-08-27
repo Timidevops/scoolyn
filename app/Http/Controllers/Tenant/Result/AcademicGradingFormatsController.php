@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Tenant\Result;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Result\AcademicGrading\CreateNewGradingFormat;
 use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -45,6 +47,11 @@ class AcademicGradingFormatsController extends Controller
         $request['name'] = $request->input('name') ?? "academic_grading_format{$lastEntryId}";
 
         (new CreateNewGradingFormat())->execute(camel_to_snake($request->except('_token')));
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_GRADING_FORMAT
+        ]);
 
         Session::flash('successFlash', 'Academic grading format added successfully!!!');
 

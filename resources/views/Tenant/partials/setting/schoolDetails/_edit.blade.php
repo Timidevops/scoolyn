@@ -129,8 +129,8 @@
                             </p>
                         </div>
                         @enderror
-                        @if($principalDetails['principalSignature'])
-                            <img src="" width="200" alt="school-logo">
+                        @if($principalDetails)
+                            <img src="{{$principalDetails['principalSignature']}}" width="200" alt="school-logo">
                         @endif
                     </div>
                 </div>

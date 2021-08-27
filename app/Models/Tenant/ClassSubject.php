@@ -3,12 +3,14 @@
 namespace App\Models\Tenant;
 
 use App\Http\Traits\Tenant\AcademicSessionTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class ClassSubject extends Model
 {
@@ -21,6 +23,25 @@ class ClassSubject extends Model
     protected $casts = [
         'class_arm' => 'array',
     ];
+
+    protected static function booted()
+    {
+        parent::boot();
+        if (auth()->check()) {
+            if ( ! Auth::user()->hasRole(User::SUPER_ADMIN_USER) ) {
+
+                $teacher = Teacher::whereUserId(Auth::user()->uuid)->first();
+
+                if ( ! $teacher ){
+                    abort(404);
+                }
+
+                static::addGlobalScope('teacher', function (Builder $builder) use($teacher) {
+                    $builder->where('teacher_id', $teacher->uuid);
+                });
+            }
+        }
+    }
 
     public function academicBroadsheet()
     {
@@ -39,7 +60,7 @@ class ClassSubject extends Model
 
     public function getClassArm(string $uuid)
     {
-        return ClassArm::query()->where('uuid', $uuid)->first();
+        return ClassArm::withoutGlobalScope('teacher')->where('uuid', $uuid)->first();
     }
 
     /**
@@ -47,14 +68,17 @@ class ClassSubject extends Model
      */
     public function getClassArmsByClassSectionId()
     {
-        return ClassArm::query()
+        return ClassArm::withoutGlobalScope('teacher')
             ->where('school_class_id', $this->school_class_id)
             ->where('class_section_id', $this->class_section_id)->get();
     }
 
+    /**
+     * @return mixed
+     */
     public function getClassArmsByClassSectionCategoryId()
     {
-        return ClassArm::query()
+        return ClassArm::withoutGlobalScope('teacher')
             ->where('school_class_id', $this->school_class_id)
             ->where('class_section_id', $this->class_section_id)
             ->where('class_section_category_id', $this->class_section_category_id)->get();
@@ -92,6 +116,6 @@ class ClassSubject extends Model
 
     public static function whereUuid(string $uuid)
     {
-        return self::query()->where('uuid', $uuid)->first();
+        return self::query()->where('uuid', $uuid);//->withoutGlobalScope('teacher')->first();
     }
 }

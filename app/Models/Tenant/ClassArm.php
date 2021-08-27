@@ -3,12 +3,14 @@
 namespace App\Models\Tenant;
 
 use App\Http\Traits\Tenant\AcademicSessionTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use Spatie\ModelStatus\HasStatuses;
 
 class ClassArm extends Model
@@ -27,6 +29,26 @@ class ClassArm extends Model
     protected $casts = [
         'students' => 'array',
     ];
+
+    protected static function booted()
+    {
+        parent::boot();
+        if (auth()->check()) {
+
+            if ( ! Auth::user()->hasRole(User::SUPER_ADMIN_USER) ) {
+
+                $teacher = Teacher::whereUserId(Auth::user()->uuid)->first();
+
+                if ( ! $teacher ){
+                    abort(404);
+                }
+
+                static::addGlobalScope('teacher', function (Builder $builder) use($teacher) {
+                    $builder->where('class_teacher', $teacher->uuid);
+                });
+            }
+        }
+    }
 
     public function academicResult(): HasMany
     {
@@ -50,7 +72,9 @@ class ClassArm extends Model
 
     public function classSubject()
     {
-        return $this->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id');
+        return $this
+            ->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id')
+            ->withoutGlobalScope('teacher');
     }
 
     public function teacher()

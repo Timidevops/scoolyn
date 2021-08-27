@@ -2,10 +2,12 @@
 
 namespace App\Http\Livewire\Tenant\Teacher;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\User;
@@ -148,6 +150,11 @@ class AddTeacher extends Component
         }
 
         //@todo welcome email notification
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_TEACHER
+        ]);
 
         Session::flash('successFlash', 'Teacher added successfully!!!');
 

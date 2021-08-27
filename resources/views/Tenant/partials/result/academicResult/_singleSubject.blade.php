@@ -6,13 +6,13 @@
                 <span>{{$classSubject->subject->subject_name}}</span>
                 <span class="font-medium text-xs text-gray-200">
                     {{$classSubject->schoolClass->class_name}}
-                    {{$classSubject->classSectionType ? "| {$classSubject->classSectionType->section_name}" : ''}}
-                    {{$classSubject->classSectionCategoryType ? "| {$classSubject->classSectionCategoryType->category_name}" : ''}}
+{{--                    {{$classSubject->classSectionType ? "| {$classSubject->classSectionType->section_name}" : ''}}--}}
+{{--                    {{$classSubject->classSectionCategoryType ? "| {$classSubject->classSectionCategoryType->category_name}" : ''}}--}}
                 </span>
             </div>
         </div>
     </div>
-    <a href="{{route('singleAcademicResult',$classArm->uuid)}}"><span class="mt-2  text-sm text-gray-300">/!/ Academic Result</span></a>
+    <a href="{{route('singleAcademicResult',$classArm)}}"><span class="mt-2  text-sm text-gray-300">/!/ Academic Result</span></a>
 </div>
 
 <div class="h-screen py-10">
@@ -21,7 +21,7 @@
             @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS )
 
                 @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
-                    <form class="flex justify-end px-4 py-4" action="{{route('academicResultApproval',[$classArm->uuid, $classSubject->uuid])}}" method="post">
+                    <form class="flex justify-end px-4 py-4" action="{{route('academicResultApproval',[$classArm, $classSubject->uuid])}}" method="post">
                         @csrf
                         <button name="{{\App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS}}" type="submit" class="text-gray-200 border border-gray-20 rounded py-2 px-4  text-sm flex items-center mx-2">
                             <span class="mx-1">Disapprove</span>

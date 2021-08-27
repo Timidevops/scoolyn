@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Tenant\Result;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Result\ContinuousAssessment\CreateNewCAStructureAction;
 use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
 use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -58,6 +60,12 @@ class ContinuousAssessmentFormatsController extends Controller
         $request['meta'] = $format;
 
         (new CreateNewCAStructureAction())->execute( camel_to_snake( $request->only(['name', 'meta', 'schoolClass']) ) );
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_CA_FORMAT
+        ]);
+
 
         Session::flash('successFlash', 'Continuous assessment format added successfully!!!');
 

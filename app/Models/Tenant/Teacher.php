@@ -4,21 +4,20 @@ namespace App\Models\Tenant;
 
 use App\Http\Traits\Tenant\SchoolSessionTrait;
 use App\Http\Traits\Tenant\SchoolTermTrait;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Teacher extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SchoolTermTrait;
-    use SchoolSessionTrait;
 
     protected $guarded = [];
-
 
     public function classArm(): HasMany
     {
@@ -32,7 +31,7 @@ class Teacher extends Model
 
     public static function whereUserId(string $uuid)
     {
-        return self::query()->where('user_id', $uuid)->firstOrFail();
+        return self::query()->where('user_id', $uuid);
     }
 
     public static function whereUuid(string $uuid)

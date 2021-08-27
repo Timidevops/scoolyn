@@ -6,6 +6,7 @@ use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
@@ -23,9 +24,11 @@ class AcademicResultsController extends Controller
 
     public function index()
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
+        $classArm = ClassArm::all();
 
-        $classArm = $teacher->classArm;
+        if ( $classArm->isEmpty() ){
+            abort(404);
+        }
 
         $classArm->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
@@ -38,9 +41,7 @@ class AcademicResultsController extends Controller
 
     public function single(string $classArmId)
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
-
-        $classArm = $teacher->classArm()->where('uuid', $classArmId)->firstOrFail();
+        $classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
         $classSubject = $classArm->classSubject->filter(function ($classSubject) use($classArm){
 
@@ -65,14 +66,9 @@ class AcademicResultsController extends Controller
     {
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $this->classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
+        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail();  //$teacher->classArm()->where('uuid', $classArmId)->first();
 
-        if( ! $this->classArm ){
-            abort(404);
-        }
-
-        $classSubject = ClassSubject::whereUuid($classSubjectId);
-
+        $classSubject = ClassSubject::whereUuid($classSubjectId)->withoutGlobalScope('teacher')->first();
 
         $academicBroadsheet = AcademicBroadSheet::query()
             ->where('class_arm', $classArmId)
@@ -107,7 +103,7 @@ class AcademicResultsController extends Controller
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $this->getStudentBroadsheets() ),
             'broadsheetStatus'      => (string) $academicBroadsheet->status,
-            'classArm'              => $this->classArm,
+            'classArm'              => ($this->classArm instanceof ClassArm) ? $this->classArm->uuid : $this->classArm,
         ]);
 
     }
@@ -145,13 +141,14 @@ class AcademicResultsController extends Controller
 
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first() ;
 
+
         return view('Tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructure' => collect( $caFormat->meta ),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $broadsheets ),
             'broadsheetStatus'      => (string) $academicBroadsheet->status,
-            'classArm'              => $this->classArm,
+            'classArm'              => ($this->classArm instanceof ClassArm) ? $this->classArm->uuid : $this->classArm,
         ]);
     }
 
@@ -159,13 +156,13 @@ class AcademicResultsController extends Controller
     {
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $this->classArm = $teacher->classArm()->where('uuid', $classArmId)->first();
+        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail(); //$teacher->classArm()->where('uuid', $classArmId)->first();
 
         if( ! $this->classArm ){
             abort(404);
         }
 
-        $classSubject = ClassSubject::whereUuid($classSubjectId);
+        $classSubject = ClassSubject::whereUuid($classSubjectId)->withoutGlobalScope('teacher')->first();
 
         if( ! $classSubject || ! $classSubject->academicBroadsheet ){
             return back();
