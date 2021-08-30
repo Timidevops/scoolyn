@@ -43,7 +43,7 @@ class ResultSheetsController extends Controller
         $academicResult = $classArm->academicResult()->where('student_id', $studentId)->firstOrFail();
 
         $subjects = collect($academicResult->subjects)->map(function ($subject, $key){
-            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->first()->subject->subject_name);
+            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->withoutGlobalScope('teacher')->first()->subject->subject_name);
         })->values();
 
         return view('Tenant.pages.result.academicResultSheet.single', [
