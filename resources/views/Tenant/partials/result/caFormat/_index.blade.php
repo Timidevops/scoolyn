@@ -33,7 +33,7 @@
         <!--- classes modal --->
             <div x-show="isClassModalOpen" @click="isClassModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7); display:none">
                 <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
-                    <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
+                    <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 space-x-6">
                         <div class="block">
                             <p>Classes using: <span class="italic" x-text="caFormatName"></span></p>
                         </div>
@@ -43,7 +43,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="my-6 mx-4">
+                    <div class="my-6 mx-2 text-sm">
                         <ul>
                             <template x-for="item in classModalClasses">
                                 <li class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
@@ -59,7 +59,7 @@
         <!--- format modal --->
             <div x-show="isCaFormatModalOpen" @click="isCaFormatModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);display:none">
                 <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
-                    <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 ">
+                    <div class="flex items-center justify-between mt-3 text-gray-200 text-base mx-4 space-x-6">
                         <div class="block">
                             <p>C.A Format: <span class="italic" x-text="caFormatName"></span></p>
                         </div>
@@ -69,7 +69,7 @@
                             </svg>
                         </button>
                     </div>
-                    <div class="my-6 mx-4">
+                    <div class="my-6 mx-1.5 text-sm">
                         <ul>
                             <template x-for="item in caFormat">
                                 <li class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">

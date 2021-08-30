@@ -1,3 +1,4 @@
+<div class="px-4 sm:px-6 lg:px-8">
 <div>
     <div class="mt-2 text-xl text-gray-200">
         Academic Broadsheet
@@ -22,7 +23,7 @@
 @include('Tenant.partials.result.academicBroadsheet._indexTable')
 
 </div>
-
+</div>
 <script>
     function academicBroadsheet(){
         return{

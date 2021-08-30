@@ -1,3 +1,4 @@
+<div class="px-4 sm:px-6 lg:px-8">
 <div>
     <div class="mt-2 text-xl text-gray-200">
         Subject: <span class="capitalize">{{$studentName}}</span>
@@ -34,7 +35,7 @@
     </div>
     @include('Tenant.partials.users.student.subject._indexTable')
 </div>
-
+</div>
 <script>
     function student() {
         return{

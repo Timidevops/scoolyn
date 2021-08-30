@@ -1,3 +1,4 @@
+<div class="px-4 sm:px-6 lg:px-8">
 <div class="mt-2 text-xl text-gray-200">
     <div class=" ">
         Academic Results
@@ -24,7 +25,7 @@
     @include('Tenant.partials.result.academicResult._indexTable')
 
 </div>
-
+</div>
 
 <script>
     function academicResult() {

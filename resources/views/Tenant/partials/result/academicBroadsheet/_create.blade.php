@@ -1,3 +1,4 @@
+<div class="px-4 sm:px-6 lg:px-8">
 <div>
     <div class="mt-2 text-xl text-gray-200">
         <div class="flex ">
@@ -16,13 +17,13 @@
 </div>
 
 <div class="h-screen py-10">
-    <div class="bg-white rounded-md ">
+    <div class="bg-white rounded-md py-2">
         @if($subjectPlacement == 'all')
             @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
         @endif
     </div>
 </div>
-
+</div>
 
 <script>
     function caAssessmentStructure() {
