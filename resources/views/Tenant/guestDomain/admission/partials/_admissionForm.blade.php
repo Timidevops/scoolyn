@@ -19,7 +19,7 @@
                 @endforeach
             </div>
         @endif
-  <form action="{{route('storeAdmission')}}" method="post">
+  <form action="{{route('storeAdmission')}}" method="post" enctype="multipart/form-data">
       @csrf
       <div class="mt-4">
           <div class="py-8 text-lg text-blue-100 regular">
@@ -265,6 +265,14 @@
                 </div>
             </div>
          </div>
+      <div class="mt-4">
+          <label for="file" class="py-8 text-lg text-blue-100 regular">
+              Passport:
+          </label>
+          <div>
+              <input id="file" type="file" name="file" >
+          </div>
+      </div>
       <div class="mt-4">
           <div class="py-8 text-lg text-blue-100 regular">
               Extra Information:

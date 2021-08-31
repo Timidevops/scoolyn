@@ -56,7 +56,7 @@
             </div>
             <div class="flex my-5">
                 <div class="w-1/2">
-                    <img src="" alt="passport">
+                    <img src="{{$applicant->passport}}" alt="passport">
                 </div>
                 <div class="w-1/2">
                     <h3 class="text-blue-100">Basic Information</h3>

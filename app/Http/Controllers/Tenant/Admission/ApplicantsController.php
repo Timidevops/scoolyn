@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\AdmissionApplicant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class ApplicantsController extends Controller
@@ -49,6 +50,8 @@ class ApplicantsController extends Controller
     public function single(string $uuid)
     {
         $applicant = AdmissionApplicant::query()->where('uuid', $uuid)->firstOrFail();
+
+        //@todo adjust passport url
 
         return view('Tenant.pages.admission.single', [
             'applicant' => $applicant,

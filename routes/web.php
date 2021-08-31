@@ -137,16 +137,21 @@ Route::middleware('auth')->group(function (){
 
             Route::post('result/report-sheet-addition/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultAdditionalCommentsController::class, 'store'])->name('storeReportComment');
 
-            Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
-            Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
-            Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');
+            Route::middleware('tenant.paymentOption.confirm')->group(function (){
 
-            Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsController::class, 'store'])->name('storeClassFee');
+                Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
+                Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
+                Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');
 
-            Route::get('fee/student/{uuid}', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'index'])->name('listStudentFee');
-            Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
+                Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsController::class, 'store'])->name('storeClassFee');
 
-            Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
+                Route::get('fee/student/{uuid}', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'index'])->name('listStudentFee');
+                Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
+
+                Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
+
+
+            });
 
         });
 
@@ -194,6 +199,5 @@ Route::middleware('auth')->group(function (){
 
     Route::get('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'single'])->name('parentProfile');
     Route::patch('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'update'])->name('updateParentProfile');
-
 
 });

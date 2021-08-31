@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers\Tenant\GuestDomain\Admission;
 
+use App\Actions\Tenant\guestDomain\Admission\CreateNewAdmissionApplicant;
+use App\Actions\Tenant\guestDomain\Admission\UploadPassportAction;
 use App\Http\Controllers\Controller;
-use App\Models\Tenant\AdmissionApplicant;
-use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
-use Ramsey\Uuid\Uuid;
 
 class ApplicantsController extends Controller
 {
@@ -44,10 +43,18 @@ class ApplicantsController extends Controller
             'guardianContactEmail' => ['nullable', 'email'],
             'guardianAddress' => ['required'],
             'guardianProfession' => ['nullable', 'string'],
+            'file' => ['required'],
+        ]);
+
+        //upload passport
+        $request['passport'] = (new UploadPassportAction())->execute([
+            'passport' => $request->file('file'),
+            'firstName' => $request->input('studentFirstName'),
+            'lastName' => $request->input('studentLastName'),
         ]);
 
         //store admission
-        $this->createNewAdmission(camel_to_snake($request->except('_token')));
+        (new CreateNewAdmissionApplicant())->execute( camel_to_snake($request->except('_token','file')) );
 
         //@todo integrate payment option
 
@@ -57,14 +64,5 @@ class ApplicantsController extends Controller
 
     }
 
-    private function createNewAdmission(array $input)
-    {
-        $input['uuid'] = Uuid::uuid4();
 
-        $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
-
-        $input['status'] = AdmissionApplicant::APPLIED_STATUS;
-
-        AdmissionApplicant::query()->create($input);
-    }
 }

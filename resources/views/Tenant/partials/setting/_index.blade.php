@@ -28,6 +28,8 @@
                 </td>
             </tr>
         @endcan
+
+        @can('update school details')
             <tr>
                 <td>
                     <a href="{{route('schoolDetailsSettings')}}">
@@ -35,6 +37,9 @@
                     </a>
                 </td>
             </tr>
+        @endcan
+
+        @can('update admission')
             <tr>
                 <td>
                     <a href="{{route('admissionSetting')}}">
@@ -42,6 +47,7 @@
                     </a>
                 </td>
             </tr>
+        @endcan
             <tr>
                 <td>
                     <a href="{{route('changeAuthPassword')}}">
