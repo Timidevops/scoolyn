@@ -135,6 +135,8 @@ Route::middleware('auth')->group(function (){
             Route::get('result/report-sheet/{uuid}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'index'])->name('listReportSheet');
             Route::get('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'single'])->name('singleReportSheet');
 
+            Route::post('result/report-sheet-addition/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultAdditionalCommentsController::class, 'store'])->name('storeReportComment');
+
             Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
             Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
             Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');

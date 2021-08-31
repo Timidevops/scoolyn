@@ -49,6 +49,8 @@ class ResultSheetsController extends Controller
         return view('Tenant.pages.result.academicResultSheet.single', [
             'academicResult' => $academicResult,
             'subjects'       => $subjects,
+            'classArmId'     => $classArmId,
+            'studentId'      => $studentId,
         ]);
 
     }

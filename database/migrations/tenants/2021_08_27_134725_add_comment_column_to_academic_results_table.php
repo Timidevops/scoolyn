@@ -14,8 +14,8 @@ class AddCommentColumnToAcademicResultsTable extends Migration
     public function up()
     {
         Schema::table('academic_results', function (Blueprint $table) {
-            $table->string('comment')->nullable();
-            $table->string('principal_remark')->nullable();
+            $table->string('comment')->nullable()->after('grading_format');
+            $table->string('principal_remark')->nullable()->after('comment');
             //$table->string('')->nullable();
         });
     }
