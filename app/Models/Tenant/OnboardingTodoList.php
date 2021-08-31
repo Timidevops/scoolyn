@@ -45,8 +45,8 @@ class OnboardingTodoList
         $todoItems->push([
             'name' => $itemName,
             'done' => '1',
-//            'description' => $todoItem['description'],
-//            'url' => $todoItem['url'],
+            'description' => $todoItem['description'],
+            'url' => $todoItem['url'],
         ]);
 
         //save settings
