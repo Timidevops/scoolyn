@@ -16,8 +16,6 @@ class CreateNewBroadsheetAction
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
-        $input['academic_term_id']    = Setting::getCurrentAcademicTermId();
-
         return $classSubject->academicBroadsheet()->create($input);
     }
 }

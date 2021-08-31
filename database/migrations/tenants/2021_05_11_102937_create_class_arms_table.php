@@ -22,7 +22,6 @@ class CreateClassArmsTable extends Migration
             $table->string('class_section_id')->nullable();
             $table->string('class_section_category_id')->nullable();
             $table->string('academic_session_id');
-            $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
 
@@ -38,12 +37,6 @@ class CreateClassArmsTable extends Migration
 
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
-                ->references('uuid')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
-
-            $table->foreign('academic_term_id')
-                ->on('academic_terms')
                 ->references('uuid')
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();

@@ -81,14 +81,7 @@ class Setting extends Model
     {
         $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
 
-        return $setting->meta['session'];
-    }
-
-    public static function getCurrentAcademicTermId()
-    {
-        $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
-
-        return $setting->meta['term'];
+        return $setting->setting_value;
     }
 
     public static function getCurrentAcademicCalendarInWord(): String
@@ -99,11 +92,9 @@ class Setting extends Model
             return  'current academic calendar not set.';
         }
 
-        $academicSession = AcademicSession::query()->where('uuid', $setting->meta['session'])->first();
+        $academicSession = AcademicSession::query()->where('uuid', $setting->setting_value)->first();
 
-        $academicTerm = AcademicTerm::query()->where('uuid', $setting->meta['term'])->first();
-
-        return "$academicSession->session_name, ".strOrdinal($academicTerm->term_name)." term";
+        return "$academicSession->session_name, ".strOrdinal($academicSession->term)."  term";
     }
 
     public static function isAcademicCalendarSet(): bool

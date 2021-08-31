@@ -25,7 +25,6 @@ class CreateTransactionsTable extends Migration
             $table->float('fees', 18)->nullable();
             $table->string('currency');
             $table->string('academic_session_id');
-            $table->string('academic_term_id');
             $table->timestamps();
             $table->softDeletes();
 

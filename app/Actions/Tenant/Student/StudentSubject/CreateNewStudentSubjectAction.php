@@ -16,8 +16,6 @@ class CreateNewStudentSubjectAction
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
-        $input['academic_term_id']    = Setting::getCurrentAcademicTermId();
-
         $student->subjects()->create($input);
     }
 }

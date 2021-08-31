@@ -16,8 +16,6 @@ class CreateNewSchoolFeeAction
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
-        $input['academic_term_id']    = Setting::getCurrentAcademicTermId();
-
         return $student->schoolFee()->create($input);
     }
 }

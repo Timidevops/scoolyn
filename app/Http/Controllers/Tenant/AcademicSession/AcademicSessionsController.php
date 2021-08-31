@@ -32,7 +32,7 @@ class AcademicSessionsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'termName'    => ['required', Rule::in(['1','2','3'])],
+            'term'    => ['required', Rule::in(['1','2','3'])],
             'sessionName' => ['required'],
             'sessionYear' => ['required'],
         ]);
@@ -41,19 +41,13 @@ class AcademicSessionsController extends Controller
 
         $request['sessionName'] = str_replace('-', '/', $sessionName);
 
-        $academicSession =  (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear', 'termName')));
-
-       // $academicTerm    =  (new CreateNewAcademicTermAction())->execute(camel_to_snake($request->only('termName')));
+        $academicSession = (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear', 'term')));
 
         if($request->has('currentSession')){
 
             (new SetCurrentAcademicCalendarAction())->execute([
                 'setting_name'  => Setting::ACADEMIC_CALENDAR_SETTING,
                 'setting_value' => (string) $academicSession->uuid,
-                //                'meta' => [
-//                    'session' => (string) $academicSession->uuid,
-//                    'term'    => (string) $academicTerm->uuid,
-//                ],
             ]);
 
             //set marker

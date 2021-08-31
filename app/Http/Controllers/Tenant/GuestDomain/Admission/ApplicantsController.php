@@ -63,8 +63,6 @@ class ApplicantsController extends Controller
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
-        $input['academic_term_id']    = Setting::getCurrentAcademicTermId();
-
         $input['status'] = AdmissionApplicant::APPLIED_STATUS;
 
         AdmissionApplicant::query()->create($input);

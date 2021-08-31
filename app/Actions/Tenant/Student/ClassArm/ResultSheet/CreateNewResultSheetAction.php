@@ -16,8 +16,6 @@ class CreateNewResultSheetAction
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
-        $input['academic_term_id']    = Setting::getCurrentAcademicTermId();
-
         return AcademicResult::query()->create($input);
     }
 }
