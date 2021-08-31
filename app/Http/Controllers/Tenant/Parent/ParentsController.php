@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Tenant\Parent;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Parent\CreateNewParentAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\Parents;
 use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
@@ -53,6 +55,11 @@ class ParentsController extends Controller
         if( $request['indirect'] ){
             return $parent;
         }
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::ADD_PARENT
+        ]);
 
         Session::flash('successFlash', 'Parent added successfully!!!');
 

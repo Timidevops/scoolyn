@@ -246,9 +246,15 @@ class OnboardingsController extends Controller
                     'url' => 'createTeacher',
                 ],
                 [
-                    'name' => OnboardingTodoList::SET_SCHOOL_DETAIL,
+                    'name' => OnboardingTodoList::SET_SCHOOL_DETAIL_LOGO,
                     'done' => 0,
-                    'description' => 'Goto settings / School details to set school details',
+                    'description' => 'Goto settings / School details to set school logo',
+                    'url' => 'schoolDetailsSettings',
+                ],
+                [
+                    'name' => OnboardingTodoList::SET_SCHOOL_DETAIL_PRINCIPAL,
+                    'done' => 0,
+                    'description' => 'Goto settings / School details to set school principal',
                     'url' => 'schoolDetailsSettings',
                 ],
             ],

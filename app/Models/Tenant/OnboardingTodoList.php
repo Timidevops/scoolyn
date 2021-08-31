@@ -14,7 +14,8 @@ class OnboardingTodoList
     const ADD_STUDENT = 'add_student';
     const ADD_PARENT = 'add_parent';
     const ADD_TEACHER = 'add_teacher';
-    const SET_SCHOOL_DETAIL = 'set_school_detail';
+    const SET_SCHOOL_DETAIL_LOGO = 'set_school_detail_logo';
+    const SET_SCHOOL_DETAIL_PRINCIPAL = 'set_school_detail_principal';
 
     public static function setting()
     {
