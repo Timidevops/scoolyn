@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class AcademicBroadSheet extends Model
 {
@@ -14,6 +15,7 @@ class AcademicBroadSheet extends Model
     use SoftDeletes;
     use AcademicSessionTrait;
     use HasStatuses;
+    use UsesTenantConnection;
 
     const CREATED_STATUS = 'created';
     const SUBMITTED_STATUS = 'submitted';

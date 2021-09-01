@@ -11,12 +11,14 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassSubject extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use AcademicSessionTrait;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

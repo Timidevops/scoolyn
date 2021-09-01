@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassSection extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

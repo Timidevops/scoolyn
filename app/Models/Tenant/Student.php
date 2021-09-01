@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class Student extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SchoolTermTrait;
-    use SchoolSessionTrait;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

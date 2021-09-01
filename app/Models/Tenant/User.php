@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 use Spatie\Multitenancy\Models\Tenant;
 use Spatie\Permission\Traits\HasRoles;
 use Spatie\WelcomeNotification\ReceivesWelcomeNotification;
@@ -21,6 +22,7 @@ class User extends Authenticatable
     use HasRoles;
     use ReceivesWelcomeNotification;
     use SoftDeletes;
+    use UsesTenantConnection;
 
     const SUPER_ADMIN_USER ='super_admin';
     const ADMIN_USER = 'admin';

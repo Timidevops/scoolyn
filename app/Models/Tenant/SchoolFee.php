@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class SchoolFee extends Model
 {
@@ -14,6 +15,7 @@ class SchoolFee extends Model
     use SoftDeletes;
     use AcademicSessionTrait;
     use HasStatuses;
+    use UsesTenantConnection;
 
     const NOT_PAID_STATUS = 'not paid';
     const PAID_STATUS = 'paid';

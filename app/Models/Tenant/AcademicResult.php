@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\ModelStatus\HasStatuses;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class AcademicResult extends Model
 {
@@ -15,6 +16,7 @@ class AcademicResult extends Model
     use HasStatuses;
     use AcademicSessionTrait;
     use HasStatuses;
+    use UsesTenantConnection;
 
     const PENDING_RESULT_STATUS = 'pending_result';
     const APPROVED_RESULT_STATUS = 'approved_result';

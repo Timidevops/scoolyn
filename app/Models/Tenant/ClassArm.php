@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Spatie\ModelStatus\HasStatuses;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassArm extends Model
 {
@@ -19,6 +20,7 @@ class ClassArm extends Model
     use SoftDeletes;
     use AcademicSessionTrait;
     use HasStatuses;
+    use UsesTenantConnection;
 
     const GENERATING_RESULT_STATUS = 'generating_result';
     const RESULT_GENERATED_STATUS = 'result_generated';

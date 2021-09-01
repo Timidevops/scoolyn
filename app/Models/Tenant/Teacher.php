@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class Teacher extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

@@ -7,6 +7,7 @@ use App\Http\Traits\Tenant\SchoolTermTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
@@ -14,9 +15,8 @@ class ContinuousAssessmentStructure extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use SchoolTermTrait;
-    use SchoolSessionTrait;
     use HasSlug;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

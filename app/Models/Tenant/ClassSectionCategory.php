@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassSectionCategory extends Model
 {
@@ -16,6 +17,7 @@ class ClassSectionCategory extends Model
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

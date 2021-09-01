@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassFee extends Model
 {
@@ -15,6 +16,7 @@ class ClassFee extends Model
     use SoftDeletes;
     use SchoolTermTrait;
     use SchoolSessionTrait;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 

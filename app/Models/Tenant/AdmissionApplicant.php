@@ -6,12 +6,14 @@ use App\Http\Traits\Tenant\AcademicSessionTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class AdmissionApplicant extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use AcademicSessionTrait;
+    use UsesTenantConnection;
 
     const APPLIED_STATUS = 'applied';
     const EXAM_SCHEDULED_STATUS = 'exam_scheduled';

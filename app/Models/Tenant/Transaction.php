@@ -8,12 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class Transaction extends Model
 {
     use HasFactory;
     use AcademicSessionTrait;
     use SoftDeletes;
+    use UsesTenantConnection;
 
     protected $guarded = [];
 
