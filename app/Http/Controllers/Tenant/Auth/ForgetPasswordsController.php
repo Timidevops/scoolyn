@@ -3,42 +3,54 @@
 namespace App\Http\Controllers\Tenant\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\User;
 use App\Notifications\Tenant\User\ResetPasswordNotification;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Session;
 
 class ForgetPasswordsController extends Controller
 {
     public function create()
     {
-        //@todo return view
-
-        $this->store([]);
+        return view('Tenant.auth.forgotPassword', [
+            'schoolName' => Setting::schoolDetails()['schoolName'],
+        ]);
     }
 
-    public function store( $request)
+    public function store(Request $request)
     {
-        //@todo validate request
+        $this->validate($request, [
+            'email' => ['required', 'exists:users,email'],
+        ]);
 
-        //@todo get user
-        $user = User::find(1);//User::query()->where('email', $request->input('email'))->first();
+        $user = User::query()->where('email', $request->input('email'))->first();
 
-        //$user->notify(new ResetPasswordNotification(Password::createToken($user)));
+        $user->notify(new ResetPasswordNotification(Password::createToken($user)));
+
+        Session::flash('successFlash', 'Reset password link sent successfully!!!');
+
+        return back();
 
     }
 
     public function edit(Request $request)
     {
-        //@todo return view
-        dd('form');
+        return view('Tenant.auth.resetPassword', [
+            'schoolName' => Setting::schoolDetails()['schoolName'],
+            'token' => $request->input('token'),
+        ]);
     }
 
     public function update(Request $request)
     {
-        //@todo validate request
+        $this->validate($request, [
+            'password' => ['required', 'min:8', 'confirmed'],
+            'token' => ['required'],
+        ]);
 
         $status = Password::reset($request->only([
             'email',
@@ -56,6 +68,15 @@ class ForgetPasswordsController extends Controller
             event(new PasswordReset($user));
         });
 
-        //@todo redirect back...
+        if ( $status != Password::PASSWORD_RESET){
+
+            Session::flash('errorFlash', 'Error changing password');
+
+            return back();
+        }
+
+        Session::flash('successFlash', 'Password changed successfully!!!');
+
+        return redirect()->route('login');
     }
 }

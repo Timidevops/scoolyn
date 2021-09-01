@@ -26,6 +26,7 @@ class Setting extends Model
     const PRINCIPAL_INFO = 'principal_info';
     const SCHOOL_LOGO = 'school_logo';
     const INITIAL_TODO_SETTING = 'initial_todo';
+    const FRONTEND_AUTH_IMAGE = 'frontend_auth_image';
 
     protected $guarded = [];
 

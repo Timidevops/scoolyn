@@ -52,16 +52,16 @@ Route::middleware('tenant.admissionOn.confirm')->group(function (){
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form']);
+    Route::get('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'form'])->name('loginForm');
     Route::post('login', [\App\Http\Controllers\Tenant\Auth\LoginsController::class, 'login'])->name('login');
 
-    Route::get('forget-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'create']);
-    Route::post('forget-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'store']);
+    Route::get('forgot-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'create'])->name('forgotPasswordForm');
+    Route::post('forgot-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'store'])->name('forgotPassword');
 
     Route::get('reset-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'edit'])
         ->name('password.reset')
         ->middleware('tenant.verifyPassword.reset');
-    Route::post('reset-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'update']);
+    Route::post('reset-password', [\App\Http\Controllers\Tenant\Auth\ForgetPasswordsController::class, 'update'])->name('resetPassword');
 
 });
 
@@ -172,6 +172,8 @@ Route::middleware('auth')->group(function (){
             Route::post('school-detail/principal', [\App\Http\Controllers\Tenant\Setting\PrincipalDetailsController::class, 'update'])->name('updateSchoolPrincipal');
 
             Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
+
+            Route::get('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'edit'])->name('frontendSetting');
 
             Route::get('change-password', [\App\Http\Controllers\Tenant\Setting\ChangePasswordsController::class, 'edit'])->name('changeAuthPassword');
 

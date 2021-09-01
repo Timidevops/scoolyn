@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant\GuestDomain\Admission;
 use App\Actions\Tenant\guestDomain\Admission\CreateNewAdmissionApplicant;
 use App\Actions\Tenant\guestDomain\Admission\UploadPassportAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
@@ -14,11 +15,11 @@ class ApplicantsController extends Controller
     public function create()
     {
         return view('Tenant.guestDomain.admission.index', [
-            'schoolName' => 'digikraaft high school',
-            'schoolLocation' => 'ibadan',
-            'schoolNumber' => '12345',
-            'schoolEmail' => 'admin@dhc.com',
-            'schoolWebsite' => 'www.dhc.com',
+            'schoolName' => Setting::schoolDetails()['schoolName'],
+            'schoolLocation' => Setting::schoolDetails()['schoolLocation'],
+            'schoolNumber' => Setting::schoolDetails()['contactNumber'],
+            'schoolEmail' => Setting::schoolDetails()['contactEmail'],
+            'schoolWebsite' => Setting::schoolDetails()['schoolName'] ?? '',
         ]);
     }
 

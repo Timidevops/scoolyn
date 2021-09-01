@@ -48,6 +48,17 @@
                 </td>
             </tr>
         @endcan
+
+        @can('update admission')
+            <tr>
+                <td>
+                    <a href="{{route('frontendSetting')}}">
+                        <span>Frontend settings</span>
+                    </a>
+                </td>
+            </tr>
+        @endcan
+
             <tr>
                 <td>
                     <a href="{{route('changeAuthPassword')}}">

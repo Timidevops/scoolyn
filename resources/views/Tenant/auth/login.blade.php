@@ -1,16 +1,5 @@
-{{--
-<h3>Login</h3>
 
-<form action="{{route('login')}}" method="post">
-    @csrf
-    <input type="email" placeholder="email" name="email">
-    <input type="password" placeholder="password" name="password">
-    <input type="submit" value="Login">
-</form> --}}
-
-
-
-  @extends('Tenant.layouts.main')
+@extends('Tenant.layouts.main')
 @section('headerMeta')
 @endsection
 @section('topNav')
@@ -19,7 +8,9 @@
 <div class="min-h-screen bg-white flex">
 
     <div class="flex-1 flex flex-col justify-center py-12 px-4 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
-        <div class="my-6 text-3xl text-blue-100">Scoolyn</div>
+        <h1 class="my-6 text-3xl text-blue-100 uppercase">
+            {{$schoolName}}
+        </h1>
       <div class="mx-auto w-full max-w-sm lg:w-96">
         <div>
 
@@ -27,7 +18,7 @@
             <span class=" text-3xl font-extrabold text-blue-100">
                 Login
             </span>
-            <span><img src="/images/icons8-hand-peace-skin-type-4-100.png" alt=""></span>
+            <span><img src="{{asset('/images/icons8-hand-peace-skin-type-4-100.png')}}" alt=""></span>
          </div>
           <p class="mt-2 text-sm text-gray-300">
             Welcome back, enter details to continue.
@@ -68,7 +59,7 @@
 
               <div class="flex items-center justify-end">
                 <div class="text-sm">
-                  <a href="#" class="font-medium text-blue-100 hover:text-indigo-500">
+                  <a href="{{route('forgotPasswordForm')}}" class="font-medium text-blue-100 hover:text-indigo-500">
                     Forgot your password?
                   </a>
                 </div>

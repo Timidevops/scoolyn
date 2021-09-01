@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -10,7 +11,9 @@ class LoginsController extends Controller
 {
     public function form()
     {
-        return view('Tenant.auth.login');
+        return view('Tenant.auth.login', [
+            'schoolName' => Setting::schoolDetails()['schoolName'],
+        ]);
     }
 
     public function login(Request $request)
