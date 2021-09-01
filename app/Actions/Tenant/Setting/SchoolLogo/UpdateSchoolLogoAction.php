@@ -5,6 +5,7 @@ namespace App\Actions\Tenant\Setting\SchoolLogo;
 
 
 use App\Models\Tenant\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class UpdateSchoolLogoAction
 {
@@ -12,8 +13,8 @@ class UpdateSchoolLogoAction
     {
         $setting = Setting::getSchoolLogo();
 
-        //@todo upload school logo $input['schoolLogo']
-        $logo = '';
+        //upload school logo
+        $logo = (new UploadSchoolLogoAction())->execute($input['file']);
 
         if( ! $setting ){
             Setting::query()->create([
@@ -25,6 +26,8 @@ class UpdateSchoolLogoAction
         }
 
         $setting = Setting::whereSettingName(Setting::SCHOOL_LOGO)->first();
+
+        Storage::disk('local')->delete($setting->setting_value);
 
         $setting->update([
             'setting_value' => $logo,

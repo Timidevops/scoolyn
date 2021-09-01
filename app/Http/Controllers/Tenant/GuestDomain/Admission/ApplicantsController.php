@@ -43,7 +43,7 @@ class ApplicantsController extends Controller
             'guardianContactEmail' => ['nullable', 'email'],
             'guardianAddress' => ['required'],
             'guardianProfession' => ['nullable', 'string'],
-            'file' => ['required'],
+            'file' => ['required', 'file', 'image', 'max:10240'],
         ]);
 
         //upload passport

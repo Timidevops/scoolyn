@@ -5,6 +5,7 @@ namespace App\Actions\Tenant\Setting\PrincipalDetails;
 
 
 use App\Models\Tenant\Setting;
+use Illuminate\Support\Facades\Storage;
 
 class UpdatePrincipalDetailsAction
 {
@@ -13,7 +14,7 @@ class UpdatePrincipalDetailsAction
         $setting = Setting::getSchoolPrincipal();
 
         //@todo upload signature $input['principalSignature']
-        $signature = '';
+        $signature = (new UploadPrincipalSignatureAction())->execute($input['principalSignature']);
 
         if ( ! $setting ){
             Setting::query()->create([
@@ -28,6 +29,8 @@ class UpdatePrincipalDetailsAction
         }
 
         $setting = Setting::whereSettingName(Setting::PRINCIPAL_INFO)->first();
+
+        Storage::disk('local')->delete($setting['meta']['principal_signature']);
 
         $setting->update([
             'meta' => [

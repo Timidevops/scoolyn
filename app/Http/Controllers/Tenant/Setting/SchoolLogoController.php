@@ -17,14 +17,16 @@ class SchoolLogoController extends Controller
             'schoolLogo' => ['required', 'file', 'image', 'max:10240'],
         ]);
 
-        (new UpdateSchoolLogoAction())->execute($request->except('_token'));
+        (new UpdateSchoolLogoAction())->execute([
+            'file' => $request->file('schoolLogo'),
+        ]);
 
         //set marker
         (new UpdateTodoItemAction())->execute([
             'name' => OnboardingTodoList::SET_SCHOOL_DETAIL_LOGO
         ]);
 
-        Session::flash('successFlash', 'Principal details updated successfully!!!');
+        Session::flash('successFlash', 'School logo updated successfully!!!');
 
         return back();
     }
