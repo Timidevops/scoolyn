@@ -32,8 +32,8 @@ Route::middleware('landlord.checkCurrentTenant')->group(function (){
     });
 
     Route::get('/', function () {
-        dd(\App\Models\Tenant\ScoolynTenant::current()->subscribedTo('2'));
-        dd(\App\Models\Tenant\ScoolynTenant::current()->activeSubscriptions());
+        //dd(\App\Models\Tenant\ScoolynTenant::current()->subscribedTo('2'));
+        //dd(\App\Models\Tenant\ScoolynTenant::current()->activeSubscriptions());
         return redirect()->route('dashboard');
     });
 
