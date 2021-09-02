@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,7 @@ class LoginsController extends Controller
     public function login(Request $request)
     {
         $this->validate($request, [
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email', 'exists:'.config('env.tenant.tenantConnection').'.users,email'],
             'password' => ['required'],
         ]);
 

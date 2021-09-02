@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\Parents;
+use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
@@ -16,7 +17,6 @@ class DashboardsController extends Controller
 {
     public function index()
     {
-
         if( Auth::user()->roles->contains( 'name', User::PARENT_USER) ){
             return view('Tenant.parentDomain.dashboard');
         }

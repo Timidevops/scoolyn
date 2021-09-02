@@ -12,6 +12,7 @@ use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -25,6 +26,13 @@ class AcademicBroadsheetsController extends Controller
     public function index()
     {
         $teacherSubject = ClassSubject::all();
+
+        if ( Auth::user()->hasRole(User::SUPER_ADMIN_USER) && $teacherSubject->isEmpty() ){
+
+            Session::flash('warningFlash', 'Kindly add subject(s) to classes');
+
+            return redirect()->route('listClass');
+        }
 
         if ( $teacherSubject->isEmpty() ){
             abort(404);

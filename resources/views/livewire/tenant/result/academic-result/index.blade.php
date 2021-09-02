@@ -20,7 +20,7 @@
                     </span>
                 </p>
             @else
-                @if($totalSubjects == $totalApprovedBroadsheet)
+                @if($totalSubjects == $totalApprovedBroadsheet && $totalSubjects > 0)
                     <button wire:click="generateResult" type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
                         <span class="mx-1">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

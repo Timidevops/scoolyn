@@ -45,11 +45,6 @@ class CreateTransactionsTable extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('academic_term_id')
-                ->on('academic_terms')
-                ->references('uuid')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
         });
     }
 

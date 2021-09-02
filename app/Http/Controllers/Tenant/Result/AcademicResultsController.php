@@ -11,6 +11,7 @@ use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
+use App\Models\Tenant\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -25,6 +26,13 @@ class AcademicResultsController extends Controller
     public function index()
     {
         $classArm = ClassArm::all();
+
+        if ( Auth::user()->hasRole(User::SUPER_ADMIN_USER) && $classArm->isEmpty() ){
+
+            Session::flash('warningFlash', 'Kindly add class arm');
+
+            return redirect()->route('listClass');
+        }
 
         if ( $classArm->isEmpty() ){
             abort(404);

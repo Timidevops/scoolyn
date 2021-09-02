@@ -9,7 +9,7 @@
       <div>
           <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
           <div class="mt-1">
-              <input type="text" id="email" placeholder="{{$email}}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border" disabled>
+              <input type="text" name="adminEmail" id="email" placeholder="{{$email}}" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border" disabled>
           </div>
       </div>
      <div>

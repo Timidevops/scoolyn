@@ -54,8 +54,8 @@ class AddClassSection extends Component
     public bool $addNewSectionCategory = false;
 
     protected array $rules = [
-        'newClassSection' => ['nullable', 'unique:class_section_types,section_name'],
-        'newClassSectionCategory' => ['nullable', 'unique:class_section_category_types,category_name'],
+        'newClassSection' => ['nullable', 'unique:tenant.class_section_types,section_name'],
+        'newClassSectionCategory' => ['nullable', 'unique:tenant.class_section_category_types,category_name'],
     ];
 
     public function render()

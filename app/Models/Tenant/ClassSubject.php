@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
 class ClassSubject extends Model
@@ -29,14 +30,15 @@ class ClassSubject extends Model
     protected static function booted()
     {
         parent::boot();
+
         if (auth()->check()) {
             if ( ! Auth::user()->hasRole(User::SUPER_ADMIN_USER) ) {
 
                 $teacher = Teacher::whereUserId(Auth::user()->uuid)->first();
 
-                if ( ! $teacher ){
-                    abort(404);
-                }
+//                if ( ! $teacher ){
+//                    abort(404);
+//                }
 
                 static::addGlobalScope('teacher', function (Builder $builder) use($teacher) {
                     $builder->where('teacher_id', $teacher->uuid);

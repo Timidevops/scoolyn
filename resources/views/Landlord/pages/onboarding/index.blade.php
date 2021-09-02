@@ -5,6 +5,6 @@
 @endsection
 @section('content')
     <div class="max-h-full">
-        @include('Tenant.welcome.schoolDetails.partials._schoolDetails')
+        @include('Landlord.pages.onboarding.partials._schoolDetails')
     </div>
 @endsection

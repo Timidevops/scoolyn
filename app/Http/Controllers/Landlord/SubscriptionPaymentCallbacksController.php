@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\Landlord;
 
+use App\Actions\Landlord\SchoolAdmin\CreateNewSchoolAdminAction;
 use App\Http\Controllers\Controller;
 use App\Mail\Landlord\SchoolAdmin\OnboardMail;
-use App\Models\Landlord\Plan;
-use App\Models\Landlord\SchoolAdmin;
 use App\Models\Landlord\Transaction;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
@@ -43,7 +42,7 @@ class SubscriptionPaymentCallbacksController extends Controller
         }
 
         //create school admin
-        $schoolAdmin = $this->createNewSchoolAdmin([
+        $schoolAdmin = (new CreateNewSchoolAdminAction)->execute([
             'uuid' => (string) Uuid::uuid4(),
             'email' => $transaction->user_reference,
             'initial_plan' => $transaction->subscription_id
@@ -76,12 +75,4 @@ class SubscriptionPaymentCallbacksController extends Controller
         return json_decode($response->getBody(),true);
     }
 
-    /**
-     * @param array $input
-     * @return \Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model
-     */
-    private function createNewSchoolAdmin(array $input)
-    {
-        return SchoolAdmin::query()->create($input);
-    }
 }

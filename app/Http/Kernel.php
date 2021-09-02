@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Landlord\CheckCurrentTenantMiddleware;
 use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
 use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
 use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
@@ -79,5 +80,6 @@ class Kernel extends HttpKernel
         'tenant.academicCalendar.confirm' => IsAcademicCalendarSetMiddleware::class,
         'tenant.paymentOption.confirm' => IsPaymentOptionOnMiddleware::class,
         'landlord.checkOnboard' => CheckOnboardMiddleware::class,
+        'landlord.checkCurrentTenant' => CheckCurrentTenantMiddleware::class
     ];
 }

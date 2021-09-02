@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Tenant\ScoolynTenant;
+use Database\Seeders\Landlord\SubscriptionPlanSeeder;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -32,5 +33,9 @@ class DatabaseSeeder extends Seeder
     public function runLandlordSpecificSeeders()
     {
         // run landlord specific seeders
+        $this->call([
+            \Database\Seeders\Landlord\UserSeeder::class,
+            SubscriptionPlanSeeder::class,
+        ]);
     }
 }
