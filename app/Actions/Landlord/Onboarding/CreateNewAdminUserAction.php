@@ -3,8 +3,6 @@
 
 namespace App\Actions\Landlord\Onboarding;
 
-
-use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\User;
 
 class CreateNewAdminUserAction

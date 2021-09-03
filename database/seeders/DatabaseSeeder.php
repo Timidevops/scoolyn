@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
         // run landlord specific seeders
         $this->call([
             \Database\Seeders\Landlord\UserSeeder::class,
-            SubscriptionPlanSeeder::class,
         ]);
     }
 }

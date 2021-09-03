@@ -18,23 +18,23 @@ class RoleSeeder extends Seeder
     {
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Role::create(['name' => User::SUPER_ADMIN_USER])->givePermissionTo(Permission::all());
-        Role::create(['name' => User::ADMIN_USER])->givePermissionTo(Permission::all());
+        Role::create(['name' => User::SUPER_ADMIN_USER, 'guard_name' => 'web'])->givePermissionTo(Permission::all());
+        Role::create(['name' => User::ADMIN_USER, 'guard_name' => 'web'])->givePermissionTo(Permission::all());
 
-        Role::create(['name' => User::SUBJECT_TEACHER_USER])->givePermissionTo([
+        Role::create(['name' => User::SUBJECT_TEACHER_USER, 'guard_name' => 'web'])->givePermissionTo([
             'create an academic broadsheet',
             'read an academic broadsheet',
             'update an academic broadsheet',
             'delete an academic broadsheet'
         ]);
 
-        Role::create(['name' => User::CLASS_TEACHER_USER])->givePermissionTo([
+        Role::create(['name' => User::CLASS_TEACHER_USER, 'guard_name' => 'web'])->givePermissionTo([
             'create an academic result',
             'read an academic result',
             'update an academic result',
             'delete an academic result'
         ]);
         //Role::create(['name' => User::STUDENT_USER]);
-        Role::create(['name' => User::PARENT_USER]);
+        Role::create(['name' => User::PARENT_USER, 'guard_name' => 'web']);
     }
 }

@@ -43,6 +43,11 @@ return [
             'provider' => 'users',
         ],
 
+        'admin' => [
+            'driver' => 'session',
+            'provider' => 'admins',
+        ],
+
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
@@ -68,9 +73,15 @@ return [
     */
 
     'providers' => [
+
         'users' => [
             'driver' => 'eloquent',
-            'model' =>  \App\Models\User::class,
+            'model' =>  \App\Models\Tenant\User::class,
+        ],
+
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' =>  \App\Models\Landlord\User::class,
         ],
 
         // 'users' => [

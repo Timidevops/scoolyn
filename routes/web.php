@@ -200,15 +200,17 @@ Route::prefix('be-admin')->group(function (){
     Route::get('login', [\App\Http\Controllers\Landlord\AdminDomain\Auth\LoginsController::class, 'form'])->middleware('guest');
     Route::post('login', [\App\Http\Controllers\Landlord\AdminDomain\Auth\LoginsController::class, 'store'])->name('landlordLogin')->middleware('guest');
 
-    Route::middleware('auth')->group(function (){
+    Route::middleware('auth:admin')->group(function (){
         Route::get('dashboard', [\App\Http\Controllers\Landlord\AdminDomain\DashboardsController::class, 'index'])->name('landlordDashboard');
         Route::post('logout', [\App\Http\Controllers\Landlord\AdminDomain\DashboardsController::class, 'logout'])->name('landlordLogout');
+
+        Route::get('school', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'index'])->name('listSchool');
+        Route::get('school/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'create'])->name('createSchool');
+        Route::post('school', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'store'])->name('storeSchool');
+
+        Route::get('plan', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'index'])->name('listPlan');
+        Route::get('plan/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'create'])->name('createPlan');
+        Route::post('plan', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'store'])->name('storePlan');
     });
 
-    Route::get('school', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'index'])->name('listSchool');
-    Route::get('school/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'create'])->name('createSchool');
-    Route::post('school', [\App\Http\Controllers\Landlord\AdminDomain\Tenant\TenantsController::class, 'store'])->name('storeSchool');
-
-    Route::get('plan')->name('listPlan');
-    Route::get('plan/add-new')->name('createPlan');
 });

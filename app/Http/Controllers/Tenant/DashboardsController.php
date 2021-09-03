@@ -17,6 +17,7 @@ class DashboardsController extends Controller
 {
     public function index()
     {
+        //dd(Auth::user()->hasRole('super_admin'));
         if( Auth::user()->roles->contains( 'name', User::PARENT_USER) ){
             return view('Tenant.parentDomain.dashboard');
         }

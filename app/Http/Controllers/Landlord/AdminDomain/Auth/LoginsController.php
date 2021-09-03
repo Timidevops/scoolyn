@@ -20,7 +20,7 @@ class LoginsController extends Controller
             'email' => ['required', 'email', 'exists:users,email'],
         ]);
 
-        if ( ! Auth::attempt($request->only(['email', 'password'])) ){
+        if ( ! Auth::guard('admin')->attempt($request->only(['email', 'password'])) ){
 
             Session::flash('errorFlash', 'Wrong email or password');
 
