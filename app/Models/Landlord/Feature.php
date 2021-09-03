@@ -3,11 +3,11 @@
 namespace App\Models\Landlord;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticates;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
-class User extends Authenticates
+class Feature extends Model
 {
     use HasFactory;
     use SoftDeletes;
