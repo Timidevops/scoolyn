@@ -12,7 +12,7 @@
         public function execute(string $tenant) : string
         {
             $dbName = random_string(7) . "_{$tenant}";
-            DB::connection(config('env.tenant.landlordConnection'))->select("CREATE DATABASE $dbName");
+            DB::connection(config('env.landlord.tenantConnection'))->select("CREATE DATABASE $dbName");
 
             //@todo grant full permissions on database to user
 //            DB::connection(config('env.tenant.tenantConnection'))->statement("GRANT ALL PRIVILEGES ON :schema.* TO ':user'@':host'", [
