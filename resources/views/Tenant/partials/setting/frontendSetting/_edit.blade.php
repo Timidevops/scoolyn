@@ -6,5 +6,35 @@
         </div>
     </div>
     <a href="{{route('listSetting')}}"><span class="mt-2  text-sm text-gray-300">/!/ Settings</span></a>
+
+    <div class="mt-8 bg-white">
+        <div class=" sm:block">
+            <div class="max-w-6xl mx-auto  sm:px-6 ">
+                <div class="flex flex-col mt-2 py-10 rounded-md">
+                    @if($settings)
+                        <img src="" width="200" alt="login-image">
+                    @endif
+                    <form action="{{route('updateFrontendSetting')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="mt-2 p-4">
+                            <label for="frontImage" class="block text-sm font-normal text-gray-100">Front Page Login / Reset password side image</label>
+                            <input type="file" name="frontImage" id="frontImage" class="w-full text-gray-100 rounded-md py-2 px-2 border @error('frontImage') border-red-100 @else border-purple-100 @enderror" required>
+                            @error('frontImage')
+                            <div>
+                                <p class="text-red-100">
+                                    {{$message}}
+                                </p>
+                            </div>
+                            @enderror
+                        </div>
+                        <div class="px-4 py-4">
+                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
+                                Update
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-{{$settings}}

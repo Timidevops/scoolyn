@@ -4,6 +4,7 @@
 namespace App\Actions\Tenant\Setting\PrincipalDetails;
 
 
+use App\Actions\Tenant\File\UploadFileAction;
 use App\Models\Tenant\Setting;
 use Illuminate\Support\Facades\Storage;
 
@@ -13,8 +14,10 @@ class UpdatePrincipalDetailsAction
     {
         $setting = Setting::getSchoolPrincipal();
 
-        //@todo upload signature $input['principalSignature']
-        $signature = (new UploadPrincipalSignatureAction())->execute($input['principalSignature']);
+        $signature = (new UploadFileAction())->execute([
+            'file' => $input['principalSignature'],
+            'fileName' => 'principal_signature_',
+        ]);
 
         if ( ! $setting ){
             Setting::query()->create([

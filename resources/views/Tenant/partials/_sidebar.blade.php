@@ -3,7 +3,7 @@
     <div class="flex flex-col bg-white  w-auto">
         <button type="button" class="p-2 flex ml-auto bg-blue-100 text-white focus:outline-none"
         x-on:click="navigationOpen = !navigationOpen">
-            <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen === true}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+            <svg class="w-6 h-6" :class="{'transform rotate-180': navigationOpen === false}" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
         </button>
         <div class="flex flex-col flex-grow pt-5 pb-4 overflow-y-auto">
             <div class="flex-shrink-0 px-4 py-2 mx-auto" :class="{'hidden': navigationOpen === true}">
@@ -78,7 +78,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-show="navigationOpen === true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
                             </svg>
-                           <div class="flex items-center space-x-8" :class="{'hidden': navigationOpen === true}">
+                           <p class="flex items-center space-x-8" :class="{'hidden': navigationOpen === true}">
                             <span class="focus:text-white">Results</span>
                             <span class="">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transform"
@@ -86,7 +86,7 @@
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
                               </svg>
                             </span>
-                           </div>
+                           </p>
                         </button >
                         <ul class="space-y-2" x-show="isResultDropDownOpen">
                             @can('read a c.a format')
@@ -209,9 +209,6 @@
                               </svg>
                               <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">LogOut</span>
                         </p >
-                        <form id="logout-form" action="{{route('logout')}}" method="POST">
-                            @csrf
-                        </form>
                     </div>
                 </div>
             </nav>
@@ -255,12 +252,13 @@
             </svg>
         </button>
            </div>
-            <div class="flex-shrink-0 px-4 py-4 mx-auto">
-                <a href="#">
+            <div class="flex-shrink-0 px-4 py-2 mx-auto">
+                <a href="">
                     <img class="h-12 mx-auto" src="{{asset('images/pexels-teddy-joseph-2955375.png')}}" alt="">
                 </a>
-               <div class="text-lg text-center text-gray-200 pt-2">John Doe</div>
-               <span class="text-base text-center mx-3 text-gray-300">SSS 1b</span>
+                <div class="text-lg text-center text-gray-200 pt-2">
+                    <p class="capitalize">{{Auth::user()->getUserFullName()}}</p>
+                </div>
             </div>
              <nav class="mt-8 flex-1 flex flex-col overflow-y-auto" aria-label="Sidebar">
                 <div class="px-2 space-y-1 ">
@@ -270,10 +268,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                           </svg>
                        <span class="focus:text-white">Dashboard</span>
-                    </a  >
+                    </a>
                 </div>
 
-                    <div class="" x-data="{ show: false }">
+                    @can('read a subject')
+                        <div class="" x-data="{ show: false }">
                         <a href="{{route('listSubject')}}" class="{{url()->current() == url()->route('listSubject') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
@@ -281,8 +280,10 @@
                            <span class="focus:text-white">Subject</span>
                         </a >
                     </div>
+                    @endcan
 
-                    <div class="" x-data="{ show: false}">
+                    @can('read a class arm')
+                        <div class="" x-data="{ show: false}">
                         <a href="{{route('listClass')}}" class="{{url()->current() == url()->route('listClass') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                             <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -290,9 +291,21 @@
                            <span class="focus:text-white">Classes</span>
                         </a>
                     </div>
+                    @endcan
+
+                    @can('update admission')
+                        <div class="" x-data="{ show: false}">
+                            <a href="{{route('listApplicant')}}" class="{{url()->current() == url()->route('listApplicant') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                                <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <span class="focus:text-white">Admission</span>
+                            </a>
+                        </div>
+                    @endcan
 
                     <div class="" x-data="{ show: false}">
-                        <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
+                        <div class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
@@ -305,27 +318,46 @@
                                   </svg>
                                 </span>
                                </div>
-                        </a >
-                          <ul class="space-y-2" x-show="show">
-                         <li>
-                                <a href="{{route('listCAStructure')}}" class="{{url()->current() == url()->route('listCAStructure') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                                    <span class="focus:text-white">Continuous Assessment Format</span>
-                                </a>
-                            </li>
-                            <li>
-                            <a href="{{route('listAcademicBroadsheet')}}" class="{{url()->current() == url()->route('listAcademicBroadsheet') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">Academic Broadsheet</span>
-                              </a>
-                          </li>
-                            <li>
-                              <a href="{{route('listAcademicResult')}}" class="{{url()->current() == url()->route('listAcademicResult') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                               <span class="focus:text-white">Academic Results</span>
-                                </a>
-                            </li>
-                          </ul>
+                        </div>
+                        <ul class="space-y-2" x-show="show">
+                            @can('read a c.a format')
+                                <li>
+                                    <a href="{{route('listCAStructure')}}" class="{{url()->current() == url()->route('listCAStructure') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Continuous Assessment Format</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic broadsheet')
+                                <li>
+                                    <a href="{{route('listAcademicBroadsheet')}}" class="{{url()->current() == url()->route('listAcademicBroadsheet') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Broadsheet</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic result')
+                                <li>
+                                    <a href="{{route('listAcademicResult')}}" class="{{url()->current() == url()->route('listAcademicResult') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Results</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                            @can('read an academic grading format')
+                                <li>
+                                    <a href="{{route('listGradeFormat')}}" class="{{url()->current() == url()->route('listGradeFormat') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                        <span class="focus:text-white">Academic Grading Format</span>
+                                    </a>
+                                </li>
+                            @endcan
+
+                        </ul>
                     </div>
 
-                    <div class="" x-data="{ show: false}">
-                        <a href="#" class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
+                    @can('read a user')
+                        <div class="" x-data="{ show: false}">
+                        <div class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                               </svg>
@@ -338,7 +370,7 @@
                                   </svg>
                                 </span>
                                </div>
-                        </a >
+                        </div>
                           <ul class="space-y-2" x-show="show">
                          <li>
                                 <a href="{{route('listTeacher')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
@@ -356,18 +388,23 @@
                             </li>
                           </ul>
                     </div>
+                    @endcan
 
-                    <div class="" x-data="{ show: false }">
-                        <a href="" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
+                    @if(\App\Models\Tenant\Setting::isPaymentStatusOn())
+                        @can('read a fee structure')
+                            <div class="" x-data="{ show: false }">
+                        <a href="{{route('listFeeStructure')}}" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                               <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
                               </svg>
                             <span class="focus:text-white">Payments/Bills</span>
                         </a >
                     </div>
+                        @endcan
+                    @endif
 
-                    <div class="" x-data="{ show: false }">
-                        <a href="" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show" >
+                    <div>
+                        <a href="{{route('listSetting')}}" class="{{url()->current() == url()->route('listSetting') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md focus:bg-blue-100 focus:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -379,12 +416,12 @@
 
                 <div class="my-16 py-6 ">
                     <div class="px-2 space-y-1">
-                        <a href="" class="cursor-pointer flex items-center   px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
+                        <p onclick=" return document.getElementById('logout-form').submit()" class="cursor-pointer flex items-center   px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                               </svg>
                             LogOut
-                        </a >
+                        </p >
                     </div>
                 </div>
             </nav>
@@ -396,3 +433,7 @@
 </div>
 {{-- /Mobile Menu --}}
 
+
+<form id="logout-form" action="{{route('logout')}}" method="POST">
+    @csrf
+</form>

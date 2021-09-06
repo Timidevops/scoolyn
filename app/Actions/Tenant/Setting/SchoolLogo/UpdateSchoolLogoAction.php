@@ -4,6 +4,7 @@
 namespace App\Actions\Tenant\Setting\SchoolLogo;
 
 
+use App\Actions\Tenant\File\UploadFileAction;
 use App\Models\Tenant\Setting;
 use Illuminate\Support\Facades\Storage;
 
@@ -14,7 +15,10 @@ class UpdateSchoolLogoAction
         $setting = Setting::getSchoolLogo();
 
         //upload school logo
-        $logo = (new UploadSchoolLogoAction())->execute($input['file']);
+        $logo = (new UploadFileAction())->execute([
+            'file' => $input['file'],
+            'fileName' => 'school_logo_',
+        ]);
 
         if( ! $setting ){
             Setting::query()->create([

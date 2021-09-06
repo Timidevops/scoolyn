@@ -18,13 +18,14 @@ class ForgetPasswordsController extends Controller
     {
         return view('Tenant.auth.forgotPassword', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
+            'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => ['required', 'exists:users,email'],
+            'email' => ['required', 'exists:'.config('env.tenant.tenantConnection').'.users,email'],
         ]);
 
         $user = User::query()->where('email', $request->input('email'))->first();
@@ -42,6 +43,7 @@ class ForgetPasswordsController extends Controller
         return view('Tenant.auth.resetPassword', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
             'token' => $request->input('token'),
+            'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);
     }
 
@@ -68,7 +70,7 @@ class ForgetPasswordsController extends Controller
             event(new PasswordReset($user));
         });
 
-        if ( $status != Password::PASSWORD_RESET){
+        if ( $status != Password::PASSWORD_RESET ){
 
             Session::flash('errorFlash', 'Error changing password');
 

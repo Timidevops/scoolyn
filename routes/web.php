@@ -165,6 +165,7 @@ Route::middleware('landlord.checkCurrentTenant')->group(function (){
                 Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
 
                 Route::get('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'edit'])->name('frontendSetting');
+                Route::post('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'update'])->name('updateFrontendSetting');
 
                 Route::get('change-password', [\App\Http\Controllers\Tenant\Setting\ChangePasswordsController::class, 'edit'])->name('changeAuthPassword');
 

@@ -14,6 +14,7 @@ class LoginsController extends Controller
     {
         return view('Tenant.auth.login', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
+            'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);
     }
 

@@ -67,7 +67,6 @@
 
               <div>
                 <input type="submit" value="Login" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-blue-100 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-
               </div>
             </form>
           </div>
@@ -76,7 +75,7 @@
     </div>
     <div class="hidden lg:block relative w-0  flex-1 bg-blue-100">
      <div class="">
-        <img class="absolute inset-0 py-8 px-8 h-full" src="{{asset('images/Group 281.png')}}" alt="">
+        <img height="490"  class="absolute inset-0 py-8 px-8 h-full" src="{{ $sideImage ? $sideImage->setting_value : asset('images/Group 281.png')}}" alt="side image">
      </div>
     </div>
   </div>
