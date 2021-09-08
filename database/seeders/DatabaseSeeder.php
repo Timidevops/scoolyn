@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Tenant\ScoolynTenant;
+use Database\Seeders\Landlord\FeatureSeeder;
 use Database\Seeders\Landlord\SubscriptionPlanSeeder;
 use Illuminate\Database\Seeder;
 

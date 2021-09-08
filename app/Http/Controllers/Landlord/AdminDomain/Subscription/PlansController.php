@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Landlord\AdminDomain\Subscription;
 
 use App\Actions\Landlord\Plan\CreateNewPlanAction;
 use App\Http\Controllers\Controller;
+use App\Models\Landlord\Feature;
 use App\Models\Landlord\Plan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,5 +39,14 @@ class PlansController extends Controller
         Session::flash('successFlash', 'Plan added successfully!!!');
 
         return back();
+    }
+
+    public function edit(string $uuid)
+    {
+        return view('Landlord.adminDomain.pages.subscription.plan.edit', [
+            'plan' => Plan::whereUuid($uuid)->firstOrFail(),
+            'features' => Plan::whereUuid($uuid)->first()->features,
+            'newFeatures' => Feature::query()->get(['uuid', 'name', 'description', 'value']),
+        ]);
     }
 }

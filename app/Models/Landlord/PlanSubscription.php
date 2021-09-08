@@ -29,4 +29,9 @@ class PlanSubscription extends \Rinvex\Subscriptions\Models\PlanSubscription
             'canceled_at' => 'nullable|date',
         ]);
     }
+
+    public function getPlan()
+    {
+        return $this->belongsTo(Plan::class, 'plan_id', 'id');
+    }
 }

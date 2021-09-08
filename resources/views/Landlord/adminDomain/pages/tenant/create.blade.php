@@ -82,7 +82,7 @@
                                         <label for="paymentCurrency" class="block text-sm font-medium text-gray-300">Payment Currency</label>
                                     </div>
                                     <div class="mt-1">
-                                        <select x-model="paymentCurrency" name="paymentCurrency" id="paymentCurrency" class="border-purple-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md p-2 border">
+                                        <select x-model="paymentCurrency" name="paymentCurrency" id="paymentCurrency" class="border-purple-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md p-2 border" required>
                                             <option value="">-- Select Currency --</option>
                                             <option value="ngn">NGN</option>
                                         </select>
@@ -98,6 +98,23 @@
                                     </p>
                                 </div>
                             </div>
+                            <div class="mt-1">
+                                <label for="plan" class="block text-sm font-medium text-gray-300">Plan</label>
+                                <div class="mt-1">
+                                    <select name="plan" id="plan" class="border-purple-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md p-2 border">
+                                        <option value="">-- Select Plan --</option>
+                                        @foreach($plans  as $plan)
+                                            <option value="{{$plan['id']}}">{{$plan['name']}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="mt-1">
+                                <label for="marketerCode" class="block text-sm font-medium text-gray-300">Marketer Code</label>
+                                <div class="mt-1">
+                                    <input type="text" name="marketerCode" id="marketerCode" value="{{old('marketerCode')}}" class="border-purple-100 shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm rounded-md p-2 border">
+                                </div>
+                            </div>
                         </div>
                         <div class="my-5">
                             <h4>School Admin Details</h4>
@@ -106,7 +123,7 @@
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-300">Admin Email</label>
                                 <div class="mt-1">
-                                    <input type="text" id="email" name="adminEmail" placeholder="" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border" required>
+                                    <input type="text" id="email" name="adminEmail" value="{{old('adminEmail')}}" placeholder="" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-purple-100 rounded-md p-2 border" required>
                                 </div>
                             </div>
                             <div>

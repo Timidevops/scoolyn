@@ -32,4 +32,9 @@ class Plan extends UsePlan
         'sort_order',
         'uuid',
     ];
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid);
+    }
 }

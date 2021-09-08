@@ -26,14 +26,12 @@ Route::middleware('landlord.checkOnboard')->group(function (){
     Route::post('onboarding/{uuid}', [\App\Http\Controllers\Landlord\OnboardingsController::class, 'store'])->name('storeAppOnboarding');
 });
 
-Route::middleware('landlord.checkCurrentTenant')->group(function (){
+Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
     Route::get('results', function () {
         return view('Tenant.results');
     });
 
     Route::get('/', function () {
-        //dd(\App\Models\Tenant\ScoolynTenant::current()->subscribedTo('2'));
-        //dd(\App\Models\Tenant\ScoolynTenant::current()->activeSubscriptions());
         return redirect()->route('dashboard');
     });
 
@@ -62,7 +60,7 @@ Route::middleware('landlord.checkCurrentTenant')->group(function (){
         Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
     });
 
-    Route::middleware('auth')->group(function (){
+    Route::middleware(['auth', 'landlord.isSubscriptionActive'])->group(function (){
 
         Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
         Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout');
@@ -95,8 +93,10 @@ Route::middleware('landlord.checkCurrentTenant')->group(function (){
                 Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
 
                 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
-                Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
-                Route::get('student/upload-student', [\App\Http\Controllers\Tenant\Student\UploadStudentsController::class, 'create'])->name('uploadStudent');
+                Route::middleware('landlord.isTotalStudent.confirm')->group(function (){
+                    Route::get('student/add-new', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'create'])->name('createStudent');
+                    Route::get('student/upload-student', [\App\Http\Controllers\Tenant\Student\UploadStudentsController::class, 'create'])->name('uploadStudent');
+                });
 
                 Route::get('student/subject/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'index'])->name('listStudentSubject');
                 Route::get('student/subject/add-new/{uuid}', [\App\Http\Controllers\Tenant\Student\StudentSubjectsController::class, 'create'])->name('createStudentSubject');
@@ -197,6 +197,10 @@ Route::middleware('landlord.checkCurrentTenant')->group(function (){
     });
 });
 
+Route::get('inactive-subscription', [\App\Http\Controllers\Landlord\Subscription\InActiveSubscriptionController::class, 'index'])
+    ->middleware('landlord.checkCurrentTenant')
+    ->name('inactiveSubscription');
+
 Route::prefix('be-admin')->group(function (){
     Route::get('login', [\App\Http\Controllers\Landlord\AdminDomain\Auth\LoginsController::class, 'form'])->middleware('guest');
     Route::post('login', [\App\Http\Controllers\Landlord\AdminDomain\Auth\LoginsController::class, 'store'])->name('landlordLogin')->middleware('guest');
@@ -212,6 +216,8 @@ Route::prefix('be-admin')->group(function (){
         Route::get('subscription/plans', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'index'])->name('listPlan');
         Route::get('subscription/plan/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'create'])->name('createPlan');
         Route::post('subscription/plans', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'store'])->name('storePlan');
+        Route::get('subscription/plan/{uuid}', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlansController::class, 'edit'])->name('singlePlan');
+        Route::post('subscription/plan/{uuid}/feature', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\PlanFeaturesController::class, 'store'])->name('storePlanFeature');
 
         Route::get('subscription/features', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeaturesController::class, 'index'])->name('listFeature');
         Route::get('subscription/feature/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeaturesController::class, 'create'])->name('createFeature');

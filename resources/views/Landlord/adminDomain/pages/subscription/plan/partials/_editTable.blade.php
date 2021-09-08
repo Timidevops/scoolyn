@@ -13,7 +13,7 @@
                                 Name
                             </th>
                             <th class="px-6 py-3   text-left  font-medium text-gray-500 text-sm ">
-                                Price
+                                Value
                             </th>
                             <th class="px-6 py-3   text-left text-sm font-medium text-gray-500">
                                 Action
@@ -21,7 +21,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <template x-for="(item, index) in filteredPlanTable" :key="item"  class="bg-white divide-y divide-purple-100">
+                        <template x-for="(item, index) in filteredFeatureTable" :key="item"  class="bg-white divide-y divide-purple-100">
                             <tr class="bg-white">
                                 <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
                                     <div class="flex">
@@ -33,19 +33,9 @@
                                 </td>
 
                                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                                    <span class="text-gray-200 font-normal" x-text="item.currency"></span>
-                                    <span class="text-gray-200 font-normal" x-text="new Intl.NumberFormat().format(item.price)"></span>
+                                    <span class="text-gray-200 font-normal" x-text="item.value"></span>
                                 </td>
 
-                                <td class="px-4 py-4 text-left whitespace-nowrap text-center text-sm text-gray-200 flex items-center">
-                                    <a :href=`{{route('singlePlan', '')}}/${item.uuid}`>
-                                        <button type="submit" class="focus:outline-none ">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-100 mx-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" >
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
-                                            </svg>
-                                        </button>
-                                    </a>
-                                </td>
                             </tr>
                         </template>
                         </tbody>

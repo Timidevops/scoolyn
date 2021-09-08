@@ -27,4 +27,14 @@ class ScoolynTenant extends Tenant
     {
         return (new CreateTenantDatabaseAction())->execute($this->name);
     }
+
+    public static function getCurrentSubscription()
+    {
+        return ScoolynTenant::current()->activeSubscriptions()->whereNull('cancels_at')->first();
+    }
+
+    public static function isSubscriptionActive(): bool
+    {
+        return (bool) self::getCurrentSubscription();
+    }
 }

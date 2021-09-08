@@ -7,8 +7,11 @@ use App\Actions\Landlord\Onboarding\CreateNewAdminUserAction;
 use App\Actions\Landlord\Onboarding\CreateNewTenantAction;
 use App\Actions\Landlord\Onboarding\RunInitialSettingsAction;
 use App\Actions\Landlord\SchoolAdmin\CreateNewSchoolAdminAction;
+use App\Actions\Landlord\Transaction\CreateNewTransactionAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landlord\School\StoreSchoolRequest;
+use App\Models\Landlord\Marketer;
+use App\Models\Landlord\Plan;
 use App\Models\Tenant\ScoolynTenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
@@ -30,15 +33,12 @@ class TenantsController extends Controller
     {
         return view('Landlord.adminDomain.pages.tenant.create', [
             'domain' => (string) config('env.app_domain'),
+            'plans'  => Plan::all(),
         ]);
     }
 
     public function store(StoreSchoolRequest $request)
     {
-
-        //dd($request->all());
-
-
         $inputDomain = str_replace(' ', '-', $request->input('domainName'));
 
         $schoolDomain = (string) $inputDomain.'.'.config('env.app_domain');
@@ -53,16 +53,33 @@ class TenantsController extends Controller
         //@todo filter name to under_score helper function regex
         $schoolName = str_replace(' ', '_', $request->input('schoolName'));
 
+        $marketer = $request->input('marketerCode')
+            ? Marketer::whereMarketerCode($request->input('marketerCode')) ->first()->uuid :
+            '';
+
         //create new tenant
         $tenant = (new CreateNewTenantAction)->execute([
             'name' => $schoolName,
             'domain' => $schoolDomain,
+            'marketer_code' => $marketer,
         ]);
 
         $tenant->makeCurrent();
 
+        //add subscription
+        $subscription = Plan::find($request->input('plan'));
 
-        //@todo add subscription
+        $tenant->newSubscription('main', $subscription);
+
+        //create new landlord transaction
+        (new CreateNewTransactionAction)->execute([
+            'reference' => generateUniqueReference('12','rp_'),
+            'amount' => $subscription->price,
+            'currency' => 'ngn',
+            'subscription_id' => $subscription->id,
+            'user_reference' => $request->input('adminEmail'),
+            'tenant_id' => $tenant->id,
+        ]);
 
         //db migration
         Artisan::call('migrate:fresh',[

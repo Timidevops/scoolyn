@@ -7,20 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 
-class Feature extends Model
+class Marketer extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use UsesLandlordConnection;
 
-    const TOTAL_NUMBER_OF_STUDENT = 'total number of student';
-    const TOTAL_NUMBER_OF_STUDENT_SLUG = 'number-of-students';
-    const ADMISSION_AUTOMATION = 'admission automation';
-
     protected $guarded = [];
 
-    public static function whereUuid(string $uuid)
+    public static function whereMarketerCode(string $code)
     {
-        return self::query()->where('uuid', $uuid);
+        return self::query()->where('marketer_code', $code);
     }
 }
