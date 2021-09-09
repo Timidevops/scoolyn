@@ -74,12 +74,26 @@
                 </div>
             @endcan
 
+                @can('update admission')
+                    <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{route('subscriptionSetting')}}">
+                                        <span>Subscription Information</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                @endcan
+
                 <div>
                     <table>
                         <tr>
                             <td>
                                 <a href="{{route('changeAuthPassword')}}">
-                                    <span>Change password</span>
+                                    <span>Change Password</span>
                                 </a>
                             </td>
                         </tr>

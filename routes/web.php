@@ -195,6 +195,11 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::patch('profile', [\App\Http\Controllers\Tenant\ParentDomain\Profile\UsersController::class, 'update'])->name('updateParentProfile');
 
     });
+
+    Route::get('subscription', [\App\Http\Controllers\Tenant\Setting\SubscriptionSettingsController::class, 'edit'])
+        ->name('subscriptionSetting')
+        ->middleware('auth');
+
 });
 
 Route::get('inactive-subscription', [\App\Http\Controllers\Landlord\Subscription\InActiveSubscriptionController::class, 'index'])

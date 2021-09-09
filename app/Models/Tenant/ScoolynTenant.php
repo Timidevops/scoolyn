@@ -30,11 +30,31 @@ class ScoolynTenant extends Tenant
 
     public static function getCurrentSubscription()
     {
-        return ScoolynTenant::current()->activeSubscriptions()->whereNull('cancels_at')->first();
+        return ScoolynTenant::current()->activeSubscriptions()->whereNull('cancels_at')->first() ?? self::getLastSubscription();
     }
 
     public static function isSubscriptionActive(): bool
     {
-        return (bool) self::getCurrentSubscription();
+        return (bool) self::current()->activeSubscriptions()->whereNull('cancels_at')->first();
+    }
+
+    public static function getLastSubscription()
+    {
+        return ScoolynTenant::current()->subscriptions()->latest()->first();
+    }
+
+    public static function getSubscriptionStatus()
+    {
+        $subscription =  ScoolynTenant::current()->activeSubscriptions()->whereNull('cancels_at')->first() ?? self::getLastSubscription();
+
+        if ( $subscription->ended() ){
+            return 'expired';
+        }
+
+        if ( $subscription->canceled() ){
+            return 'cancelled';
+        }
+
+        return  'active';
     }
 }
