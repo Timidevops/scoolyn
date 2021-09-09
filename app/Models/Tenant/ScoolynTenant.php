@@ -3,7 +3,9 @@
 namespace App\Models\Tenant;
 
 use App\Actions\Tenant\CreateTenantDatabaseAction;
+use App\Models\Landlord\SchoolAdmin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Rinvex\Subscriptions\Traits\HasSubscriptions;
 use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 use Spatie\Multitenancy\Models\Tenant;
@@ -26,6 +28,11 @@ class ScoolynTenant extends Tenant
     public function createDatabase()
     {
         return (new CreateTenantDatabaseAction())->execute($this->name);
+    }
+
+    public function schoolAdmin(): HasOne
+    {
+        return $this->hasOne(SchoolAdmin::class, 'tenant_id', 'id');
     }
 
     public static function getCurrentSubscription()

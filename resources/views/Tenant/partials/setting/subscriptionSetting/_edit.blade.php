@@ -50,15 +50,19 @@
                 <div class="py-3">
                     <span>School Limit: {{$featureTotalStudents}}</span>
                 </div>
-                @if($isStudentFeatureLimitReached)
-                    <div class="py-3 flex justify-between">
-                    <button class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">
-                        Upgrade Plan
-                    </button>
-                    <button class="bg-white border border-blue-100 text-blue-100 rounded-md py-3 px-3  text-sm">
-                        Add Student Addon
-                    </button>
-                </div>
+                @if($planStatus == 'active')
+                    @if($isStudentFeatureLimitReached)
+                        <div class="py-3 flex justify-between">
+                        <button class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">
+                            Upgrade Plan
+                        </button>
+                        <a href="{{route('subscriptionStudentAddon')}}">
+                            <button class="bg-white border border-blue-100 text-blue-100 rounded-md py-3 px-3  text-sm">
+                                Add Student Addon
+                            </button>
+                        </a>
+                    </div>
+                    @endif
                 @endif
             </div>
         </div>

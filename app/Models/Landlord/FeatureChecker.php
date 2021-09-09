@@ -16,6 +16,6 @@ class FeatureChecker
 
    public static function isStudentFeatureLimitReached(): bool
    {
-       return self::featureTotalStudents() == Student::query()->count();
+       return self::featureTotalStudents() != Student::query()->count();
    }
 }

@@ -60,10 +60,11 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
     });
 
+    Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout')->middleware('auth');
+
     Route::middleware(['auth', 'landlord.isSubscriptionActive'])->group(function (){
 
         Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
-        Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout');
 
         Route::post('user/change-password', [\App\Http\Controllers\Tenant\ChangePasswordsController::class, 'update'])->name('changePassword');
 
@@ -171,6 +172,13 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
             });
 
+            Route::prefix('subscription')->group(function (){
+                Route::get('addon/student', [\App\Http\Controllers\Tenant\Setting\SubscriptionAddonsController::class, 'index'])->name('subscriptionStudentAddon');
+                Route::post('addon/student/{uuid}', [\App\Http\Controllers\Tenant\Setting\SubscriptionAddonsController::class, 'store'])->name('postSubscriptionStudentAddon');
+
+                Route::get('payment/callback/addon', [\App\Http\Controllers\Tenant\Setting\Subscripton\Addon\CheckoutCallbackController::class, 'store'])->name('addonPaymentCallback');
+            });
+
         });
 
         Route::get('wards', [\App\Http\Controllers\Tenant\ParentDomain\Ward\WardsController::class, 'index'])->name('listWard');
@@ -196,7 +204,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
     });
 
-    Route::get('subscription', [\App\Http\Controllers\Tenant\Setting\SubscriptionSettingsController::class, 'edit'])
+    Route::get('auth/subscription', [\App\Http\Controllers\Tenant\Setting\SubscriptionSettingsController::class, 'edit'])
         ->name('subscriptionSetting')
         ->middleware('auth');
 
@@ -227,6 +235,9 @@ Route::prefix('be-admin')->group(function (){
         Route::get('subscription/features', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeaturesController::class, 'index'])->name('listFeature');
         Route::get('subscription/feature/add-new', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeaturesController::class, 'create'])->name('createFeature');
         Route::post('subscription/features', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeaturesController::class, 'store'])->name('storeFeature');
+
+        Route::get('subscription/feature/addon', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeatureAddonsController::class, 'index'])->name('listFeatureAddon');
+        Route::post('subscription/feature/addon', [\App\Http\Controllers\Landlord\AdminDomain\Subscription\FeatureAddonsController::class, 'store'])->name('storeFeatureAddon');
     });
 
 });

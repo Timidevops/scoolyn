@@ -13,7 +13,7 @@ class Feature extends Model
     use SoftDeletes;
     use UsesLandlordConnection;
 
-    const TOTAL_NUMBER_OF_STUDENT = 'total number of student';
+    const TOTAL_NUMBER_OF_STUDENT = 'number of students';
     const TOTAL_NUMBER_OF_STUDENT_SLUG = 'number-of-students';
     const ADMISSION_AUTOMATION = 'admission automation';
 
