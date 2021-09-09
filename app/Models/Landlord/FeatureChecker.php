@@ -4,6 +4,7 @@ namespace App\Models\Landlord;
 
 use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\Student;
+use function Webmozart\Assert\Tests\StaticAnalysis\float;
 
 class FeatureChecker
 {
@@ -16,6 +17,16 @@ class FeatureChecker
 
    public static function isStudentFeatureLimitReached(): bool
    {
-       return self::featureTotalStudents() != Student::query()->count();
+
+       $studentAddonTotal =  self::featureTotalStudentAddons() ? self::featureTotalStudentAddons()->value : 0;
+
+       $totalPackageStudents = $studentAddonTotal + self::featureTotalStudents();
+
+       return $totalPackageStudents != Student::query()->count();
+   }
+
+   public static function featureTotalStudentAddons()
+   {
+       return PlanFeatureAddon::getPlanFeatureAddon();
    }
 }

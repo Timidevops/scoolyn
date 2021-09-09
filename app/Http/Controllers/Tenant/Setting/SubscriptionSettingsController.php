@@ -22,6 +22,7 @@ class SubscriptionSettingsController extends Controller
             'featureTotalStudents' => FeatureChecker::featureTotalStudents(),
             'totalStudents' => Student::query()->count(),
             'isStudentFeatureLimitReached' => FeatureChecker::isStudentFeatureLimitReached(),
+            'studentAddon' => FeatureChecker::featureTotalStudentAddons() ? FeatureChecker::featureTotalStudentAddons()->value_left : 0,
         ]);
     }
 }

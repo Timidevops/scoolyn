@@ -176,6 +176,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('addon/student', [\App\Http\Controllers\Tenant\Setting\SubscriptionAddonsController::class, 'index'])->name('subscriptionStudentAddon');
                 Route::post('addon/student/{uuid}', [\App\Http\Controllers\Tenant\Setting\SubscriptionAddonsController::class, 'store'])->name('postSubscriptionStudentAddon');
 
+                //@todo add middleware
                 Route::get('payment/callback/addon', [\App\Http\Controllers\Tenant\Setting\Subscripton\Addon\CheckoutCallbackController::class, 'store'])->name('addonPaymentCallback');
             });
 

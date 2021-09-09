@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant\Setting\Subscripton\Addon;
 
+use App\Actions\Landlord\Subscription\CreateNewSubscriptionAddonAction;
 use App\Actions\Tenant\Checkout\VerifyCheckoutTransactionAction;
 use App\Http\Controllers\Controller;
 use App\Models\Landlord\Transaction;
@@ -41,7 +42,13 @@ class CheckoutCallbackController extends Controller
             return redirect()->route('subscriptionStudentAddon');
         }
 
-        //@todo add plan subscription addon
+        //add plan subscription addon
+        (new CreateNewSubscriptionAddonAction)->execute([
+            'feature_addon_id' => $transaction->featureAddon->id,
+            'subscriber_id' => $transaction->tenant_id,
+            'value' => $transaction->featureAddon->value,
+            'value_left' => $transaction->featureAddon->value,
+        ]);
 
         Session::flash('successFlash', 'Student Addon added to subscription successfully!!!');
 
