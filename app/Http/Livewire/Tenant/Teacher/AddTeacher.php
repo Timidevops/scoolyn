@@ -43,7 +43,7 @@ class AddTeacher extends Component
 
     protected $rules = [
         'fullName' => ['required'],
-        'email' => ['required'],
+        'email' => ['required', 'unique:tenant.users,email'],
     ];
 
     public function render()

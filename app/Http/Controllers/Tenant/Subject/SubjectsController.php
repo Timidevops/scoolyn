@@ -28,7 +28,7 @@ class SubjectsController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $this->validate($request, [
-            'subjects.*' => ['unique:school_subjects,subject_id'],
+            'subjects.*' => ['unique:'.config('env.tenant.tenantConnection').'.school_subjects,subject_id'],
             'subjects'   => ['required', 'array','min:1']
         ]);
 
