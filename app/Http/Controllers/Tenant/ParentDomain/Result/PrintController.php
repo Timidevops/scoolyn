@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\ParentDomain\Result;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSubject;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -18,12 +19,13 @@ class PrintController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
+
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
 
-        $result->load(['student', 'academicSession', 'academicTerm', 'classArm']);
+        $result->load(['student', 'academicSession', 'classArm']);
 
         $subjects = collect($result->subjects)->map(function ($subject, $key){
-            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->subject->subject_name);
+            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->first()->subject->subject_name);
         })->values();
 
         $this->gradeFormats = $result->grading_format;
@@ -37,9 +39,12 @@ class PrintController extends Controller
         $pdf->loadView('Tenant.pdf.result.result',[
             'result' => $result,
             'subjects' => $subjects,
+            'schoolDetails' => Setting::schoolDetails(),
+            'sessionInWord' => Setting::getCurrentAcademicCalendarInWord(),
+            'principal' => Setting::getSchoolPrincipal(),
         ]);
 
-        $pdfFile = "result-for-{$result->student->first_name}-{$result->academicTerm->term_name}-term-{$result->academicSession->session_name}-session.pdf";
+        $pdfFile = "result-for-{$result->student->first_name}-{$result->academicSession->term}-term-{$result->academicSession->session_name}-session.pdf";
 
 
         return $pdf->stream($pdfFile);

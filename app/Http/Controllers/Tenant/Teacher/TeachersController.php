@@ -29,24 +29,22 @@ class TeachersController extends Controller
         return view('tenant.pages.teacher.addTeacher');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function edit(string $uuid)
     {
-        dd('here');
-        $user = (new CreateUserAction())->execute([
-            'name'      => $request->input('fullName'),
-            'email'     => $request->input('email'),
-            'password'  => Hash::make(random_number(1,9,5)),
+        $teacher = Teacher::whereUuid($uuid);
+
+        $classArms = $teacher->classArm;
+
+        $classArms->load(['schoolClass', 'classSection', 'classSectionCategory']);
+
+        $subjects = $teacher->subjectTeacher;
+
+        //$subjects->load('');
+
+        return view('Tenant.pages.teacher.edit', [
+            'teacher'   => $teacher,
+            'classArms' => $classArms,
+            'subjects'  => $subjects,
         ]);
-
-        // assign teacher role
-        $user->assignRole(User::TEACHER_USER);
-
-        (new CreateNewTeacherAction())->execute($user, camel_to_snake($request->only(['fullName', 'staffId', 'email'])));
-
-        //@todo send welcome email
-//        $expiresAt = now()->addDay();
-//        $user->sendWelcomeNotification($expiresAt);
-
-        return back();
     }
 }

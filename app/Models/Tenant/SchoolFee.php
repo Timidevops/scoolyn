@@ -37,8 +37,24 @@ class SchoolFee extends Model
         return $this->hasOne(AcademicSession::class, 'uuid', 'academic_session_id');
     }
 
-    public function academicTerm()
+    public function transactions()
     {
-        return $this->hasOne(AcademicTerm::class, 'uuid', 'academic_term_id');
+        return $this->hasMany(Transaction::class, 'school_fees_id', 'uuid');
     }
+
+    public function isSchoolFeesPaid(): bool
+    {
+        return $this->schoolFeesLeft() == 0;
+    }
+
+    public function schoolFeesPaid()
+    {
+        return $this->transactions()->sum('amount');
+    }
+
+    public function schoolFeesLeft()
+    {
+        return $this->amount - $this->schoolFeesPaid();
+    }
+
 }

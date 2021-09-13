@@ -6,6 +6,7 @@ use App\Actions\Tenant\Fee\CreateNewSchoolFeeAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\SchoolFee;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -32,6 +33,8 @@ class StudentFeesController extends Controller
             'student' => $student,
             'studentFees' => $fees,
             'feesStructures' => FeeStructure::query()->whereNotIn('uuid', $studentFees)->get(['uuid', 'name', 'amount']),
+            'academicSessionInWord' => Setting::getCurrentAcademicCalendarInWord(),
+
         ]);
     }
 

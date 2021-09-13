@@ -26,7 +26,7 @@
         </div>
 
         <div class="pl-2 py-3">
-            <span class="uppercase">{{strOrdinal($academicResult->academicTerm->term_name)}} &nbsp;term</span>
+            <span class="uppercase">{{strOrdinal($academicResult->academicSession->term)}} &nbsp;term</span>
             &nbsp;
             <span class="capitalize">{{str_replace('-','/',$academicResult->academicSession->session_name)}}</span>
             &nbsp;

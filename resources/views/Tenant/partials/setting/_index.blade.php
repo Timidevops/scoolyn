@@ -46,19 +46,21 @@
                 </div>
             @endcan
 
-            @can('update admission')
-                <div>
-                    <table>
-                        <tr>
-                            <td>
-                                <a href="{{route('admissionSetting')}}">
-                                    <span>Change Admission Setting</span>
-                                </a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-            @endcan
+            @if(\App\Models\Landlord\FeatureChecker::hasAdmissionAutomationFeature())
+                    @can('update admission')
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <a href="{{route('admissionSetting')}}">
+                                            <span>Change Admission Setting</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    @endcan
+            @endif
 
             @can('update admission')
                 <div>

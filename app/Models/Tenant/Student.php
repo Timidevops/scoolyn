@@ -47,7 +47,7 @@ class Student extends Model
 
     public function classArm()
     {
-        return $this->belongsTo(ClassArm::class, 'class_arm', 'uuid');
+        return $this->belongsTo(ClassArm::class, 'class_arm', 'uuid')->withoutGlobalScope('teacher');
     }
 
     public function getRouteKeyName()

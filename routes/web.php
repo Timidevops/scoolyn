@@ -89,9 +89,15 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('class-teacher/{uuid}', [\App\Http\Controllers\Tenant\SchoolClass\ClassTeachersController::class, 'single'])->name('classTeacher');
 
+                Route::get('admin-user', [\App\Http\Controllers\Tenant\AdminUser\AdminsController::class, 'index'])->name('listAdminUser');
+                Route::get('admin-user/add-new', [\App\Http\Controllers\Tenant\AdminUser\AdminsController::class, 'create'])->name('createAdminUser');
+                Route::post('admin-user', [\App\Http\Controllers\Tenant\AdminUser\AdminsController::class, 'store'])->name('storeAdminUser');
+                Route::get('admin-user/{uuid}', [\App\Http\Controllers\Tenant\AdminUser\AdminsController::class, 'edit'])->name('editAdminUser');
+                Route::patch('admin-user/{uuid}', [\App\Http\Controllers\Tenant\AdminUser\AdminsController::class, 'update'])->name('updateAdminUser');
+
                 Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
                 Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
-                Route::post('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'store'])->name('storeTeacher');
+                Route::get('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'edit'])->name('editTeacher');
 
                 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
                 Route::middleware('landlord.isTotalStudent.confirm')->group(function (){
@@ -143,6 +149,10 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                     Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
 
+                    Route::get('fee/student/{uuid}/receipt', [\App\Http\Controllers\Tenant\Fee\ReceiptsController::class, 'index'])->name('listStudentReceipt');
+
+                    Route::post('record-student-school-fees/{uuid}', [\App\Http\Controllers\Tenant\Fee\RecordStudentSchoolFeesController::class, 'store'])->name('recordStudentSchoolFees');
+
                 });
 
             });
@@ -187,8 +197,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
         Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
         Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
-        Route::get('fees/print-payment-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
-
+        Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
         Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify');
         Route::post('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([

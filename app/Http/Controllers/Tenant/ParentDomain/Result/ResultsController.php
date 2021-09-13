@@ -19,7 +19,7 @@ class ResultsController extends Controller
 
         $results = AcademicResult::query()->whereIn('student_id', $wards)->get();
 
-        $results->load(['student', 'academicSession', 'academicTerm']);
+        $results->load(['student', 'academicSession']);
 
         return view('livewire.tenant.parent-domain.result.index', [
             'results' => $results,
@@ -35,11 +35,12 @@ class ResultsController extends Controller
 
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
 
-        $result->load(['student', 'academicSession', 'academicTerm', 'classArm']);
+        $result->load(['student', 'academicSession', 'classArm']);
 
         $subjects = collect($result->subjects)->map(function ($subject, $key){
-            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->subject->subject_name);
+            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->first()->subject->subject_name);
         })->values();
+
 
         return view('Tenant.parentDomain.result.single', [
             'result' => $result,

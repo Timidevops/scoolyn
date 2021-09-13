@@ -37,4 +37,12 @@ class Plan extends UsePlan
     {
         return self::query()->where('uuid', $uuid);
     }
+
+    public function getFeatureByEnName(string $name)
+    {
+        return collect(PlanFeature::query()
+            ->where('plan_id', $this->id)->get())->filter(function ($item) use ($name){
+                return $item->name == $name;
+        })->first();
+    }
 }

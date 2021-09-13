@@ -45,8 +45,4 @@ class AcademicResult extends Model
         return $this->hasOne(AcademicSession::class, 'uuid', 'academic_session_id');
     }
 
-    public function academicTerm()
-    {
-        return $this->hasOne(AcademicTerm::class, 'uuid', 'academic_term_id');
-    }
 }

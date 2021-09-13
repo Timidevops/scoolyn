@@ -216,7 +216,7 @@ class AcademicBroadsheetsController extends Controller
 
         $teacher = Teacher::whereUserId(Auth::user()->uuid);
 
-        $classSubject = ClassSubject::whereUuid($uuid); //$teacher->subjectTeacher()->where('uuid', $uuid)->first();
+        $classSubject = ClassSubject::whereUuid($uuid)->first(); //$teacher->subjectTeacher()->where('uuid', $uuid)->first();
 
         if( ! $classSubject ){
             Session::flash('errorFlash', 'Error processing request.');

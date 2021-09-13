@@ -56,19 +56,21 @@
                         </div>
                     @endcan
 
-                    @can('update admission')
-                        <div class="">
-                            <a href="{{route('listApplicant')}}" class="{{url()->current() == url()->route('listApplicant') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
-                                <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"  x-show="navigationOpen === true">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>
-                                <span class="focus:text-white" :class="{'hidden': navigationOpen == true}">Admission</span>
-                            </a >
-                        </div>
-                    @endcan
+                    @if(\App\Models\Landlord\FeatureChecker::hasAdmissionAutomationFeature())
+                        @can('update admission')
+                            <div class="">
+                                <a href="{{route('listApplicant')}}" class="{{url()->current() == url()->route('listApplicant') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                    <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true" :class="{'hidden': navigationOpen === true}">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"  x-show="navigationOpen === true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    <span class="focus:text-white" :class="{'hidden': navigationOpen == true}">Admission</span>
+                                </a >
+                            </div>
+                        @endcan
+                    @endif
 
                     <div class="">
                         <button  class="cursor-pointer flex focus:outline-none items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="isResultDropDownOpen = !isResultDropDownOpen">
@@ -161,6 +163,13 @@
                                         <span class="focus:text-white"></span> Parents
                                     </a>
                                 </li>
+                                @can('read a user')
+                                    <li>
+                                        <a href="{{route('listAdminUser')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                            <span class="focus:text-white">Admin</span>
+                                        </a>
+                                    </li>
+                                @endcan
                             </ul>
                         </div>
                     @endcan
@@ -372,13 +381,14 @@
                                </div>
                         </div>
                           <ul class="space-y-2" x-show="show">
-                         <li>
+                            <li>
                                 <a href="{{route('listTeacher')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                     <span class="focus:text-white">Teacher</span>
                                 </a>
                             </li>
                             <li>
-                            <a href="{{route('listStudent')}}" class="{{url()->current() == url()->route('listStudent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">Student</span>
+                            <a href="{{route('listStudent')}}" class="{{url()->current() == url()->route('listStudent') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                <span>Student</span>
                               </a>
                           </li>
                             <li>
@@ -386,6 +396,13 @@
                                <span class="focus:text-white">Parents</span>
                                 </a>
                             </li>
+                              @can('read a user')
+                                  <li>
+                                      <a href="{{route('listAdminUser')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
+                                          <span class="focus:text-white">Admin</span>
+                                      </a>
+                                  </li>
+                              @endcan
                           </ul>
                     </div>
                     @endcan

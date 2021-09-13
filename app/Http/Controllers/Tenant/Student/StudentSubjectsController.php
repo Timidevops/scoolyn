@@ -59,7 +59,7 @@ class StudentSubjectsController extends Controller
     {
 
         $this->validate($request, [
-            'subjects.*' => ['required','unique:school_subjects,subject_id'],
+            'subjects.*' => ['required','unique:'.config('env.tenant.tenantConnection').'.school_subjects,subject_id'],
             'subjects'   => ['required', 'array','min:1']
         ]);
 

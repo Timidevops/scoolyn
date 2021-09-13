@@ -23,7 +23,7 @@ class FeesController extends Controller
 
         $schoolFees = SchoolFee::query()->whereIn('student_id', $wards)->get();
 
-        $schoolFees->load(['student', 'academicSession', 'academicTerm']);
+        $schoolFees->load(['student', 'academicSession']);
 
         return view('livewire.tenant.parent-domain.fees.index', [
             'schoolFees' => $schoolFees,

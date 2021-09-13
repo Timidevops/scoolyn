@@ -18,9 +18,6 @@
                             <div class="ml-5 w-0 flex-1">
 
                                 <dl>
-                                    <dt class="text-xs font-light text-gray-300 truncate">
-                                        Updated 22.04.2021
-                                    </dt>
                                     <dd>
                                         <div class="text-lg font-medium text-gray-900">
                                             Student
@@ -40,9 +37,6 @@
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
-                                    <dt class="text-xs font-light text-gray-500 truncate">
-                                        Updated 22.04.2021
-                                    </dt>
                                     <dd>
                                         <div class="text-lg font-medium text-gray-900">
                                             Teacher
@@ -62,9 +56,6 @@
                             </div>
                             <div class="ml-5 w-0 flex-1">
                                 <dl>
-                                    <dt class="text-xs font-light text-gray-500 truncate">
-                                        Updated 22.04.2021
-                                    </dt>
                                     <dd>
                                         <div class="text-lg font-medium text-gray-900">
                                             Parent

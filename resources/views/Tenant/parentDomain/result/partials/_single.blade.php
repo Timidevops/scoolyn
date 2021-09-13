@@ -25,7 +25,7 @@
     </div>
 
     <div class="pl-2 py-3">
-        <span class="uppercase">{{$result->academicTerm->term_name}} &nbsp;term</span>
+        <span class="uppercase">{{$result->academicSession->term}} &nbsp;term</span>
         &nbsp;
         <span class="capitalize">{{str_replace('-','/',$result->academicSession->session_name)}}</span>
         &nbsp;

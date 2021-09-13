@@ -1,50 +1,50 @@
-<div class="px-4 sm:px-6 lg:px-8">
+<div class="px-4 sm:px-6 lg:px-8" x-data="adminUser()">
     <div>
         <div class="mt-2 text-xl text-gray-200">
-            Fees
+            Admin Users
         </div>
-        <span class="mt-2 text-base text-gray-300">{{$totalFees}} Total Fees</span>
+        <span class="mt-2 text-base text-gray-300">{{$totalUsers}} Total Admin Users</span>
     </div>
-
-    <div class="bg-white rounded-md" x-data="fees()">
+    <div class="bg-white rounded-md mt-8">
         <div class="md:flex md:items-center md:mt-2 ">
-            <a href="{{route('createFeeStructure')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
-        <span class="mx-2">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </span>
-                <span class="mx-2">Add Fees</span>
-            </a>
+            <div class="py-6 px-2 relative w-full">
+                <a href="{{route('createAdminUser')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
+                <span class="mx-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+                    <span class="mx-2">Add New Admin User</span>
+                </a>
+            </div>
         </div>
-
-        @include('Tenant.partials.fees._indexTable')
+        @include('Tenant.partials.users.admin.partials._indexTable')
     </div>
 </div>
 
 <script>
-    function fees() {
+    function adminUser() {
         return{
             search: "",
             pageNumber: 0,
-            size: 5,
+            size: 10,
             total: "",
-            feesTable: {!! $feesStructures !!},
-            get filteredFeesTable() {
+            userData: {!! $users !!},
+            get filteredUserTable() {
                 const start = this.pageNumber * this.size,
                     end = start + this.size;
                 if (this.search === "") {
-                    this.total = this.feesTable.length;
-                    return this.feesTable.slice(start, end);
+                    this.total = this.userData.length;
+                    return this.userData.slice(start, end);
                 }
                 //Return the total results of the filters
-                this.total = this.feesTable.filter((item) => {
+                this.total = this.userData.filter((item) => {
                     return item.subject_name
                         .toLowerCase()
                         .includes(this.search.toLowerCase());
                 }).length;
                 //Return the filtered data
-                return this.feesTable
+                return this.userData
                     .filter((item) => {
                         return item.subject_name
                             .toLowerCase()

@@ -41,7 +41,7 @@
                 </td>
                 <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                     <span class="text-gray-200 font-normal capitalize">
-                        {{$submittedBroadsheet->teacher['full_name']}}
+                        {{$submittedBroadsheet->teacher['full_name'] ?? 'not assigned'}}
                     </span>
                 </td>
                 <td class="md:px-6 py-4 text-center whitespace-nowrap text-sm text-gray-200 ">

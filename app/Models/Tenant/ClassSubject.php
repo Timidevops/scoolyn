@@ -36,10 +36,6 @@ class ClassSubject extends Model
 
                 $teacher = Teacher::whereUserId(Auth::user()->uuid)->first();
 
-//                if ( ! $teacher ){
-//                    abort(404);
-//                }
-
                 static::addGlobalScope('teacher', function (Builder $builder) use($teacher) {
                     $builder->where('teacher_id', $teacher->uuid);
                 });
@@ -120,6 +116,6 @@ class ClassSubject extends Model
 
     public static function whereUuid(string $uuid)
     {
-        return self::query()->where('uuid', $uuid);//->withoutGlobalScope('teacher')->first();
+        return self::query()->where('uuid', $uuid);
     }
 }

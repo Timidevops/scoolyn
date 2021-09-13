@@ -1,12 +1,15 @@
 <div>
     <div class="mt-2 text-xl text-gray-200">
-        <div class="flex ">
+        <div class="flex items-center">
             <div>
                 Child’s school fees:
             </div>
             <div class="pl-2">
-                <span class="capitalize">{{$wardSchoolFee->student->first_name}}</span>
-                <span class="capitalize">{{$wardSchoolFee->student->last_name}}</span>
+                <p class="text-sm">
+                    <span class="uppercase font-bold">{{$wardSchoolFee->student->first_name}}</span>
+                    <span class="capitalize">{{$wardSchoolFee->student->other_name}}</span>
+                    <span class="capitalize">{{$wardSchoolFee->student->last_name}}</span>
+                </p>
             </div>
         </div>
     </div>
@@ -27,8 +30,8 @@
             </p>
             <p class="text-blue-100 py-1">
                 {{ str_replace('-', '/', $wardSchoolFee->academicSession->session_name)  }}
-                session,
-                {{$wardSchoolFee->academicTerm->term_name}}
+                academic session,
+                {{strOrdinal($wardSchoolFee->academicSession->term)}}
                 term.
             </p>
         </div>
@@ -53,9 +56,8 @@
                     </p>
                 </div>
             </div>
-            <div class="flex justify-between">
-                <div class="w-1/2"></div>
-                <div class="py-5 w-1/2">
+            <div class="flex justify-end">
+                <div class="py-5">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
                         <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">
                             @csrf
@@ -117,7 +119,7 @@
                                     </p>
                                 </div>
                                 <div class="w-1/2 text-right px-6">
-                                    <p class="text-gray-300">NGN {{number_format($wardSchoolFee->amount, 2)}}</p>
+                                    <p class="text-gray-300">NGN {{number_format($schoolFees->sum('amount'), 2)}}</p>
                                 </div>
                             </div>
                         </td>

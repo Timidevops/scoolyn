@@ -39,7 +39,7 @@ class ContinuousAssessmentFormatsController extends Controller
         $this->validate($request, [
             'numberOfCA' => ['required', 'gt:0'],
             'schoolClass' => ['required'],
-            'schoolClass.*' => ['exists:school_classes,uuid'],
+            'schoolClass.*' => ['exists:'.config('env.tenant.tenantConnection').'.school_classes,uuid'],
             'caName.*' => ['required'],
             'caScore.*' => ['required'],
             'totalCAScore' => [ Rule::in('100')]

@@ -97,7 +97,7 @@ class Setting extends Model
 
         $academicSession = AcademicSession::query()->where('uuid', $setting->setting_value)->first();
 
-        return "$academicSession->session_name, ".strOrdinal($academicSession->term)."  term";
+        return "$academicSession->session_name academic session, ".strOrdinal($academicSession->term)."  term";
     }
 
     public static function isAcademicCalendarSet(): bool
