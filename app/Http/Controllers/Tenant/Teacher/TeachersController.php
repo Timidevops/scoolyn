@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant\Teacher;
 
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
+use App\Actions\Tenant\Teacher\DeleteTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Teacher;
@@ -10,6 +11,7 @@ use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class TeachersController extends Controller
 {
@@ -33,6 +35,10 @@ class TeachersController extends Controller
     {
         $teacher = Teacher::whereUuid($uuid);
 
+        if ( ! $teacher ){
+            abort(404);
+        }
+
         $classArms = $teacher->classArm;
 
         $classArms->load(['schoolClass', 'classSection', 'classSectionCategory']);
@@ -46,5 +52,22 @@ class TeachersController extends Controller
             'classArms' => $classArms,
             'subjects'  => $subjects,
         ]);
+    }
+
+    public function delete(string $uuid)
+    {
+        $teacher = Teacher::whereUuid($uuid);
+
+        if ( ! $teacher ){
+            Session::flash('errorFlash', 'Error processing request.');
+
+            return back();
+        }
+
+        (new DeleteTeacherAction)->execute($teacher);
+
+        Session::flash('successFlash', 'Teacher removed successfully!!!');
+
+        return redirect()->route('listTeacher');
     }
 }

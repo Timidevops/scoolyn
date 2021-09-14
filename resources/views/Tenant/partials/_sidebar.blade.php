@@ -163,7 +163,7 @@
                                         <span class="focus:text-white"></span> Parents
                                     </a>
                                 </li>
-                                @can('read a user')
+                                @can('read admin user')
                                     <li>
                                         <a href="{{route('listAdminUser')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                             <span class="focus:text-white">Admin</span>
@@ -302,7 +302,8 @@
                     </div>
                     @endcan
 
-                    @can('update admission')
+                    @if(\App\Models\Landlord\FeatureChecker::hasAdmissionAutomationFeature())
+                        @can('update admission')
                         <div class="" x-data="{ show: false}">
                             <a href="{{route('listApplicant')}}" class="{{url()->current() == url()->route('listApplicant') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white" x-on:click="show = !show">
                                 <svg class="mr-4 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -312,6 +313,7 @@
                             </a>
                         </div>
                     @endcan
+                    @endif
 
                     <div class="" x-data="{ show: false}">
                         <div class="cursor-pointer flex items-center  px-8 py-4 text-base  font-medium leading-6 rounded-md  text-gray-300" x-on:click="show = !show">
@@ -396,7 +398,7 @@
                                <span class="focus:text-white">Parents</span>
                                 </a>
                             </li>
-                              @can('read a user')
+                              @can('read admin user')
                                   <li>
                                       <a href="{{route('listAdminUser')}}" class="{{url()->current() == url()->route('listTeacher') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
                                           <span class="focus:text-white">Admin</span>

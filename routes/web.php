@@ -55,7 +55,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
     });
 
-    Route::group(['middleware' => ['web','guest', WelcomesNewUsers::class]], function (){
+    Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function (){
         Route::get('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'create'])->name('welcome');
         Route::post('set-password/{user}', [\App\Http\Controllers\Tenant\User\WelcomeUsersController::class, 'store'])->name('storeWelcomeUser');
     });
@@ -65,6 +65,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
     Route::middleware(['auth', 'landlord.isSubscriptionActive'])->group(function (){
 
         Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
+        Route::get('hide-to-list', [\App\Http\Controllers\Tenant\DashboardsController::class, 'hideTodoList'])->name('hideTodoList');
 
         Route::post('user/change-password', [\App\Http\Controllers\Tenant\ChangePasswordsController::class, 'update'])->name('changePassword');
 
@@ -98,6 +99,9 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
                 Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
                 Route::get('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'edit'])->name('editTeacher');
+                Route::delete('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'delete'])->name('deleteTeacher');
+
+                Route::post('teacher/{uuid}/suspend-access', [\App\Http\Controllers\Tenant\Teacher\SuspendController::class, 'store'])->name('suspendTeacherAccess');
 
                 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
                 Route::middleware('landlord.isTotalStudent.confirm')->group(function (){
@@ -199,8 +203,8 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
         Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
-        Route::get('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify');
-        Route::post('payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
+        Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify')->name('getSchoolFeesCallback');
+        Route::post('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
             'tenant.callback.verify',
             'tenant.callback.webhook'
         ]);

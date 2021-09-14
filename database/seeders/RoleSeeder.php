@@ -19,7 +19,12 @@ class RoleSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         Role::create(['name' => User::SUPER_ADMIN_USER, 'guard_name' => 'web'])->givePermissionTo(Permission::all());
-        Role::create(['name' => User::ADMIN_USER, 'guard_name' => 'web'])->givePermissionTo(Permission::all());
+        Role::create(['name' => User::ADMIN_USER, 'guard_name' => 'web'])->givePermissionTo(Permission::query()->whereNotIn('name',[
+            'read admin user',
+            'create admin user',
+            'update admin user',
+            'delete admin user'
+        ])->get());
 
         Role::create(['name' => User::SUBJECT_TEACHER_USER, 'guard_name' => 'web'])->givePermissionTo([
             'create an academic broadsheet',

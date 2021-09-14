@@ -8,6 +8,7 @@ use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Parents;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ResultsController extends Controller
 {
@@ -18,6 +19,10 @@ class ResultsController extends Controller
         $wards  =  $parent->ward()->get('uuid')->toArray();
 
         $results = AcademicResult::query()->whereIn('student_id', $wards)->get();
+
+        $results = $results->filter(function ($result){
+            return $result->status == AcademicResult::APPROVED_RESULT_STATUS;
+        });
 
         $results->load(['student', 'academicSession']);
 
@@ -33,7 +38,16 @@ class ResultsController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
+        if ( ! $ward->schoolFee->isSchoolFeesPaid() ){
+            Session::flash('warningFlash', 'Kindly pay school fees to access result.');
+            return redirect()->route('singleWardFee',[$ward->schoolFee->uuid, $ward->uuid]);
+        }
+
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
+
+        if ( $result->status == AcademicResult::APPROVED_RESULT_STATUS ){
+            abort(404);
+        }
 
         $result->load(['student', 'academicSession', 'classArm']);
 

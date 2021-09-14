@@ -9,7 +9,9 @@ use Spatie\WelcomeNotification\WelcomeController;
 class WelcomeUsersController extends WelcomeController
 {
     public function create()
-    {}
+    {
+        dd('here');
+    }
 
     public function store(Request $request, User $user)
     {

@@ -24,7 +24,19 @@ class OnboardingTodoList
 
     public static function isTodoListCompleted() :bool
     {
-        return self::setting()->setting_value;
+        return self::setting()->setting_value == 10;
+    }
+
+    public static function hideTodoList()
+    {
+        self::setting()->update([
+            'setting_value' => '11',
+        ]);
+    }
+
+    public static function isHideTodoList(): bool
+    {
+        return self::setting()->setting_value == 11;
     }
 
     public static function isTodoItemCompleted(string $itemName): bool
@@ -52,6 +64,7 @@ class OnboardingTodoList
         //save settings
         $setting->update([
             'meta' => $todoItems->values(),
+            'setting_value' => $setting->setting_value + 1,
         ]);
 
     }

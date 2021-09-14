@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Tenant\Teacher;
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
+use App\Actions\Tenant\User\WelcomeNewUserAction;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\OnboardingTodoList;
@@ -150,6 +151,7 @@ class AddTeacher extends Component
         }
 
         //@todo welcome email notification
+        (new WelcomeNewUserAction)->execute($user);
 
         //set marker
         (new UpdateTodoItemAction())->execute([

@@ -31,10 +31,6 @@ class CreateClassArmsTable extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->foreign('class_teacher')
-                ->on('teachers')
-                ->references('uuid');
-
             $table->foreign('academic_session_id')
                 ->on('academic_sessions')
                 ->references('uuid')

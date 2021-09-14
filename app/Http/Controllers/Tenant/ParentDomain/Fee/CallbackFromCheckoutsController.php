@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Tenant\ParentDomain\Fee;
 
+use App\Actions\Tenant\Checkout\VerifyCheckoutTransactionAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\SchoolFee;
 use App\Models\Tenant\Transaction;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -19,7 +18,7 @@ class CallbackFromCheckoutsController extends Controller
         $transaction = Transaction::query()->where('reference', $reference)->firstOrFail();
 
         //verify checkout transaction
-        $checkoutResponse =  $this->verifyCheckoutTransaction($reference);
+        $checkoutResponse =  (new VerifyCheckoutTransactionAction)->execute($reference);
 
         if($checkoutResponse == null || $checkoutResponse['status'] == '422'){
             Session::flash('errorFlash', 'Error processing request');
@@ -62,28 +61,4 @@ class CallbackFromCheckoutsController extends Controller
         ]);
     }
 
-    /**
-     * @param string $reference
-     * @return mixed|null
-     */
-    private function verifyCheckoutTransaction(string $reference)
-    {
-        $client  = new Client(['base_uri' => env('CHECKOUT_BASE_URL')]);
-
-        $response = null;
-        try {
-            $response = $client->request('POST', '/api/payment-intents/verify-transaction',
-                [
-                    'headers' => [
-                        'Authorization' => 'Bearer ' . env('CHECKOUT_API_KEY')
-                    ],
-                    'form_params' => [
-                        'clientReference' => $reference,
-                    ]
-                ]);
-        } catch (GuzzleException $e) {
-            return null;
-        }
-        return json_decode($response->getBody(),true);
-    }
 }

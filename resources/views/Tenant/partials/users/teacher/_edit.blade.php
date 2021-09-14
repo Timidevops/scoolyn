@@ -35,17 +35,14 @@
                         </div>
                     </div>
                     <div class="w-1/2">
-                        <form>
-                            @csrf
-                            <div class="space-x-4">
-                                <button type="submit" class="bg-purple-300 text-grey-300 px-6 py-2 rounded-md text-sm">
-                                    Suspend Access
-                                </button>
-                                <button type="submit" class="bg-red-200 text-blue-100 px-6 py-2 rounded-md text-sm">
-                                    Remove Teacher
-                                </button>
-                            </div>
-                        </form>
+                        <div class="space-x-4">
+                            <button x-on:click="isSuspendModalOpen = true;" type="button" class="bg-purple-300 text-grey-300 px-6 py-2 rounded-md text-sm">
+                                Suspend Access
+                            </button>
+                            <button x-on:click="isDeleteModalOpen = true;" type="button" class="bg-red-200 text-blue-100 px-6 py-2 rounded-md text-sm">
+                                Remove Teacher
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div class="mt-2 pb-10">
@@ -80,6 +77,15 @@
                 </div>
             </div>
         </div>
+
+        <!-- delete modal -->
+            @include('Tenant.partials.users.teacher.partials._confirmDeleteModal')
+        <!--/: delete modal -->
+
+        <!-- suspend modal -->
+            @include('Tenant.partials.users.teacher.partials._confirmSuspendModal')
+        <!--/: suspend modal -->
+
     </div>
 
 </div>
@@ -88,6 +94,12 @@
     function teacher() {
         return{
             teacherDesignation: '1',
+
+            suspendTeacherAccess(){},
+            removeTeacher(){},
+
+            isDeleteModalOpen: false,
+            isSuspendModalOpen: false,
         }
     }
 </script>

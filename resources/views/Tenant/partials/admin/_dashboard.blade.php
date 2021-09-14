@@ -96,7 +96,8 @@
 {{--        </div>--}}
 
         @can('update school details')
-            <div class="mt-4">
+            @if( ! \App\Models\Tenant\OnboardingTodoList::isHideTodoList() )
+                <div class="mt-4">
             <div class="bg-white px-6 py-8 rounded-md">
                 <ul class="space-y-4 text-gray-300 medium text-base" >
                     @foreach($todoLists->meta as $todoList)
@@ -113,17 +114,18 @@
                     @endforeach
                 </ul>
                 @if( $todoListComplete )
-                    <div class="space-x-2 relative flex justify-end text-gray-300">
+                    <a href="{{route('hideTodoList')}}" class="space-x-2 relative flex justify-end text-gray-300">
                     <span class="pr-10 py-1"> Don't show again</span>
                     <span class="absolute px-6 pt-1.5">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
                           </svg>
                         </span>
-                </div>
+                </a>
                 @endif
             </div>
         </div>
+            @endif
         @endcan
 
     </div>

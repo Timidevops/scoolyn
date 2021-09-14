@@ -31,6 +31,13 @@ class DashboardsController extends Controller
         ]);
     }
 
+    public function hideTodoList()
+    {
+        OnboardingTodoList::hideTodoList();
+
+        return back();
+    }
+
     public function logout()
     {
         Auth::logout();
