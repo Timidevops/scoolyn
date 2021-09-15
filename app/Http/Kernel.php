@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Landlord\CheckAdmissionAutomationFeatureMiddleware;
 use App\Http\Middleware\Landlord\CheckCurrentTenantMiddleware;
 use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
 use App\Http\Middleware\Landlord\CheckTotalStudentFeatureMiddleware;
@@ -85,5 +86,6 @@ class Kernel extends HttpKernel
         'landlord.checkCurrentTenant' => CheckCurrentTenantMiddleware::class,
         'landlord.isSubscriptionActive' => IsSubscriptionActiveMiddleware::class,
         'landlord.isTotalStudent.confirm' => CheckTotalStudentFeatureMiddleware::class,
+        'landlord.admissionAutomationFeature.confirm' => CheckAdmissionAutomationFeatureMiddleware::class,
     ];
 }

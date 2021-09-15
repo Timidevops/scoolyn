@@ -15,7 +15,6 @@ class FeatureChecker
 
     public static function featureTotalStudents()
     {
-
        return self::currentSubscription()->getPlan->getFeatureByEnName(Feature::TOTAL_NUMBER_OF_STUDENT)->value ?? 0;
     }
 

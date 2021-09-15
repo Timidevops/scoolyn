@@ -55,36 +55,14 @@ class EvaluateSubjectMetricsAction
 
     private function getSubjectMetric(array $subjectScores)
     {
-        arsort($subjectScores);
+        $studentPositions = getPosition($subjectScores, 'subjectPosition');
 
-        $position = 1;
+        $classAvg = $this->getClassSubjectAverage($subjectScores);
 
-        $studentPositions = [];
-
-        foreach ($subjectScores as $key => $subjectScore){
-
-            $searchKey = array_search($subjectScore, $subjectScores);
-
-            //scenario; if same position retain position.
-            if( $key != $searchKey){
-
-                $studentPositions [$key] = [
-                    'SubjectPosition' => (string) $position - 1,
-                    'classAverage'    => (string) $this->getClassSubjectAverage($this->subjectScore)
-                ];
-
-                continue;
-            }
-
-            $studentPositions [$key] = [
-                'SubjectPosition' => (string) $position,
-                'classAverage'    => (string) $this->getClassSubjectAverage($this->subjectScore)
-            ];
-
-            $position ++;
-        }
-
-        return $studentPositions;
+        return collect($studentPositions)->map(function ($item) use($classAvg){
+            $item['classAverage'] = $classAvg;
+            return $item;
+        })->toArray();
     }
 
     private function getClassSubjectAverage(array $subjectScores)

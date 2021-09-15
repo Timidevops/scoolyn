@@ -25,6 +25,7 @@ class ClassArm extends Model
     const GENERATING_RESULT_STATUS = 'generating_result';
     const RESULT_GENERATED_STATUS = 'result_generated';
     const RESULT_INCOMPLETE_STATUS = 'result_incomplete';
+    const RESULT_ERROR_STATUS = 'error_generating_result';
 
     protected $guarded = [];
 

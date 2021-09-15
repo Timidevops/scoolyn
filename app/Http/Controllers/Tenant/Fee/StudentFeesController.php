@@ -59,12 +59,10 @@ class StudentFeesController extends Controller
 
         }
 
-        $schoolFee = (new CreateNewSchoolFeeAction())->execute($student, [
+        (new CreateNewSchoolFeeAction())->execute($student, [
             'amount' => $amount,
             'fee_structure_id' => $request->input('feeStructureId'),
         ]);
-
-        $schoolFee->setStatus(SchoolFee::NOT_PAID_STATUS);
 
         Session::flash('successFlash', 'Student fee added successfully!!!');
 
