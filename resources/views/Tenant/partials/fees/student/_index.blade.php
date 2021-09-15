@@ -27,56 +27,56 @@
                 <div>
                     {{$academicSessionInWord}}
                 </div>
-                <div>
-                    School Fees Status: {{$student->schoolFee->status}}
-                </div>
-                <div>
-                    Total Amount: NGN {{ number_format($student->schoolFee->amount, 2)  }}
-                </div>
-                @if($student->schoolFee->status == \App\Models\Tenant\SchoolFee::NOT_COMPLETE)
+                @if($student->schoolFee )
                     <div>
-                        Outstanding Amount: NGN {{ number_format($student->schoolFee->schoolFeesLeft(), 2)  }}
+                        School Fees Status: {{$student->schoolFee->status}}
                     </div>
-                @endif
-                <div class="flex items-center space-x-3">
-                    @if($student->schoolFee->status != \App\Models\Tenant\SchoolFee::PAID_STATUS)
-                        <div class="w-1/4">
-                            <p x-on:click="isRecordStudentSchoolFeesModalOpen = true" class="bg-blue-100 cursor-pointer text-white rounded-md py-3 mx-1  text-sm flex items-center" >
+                    <div>
+                        Total Amount: NGN {{ number_format($student->schoolFee->amount, 2)  }}
+                    </div>
+                    @if($student->schoolFee->status == \App\Models\Tenant\SchoolFee::NOT_COMPLETE)
+                        <div>
+                            Outstanding Amount: NGN {{ number_format($student->schoolFee->schoolFeesLeft(), 2)  }}
+                        </div>
+                    @endif
+                    <div class="flex items-center space-x-3">
+                        @if($student->schoolFee->status != \App\Models\Tenant\SchoolFee::PAID_STATUS)
+                            <div class="w-1/4">
+                                <p x-on:click="isRecordStudentSchoolFeesModalOpen = true" class="bg-blue-100 cursor-pointer text-white rounded-md py-3 mx-1  text-sm flex items-center" >
                         <span class="mx-2">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </span>
-                                <span class="mx-2">Record school fees payment</span>
-                            </p>
-                        </div>
-                    @endif
+                                    <span class="mx-2">Record school fees payment</span>
+                                </p>
+                            </div>
+                        @endif
 
-                    @if($student->schoolFee->status != \App\Models\Tenant\SchoolFee::NOT_PAID_STATUS)
-                        <div class="w-1/4">
-                            <a class="text-sm text-blue-100 border-b border-blue-100 pb-1 border-dashed" href="{{route('listStudentReceipt',$student->uuid)}}">View payments made</a>
-                        </div>
-                    @endif
-                </div>
+                        @if($student->schoolFee->status != \App\Models\Tenant\SchoolFee::NOT_PAID_STATUS)
+                            <div class="w-1/4">
+                                <a class="text-sm text-blue-100 border-b border-blue-100 pb-1 border-dashed" href="{{route('listStudentReceipt',$student->uuid)}}">View payments made</a>
+                            </div>
+                        @endif
+                    </div>
+                    <!-- recordStudentSchoolFeesModal -->
+                    @include('Tenant.partials.fees.student._recordStudentSchoolFeesModal')
+                    <!-- recordStudentSchoolFeesModal -->
+                @endif
             </div>
-            <!-- recordStudentSchoolFeesModal -->
-                @include('Tenant.partials.fees.student._recordStudentSchoolFeesModal')
-            <!-- recordStudentSchoolFeesModal -->
         </div>
 
         <div class="bg-white rounded-md" >
-            @if($student->schoolFee->status == \App\Models\Tenant\SchoolFee::NOT_PAID_STATUS)
-                <div class="md:flex md:justify-end md:mt-2 py-6 px-2">
+            <div class="md:flex md:justify-end md:mt-2 py-6 px-2">
                 <p x-on:click="isAddFeeModalOpen = true" class="bg-blue-100 cursor-pointer text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
-            <span class="mx-2">
-              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </span>
+                    <span class="mx-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
                     <span class="mx-2">Add Fees</span>
                 </p>
             </div>
-            @endif
 
             @include('Tenant.partials.fees.student._indexTable')
 

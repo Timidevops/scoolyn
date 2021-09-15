@@ -15,9 +15,11 @@ use App\Models\Landlord\Plan;
 use App\Models\Tenant\ScoolynTenant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
+use function Webmozart\Assert\Tests\StaticAnalysis\null;
 
 class TenantsController extends Controller
 {
@@ -55,63 +57,74 @@ class TenantsController extends Controller
 
         $marketer = $request->input('marketerCode')
             ? Marketer::whereMarketerCode($request->input('marketerCode')) ->first()->uuid :
-            '';
+            null;
 
-        //create new tenant
-        $tenant = (new CreateNewTenantAction)->execute([
-            'name' => $schoolName,
-            'domain' => $schoolDomain,
-            'marketer_code' => $marketer,
-        ]);
+        try{
+            DB::beginTransaction();
+            //create new tenant
+            $tenant = (new CreateNewTenantAction)->execute([
+                'name' => $schoolName,
+                'domain' => $schoolDomain,
+            ]);
 
-        $tenant->makeCurrent();
+            $tenant->makeCurrent();
 
-        //add subscription
-        $subscription = Plan::find($request->input('plan'));
+            //add subscription
+            $subscription = Plan::find($request->input('plan'));
 
-        $tenant->newSubscription('main', $subscription);
+            $tenant->newSubscription('main', $subscription);
 
-        //create new landlord transaction
-        (new CreateNewTransactionAction)->execute([
-            'reference' => generateUniqueReference('12','rp_'),
-            'amount' => $subscription->price,
-            'currency' => 'ngn',
-            'subscription_id' => $subscription->id,
-            'user_reference' => $request->input('adminEmail'),
-            'tenant_id' => $tenant->id,
-        ]);
+            //create new landlord transaction
+            (new CreateNewTransactionAction)->execute([
+                'reference' => generateUniqueReference('12','rp_'),
+                'amount' => $subscription->price,
+                'currency' => 'ngn',
+                'subscription_id' => $subscription->id,
+                'user_reference' => $request->input('adminEmail'),
+                'tenant_id' => $tenant->id,
+            ]);
 
-        //db migration
-        Artisan::call('migrate:fresh',[
-            '--path' => 'database/migrations/tenants',
-            '--database' => 'tenant'
-        ]);
+            //db migration
+            Artisan::call('migrate:fresh',[
+                '--path' => 'database/migrations/tenants',
+                '--database' => 'tenant'
+            ]);
 
-        //db seeding
-        Artisan::call('db:seed',[
-            '--class' => "DatabaseSeeder",
-            '--database' => 'tenant',
-        ]);
+            //db seeding
+            Artisan::call('db:seed',[
+                '--class' => "DatabaseSeeder",
+                '--database' => 'tenant',
+            ]);
 
-        //create new admin user
-        $adminUser = (new CreateNewAdminUserAction)->execute([
-            'uuid' => Uuid::uuid4(),
-            'name' => 'Administrator',
-            'email' => $schoolAdmin->email,
-            'password' => Hash::make($request['adminPassword']),
-        ]);
+            //create new admin user
+            $adminUser = (new CreateNewAdminUserAction)->execute([
+                'uuid' => Uuid::uuid4(),
+                'name' => 'Administrator',
+                'email' => $schoolAdmin->email,
+                'password' => Hash::make($request['adminPassword']),
+                'marketer_id' => $marketer,
+            ]);
 
-        //create initial settings
-        (new RunInitialSettingsAction)->execute(camel_to_snake($request->all()));
+            //create initial settings
+            (new RunInitialSettingsAction)->execute(camel_to_snake($request->all()));
 
-        //create dummy parent
-        (new CreateDummyParentAction)->execute($adminUser);
+            //create dummy parent
+            (new CreateDummyParentAction)->execute($adminUser);
 
-        //update onboard process to complete and add tenant id
-        $schoolAdmin->update([
-            'setup_complete' => 1,
-            'tenant_id' => $tenant->id,
-        ]);
+            //update onboard process to complete and add tenant id
+            $schoolAdmin->update([
+                'setup_complete' => 1,
+                'tenant_id' => $tenant->id,
+            ]);
+
+            DB::commit();
+        }catch (\Exception $exception){
+            DB::rollback();
+            Session::flash('errorFlash', 'Error creating school, try again.');
+
+            return back();
+        }
+
 
         Session::flash('successFlash', 'School added successfully!!!');
 

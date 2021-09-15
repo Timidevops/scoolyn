@@ -10,6 +10,6 @@ class WelcomeNewUserAction
     {
         $expiresAt = now()->addDay();
 
-        $user->sendWelcomeNotification($expiresAt);
+        //$user->sendWelcomeNotification($expiresAt);
     }
 }

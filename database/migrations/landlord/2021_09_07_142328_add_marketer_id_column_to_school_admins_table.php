@@ -15,7 +15,7 @@ class AddMarketerIdColumnToSchoolAdminsTable extends Migration
     {
         Schema::table('school_admins', function (Blueprint $table) {
 
-            $table->string('marketer_id')->nullable()->after('setup_complete');
+            $table->uuid('marketer_id')->nullable()->after('setup_complete');
 
             $table->foreign('marketer_id')
                 ->on('marketers')

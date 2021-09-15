@@ -8,6 +8,7 @@ use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\Student;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GenerateResultSheetAction
 {
@@ -40,29 +41,43 @@ class GenerateResultSheetAction
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-        // add data to resultTable of each student
-        foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
-            $input = $studentBroadsheet;
 
-            $input['studentId'] = $key;
+        //add data to resultTable of each student
+        try{
+            DB::beginTransaction();
 
-            $input['classArm'] = (string) $classArm->uuid;
+            foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
+                $input = $studentBroadsheet;
 
-            $input['gradingFormat'] = $this->getGradingFormat()->meta;
+                $input['studentId'] = $key;
 
-            $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
+                $input['classArm'] = (string) $classArm->uuid;
 
-            $result->setStatus(AcademicResult::PENDING_RESULT_STATUS);
+                $input['gradingFormat'] = $this->getGradingFormat()->meta;
+
+                $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
+
+                $result->setStatus(AcademicResult::PENDING_RESULT_STATUS);
+            }
+
+            //check if result generated equals to number of students in class
+            if( count($classArm->academicResult) !=  count($studentIds) ){
+
+                //@todo log
+
+                DB::rollBack();
+
+                $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
+
+                return;
+            }
+
+            DB::commit();
         }
-
-        //check if result generated equals to number of students in class
-        if( count($classArm->academicResult) !=  count($studentIds) ){
-
+        catch (\Exception $exception){
             //@todo log
-
-            $classArm->setStatus(ClassArm::RESULT_INCOMPLETE_STATUS);
-
-            return;
+            DB::rollBack();
+            $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
         }
 
         $classArm->setStatus(ClassArm::RESULT_GENERATED_STATUS);
@@ -76,31 +91,14 @@ class GenerateResultSheetAction
             $totalMarkObtained [$key] = $studentBroadsheet['totalMarkObtained'];
         }
 
-        arsort($totalMarkObtained);
+        $positions = getPosition($totalMarkObtained, 'classPosition');
 
-        $position = 1;
-
-        foreach ($totalMarkObtained as $key =>  $value){
-
-            $searchKey = array_search($value, $totalMarkObtained);
-
-            //scenario; if same position retain position.
-            if ($key !=  $searchKey) {
-                $studentBroadsheet = collect($this->studentBroadsheets)->get($key);
-
-                $duplicatePosition = $position - 1;
-
-                $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $duplicatePosition)->toArray();
-
-                continue;
-            }
+        collect($positions)->map(function ($item, $key){
 
             $studentBroadsheet = collect($this->studentBroadsheets)->get($key);
 
-            $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $position)->toArray();
-
-            $position++;
-        }
+            $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $item['classPosition'])->toArray();
+        });
 
         return $this->studentBroadsheets;
 

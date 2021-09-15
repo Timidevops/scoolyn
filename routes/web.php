@@ -35,7 +35,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         return redirect()->route('dashboard');
     });
 
-    Route::middleware('tenant.admissionOn.confirm')->group(function (){
+    Route::middleware(['tenant.admissionOn.confirm', 'landlord.admissionAutomationFeature.confirm'])->group(function (){
         Route::get('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'create']);
         Route::post('admission-apply-online', [\App\Http\Controllers\Tenant\GuestDomain\Admission\ApplicantsController::class, 'store'])->name('storeAdmission');
     });
@@ -76,11 +76,15 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
                 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
 
-                Route::get('admission/applicant', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'index'])->name('listApplicant');
-                Route::post('admission/applicant-update', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'store'])->name('updateApplicants');
 
-                Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
-                Route::patch('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'update'])->name('updateApplicant');
+                Route::middleware('landlord.admissionAutomationFeature.confirm')->group(function (){
+                    Route::get('admission/applicant', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'index'])->name('listApplicant');
+                    Route::post('admission/applicant-update', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'store'])->name('updateApplicants');
+
+                    Route::get('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'single'])->name('singleApplicant');
+                    Route::patch('admission/applicant/{uuid}', [\App\Http\Controllers\Tenant\Admission\ApplicantsController::class, 'update'])->name('updateApplicant');
+
+                });
 
                 Route::get('classes', [\App\Http\Controllers\Tenant\SchoolClass\SchoolClassesController::class, 'index'])->name('listClass');
 
@@ -198,16 +202,18 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
         Route::get('wards', [\App\Http\Controllers\Tenant\ParentDomain\Ward\WardsController::class, 'index'])->name('listWard');
 
-        Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
-        Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
-        Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
-        Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
+        Route::middleware('tenant.paymentOption.confirm')->group(function (){
+            Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
+            Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
+            Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
+            Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
-        Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify')->name('getSchoolFeesCallback');
-        Route::post('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
-            'tenant.callback.verify',
-            'tenant.callback.webhook'
-        ]);
+            Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify')->name('getSchoolFeesCallback');
+            Route::post('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
+                'tenant.callback.verify',
+                'tenant.callback.webhook'
+            ]);
+        });
 
         Route::get('ward/result', [App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'index'])->name('listWardResult');
         Route::get('result/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Result\ResultsController::class, 'single'])->name('singleWardResult');

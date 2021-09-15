@@ -83,3 +83,25 @@ if(! function_exists('in_array_all')){
         return ! array_diff_key(array_flip($expectedKeys), $arrayOfData);
     }
 }
+
+if(! function_exists('getPosition')){
+    function getPosition(array $array, string $positionName) : array
+    {
+        arsort($array);
+
+        $position = [];
+        $pos = $real_pos = 0;
+        $prev_score = -1;
+        foreach ($array as $key => $score) {
+            $real_pos += 1;
+            $pos = ($prev_score != $score) ? $real_pos : $pos;
+            $position[$key] = array(
+                "$positionName" => (string) $pos,
+            );
+            $prev_score = $score;
+        }
+
+        return $position;
+
+    }
+}

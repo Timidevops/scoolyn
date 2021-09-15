@@ -74,7 +74,7 @@
                             <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                                 <div>
                                     <span class="capitalize" x-text="item.name"></span>
-                                    <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
+                                    <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
                                 </div>
                             </th>
                         </template>
@@ -140,7 +140,7 @@
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{strOrdinal($subject['subjectMetric']['SubjectPosition'])}}
+                                    {{strOrdinal($subject['subjectMetric']['subjectPosition'])}}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
