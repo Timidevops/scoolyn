@@ -51,6 +51,16 @@ return [
             'url' => env('AWS_URL'),
             'endpoint' => env('AWS_ENDPOINT'),
         ],
+        's3_backup' => [
+            'driver' => 's3',
+            'key' => env('AWS_S3_ACCESS_KEY_ID'),
+            'secret' => env('AWS_S3_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET_BACKUP'),
+            'url' => env('AWS_URL'),
+            'endpoint' => env('AWS_ENDPOINT'),
+        ],
+
         'temp' => [
             'driver' => 'local',
             'root' => storage_path('app/temp'),
