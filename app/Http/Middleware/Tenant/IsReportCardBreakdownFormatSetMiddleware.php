@@ -7,7 +7,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
-class IsAcademicCalendarSetMiddleware
+class IsReportCardBreakdownFormatSetMiddleware
 {
     /**
      * Handle an incoming request.
@@ -18,11 +18,10 @@ class IsAcademicCalendarSetMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+        if ( ! Setting::isReportCardBreakdownFormatCreated() ){
+            Session::flash('warningFlash', 'Kindly set report card breakdown.');
 
-        if( ! Setting::isAcademicCalendarSet() ){
-            Session::flash('warningFlash', 'Kindly current academic session and term.');
-
-            return redirect()->route('academicSession');
+            return redirect()->route('reportCardBreakdownFormatSetting');
         }
 
         return $next($request);

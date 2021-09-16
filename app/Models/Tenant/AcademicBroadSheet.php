@@ -21,11 +21,14 @@ class AcademicBroadSheet extends Model
     const SUBMITTED_STATUS = 'submitted';
     const APPROVED_STATUS = 'approved';
     const NOT_APPROVED_STATUS = 'not-approved';
+    const HALF_TERM_STATUS = 'half-term';
+    const COMPLETED_STATUS = 'completed-term';
 
     protected $guarded = [];
 
     protected $casts = [
         'meta' => 'array'
     ];
+
 
 }

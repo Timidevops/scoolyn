@@ -71,7 +71,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
         Route::prefix('auth')->group(function (){
 
-            Route::middleware('tenant.academicCalendar.confirm')->group(function (){
+            Route::middleware(['tenant.academicCalendar.confirm', 'tenant.reportCardBreakdownFormat.confirm'])->group(function (){
 
                 Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
                 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
@@ -182,6 +182,9 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::post('school-detail/principal', [\App\Http\Controllers\Tenant\Setting\PrincipalDetailsController::class, 'update'])->name('updateSchoolPrincipal');
 
                 Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
+
+                Route::get('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'edit'])->name('reportCardBreakdownFormatSetting');
+                Route::post('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'update'])->name('updateReportCardBreakdownFormatSetting');
 
                 Route::get('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'edit'])->name('frontendSetting');
                 Route::post('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'update'])->name('updateFrontendSetting');

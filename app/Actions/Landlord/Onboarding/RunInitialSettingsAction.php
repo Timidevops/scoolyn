@@ -68,6 +68,12 @@ class RunInitialSettingsAction
                     'url' => 'academicSession',
                 ],
                 [
+                    'name' => OnboardingTodoList::SET_REPORT_CARD_BREAKDOWN_FORMAT,
+                    'done' => 0,
+                    'description' => 'Go to settings to set report card breakdown format',
+                    'url' => 'reportCardBreakdownFormatSetting',
+                ],
+                [
                     'name' => OnboardingTodoList::ADD_SCHOOL_CLASSES,
                     'done' => 0,
                     'description' => 'Go to Classes to add class arm',

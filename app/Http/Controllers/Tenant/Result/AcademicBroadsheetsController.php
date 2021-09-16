@@ -10,6 +10,7 @@ use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\StudentSubject;
 use App\Models\Tenant\Teacher;
 use App\Models\Tenant\User;
@@ -58,12 +59,14 @@ class AcademicBroadsheetsController extends Controller
         $this->uuid = $uuid;
 
         // get c.a format for class
-        $this->caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
+        $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
 
-        if( ! $this->caFormat ){
+        if( ! $caFormat ){
             Session::flash('warningFlash', 'Cannot process request, kindly contact school admin.');
             return back();
         }
+
+        $this->caFormat = collect($caFormat->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
         // get students offering subject
         $studentSubjects = StudentSubject::query()->whereJsonContains('subjects', $this->classSubject->uuid)->get('student_id');
@@ -195,7 +198,7 @@ class AcademicBroadsheetsController extends Controller
         }
 
         return view('Tenant.pages.result.academicBroadsheet.create', [
-            'caAssessmentStructure' => collect($this->caFormat->meta),
+            'caAssessmentStructure' => collect($this->caFormat),
             'students'              => $this->students,
             'classSubjectId'        => $uuid,
             'classSubject'          => $this->classSubject,

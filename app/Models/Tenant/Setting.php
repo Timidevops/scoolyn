@@ -29,6 +29,8 @@ class Setting extends Model
     const SCHOOL_LOGO = 'school_logo';
     const INITIAL_TODO_SETTING = 'initial_todo';
     const FRONTEND_AUTH_IMAGE = 'frontend_auth_image';
+    const REPORT_CARD_BREAKDOWN_FORMAT = 'report_card_breakdown_format';
+    const REPORT_CARD_BREAKDOWN_FORMAT_SETTING = 'report_card_breakdown_format_setting';
 
     protected $guarded = [];
 
@@ -113,5 +115,17 @@ class Setting extends Model
     public static function isPaymentStatusOn()
     {
         return (bool) self::query()->where('setting_name', self::PAYMENT_STATUS)->first()->setting_value;
+    }
+
+    public static function isReportCardBreakdownFormatCreated(): bool
+    {
+        return (bool) self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT)->exists();
+    }
+
+    public static function getCurrentCardBreakdownFormat()
+    {
+        $setting = self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT_SETTING)->first();
+
+        return $setting ? $setting->setting_value : '';
     }
 }

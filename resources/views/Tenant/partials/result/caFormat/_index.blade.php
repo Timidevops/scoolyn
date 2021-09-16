@@ -5,7 +5,7 @@
         </div>
         <span class="mt-2 text-base text-gray-300">{{$totalCaFormat}} Total C.A Format</span>
     </div>
-    
+
     <div class="bg-white rounded-md" x-data="caFormat()">
         <div class="md:flex md:items-center md:mt-2 ">
             <div class="py-6 px-2 relative w-full">
@@ -17,7 +17,7 @@
                          </svg>
                     </span>
                 </div>
-    
+
             </div>
             <a href="{{route('createCAStructure')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3 text-sm flex items-center" >
                 <span class="mx-1">
@@ -28,7 +28,7 @@
                 <span class="">Add New Format</span>
             </a>
         </div>
-    
+
         @include('Tenant.partials.result.caFormat._indexTable')
         <!--- classes modal --->
             <div x-show="isClassModalOpen" @click="isClassModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7); display:none">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         <!---/: classes modal --->
-    
+
         <!--- format modal --->
             <div x-show="isCaFormatModalOpen" @click="isCaFormatModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);display:none">
                 <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
@@ -73,7 +73,16 @@
                         <ul>
                             <template x-for="item in caFormat">
                                 <li class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    <span x-text="item.name"></span>:
+                                    <span class="capitalize" x-text="item.nameOfReport"></span>:
+                                    <div>
+                                        <ul>
+                                            <template x-for="format in item.caFormat">
+                                                <li>
+                                                    <span x-text="format.name"></span> - <span x-text="format.score"></span>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
                                     <span class="mx-1" x-text="item.score"></span>
                                 </li>
                             </template>
@@ -82,7 +91,7 @@
                 </div>
             </div>
         <!---/: format modal --->
-    
+
     </div>
 </div>
 
