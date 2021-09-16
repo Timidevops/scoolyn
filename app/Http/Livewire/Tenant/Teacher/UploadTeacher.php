@@ -183,7 +183,6 @@
                         ]);
                     }else{
                         $user = User::where('email', $teacher['email'])->orWhere('phone', $teacher['phone'])->get()->first();
-                        Log::info("id---".$user->id);
                         $newTeacher = $user->teacher;
                     }
                     //assign teacher to subject
@@ -214,70 +213,4 @@
 
             $this->redirectRoute('listTeacher');
         }
-
-        /**
-         * @return Model | null
-         */
-        public function getClassArm()
-        {
-            return ClassArm::query()
-                ->where('school_class_id', $this->schoolClassId)
-                ->where('class_section_id', $this->classSectionId)
-                ->where('class_section_category_id', $this->classSectionCategoryId)->first();
-        }
-
-        public function selectSchoolClass(string $schoolClassId, string $schoolClassName)
-        {
-            $this->schoolClassId = $schoolClassId;
-
-            $this->schoolClassLabel = $schoolClassName;
-
-            $this->schoolClassDropdown = false;
-
-            $this->classSections = SchoolClass::query()->where('uuid', $schoolClassId)->first()->classArm;
-
-            $this->classSectionLabel = '-- choose a class section --';
-
-            $this->classSectionDropdown = false;
-
-            $this->isClassSectionCategory = false;
-
-            $this->classSectionCategoryDropdown = false;
-
-            $this->classSectionCategoryLabel = '-- choose a class section category --';
-        }
-
-        public function selectClassSection(string $classSectionId, string $classArmId, string $classSectionName)
-        {
-            $this->classSectionId = $classSectionId;
-
-            $this->classSectionLabel = $classSectionName;
-
-            $this->classSectionDropdown = false;
-
-            $this->classSectionCategoryLabel = '-- choose a class section category --';
-
-            $classSection = ClassArm::query()->where('uuid', $classArmId)->first();
-
-            if( $classSection && $classSection->classSectionCategory ){
-
-                $this->classSectionCategories = $classSection->classSectionCategory->get();
-
-                return $this->isClassSectionCategory = true;
-            }
-
-            $this->classSectionCategories = [];
-
-            return $this->isClassSectionCategory = false;
-        }
-
-        public function selectClassSectionCategory(string $classSectionCategoryId, string $classSectionCategoryName)
-        {
-            $this->classSectionCategoryId = $classSectionCategoryId;
-
-            $this->classSectionCategoryLabel = $classSectionCategoryName;
-
-            $this->classSectionCategoryDropdown = false;
-        }
-
     }

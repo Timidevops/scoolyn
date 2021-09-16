@@ -121,6 +121,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'index'])->name('listParent');
                 Route::get('parent/add-new', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'create'])->name('createParent');
+                Route::get('parent/upload-parents', [\App\Http\Controllers\Tenant\Parent\UploadParentsController::class, 'create'])->name('uploadParents');
                 Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
 
                 Route::get('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'index'])->name('listCAStructure');
