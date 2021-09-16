@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Ramsey\Uuid\Uuid;
 use function Webmozart\Assert\Tests\StaticAnalysis\null;
@@ -45,22 +46,22 @@ class TenantsController extends Controller
 
         $schoolDomain = (string) $inputDomain.'.'.config('env.app_domain');
 
+        $marketer = $request->input('marketerCode')
+            ? Marketer::whereMarketerCode($request->input('marketerCode')) ->first()->uuid :
+            null;
+
         //create school admin
         $schoolAdmin = (new CreateNewSchoolAdminAction)->execute([
             'uuid' => (string) Uuid::uuid4(),
             'email' => $request->input('adminEmail'),
             'initial_plan' => 1,
+            'marketer_id' => $marketer,
         ]);
 
         //@todo filter name to under_score helper function regex
         $schoolName = str_replace(' ', '_', $request->input('schoolName'));
 
-        $marketer = $request->input('marketerCode')
-            ? Marketer::whereMarketerCode($request->input('marketerCode')) ->first()->uuid :
-            null;
-
         try{
-            DB::beginTransaction();
             //create new tenant
             $tenant = (new CreateNewTenantAction)->execute([
                 'name' => $schoolName,
@@ -102,7 +103,6 @@ class TenantsController extends Controller
                 'name' => 'Administrator',
                 'email' => $schoolAdmin->email,
                 'password' => Hash::make($request['adminPassword']),
-                'marketer_id' => $marketer,
             ]);
 
             //create initial settings
@@ -116,10 +116,8 @@ class TenantsController extends Controller
                 'setup_complete' => 1,
                 'tenant_id' => $tenant->id,
             ]);
-
-            DB::commit();
         }catch (\Exception $exception){
-            DB::rollback();
+            Log::info($exception->getMessage());
             Session::flash('errorFlash', 'Error creating school, try again.');
 
             return back();

@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Parent;
 
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -22,7 +22,7 @@ class ParentsControllerTest extends TestCase
 
         $response->assertRedirect('/');
 
-        $getParent = Parents::all()->first();
+        $getParent = StudentParent::all()->first();
         $getUser = User::all()->first();
 
         $this->assertEquals('john doe', $getParent->full_name);

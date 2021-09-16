@@ -4,7 +4,7 @@
 namespace App\Actions\Tenant\Parent;
 
 
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use Illuminate\Database\Eloquent\Model;
 use Ramsey\Uuid\Uuid;
 

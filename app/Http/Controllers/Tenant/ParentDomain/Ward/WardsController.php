@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Tenant\ParentDomain\Ward;
 
 use App\Http\Controllers\Controller;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

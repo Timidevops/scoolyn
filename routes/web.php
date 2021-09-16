@@ -62,7 +62,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
     Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout')->middleware('auth');
 
-    Route::middleware(['auth', 'landlord.isSubscriptionActive'])->group(function (){
+    Route::middleware(['auth', 'landlord.isSubscriptionActive', 'tenant.checkUserSuspensionStatus'])->group(function (){
 
         Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
         Route::get('hide-to-list', [\App\Http\Controllers\Tenant\DashboardsController::class, 'hideTodoList'])->name('hideTodoList');
@@ -102,10 +102,12 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
                 Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
+                Route::get('teacher/upload-teachers', [\App\Http\Controllers\Tenant\Teacher\UploadTeachersController::class, 'create'])->name('uploadTeachers');
                 Route::get('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'edit'])->name('editTeacher');
                 Route::delete('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'delete'])->name('deleteTeacher');
 
                 Route::post('teacher/{uuid}/suspend-access', [\App\Http\Controllers\Tenant\Teacher\SuspendController::class, 'store'])->name('suspendTeacherAccess');
+                Route::post('teacher/{uuid}/unsuspend-access', [\App\Http\Controllers\Tenant\Teacher\SuspendController::class, 'unSuspend'])->name('unSuspendTeacherAccess');
 
                 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
                 Route::middleware('landlord.isTotalStudent.confirm')->group(function (){

@@ -17,7 +17,7 @@ class LoginsController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email'],
         ]);
 
         if ( ! Auth::guard('admin')->attempt($request->only(['email', 'password'])) ){

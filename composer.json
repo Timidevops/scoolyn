@@ -27,7 +27,8 @@
         "spatie/laravel-permission": "^4.0",
         "spatie/laravel-prefixed-ids": "^1.0",
         "spatie/laravel-welcome-notification": "^2.2",
-        "spatie/simple-excel": "^1.14"
+        "spatie/simple-excel": "^1.14",
+        "ext-zip": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

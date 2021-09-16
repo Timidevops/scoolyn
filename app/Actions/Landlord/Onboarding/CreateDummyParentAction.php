@@ -4,14 +4,14 @@
 namespace App\Actions\Landlord\Onboarding;
 
 
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use Ramsey\Uuid\Uuid;
 
 class CreateDummyParentAction
 {
     public function execute($adminUser)
     {
-        Parents::query()->create([
+        StudentParent::query()->create([
             'uuid' => Uuid::uuid4(),
             'user_id' => (string) $adminUser->uuid,
             'first_name' => 'dummy',

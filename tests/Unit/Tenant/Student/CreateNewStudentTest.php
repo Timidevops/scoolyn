@@ -7,7 +7,7 @@ use App\Actions\Tenant\SchoolClass\CreateNewClassSectionAction;
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionCategoryAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Models\Tenant\ClassSectionCategory;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\User;
@@ -21,7 +21,7 @@ class CreateNewStudentTest extends TestCase
      */
     public function test_student_is_created_as_class_section()
     {
-        $getParent = Parents::factory()->make();
+        $getParent = StudentParent::factory()->make();
         $getClass = SchoolClass::factory()->make();
 
         $getClassSection = (new CreateNewClassSectionAction())->execute($getClass, [
@@ -45,7 +45,7 @@ class CreateNewStudentTest extends TestCase
 
     public function test_student_is_created_as_class_section_category()
     {
-        $getParent = Parents::factory()->make();
+        $getParent = StudentParent::factory()->make();
         $getClass = SchoolClass::factory()->make();
 
         $getClassSection = (new CreateNewClassSectionAction())->execute($getClass, [

@@ -8,7 +8,7 @@ use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Http\Controllers\Tenant\Parent\ParentsController;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -73,7 +73,7 @@ class AddStudent extends Component
 
     public function render()
     {
-        $this->parents = Parents::query()->get(['uuid', 'first_name', 'last_name']);
+        $this->parents = StudentParent::query()->get(['uuid', 'first_name', 'last_name']);
 
         return view('livewire.tenant.student.add-student', [
             'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
@@ -84,7 +84,7 @@ class AddStudent extends Component
     {
         $this->validate();
 
-        $parent = Parents::query()->where('uuid', '=', $this->parentId)->first();
+        $parent = StudentParent::query()->where('uuid', '=', $this->parentId)->first();
 
         if( ! $parent ){
             $this->errorDiv = true;
@@ -231,7 +231,7 @@ class AddStudent extends Component
 
         $this->parentId = $parent->uuid;
 
-        $this->parents = Parents::query()->get(['uuid', 'first_name', 'last_name']);
+        $this->parents = StudentParent::query()->get(['uuid', 'first_name', 'last_name']);
 
         $this->parentDropdown = false;
 

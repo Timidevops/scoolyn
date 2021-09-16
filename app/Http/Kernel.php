@@ -8,6 +8,7 @@ use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
 use App\Http\Middleware\Landlord\CheckTotalStudentFeatureMiddleware;
 use App\Http\Middleware\Landlord\IsSubscriptionActiveMiddleware;
 use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
+use App\Http\Middleware\Tenant\CheckIfUserIsSuspendedMiddleware;
 use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
 use App\Http\Middleware\Tenant\IsPaymentOptionOnMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
@@ -87,5 +88,6 @@ class Kernel extends HttpKernel
         'landlord.isSubscriptionActive' => IsSubscriptionActiveMiddleware::class,
         'landlord.isTotalStudent.confirm' => CheckTotalStudentFeatureMiddleware::class,
         'landlord.admissionAutomationFeature.confirm' => CheckAdmissionAutomationFeatureMiddleware::class,
+        'tenant.checkUserSuspensionStatus' => CheckIfUserIsSuspendedMiddleware::class,
     ];
 }

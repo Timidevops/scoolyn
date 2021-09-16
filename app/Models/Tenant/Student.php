@@ -22,7 +22,7 @@ class Student extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Parents::class, 'parent_id', 'uuid');
+        return $this->belongsTo(StudentParent::class, 'parent_id', 'uuid');
     }
 
     public function subjects()

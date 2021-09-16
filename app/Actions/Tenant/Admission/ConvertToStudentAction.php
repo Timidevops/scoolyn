@@ -8,13 +8,13 @@ use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Models\Tenant\AdmissionApplicant;
 use App\Models\Tenant\ClassArm;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 
 class ConvertToStudentAction
 {
     public function execute(array $input)
     {
-        $dummyParent = Parents::withoutGlobalScope('dummyParent')->find(1);
+        $dummyParent = StudentParent::withoutGlobalScope('dummyParent')->find(1);
 
         $applicant = AdmissionApplicant::query()->where('uuid', $input['applicantId'])->first();
 
