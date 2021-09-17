@@ -61,7 +61,7 @@
                        <div class="flex justify-between px-4 py-4">
                            <div>
                                <h3>
-                                   Assessment for <span x-text="caAssessmentStructure.nameOfReport"></span>
+                                   Assessment for {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
                                </h3>
                            </div>
                            <div>
@@ -90,13 +90,15 @@
                                                <div>
                                                    <span class="text-xs uppercase" x-text="item.name"></span>
                                                    <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
+                                                   <input type="hidden" :class=`assessmentScore_{{$index}}` :value="item.score">
                                                </div>
                                            </th>
                                        </template>
                                        <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
                                            <div class="text-center mx-1">
                                                <span>Total</span>
-                                               <p class="text-gray-300">(100)</p>
+                                               <p class="text-gray-300">(<span x-bind:id=`totalAssessment_{{$index}}`>0</span>%)</p>
+                                               <span x-text="getTotalAssessment('{{$index}}')"></span>
                                            </div>
                                        </th>
                                    </tr>
@@ -164,6 +166,13 @@
                 value.target.classList.add('border-purple-100')
 
                 onchangeCAScore(id, index);
+            },
+            getTotalAssessment(index){
+                let total = 0;
+                document.querySelectorAll(`.assessmentScore_${index}`).forEach(function (e) {
+                    total += Number(e.value);
+                })
+                document.getElementById(`totalAssessment_${index}`).innerText = total;
             },
         };
     }

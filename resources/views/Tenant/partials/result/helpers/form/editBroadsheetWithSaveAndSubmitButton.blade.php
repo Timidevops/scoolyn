@@ -2,18 +2,27 @@
     @csrf
     @method('PATCH')
     <input type="hidden" name="classArm" value="{{$classArm}}">
-    <div class="flex justify-end items-center px-4 py-4">
-        @if($broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
-            <div>
-                <p class="text-red-100">Disapproved</p>
-            </div>
-        @endif
-        <button type="submit" class="border-blue-100 border text-blue-100 rounded-md py-2 px-4 mx-2 text-sm">
-            Save Broadsheet
-        </button>
-        <button type="submit" name="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
-            Submit Broadsheet
-        </button>
+    <div class="flex justify-between items-center px-4 py-4">
+        <div>
+            <h3>
+                Assessment for {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+            </h3>
+        </div>
+        <div>
+            <button>
+                @if($broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
+                    <div>
+                        <p class="text-red-100">Disapproved</p>
+                    </div>
+                @endif
+            </button>
+            <button type="submit" class="border-blue-100 border text-blue-100 rounded-md py-2 px-4 mx-2 text-sm">
+                Save Broadsheet
+            </button>
+            <button type="submit" name="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
+                Submit Broadsheet
+            </button>
+        </div>
     </div>
     <div class="flex flex-col mt-2">
         <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
@@ -28,18 +37,19 @@
                                             Student
                                         </span>
                     </th>
-                    <template x-for="(item, index) in caAssessmentStructure" :key="item">
+                    <template x-for="(item, index) in caAssessmentStructure.caFormat" :key="item">
                         <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                             <div>
-                                <span x-text="item.name"></span>
-                                <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
+                                <span class="uppercase text-xs" x-text="item.name"></span>
+                                <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
+                                <input type="hidden" class="assessmentScore" :value="item.score">
                             </div>
                         </th>
                     </template>
                     <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
                         <div class="text-center mx-1">
                             <span>Total</span>
-                            <p class="text-gray-300">(100)</p>
+                            <p class="text-gray-300">(<span x-text="getTotalAssessment()"></span>%)</p>
                         </div>
                     </th>
                 </tr>
@@ -89,7 +99,7 @@
             getBroadsheet(meta){
                 let broadsheet = [];
 
-                this.caAssessmentStructure.map((item, index)=>{
+                this.caAssessmentStructure.caFormat.map((item, index)=>{
                     broadsheet.push({
                         name: item.name,
                         score: meta[item.name],
@@ -127,6 +137,14 @@
 
                 document.getElementById(scoreIdText).innerText = totalScore > 100 ? '0' : totalScore;
                 document.getElementById(scoreIdValue).value = totalScore > 100 ? '0' : totalScore;
+            },
+
+            getTotalAssessment(){
+                let total = 0;
+                document.querySelectorAll(`.assessmentScore`).forEach(function (e) {
+                    total += Number(e.value);
+                })
+                return total;
             },
         }
     }

@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Tenant\Result;
 
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Result\ContinuousAssessment\CreateNewCAStructureAction;
-use App\Actions\Tenant\Result\ContinuousAssessment\FilterFormInputAction;
 use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\OnboardingTodoList;
+use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\SchoolClass;
-use App\Models\Tenant\Setting;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -38,7 +37,7 @@ class ContinuousAssessmentFormatsController extends Controller
 
         return view('Tenant.pages.result.caFormat.create', [
             'schoolClasses' => SchoolClass::query()->whereNotIn('uuid', $schoolClasses)->get(['uuid', 'class_name']),
-            'reportCardFormats' => (collect(Setting::whereSettingName(Setting::REPORT_CARD_BREAKDOWN_FORMAT)->first()->meta)),
+            'reportCardFormats' => (ReportCardBreakdownFormat::query()->get(['uuid', 'name'])),
         ]);
     }
 
@@ -61,7 +60,7 @@ class ContinuousAssessmentFormatsController extends Controller
         ]);
 
         $lastEntry   = ContinuousAssessmentStructure::all();
-        $idNum = $lastEntry->last()->id + 1;
+        $idNum = ! $lastEntry->isEmpty() ? $lastEntry->last()->id + 1 : '';
         $lastEntryId = $lastEntry->isEmpty() ? '' : "_$idNum";
 
         $request['name'] = $request->input('name') ?? "continuous_assessment_format{$lastEntryId}";

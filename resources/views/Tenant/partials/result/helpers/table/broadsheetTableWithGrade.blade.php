@@ -15,15 +15,16 @@
                 <template x-for="(item, index) in caAssessmentStructure" :key="item">
                     <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                         <div>
-                            <span x-text="item.name"></span>
-                            <p class="text-gray-300">(<span x-text="item.score"></span>)</p>
+                            <span class="uppercase text-xs" x-text="item.name"></span>
+                            <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
+                            <input type="hidden" class="assessmentScore" :value="item.score">
                         </div>
                     </th>
                 </template>
                 <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
                     <div class="text-center mx-1">
                         <span>Total</span>
-                        <p class="text-gray-300">(100)</p>
+                        <p class="text-gray-300">(<span x-text="getTotalAssessment()"></span>%)</p>
                     </div>
                 </th>
                 <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
@@ -90,7 +91,15 @@
                  let format = gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
 
                  return format[0].grade;
-            }
+            },
+
+            getTotalAssessment(){
+                let total = 0;
+                document.querySelectorAll(`.assessmentScore`).forEach(function (e) {
+                    total += Number(e.value);
+                })
+                return total;
+            },
         }
     }
 </script>

@@ -99,7 +99,7 @@ class Setting extends Model
 
         $academicSession = AcademicSession::query()->where('uuid', $setting->setting_value)->first();
 
-        return "$academicSession->session_name academic session, ".strOrdinal($academicSession->term)."  term";
+        return "$academicSession->session_name academic session, ".strOrdinal($academicSession->getTerm->number)."  term";
     }
 
     public static function isAcademicCalendarSet(): bool
@@ -119,13 +119,17 @@ class Setting extends Model
 
     public static function isReportCardBreakdownFormatCreated(): bool
     {
-        return (bool) self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT)->exists();
+        return (bool) ! ReportCardBreakdownFormat::all()->isEmpty();
     }
 
-    public static function getCurrentCardBreakdownFormat()
+    public static function getCurrentCardBreakdownFormat(bool $byName = false)
     {
         $setting = self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT_SETTING)->first();
 
-        return $setting ? $setting->setting_value : '';
+        if ( $byName ){
+            return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->name : '';
+        }
+
+        return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->uuid : '';
     }
 }

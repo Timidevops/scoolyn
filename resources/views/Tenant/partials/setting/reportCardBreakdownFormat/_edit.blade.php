@@ -1,4 +1,4 @@
-<div>
+<div class="w-1/2">
     <form action="{{route('updateReportCardBreakdownFormatSetting')}}" method="post">
         @csrf
         @if($errors->any())
@@ -14,12 +14,14 @@
             <div class="mt-2">
                 <label for="currentReportFormat" class="block text-sm font-normal text-gray-100">
                     Current report card:
-                    <span class="capitalize text-blue-100 sm">{{$currentReportFormat}}</span>.
+                    <span class="capitalize text-blue-100 sm">
+                        {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                    </span>.
                     <span class="text-red-100">*</span></label>
                 <select id="currentReportFormat" name="currentReportFormat" class="w-full capitalize mt-2 text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
                     <option value="">-- Select Format --</option>
                     @foreach($reportCardBreakdownFormats as $reportCardBreakdownFormat)
-                        <option {{$reportCardBreakdownFormat == $currentReportFormat ? 'selected' : '' }} value="{{$reportCardBreakdownFormat}}">{{$reportCardBreakdownFormat}}</option>
+                        <option {{$reportCardBreakdownFormat['uuid'] == $currentReportFormat ? 'selected' : '' }} value="{{$reportCardBreakdownFormat['uuid']}}">{{$reportCardBreakdownFormat['name']}}</option>
                     @endforeach
                 </select>
             </div>

@@ -60,10 +60,10 @@
                                 <div class="p-4">
                                     <div class="w-2/5">
                                         <div class="mt-2">
-                                            <h3 class="text-blue-100 capitalize" x-text="content.name"></h3>
-                                            <label for="numberOfCA" class="block text-sm font-normal text-gray-100">Number of assessment for <span x-text="content.name"></span><span class="text-red-100">*</span></label>
+                                            <h3 class="text-blue-100 capitalize" x-text="content.name.name"></h3>
+                                            <label for="numberOfCA" class="block text-sm font-normal text-gray-100">Number of assessment for <span x-text="content.name.name"></span><span class="text-red-100">*</span></label>
                                             <input id="numberOfCA" x-model="content.numberOfCA" type="number" @input="onchangeNumberOfCA(contentIndex, content.numberOfCA)" :id=`numberOfCA_${contentIndex}` class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
-                                            <input type="hidden" :name=`reportFormat[${contentIndex}][nameOfReport]` :value="content.name">
+                                            <input type="hidden" :name=`reportFormat[${contentIndex}][nameOfReport]` :value="content.name.uuid">
                                         </div>
                                     </div>
 

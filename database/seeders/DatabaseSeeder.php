@@ -4,7 +4,11 @@ namespace Database\Seeders;
 
 use App\Models\Tenant\ScoolynTenant;
 use Database\Seeders\Landlord\FeatureSeeder;
-use Database\Seeders\Landlord\SubscriptionPlanSeeder;
+use Database\Seeders\Tenant\AcademicTermSeeder;
+use Database\Seeders\Tenant\NewPermissionSeeder;
+use Database\Seeders\Tenant\PermissionSeeder;
+use Database\Seeders\Tenant\RoleSeeder;
+use Database\Seeders\Tenant\SubjectSeeders;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,9 +20,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        ScoolynTenant::checkCurrent()
-            ? $this->runTenantSpecificSeeders()
-            : $this->runLandlordSpecificSeeders();
+        //$this->runTenantSpecificSeeders();
+//        ScoolynTenant::checkCurrent()
+//            ? $this->runTenantSpecificSeeders()
+//            : $this->runLandlordSpecificSeeders();
     }
 
     public function runTenantSpecificSeeders()
@@ -26,8 +31,10 @@ class DatabaseSeeder extends Seeder
         // run tenant specific seeders
         $this->call([
             PermissionSeeder::class,
+            NewPermissionSeeder::class,
             RoleSeeder::class,
             SubjectSeeders::class,
+            AcademicTermSeeder::class,
         ]);
     }
 
@@ -36,6 +43,7 @@ class DatabaseSeeder extends Seeder
         // run landlord specific seeders
         $this->call([
             \Database\Seeders\Landlord\UserSeeder::class,
+            FeatureSeeder::class,
         ]);
     }
 }

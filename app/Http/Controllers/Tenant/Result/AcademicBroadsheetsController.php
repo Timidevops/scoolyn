@@ -229,6 +229,7 @@ class AcademicBroadsheetsController extends Controller
         $academicBroadsheet = (new CreateNewBroadsheetAction())->execute($classSubject, [
             'meta'=> $request->input('broadsheet'),
             'class_arm' => $request->input('classArm'),
+            'report_card' => Setting::getCurrentCardBreakdownFormat(),
         ]);
 
         //add status
@@ -320,8 +321,14 @@ class AcademicBroadsheetsController extends Controller
         // get c.a format for class
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first();
 
+        $reportCardFormat = collect($caFormat->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+
+        $currentReportCard = [
+            $reportCardFormat['nameOfReport']  => $reportCardFormat['caFormat']
+        ];
+
         $academicBroadsheet->meta = [
-            'caFormat'           => $caFormat->meta,
+            'caFormat'           => $reportCardFormat['caFormat'],
             'academicBroadsheet' => $academicBroadsheet->meta,
             ];
 

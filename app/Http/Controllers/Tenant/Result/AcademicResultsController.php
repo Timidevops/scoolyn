@@ -9,6 +9,7 @@ use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
 use App\Models\Tenant\User;
@@ -149,9 +150,10 @@ class AcademicResultsController extends Controller
 
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first() ;
 
+        $reportFormat =collect($caFormat->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
         return view('Tenant.pages.result.academicResult.singleSubject', [
-            'caAssessmentStructure' => collect( $caFormat->meta ),
+            'caAssessmentStructure' => collect( $reportFormat ),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $broadsheets ),

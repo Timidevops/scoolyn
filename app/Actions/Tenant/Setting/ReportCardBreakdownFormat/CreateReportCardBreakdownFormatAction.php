@@ -4,12 +4,15 @@
 namespace App\Actions\Tenant\Setting\ReportCardBreakdownFormat;
 
 
-use App\Models\Tenant\Setting;
+use App\Models\Tenant\ReportCardBreakdownFormat;
+use Ramsey\Uuid\Uuid;
 
 class CreateReportCardBreakdownFormatAction
 {
     public function execute(array $input)
     {
-        Setting::query()->create($input);
+        $input['uuid'] = Uuid::uuid4();
+
+        ReportCardBreakdownFormat::query()->create($input);
     }
 }

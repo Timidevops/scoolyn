@@ -9,7 +9,7 @@
     </div>
 
     <div class="mt-5">
-        <div class="bg-white rounded-md rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
+        <div class="bg-white rounded-md py-6 px-2 ">
             @if( ! $isReportCardAssessmentFormatSet )
                 @include('Tenant.partials.setting.reportCardBreakdownFormat._create')
             @else

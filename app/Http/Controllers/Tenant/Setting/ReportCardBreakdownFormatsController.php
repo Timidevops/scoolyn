@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers\Tenant\Setting;
 
+use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\CreateReportCardBreakdownFormatAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\UpdateReportCardBreakdownFormatSettingAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\OnboardingTodoList;
+use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -16,28 +19,19 @@ class ReportCardBreakdownFormatsController extends Controller
         return view('Tenant.pages.setting.reportCardBreakdownFormat.index', [
             'isReportCardAssessmentFormatSet' => Setting::isReportCardBreakdownFormatCreated(),
             'currentReportFormat' => Setting::getCurrentCardBreakdownFormat(),
-            'reportCardBreakdownFormats' => Setting::whereSettingName(Setting::REPORT_CARD_BREAKDOWN_FORMAT)->first()->meta,
+            'reportCardBreakdownFormats' => ReportCardBreakdownFormat::query()->get(['name','uuid']),
         ]);
     }
 
     public function update(Request $request)
     {
         if ( ! Setting::isReportCardBreakdownFormatCreated() ){
-
             $this->create($request);
         }
 
         $this->validate($request, [
-            'currentReportFormat' => ['required'],
+            'currentReportFormat' => ['required', 'exists:'.config('env.tenant.tenantConnection').'.report_card_breakdown_formats,uuid'],
         ]);
-
-        $setting = Setting::whereSettingName(Setting::REPORT_CARD_BREAKDOWN_FORMAT)->first()->meta;
-
-        if ( ! collect($setting)->contains($request->input('currentReportFormat')) ){
-            Session::flash('errorFlash', 'Error processing request, try again.');
-
-            return back();
-        }
 
         (new UpdateReportCardBreakdownFormatSettingAction)->execute([
             'setting_value' => $request->input('currentReportFormat'),
@@ -54,14 +48,20 @@ class ReportCardBreakdownFormatsController extends Controller
             'nameOfReport' => ['required', 'array', 'min:1'],
         ]);
 
-        (new CreateReportCardBreakdownFormatAction)->execute([
-            'setting_name' => Setting::REPORT_CARD_BREAKDOWN_FORMAT,
-            'meta' => $request->input('nameOfReport'),
-        ]);
+        foreach($request->input('nameOfReport') as $format){
+            (new CreateReportCardBreakdownFormatAction)->execute([
+                'name' => $format,
+            ]);
+        }
 
         (new UpdateReportCardBreakdownFormatSettingAction)->execute([
-            'setting_name' => Setting::REPORT_CARD_BREAKDOWN_FORMAT_SETTING,
-            'setting_value' => $request->input('nameOfReport')[0],
+            'setting_name'  => Setting::REPORT_CARD_BREAKDOWN_FORMAT_SETTING,
+            'setting_value' => (string) ReportCardBreakdownFormat::query()->first()->uuid,
+        ]);
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::SET_REPORT_CARD_BREAKDOWN_FORMAT
         ]);
 
         Session::flash('successFlash','Report card format set successfully!!!');

@@ -16,6 +16,8 @@ class CreateNewResultSheetAction
 
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
+        $input['report_card'] = Setting::getCurrentCardBreakdownFormat();
+
         return AcademicResult::query()->create($input);
     }
 }
