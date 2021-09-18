@@ -182,6 +182,9 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'edit'])->name('schoolDetailsSettings');
                 Route::post('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'update'])->name('updateSchoolDetailsSettings');
 
+                Route::get('payments', [\App\Http\Controllers\Tenant\Setting\PaymentSettingsController::class, 'edit'])->name('paymentSettings');
+                Route::post('payments', [\App\Http\Controllers\Tenant\Setting\PaymentSettingsController::class, 'update'])->name('savePaymentSettings');
+
                 Route::post('school-detail/principal', [\App\Http\Controllers\Tenant\Setting\PrincipalDetailsController::class, 'update'])->name('updateSchoolPrincipal');
 
                 Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
