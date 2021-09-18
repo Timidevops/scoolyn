@@ -37,6 +37,23 @@
                                             Student
                                         </span>
                     </th>
+                    @if( $student['previousReportCard'] != null )
+                        <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
+                            <div class="flex">
+                                @foreach($student['previousReportCard'] as $previousReportCard)
+                                    <div class="flex space-x-5">
+                                        @foreach($previousReportCard['caAssessmentStructureFormat'] as $caAssessmentStructureFormat)
+                                            <div>
+                                                <p class="text-xs uppercase">{{$caAssessmentStructureFormat['name']}}</p>
+                                                <span class="text-gray-300">({{$caAssessmentStructureFormat['score']}}%)</span>
+                                                <input type="hidden" class="previousReportCardScore_{{$index}}" value="{{$caAssessmentStructureFormat['score']}}">
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </div>
+                        </th>
+                    @endif
                     <template x-for="(item, index) in caAssessmentStructure.caFormat" :key="item">
                         <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                             <div>
@@ -68,20 +85,37 @@
                         <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                             <span class="text-gray-200 font-normal capitalize" x-text="item.studentName"></span>
                         </td>
+                        @if( $student['previousReportCard'] != null )
+                            <td class="whitespace-nowrap px-6 py-4  text-xs text-gray-200">
+                                @foreach($student['previousReportCard'] as $previousReportCard)
+                                    <div class="flex">
+                                        @foreach($student['previousReportCard'] as $previousReportCard)
+                                            <div class="flex space-x-5">
+                                                <template x-for="(previousReportContent, previousReportIndex) in getPreviousReportData({{$previousReportCard['caAssessmentStructureFormat']}}, {{$previousReportCard['academicBroadsheets']}}, item.studentId) ">
+                                                    <div class="w-2/5">
+                                                        <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index}}`" x-text="previousReportContent.score"></p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            </td>
+                        @endif
                         <template x-for="(ca, caIndex) in getBroadsheet(item.broadsheet)" :key="ca">
                             <td class="whitespace-nowrap text-xs text-gray-200">
                                 <div class="mt-2 text-center">
                                     <label>
-                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$classArm}}`" @input="onchangeCAScore(index, '{{$classArm}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$index}}`" @input="onchangeCAScore(index, '{{$index}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                     </label>
                                 </div>
                             </td>
                         </template>
                         <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$classArm}}`">
+                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$index}}`">
                                 <span x-text="item.broadsheet.total"></span>
                             </p>
-                            <input type="hidden" x-bind:value="item.broadsheet.total" x-bind:id="`totalScoreValue_${index}_{{$classArm}}`" x-bind:name="`broadsheet[${item.studentId}][total]`" />
+                            <input type="hidden" :value="getTotalScoreFromPrevious(index,'{{$index}}', item.broadsheet.total)" x-bind:id="`totalScoreValue_${index}_{{$index}}`" />
                         </td>
                     </tr>
                 </template>
@@ -124,6 +158,12 @@
                     value.target.classList.add('border-purple-100')
                 }
 
+                let previousReportContentScore = `previousReportContentScore_${id}_${classArm}`;
+
+                document.querySelectorAll(`.${previousReportContentScore}`).forEach((value => {
+                    totalScore += Number(value.innerText);
+                }));
+
                 document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
                     let score = parseFloat(value.value);
 
@@ -145,6 +185,36 @@
                     total += Number(e.value);
                 })
                 return total;
+            },
+
+            getPreviousReportData(caAssessmentStructure, data, studentId){
+
+                let student = data.filter(e => e.studentId === studentId);
+
+                let studentReport = [];
+
+                caAssessmentStructure.map((item)=>{
+                    studentReport.push({
+                        name: item.name,
+                        score: (student[0]['broadsheet'])[item.name]
+                    });
+                })
+
+                return studentReport.length > 0 ? studentReport : [];
+            },
+
+            getTotalScoreFromPrevious(id, index, current){
+
+                let scoreIdText = `totalScore_${id}_${index}`;
+                let totalScore = 0;
+
+                let previousReportContentScore = `previousReportContentScore_${id}_${index}`;
+
+                document.querySelectorAll(`.${previousReportContentScore}`).forEach((value => {
+                    totalScore += parseFloat(value.innerHTML);
+                }));
+
+                document.getElementById(scoreIdText).innerText = totalScore > 100 ? '0' : (parseFloat(totalScore) + parseFloat(current));
             },
         }
     }

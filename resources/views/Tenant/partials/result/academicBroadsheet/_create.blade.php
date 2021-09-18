@@ -34,6 +34,12 @@
         let scoreIdValue = `totalScoreValue_${id}_${index}`;
         let totalScore = 0;
 
+        let previousReportContentScore = `previousReportContentScore_${id}_${index}`;
+
+        document.querySelectorAll(`.${previousReportContentScore}`).forEach((value => {
+            totalScore += Number(value.innerText);
+        }));
+
         document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
             let score = parseFloat(value.value);
 
