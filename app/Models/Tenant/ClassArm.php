@@ -26,6 +26,7 @@ class ClassArm extends Model
     const RESULT_GENERATED_STATUS = 'result_generated';
     const RESULT_INCOMPLETE_STATUS = 'result_incomplete';
     const RESULT_ERROR_STATUS = 'error_generating_result';
+    const NEW_REPORT_STATUS = 'new_report_status';
 
     protected $guarded = [];
 
@@ -51,7 +52,8 @@ class ClassArm extends Model
 
     public function academicResult(): HasMany
     {
-        return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid');
+        return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid')
+            ->where('report_card', Setting::getCurrentCardBreakdownFormat());
     }
 
     public function schoolClass(): BelongsTo

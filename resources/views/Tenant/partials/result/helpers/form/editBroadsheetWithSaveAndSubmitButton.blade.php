@@ -46,7 +46,7 @@
                                             <div>
                                                 <p class="text-xs uppercase">{{$caAssessmentStructureFormat['name']}}</p>
                                                 <span class="text-gray-300">({{$caAssessmentStructureFormat['score']}}%)</span>
-                                                <input type="hidden" class="previousReportCardScore_{{$index}}" value="{{$caAssessmentStructureFormat['score']}}">
+                                                <input type="hidden" class="previousReportCardScore_{{$index ?? ''}}" value="{{$caAssessmentStructureFormat['score']}}">
                                             </div>
                                         @endforeach
                                     </div>
@@ -93,7 +93,7 @@
                                             <div class="flex space-x-5">
                                                 <template x-for="(previousReportContent, previousReportIndex) in getPreviousReportData({{$previousReportCard['caAssessmentStructureFormat']}}, {{$previousReportCard['academicBroadsheets']}}, item.studentId) ">
                                                     <div class="w-2/5">
-                                                        <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index}}`" x-text="previousReportContent.score"></p>
+                                                        <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index ?? ''}}`" x-text="previousReportContent.score"></p>
                                                     </div>
                                                 </template>
                                             </div>
@@ -106,16 +106,16 @@
                             <td class="whitespace-nowrap text-xs text-gray-200">
                                 <div class="mt-2 text-center">
                                     <label>
-                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$index}}`" @input="onchangeCAScore(index, '{{$index}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$index ?? ''}}`" @input="onchangeCAScore(index, '{{$index ?? ''}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                     </label>
                                 </div>
                             </td>
                         </template>
                         <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$index}}`">
+                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$index ?? ''}}`">
                                 <span x-text="item.broadsheet.total"></span>
                             </p>
-                            <input type="hidden" :value="getTotalScoreFromPrevious(index,'{{$index}}', item.broadsheet.total)" x-bind:id="`totalScoreValue_${index}_{{$index}}`" />
+                            <input type="hidden" :value="getTotalScoreFromPrevious(index,'{{$index ?? ''}}', item.broadsheet.total)" x-bind:id="`totalScoreValue_${index}_{{$index ?? ''}}`" />
                         </td>
                     </tr>
                 </template>

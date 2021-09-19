@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Actions\Landlord\Onboarding\CreateDummyParentAction;
 use App\Actions\Landlord\Onboarding\RunInitialSettingsAction;
+use App\Models\Tenant\User;
 use Illuminate\Database\Seeder;
 
 class dummyStarterTenant extends Seeder
@@ -25,5 +27,9 @@ class dummyStarterTenant extends Seeder
             'payment_currency' => 'ngn',
             'has_payment' => 'yes'
         ]);
+
+        $user = User::find(1);
+
+        (new CreateDummyParentAction())->execute($user);
     }
 }

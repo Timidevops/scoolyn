@@ -72,6 +72,14 @@
                             <span class="capitalize text-sm">{{$academicResult->total_mark_obtained}}</span>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <span class="capitalize text-sm">total mark attainable:</span>
+                        </td>
+                        <td>
+                            <span class="capitalize text-sm">{{$academicResult->total_mark_attainable}}</span>
+                        </td>
+                    </tr>
                 </table>
             </div>
 
@@ -159,7 +167,7 @@
                             </template>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{$subject['total']}}
+                                    {{$subject['subjectMetric']['total']}}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
@@ -173,11 +181,11 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                                <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}')"></span>
+                                <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}')"></span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
                                 </span>
                             </td>
                         </tr>

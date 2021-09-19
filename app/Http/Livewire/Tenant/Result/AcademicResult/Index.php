@@ -77,7 +77,10 @@ class Index extends Component
                 continue;
             }
 
-            $academicBroadsheet = $classSubject->academicBroadsheet()->where('class_arm', $this->classArm->uuid)->first();
+            $academicBroadsheet = $classSubject->academicBroadsheet()
+                ->where('class_arm', $this->classArm->uuid)
+                ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
 
             if( $academicBroadsheet ){
 
@@ -113,7 +116,9 @@ class Index extends Component
             }
 
             $academicBroadsheet = $classSubject->academicBroadsheet()
-                ->where('class_arm', $this->classArm->uuid)->first();
+                ->where('class_arm', $this->classArm->uuid)
+                ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
 
             if($academicBroadsheet){
 

@@ -4,6 +4,7 @@
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
 
+use App\Actions\Tenant\Result\Broadsheet\Helper\result\GetAllBroadsheetWithCaFormatAction;
 use App\Models\Tenant\ClassSubject;
 
 class GetBroadsheetsAction
@@ -18,21 +19,30 @@ class GetBroadsheetsAction
         $broadsheets = [];
 
         $score = 0;
+        $totalMarkAttainable = 0;
 
         for ( $int = 0; $int < count($subjectId); $int++){
 
             $classSubjects = ClassSubject::query()->where('uuid', $subjectId[$int])->first();
 
-            $academicBroadsheet = $classSubjects->academicBroadsheet()->where('class_arm', $classArmId)->first();
+            $this->studentId = $studentId;
 
-            $broadsheets ['subjects'][$subjectId[$int]] = collect($academicBroadsheet->meta['academicBroadsheet'])->get($studentId);
+            $academicBroadsheet = $classSubjects->academicBroadsheet()
+                ->where('class_arm', $classArmId)
+                ->get();
 
-            $score += $this->getTotalMarkObtained( collect($academicBroadsheet->meta['academicBroadsheet'])->get($studentId) );
+            $GetAllBroadsheetWithCaFormatAction = (new GetAllBroadsheetWithCaFormatAction($studentId))->execute($academicBroadsheet);
 
-            $broadsheets['caFormat'] = $academicBroadsheet->meta['caFormat'];
+            $broadsheets ['subjects'][$subjectId[$int]] = collect($GetAllBroadsheetWithCaFormatAction['academicBroadsheets'])->get($studentId);
+
+            $score += $this->getTotalMarkObtained( collect($GetAllBroadsheetWithCaFormatAction['academicBroadsheets'])->get($studentId) );
+
+            $broadsheets['caFormat'] = $GetAllBroadsheetWithCaFormatAction['caFormats'];
+
+            $totalMarkAttainable = collect($GetAllBroadsheetWithCaFormatAction['caFormats'])->sum('score');
         }
 
-        $broadsheets['totalMarkAttainable'] = 100 * count($subjectId);
+        $broadsheets['totalMarkAttainable'] = $totalMarkAttainable * count($subjectId);
 
         $broadsheets['totalMarkObtained'] = $score;
 
@@ -41,7 +51,7 @@ class GetBroadsheetsAction
 
     private function getTotalMarkObtained(array $broadsheets)
     {
-       return $broadsheets['total'];
+       return collect($broadsheets)->sum();
     }
 
 }

@@ -7,8 +7,6 @@ namespace App\Actions\Tenant\Result\Broadsheet\Helper;
 use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
-use App\Models\Tenant\ReportCardBreakdownFormat;
-use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 
@@ -57,6 +55,7 @@ class GetClassSubjectBroadsheetAction
             }
 
             $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, true);
+
 
             return [
                 'broadsheets' => $broadsheets,

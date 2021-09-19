@@ -3,10 +3,6 @@
 
 namespace App\Actions\Tenant\Result\Broadsheet\Helper;
 
-
-use App\Models\Tenant\ReportCardBreakdownFormat;
-use App\Models\Tenant\Setting;
-
 class SumCAScorePerStudentAction
 {
     /**

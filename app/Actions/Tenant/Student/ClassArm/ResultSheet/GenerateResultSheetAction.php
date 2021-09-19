@@ -41,6 +41,8 @@ class GenerateResultSheetAction
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
+        //dd($this->studentBroadsheets);
+
         //add data to resultTable of each student
         try{
             DB::beginTransaction();
