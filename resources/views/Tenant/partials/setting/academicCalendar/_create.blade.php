@@ -47,12 +47,6 @@
                 </div>
             </div>
             <div class="px-4 py-4">
-                <label>
-                    <input name="currentSession" value="1" type="checkbox">
-                    <span class="pl-2">Set as current session / term</span>
-                </label>
-            </div>
-            <div class="px-4 py-4">
                 <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
                     Save Academic Session
                 </button>

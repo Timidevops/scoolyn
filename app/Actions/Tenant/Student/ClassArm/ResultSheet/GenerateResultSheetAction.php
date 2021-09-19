@@ -6,6 +6,7 @@ namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -62,7 +63,9 @@ class GenerateResultSheetAction
             }
 
             //check if result generated equals to number of students in class
-            if( count($classArm->academicResult) !=  count($studentIds) ){
+            if( count($classArm->academicResult
+                    ->where('class_arm', $this->classArm->uuid)
+                    ->where('report_card', Setting::getCurrentCardBreakdownFormat())) !=  count($studentIds) ){
 
                 //@todo log
 

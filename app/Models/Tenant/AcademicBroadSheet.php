@@ -3,6 +3,7 @@
 namespace App\Models\Tenant;
 
 use App\Http\Traits\Tenant\AcademicSessionTrait;
+use App\Http\Traits\Tenant\ResultSessionTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -13,7 +14,7 @@ class AcademicBroadSheet extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use AcademicSessionTrait;
+    use ResultSessionTrait;
     use HasStatuses;
     use UsesTenantConnection;
 

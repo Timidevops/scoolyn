@@ -36,9 +36,7 @@ class ReportCardBreakdownFormatsController extends Controller
             'currentReportFormat' => ['required', 'exists:'.config('env.tenant.tenantConnection').'.report_card_breakdown_formats,uuid'],
         ]);
 
-        $classArms = ClassArm::all();
-
-        $classArms->map(function ($classArm){
+        ClassArm::all()->map(function ($classArm){
              $classArm->status != ClassArm::RESULT_GENERATED_STATUS ? $this->checker [] = $classArm : null;
         });
 
@@ -62,7 +60,7 @@ class ReportCardBreakdownFormatsController extends Controller
 
         $requestCurrentReportFormat = $request->input('currentReportFormat');
 
-        $classArms->map(function ($classArm) use ($requestCurrentReportFormat){
+        ClassArm::all()->map(function ($classArm) use ($requestCurrentReportFormat){
             if ( collect($classArm->students)->count() != $classArm->academicResult()->where('report_card', $requestCurrentReportFormat)->get()->count() ){
                 $classArm->setStatus(ClassArm::NEW_REPORT_STATUS, Setting::getCurrentCardBreakdownFormat(true));
             }

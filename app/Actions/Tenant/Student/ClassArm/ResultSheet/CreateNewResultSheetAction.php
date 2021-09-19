@@ -5,6 +5,7 @@ namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
 
 use App\Models\Tenant\AcademicResult;
+use App\Models\Tenant\AcademicSession;
 use App\Models\Tenant\Setting;
 use Ramsey\Uuid\Uuid;
 
@@ -17,6 +18,8 @@ class CreateNewResultSheetAction
         $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
 
         $input['report_card'] = Setting::getCurrentCardBreakdownFormat();
+
+        $input['term'] = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId())->term;
 
         return AcademicResult::query()->create($input);
     }

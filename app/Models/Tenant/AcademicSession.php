@@ -35,4 +35,9 @@ class AcademicSession extends Model
         return $this->hasOne(AcademicTerm::class, 'uuid', 'term');
     }
 
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
+    }
+
 }
