@@ -52,6 +52,11 @@ class ClassArm extends Model
 
     public function academicResult(): HasMany
     {
+        return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid');
+    }
+
+    public function academicResultWithCurrentReport(): HasMany
+    {
         return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid')
             ->where('report_card', Setting::getCurrentCardBreakdownFormat());
     }

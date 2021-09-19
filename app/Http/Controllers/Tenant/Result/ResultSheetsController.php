@@ -40,7 +40,7 @@ class ResultSheetsController extends Controller
 
         $classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
-        $academicResult = $classArm->academicResult()->where('student_id', $studentId)->firstOrFail();
+        $academicResult = $classArm->academicResultWithCurrentReport()->where('student_id', $studentId)->firstOrFail();
 
         $subjects = collect($academicResult->subjects)->map(function ($subject, $key){
             return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->withoutGlobalScope('teacher')->first()->subject->subject_name);

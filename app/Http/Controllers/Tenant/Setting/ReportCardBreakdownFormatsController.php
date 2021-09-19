@@ -6,6 +6,7 @@ use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\CreateReportCardBreakdownFormatAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\UpdateReportCardBreakdownFormatSettingAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\Setting;
@@ -14,6 +15,8 @@ use Illuminate\Support\Facades\Session;
 
 class ReportCardBreakdownFormatsController extends Controller
 {
+    private array $checker = [];
+
     public function edit()
     {
         return view('Tenant.pages.setting.reportCardBreakdownFormat.index', [
@@ -33,9 +36,37 @@ class ReportCardBreakdownFormatsController extends Controller
             'currentReportFormat' => ['required', 'exists:'.config('env.tenant.tenantConnection').'.report_card_breakdown_formats,uuid'],
         ]);
 
+        $classArms = ClassArm::all();
+
+        $classArms->map(function ($classArm){
+             $classArm->status != ClassArm::RESULT_GENERATED_STATUS ? $this->checker [] = $classArm : null;
+        });
+
+        if ( count($this->checker) > 0 ){
+
+            Session::flash('warningFlash', 'Cannot change report card, pending result sheet for some classes.');
+
+            return back();
+        }
+
+        if ( $request->input('currentReportFormat') == Setting::getCurrentCardBreakdownFormat() ){
+
+            Session::flash('errorFlash', 'Cannot change report to the same report');
+
+            return back();
+        }
+
         (new UpdateReportCardBreakdownFormatSettingAction)->execute([
             'setting_value' => $request->input('currentReportFormat'),
         ]);
+
+        $requestCurrentReportFormat = $request->input('currentReportFormat');
+
+        $classArms->map(function ($classArm) use ($requestCurrentReportFormat){
+            if ( collect($classArm->students)->count() != $classArm->academicResult()->where('report_card', $requestCurrentReportFormat)->get()->count() ){
+                $classArm->setStatus(ClassArm::NEW_REPORT_STATUS, Setting::getCurrentCardBreakdownFormat(true));
+            }
+        });
 
         Session::flash('successFlash', 'Current report card updated changed successfully!!!');
 
