@@ -211,10 +211,10 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::middleware('tenant.paymentOption.confirm')->group(function (){
             Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
             Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
-            Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
+            Route::get('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
             Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
-            Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify')->name('getSchoolFeesCallback');
+            Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify.flutterwave')->name('getSchoolFeesCallback');
             Route::post('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
                 'tenant.callback.verify',
                 'tenant.callback.webhook'

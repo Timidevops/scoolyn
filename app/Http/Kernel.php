@@ -13,6 +13,7 @@ use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
 use App\Http\Middleware\Tenant\IsPaymentOptionOnMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackWebhookMiddleware;
+use App\Http\Middleware\Tenant\VerifyFlutterwaveCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyPasswordResetMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -89,5 +90,6 @@ class Kernel extends HttpKernel
         'landlord.isTotalStudent.confirm' => CheckTotalStudentFeatureMiddleware::class,
         'landlord.admissionAutomationFeature.confirm' => CheckAdmissionAutomationFeatureMiddleware::class,
         'tenant.checkUserSuspensionStatus' => CheckIfUserIsSuspendedMiddleware::class,
+        'tenant.callback.verify.flutterwave' => VerifyFlutterwaveCallbackMiddleware::class,
     ];
 }

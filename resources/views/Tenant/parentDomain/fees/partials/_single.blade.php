@@ -59,12 +59,13 @@
             <div class="flex justify-end">
                 <div class="py-5">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
-                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">
-                            @csrf
-                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
-                                Proceed to payment
-                            </button>
-                        </form>
+{{--                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">--}}
+{{--                            @csrf--}}
+{{--                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >--}}
+{{--                                Proceed to payment--}}
+{{--                            </button>--}}
+{{--                        </form>--}}
+                        @include('Tenant.parentDomain.fees.partials._flutterwaveCheckout')
                     @else
                         <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}">
                             <button type="button" class="bg-blue-100 w-full text-white rounded-md py-3 px-3  text-sm" >

@@ -16,6 +16,7 @@ return [
         'currency' => env('DEFAULT_CURRENCY', 'NGN'),
         'flutterwave' => [
             'flutterwave_secret_key' => env('FLUTTERWAVE_SECRET_KEY'),
+            'public_key' => env('FLUTTERWAVE_PUBLIC_KEY'),
             'split_value' => env('FLUTTERWAVE_SPLIT_VALUE','100'),
             'split_type' => env('FLUTTERWAVE_SPLIT_TYPE','flat'),
         ],
