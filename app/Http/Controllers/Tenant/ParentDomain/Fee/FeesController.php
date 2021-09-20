@@ -91,7 +91,10 @@ class FeesController extends Controller
             'user_id'        => (string) $parent->uuid,
             'school_fees_id' => $wardSchoolFee->uuid,
             'currency'       => 'ngn',
-            'description'    => 'payment for school fees'
+            'description'    => 'payment for school fees',
+            'meta' => [
+                'student_id' => $ward->uuid,
+            ],
         ]);
 
         return response(json_encode([
