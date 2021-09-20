@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Tenant\ParentDomain\Fee;
 use App\Actions\Tenant\Checkout\InitializeCheckoutAction;
 use App\Actions\Tenant\Transaction\CreateNewTransactionAction;
 use App\Http\Controllers\Controller;
+use App\Models\Support\Support;
 use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\SchoolFee;
 use App\Models\Tenant\Setting;
@@ -19,14 +20,19 @@ class FeesController extends Controller
     {
         $parent = Auth::user()->parent;
 
-        $wards  =  $parent->ward()->get('uuid')->toArray();
+//        $wards  =  $parent->ward()->with(['classArm', 'classArm.schoolClass','classArm.schoolClass.schoolFees'])->get();
+        $wards = $parent->ward->map(function ($student){
+            $student['fee_amount'] = Support::moneyFormat($student->classArm->schoolClass->schoolFees->amount);
+            $student['school_fee_id'] = $student->classArm->schoolClass->schoolFees->uuid;
+            return $student;
+        });
 
-        $schoolFees = SchoolFee::query()->whereIn('student_id', $wards)->get();
+        //$schoolFees = SchoolFee::query()->whereIn('student_id', $wards)->get();
 
-        $schoolFees->load(['student', 'academicSession']);
+        //$schoolFees->load(['student', 'academicSession']);
 
         return view('livewire.tenant.parent-domain.fees.index', [
-            'schoolFees' => $schoolFees,
+            'schoolFees' => $wards,
             'filterSchoolFees' => $request->has('ward') ? $request->has('ward') : '',
         ]);
     }
@@ -37,17 +43,15 @@ class FeesController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
-        $wardSchoolFee = $ward->schoolFee()->where('uuid', $uuid)->firstOrFail();
-
-        $schoolFees = collect($wardSchoolFee->fee_structure_id)->map(function ($schoolFee){
-            return FeeStructure::whereUuid($schoolFee);
-        });
+        $wardSchoolFee = $ward->classArm->schoolClass->schoolFees;
+        $schoolFees = $wardSchoolFee->feesItems;
         $reference = generateUniqueReference('12','rp_');
 
         return view('Tenant.parentDomain.fees.single', [
             'wardSchoolFee' => $wardSchoolFee,
             'schoolFees' => $schoolFees,
             'reference' => $reference,
+            'ward' => $ward,
         ]);
     }
 
@@ -57,11 +61,10 @@ class FeesController extends Controller
 
         $ward = $parent->ward()->where('uuid', $studentId)->first() ?? false;
 
-        $wardSchoolFee = $ward ? $ward->schoolFee()->where('uuid', $uuid)->first() : false;
+        $wardSchoolFee = $ward ? $ward->classArm->schoolClass->schoolFees()->where('uuid', $uuid)->first() : false;
 
         if( ! $ward || ! $wardSchoolFee ){
             Session::flash('errorFlash', 'Error processing request');
-
             return back();
         }
 

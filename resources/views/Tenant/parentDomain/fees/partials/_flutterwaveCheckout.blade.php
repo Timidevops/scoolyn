@@ -6,7 +6,7 @@
     function initiatePayment() {
         //create initial transaction
         uuid = '{{$wardSchoolFee->uuid}}'
-            studentId = '{{$wardSchoolFee->student_id}}'
+            studentId = '{{$ward->uuid}}'
         fetch('/fees/payment/'+uuid+'/'+studentId)
             .then((resp) => resp.json())
             .then(function(data) {

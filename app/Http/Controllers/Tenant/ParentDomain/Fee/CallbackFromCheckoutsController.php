@@ -20,9 +20,10 @@ class CallbackFromCheckoutsController extends Controller
         //verify flutterwave transaction
         $flutterwaveResponse = (new VerifyFlutterwaveTransactionAction())->execute($request->get('transaction_id'));
 
-        if($flutterwaveResponse->status !== 'success'){
+        if($flutterwaveResponse->status !== 'successful'){
             Session::flash('errorFlash', 'Error processing request');
 
+            //@todo change transaction to add meta info for student payment.
             return redirect()->route('singleWardFee',[
                 $transaction->schoolFees->uuid,
                 $transaction->schoolFees->student_id
