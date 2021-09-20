@@ -29,7 +29,7 @@ class ReportCardBreakdownFormatsController extends Controller
     public function update(Request $request)
     {
         if ( ! Setting::isReportCardBreakdownFormatCreated() ){
-            $this->create($request);
+            return $this->create($request);
         }
 
         $this->validate($request, [

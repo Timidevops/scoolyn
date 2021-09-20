@@ -42,8 +42,6 @@ class GenerateResultSheetAction
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-        //dd($this->studentBroadsheets);
-
         //add data to resultTable of each student
         try{
             DB::beginTransaction();
@@ -55,7 +53,7 @@ class GenerateResultSheetAction
 
                 $input['classArm'] = (string) $classArm->uuid;
 
-                $input['gradingFormat'] = $this->getGradingFormat()->meta;
+                $input['gradingFormat'] = $this->getGradingFormat();
 
                 $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
 
@@ -68,7 +66,6 @@ class GenerateResultSheetAction
                     ->where('report_card', Setting::getCurrentCardBreakdownFormat())) !=  count($studentIds) ){
 
                 //@todo log
-
                 DB::rollBack();
 
                 $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
@@ -81,7 +78,10 @@ class GenerateResultSheetAction
         catch (\Exception $exception){
             //@todo log
             DB::rollBack();
+
             $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
+
+            return;
         }
 
         $classArm->setStatus(ClassArm::RESULT_GENERATED_STATUS);
@@ -133,7 +133,11 @@ class GenerateResultSheetAction
 
     private function getGradingFormat()
     {
-        return AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+        $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+
+        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+
+        return $gradeFormats['gradingFormat'];
 
     }
 }

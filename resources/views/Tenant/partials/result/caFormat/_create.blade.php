@@ -68,7 +68,7 @@
                                     </div>
 
                                     <div>
-                                        <template x-for="(item, index) in content.numberOfCAObject" :key="item" class="meta">
+                                        <template x-for="(item, index) in content.numberOfCAObject" :key="index" class="meta">
                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
                                                 <div class="mt-2">
                                                     <label x-bind:for="`caName_${index}_${contentIndex}`" class="block text-sm font-normal text-gray-100">Name of continuous assessment <span class="text-red-100">*</span></label>
@@ -104,16 +104,15 @@
             return {
                 numberOfReportObject: [],
                 init(){
-                    let reportFormat = {!! $reportCardFormats !!};
+                    let reportFormats = {!! $reportCardFormats !!};
 
-                    for(let i = 0; i < reportFormat.length; i++){
+                    for(let i = 0; i < reportFormats.length; i++){
                         this.numberOfReportObject.push({
-                            name: reportFormat[i],
+                            name: reportFormats[i],
                             numberOfCA: 0,
                             numberOfCAObject: [],
                         });
                     }
-
                 },
                 totalCAScore: 0,
                 disableButton: true,

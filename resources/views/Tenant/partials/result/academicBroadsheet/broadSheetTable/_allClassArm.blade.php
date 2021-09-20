@@ -142,7 +142,7 @@
                                                            @foreach($student['previousReportCard'] as $previousReportCard)
                                                                <div class="flex space-x-5">
                                                                    <template x-for="(previousReportContent, previousReportIndex) in getPreviousReportData({{$previousReportCard['caAssessmentStructureFormat']}}, {{$previousReportCard['academicBroadsheets']}}, item.studentId ?? item.uuid ) ">
-                                                                       <div class="w-2/5">
+                                                                       <div>
                                                                            <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index}}`" x-text="previousReportContent.score"></p>
                                                                        </div>
                                                                    </template>

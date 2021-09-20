@@ -22,8 +22,9 @@ class ContinuousAssessmentFormatsController extends Controller
         $caFormats = ContinuousAssessmentStructure::query()->get(['uuid','name','school_class','meta']);
 
         return view('Tenant.pages.result.caFormat.index', [
-            'totalCaFormat' => ContinuousAssessmentStructure::query()->count(),
-            'caFormats'     => collect( (new GetNewStructureFormat())->execute($caFormats) ),
+            'totalCaFormat'   => ContinuousAssessmentStructure::query()->count(),
+            'caFormats'       => collect( (new GetNewStructureFormat())->execute($caFormats) ),
+            'reportBreakdown' => ReportCardBreakdownFormat::query()->get(['uuid', 'name']),
         ]);
     }
 

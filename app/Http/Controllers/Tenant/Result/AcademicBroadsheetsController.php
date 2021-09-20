@@ -252,6 +252,8 @@ class AcademicBroadsheetsController extends Controller
 
         }
 
+        //dd($this->students);
+
         return view('Tenant.pages.result.academicBroadsheet.create', [
             'caAssessmentStructure' => collect($this->caFormat),
             'students'              => $this->students,
@@ -301,44 +303,6 @@ class AcademicBroadsheetsController extends Controller
 
         return back();
     }
-
-//    private function edit(Model $academicBroadsheet)
-//    {
-//        // if status is submitted or approved :return _single page
-//        if( $academicBroadsheet->status == AcademicBroadSheet::SUBMITTED_STATUS || $academicBroadsheet->status == AcademicBroadSheet::APPROVED_STATUS ){
-//
-//            // get grade format for class
-//            $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
-//
-//            if( ! $gradeFormats ){
-//                Session::flash('warningFlash','Error completing request.');
-//                return redirect()->route('listAcademicBroadsheet');
-//            }
-//
-//            $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, true);
-//
-//            return [
-//                'broadsheets' => $broadsheets,
-//                'gradeFormat' => $gradeFormats,
-//                'caAssessmentStructure' => collect( $academicBroadsheet->meta['caFormat'] ),
-//            ];
-//
-//        }
-//
-//        $generatedFormat = (bool) collect($academicBroadsheet->meta)->has('caFormat');
-//
-//        $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, $generatedFormat);
-//
-//        // if status is not-approved :return _edit page with generated format
-//        if( $academicBroadsheet->status == AcademicBroadSheet::NOT_APPROVED_STATUS ){
-//
-//            $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, $generatedFormat);
-//
-//        }
-//
-//        return ['broadsheets' => $broadsheets];
-//
-//    }
 
     public function update(Request $request, string $uuid)
     {

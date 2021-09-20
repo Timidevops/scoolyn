@@ -25,7 +25,7 @@
                 @endforeach
             </div>
         @endif
-        <div class="bg-white rounded-md " x-data="createGradingFormat()">
+        <div class="bg-white rounded-md " x-data="createGradingFormat()" x-init="init()">
             <form action="{{route('storeGradeFormat')}}" method="post">
                 @csrf
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
@@ -69,64 +69,91 @@
                     </div>
                 </div>
 
-                <div class="p-4 w-2/5">
-                    <div class="mt-2">
-                        <label for="" class="block text-sm font-normal text-gray-100">Academic Grading</label>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 p-4 border-b border-gray-300 pb-1">
-                    <div class="mt-2">
-                        <label class="block text-sm font-normal text-gray-100">From</label>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-normal text-gray-100">To</label>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-normal text-gray-100">Grade Alphabet</label>
-                    </div>
-                    <div class="mt-2">
-                        <label class="block text-sm font-normal text-gray-100">Grade Comment</label>
-                    </div>
-                    <div class="mt-2">
-                    </div>
-                </div>
-
-                <template x-for="(item, index) in gradeFormatField" :key="index">
-                    <div class="grid grid-cols-1 md:grid-cols-5 gap-6 p-4 border-b border-gray-300 items-center">
-                        <div class="mt-1">
-                            <label>
-                                <input x-model="item.from" :name="`meta[${index}][from]`" type="number" class=" text-gray-100 rounded-md py-1 w-1/2 px-1 border border-grey-300">
-                            </label>
+                <template x-for="(content, contentIndex) in numberOfReportObject" :key="contentIndex">
+                    <div class="p-4">
+                        <div class="p-4 w-2/5">
+                            <div class="mt-2">
+                                <h3 class="block capitalize text-sm font-normal text-blue-100">
+                                    <span x-text="content.reportFormat.name"></span>
+                                    grading format
+                                </h3>
+                                <input type="hidden" :name=`meta[${contentIndex}][nameOfReport]` :value="content.reportFormat.uuid">
+                            </div>
                         </div>
-                        <div class="mt-1">
-                            <label>
-                                <input x-model="item.to" :name="`meta[${index}][to]`" type="number" class="w-1/2 text-gray-100 rounded-md py-1 px-1 border border-grey-300">
-                            </label>
-                        </div>
-                        <div class="mt-1">
-                            <label>
-                                <input x-model="item.grade" :name="`meta[${index}][grade]`" type="text" class="w-1/2 capitalize text-gray-100 rounded-md py-1 px-2 border border-grey-300">
-                            </label>
-                        </div>
-                        <div class="mt-1">
-                            <label>
-                                <input x-model="item.comment" :name="`meta[${index}][comment]`" type="text" class="capitalize w-full text-gray-100 rounded-md py-1 px-2 border border-grey-300">
-                            </label>
-                        </div>
-                        <div class="mt-1">
-                            <p class="cursor-pointer" @click="removeGradeFormatField(index)">
-                                /!/
-                            </p>
+                        <div>
+                            <div class="sm:block">
+                                <div class="max-w-6xl mx-auto  sm:px-6 ">
+                                    <div class="flex flex-col mt-2">
+                                        <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
+                                            <table class="min-w-full divide-y  divide-purple-100">
+                                                <thead>
+                                                <tr>
+                                                    <th class="px-6 py-3 text-center text-sm font-medium text-gray-100">
+                                                        Score from
+                                                    </th>
+                                                    <th class="px-6 py-3 text-center text-sm font-medium text-gray-100 text-sm ">
+                                                        Score to
+                                                    </th>
+                                                    <th class="px-6 py-3 text-center text-sm font-medium text-gray-100 text-sm">
+                                                        Grade
+                                                    </th>
+                                                    <th class="px-6 py-3 text-center text-sm font-medium text-gray-100">
+                                                        Comment
+                                                    </th>
+                                                    <th class="px-6 py-3 text-center text-sm font-medium text-gray-100">
+                                                        Grade Color
+                                                    </th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template x-for="(item, index) in content.gradeFormatField" :key="index">
+                                                        <tr class="bg-white divide-y divide-purple-100">
+                                                            <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
+                                                                <label>
+                                                                    <input x-model="item.from" :name="`meta[${contentIndex}][gradingFormat][${index}][from]`" type="number" class="text-gray-200 font-normal rounded-sm border-purple-100 pl-2 py-1 w-24 focus:outline-none border">
+                                                                </label>
+                                                            </td>
+                                                            <td class="max-w-0  px-6 py-4 text-left whitespace-nowrap text-xs text-gray-900">
+                                                                <label>
+                                                                    <input x-model="item.to" :name="`meta[${contentIndex}][gradingFormat][${index}][to]`" type="number" class="text-gray-200 font-normal rounded-sm border-purple-100 pl-2 py-1 w-24 focus:outline-none border">
+                                                                </label>
+                                                            </td>
+                                                            <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
+                                                                <label>
+                                                                    <input x-model="item.grade" :name="`meta[${contentIndex}][gradingFormat][${index}][grade]`" type="text" class="text-gray-200 capitalize font-normal rounded-sm border-purple-100 pl-2 py-1 w-24 focus:outline-none border">
+                                                                </label>
+                                                            </td>
+                                                            <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
+                                                                <label>
+                                                                    <input x-model="item.comment" :name="`meta[${contentIndex}][gradingFormat][${index}][comment]`" type="text" class="text-gray-200 capitalize font-normal rounded-sm border-purple-100 pl-2 py-1 w-24 focus:outline-none border">
+                                                                </label>
+                                                            </td>
+                                                            <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
+                                                                <label>
+                                                                    <input x-model="item.color" value="#020202" :name="`meta[${contentIndex}][gradingFormat][${index}][color]`" type="color" class="text-gray-200 font-normal rounded-sm border-purple-100 py-1 w-24 focus:outline-none border">
+                                                                </label>
+                                                            </td>
+                                                            <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
+                                                                <p class="cursor-pointer" @click="removeGradeFormatField(contentIndex, index)">
+                                                                    /!/
+                                                                </p>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-end mt-4">
+                                        <button @click="addNewGradeFormatField(contentIndex)" type="button" class="py-2 px-4 bg-blue-100 text-white text-xs rounded font-light ">
+                                            Add new grade
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </template>
-
-                <div class="px-4 py-4 text-right">
-                    <button @click="addNewGradeFormatField()" type="button" class="bg-white text-grey-100 border border-grey-300 rounded-md py-2 px-2  md:w-1/5 text-sm">
-                        Add new grade
-                    </button>
-                </div>
 
                 <div class="px-4 py-4">
                     <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-2  md:w-1/3 text-sm">
@@ -143,6 +170,17 @@
 <script>
     function createGradingFormat() {
         return{
+            numberOfReportObject: [],
+            init(){
+                let reportFormats = {!! $reportCardFormats !!};
+
+                for(let i = 0; i < reportFormats.length; i++){
+                    this.numberOfReportObject.push({
+                        reportFormat: reportFormats[i],
+                        gradeFormatField: [],
+                    });
+                }
+            },
             schoolClasses: {!! $schoolClasses !!},
             isClassDropdownOpen: false,
             selectedClasses: [],
@@ -180,16 +218,17 @@
                 this.isClassDropdownOpen = ! checked;
             },
             gradeFormatField: [],
-            addNewGradeFormatField(){
-                this.gradeFormatField.push({
+            addNewGradeFormatField(index){
+                this.numberOfReportObject[index].gradeFormatField.push({
                     from: '',
                     to: '',
                     grade: '',
                     comment: '',
+                    color: '#020202',
                 });
             },
-            removeGradeFormatField(index){
-                this.gradeFormatField.splice(index, 1);
+            removeGradeFormatField(reportIndex,index){
+                this.numberOfReportObject[reportIndex].gradeFormatField.splice(index, 1);
             },
         }
     }

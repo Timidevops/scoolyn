@@ -73,7 +73,7 @@
                         <ul>
                             <template x-for="item in caFormat">
                                 <li class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    <span class="capitalize" x-text="item.nameOfReport"></span>:
+                                    <span class="capitalize" x-text="getReportBreakdownName(item.nameOfReport)"></span>:
                                     <div>
                                         <ul>
                                             <template x-for="format in item.caFormat">
@@ -114,6 +114,12 @@
                 this.caFormatName = caFormat[0]['name'];
                 this.caFormat = caFormat[0]['format'];
                 this.isCaFormatModalOpen  = true;
+            },
+            reportBreakdown: {!! $reportBreakdown !!},
+            getReportBreakdownName(id){
+                let reportBreakdown = this.reportBreakdown.filter(e => e.uuid === id);
+
+                return reportBreakdown[0]['name'];
             },
             search: "",
             pageNumber: 0,

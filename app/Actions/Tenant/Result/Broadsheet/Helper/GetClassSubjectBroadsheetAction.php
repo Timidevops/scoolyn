@@ -7,6 +7,7 @@ namespace App\Actions\Tenant\Result\Broadsheet\Helper;
 use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 
@@ -26,12 +27,12 @@ class GetClassSubjectBroadsheetAction
                 ->get();
 
             foreach ($academicBroadSheets as $key => $academicBroadSheet){
-                //dd($academicBroadSheet);
+
                 $subjectDetail[$key]['academicBroadsheets'] = collect(collect($this->edit($academicBroadSheet))->get('broadsheets'));
 
                 $subjectDetail[$key]['caAssessmentStructureFormat'] = collect(collect($this->edit($academicBroadSheet))->get('caAssessmentStructure'));
 
-                $subjectDetail[$key]['gradeFormats'] = collect(collect( collect($this->edit($academicBroadSheet))->get('gradeFormat') )->get('meta'));
+                $subjectDetail[$key]['gradeFormats'] = collect(collect( collect($this->edit($academicBroadSheet))->get('gradeFormat') ));
 
                 $subjectDetail[$key]['broadsheetStatus'] = $academicBroadSheet->status;
             }
@@ -56,10 +57,11 @@ class GetClassSubjectBroadsheetAction
 
             $broadsheets = (new GetAcademicBroadsheet())->execute($academicBroadsheet->meta, true);
 
+            $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
             return [
                 'broadsheets' => $broadsheets,
-                'gradeFormat' => $gradeFormats,
+                'gradeFormat' => collect( $gradeFormats )->get('gradingFormat'),
                 'caAssessmentStructure' => collect( $academicBroadsheet->meta['caFormat'] ),
             ];
 

@@ -44,7 +44,7 @@
                         <p class="text-gray-300">(<span x-text="getTotalAssessment('{{$index ?? ''}}')"></span>%)</p>
                     </div>
                 </th>
-                <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                <th class="px-6 py-3  text-center  font-medium text-gray-500 text-sm">
                     Grade
                 </th>
             </tr>
@@ -70,7 +70,7 @@
                                     @foreach($student['previousReportCard'] as $previousReportCard)
                                         <div class="flex space-x-5">
                                             <template x-for="(previousReportContent, previousReportIndex) in getPreviousReportData({{$previousReportCard['caAssessmentStructureFormat']}}, {{$previousReportCard['academicBroadsheets']}}, item.studentId) ">
-                                                <div class="w-2/5">
+                                                <div>
                                                     <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index ?? ''}}`" x-text="previousReportContent.score"></p>
                                                 </div>
                                             </template>
@@ -93,7 +93,7 @@
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
                         <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$index ?? ''}}`">
-                            <span class="capitalize" x-text="getGradeFormat(item.broadsheet.total, {{$gradeFormats}})"></span>
+                            <span class="capitalize" :style="`color:${getGradeFormatColor(item.broadsheet.total)}`" x-text="getGradeFormat(item.broadsheet.total)"></span>
                         </p>
                     </td>
                 </tr>
@@ -121,11 +121,18 @@
 
                 return broadsheet;
             },
-            getGradeFormat(score, gradeFormats){
 
-                 let format = gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
+            getGradeFormat(score){
+
+                let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
 
                  return format[0].grade;
+            },
+            getGradeFormatColor(score){
+
+                let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
+
+                return format[0].color;
             },
 
             getTotalAssessment(index){

@@ -118,13 +118,13 @@ class AcademicResultsController extends Controller
             return back();
         }
 
-        $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
+        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
-        //dd($this->getStudentBroadsheets());
+        $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
 
         return view('Tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructureFormat' => collect( $academicBroadsheet->meta['caFormat'] ),
-            'gradeFormats'          => collect($gradeFormats->meta),
+            'gradeFormats'          => collect($gradeFormats['gradingFormat']),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $this->getStudentBroadsheets() ),
@@ -183,9 +183,7 @@ class AcademicResultsController extends Controller
 
     public function approval(string $classArmId, string $classSubjectId, Request $request)
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
-
-        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail(); //$teacher->classArm()->where('uuid', $classArmId)->first();
+        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
         if( ! $this->classArm ){
             abort(404);
@@ -201,7 +199,7 @@ class AcademicResultsController extends Controller
             ->where('class_arm', $classArmId)
             ->where('class_subject_id', $classSubjectId)
             ->where('report_card', Setting::getCurrentCardBreakdownFormat())
-            ->first();//$classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+            ->first();
 
         ! $academicBroadsheet ? abort(404) : null;
 
