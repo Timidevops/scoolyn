@@ -29,7 +29,7 @@
             pageNumber: 0,
             size: 5,
             total: "",
-            feesTable: {!! $feesStructures !!},
+            feesTable: {!! $schoolFees !!},
             get filteredFeesTable() {
                 const start = this.pageNumber * this.size,
                     end = start + this.size;

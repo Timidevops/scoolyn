@@ -1,12 +1,12 @@
 <form>
     <script src="https://checkout.flutterwave.com/v3.js"></script>
-    <button type="button" onClick="makePayment()" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">Proceed to Payment </button>
+    <button type="button" onclick="initiatePayment()" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">Proceed to Payment </button>
 </form>
 <script>
-    function makePayment() {
+    function initiatePayment() {
         //create initial transaction
-        uuid = {{$schoolFees->uuid}}
-        studentId = {{$schoolFees->student_id}}
+        uuid = '{{$wardSchoolFee->uuid}}'
+            studentId = '{{$wardSchoolFee->student_id}}'
         fetch('/fees/payment/'+uuid+'/'+studentId)
             .then((resp) => resp.json())
             .then(function(data) {

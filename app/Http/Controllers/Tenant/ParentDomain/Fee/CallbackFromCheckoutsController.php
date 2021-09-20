@@ -18,7 +18,7 @@ class CallbackFromCheckoutsController extends Controller
         $transaction = Transaction::query()->where('reference', $reference)->firstOrFail();
 
         //verify flutterwave transaction
-        $flutterwaveResponse = (new VerifyFlutterwaveTransactionAction())->execute($reference);
+        $flutterwaveResponse = (new VerifyFlutterwaveTransactionAction())->execute($request->get('transaction_id'));
 
         if($flutterwaveResponse->status !== 'success'){
             Session::flash('errorFlash', 'Error processing request');

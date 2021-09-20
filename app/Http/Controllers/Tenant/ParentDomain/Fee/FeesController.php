@@ -42,7 +42,6 @@ class FeesController extends Controller
         $schoolFees = collect($wardSchoolFee->fee_structure_id)->map(function ($schoolFee){
             return FeeStructure::whereUuid($schoolFee);
         });
-
         $reference = generateUniqueReference('12','rp_');
 
         return view('Tenant.parentDomain.fees.single', [
@@ -93,7 +92,7 @@ class FeesController extends Controller
         ]);
 
         return response(json_encode([
-            'public_key' => config('env.flutterwave.public_key'),
+            'public_key' => config('env.payments.flutterwave.public_key'),
             'reference' => $reference,
             'amount' => $wardSchoolFee->amount,
             'redirect_url' => route('getSchoolFeesCallback'),

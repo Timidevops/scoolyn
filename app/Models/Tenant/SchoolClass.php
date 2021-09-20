@@ -42,4 +42,8 @@ class SchoolClass extends Model
         return $this->hasMany(ClassSubject::class, 'school_class_id', 'uuid');
     }
 
+    public function schoolFees()
+    {
+        return $this->belongsTo(SchoolFee::class, 'school_fees_id', 'uuid');
+    }
 }

@@ -19,7 +19,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js" defer></script>
-
+    @yield('scripts')
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @if(\Illuminate\Support\Facades\Session::has('successFlash') || \Illuminate\Support\Facades\Session::has('errorFlash') || \Illuminate\Support\Facades\Session::has('warningFlash'))
         <script>
@@ -34,7 +34,7 @@
             @endif
         </script>
     @endif
-    <style> 
+    <style>
         @font-face {
         font-family: "CircularStd-Medium";
         src: url('css/fonts/CircularStd-Medium.ttf') format('truetype');
@@ -48,14 +48,14 @@
           src: url('css/fonts/CircularStd-Bold.ttf') format('truetype');
       }
         div.medium,ul.medium{
-            font-family:'CircularStd-Medium';  
+            font-family:'CircularStd-Medium';
         }
         ul.regular,a.regular,li.regular,div.regular,span.regular,button.regular{
         font-family: "CircularStd-Book";
         }
        div.bold,svg.bold{
         font-family: "CircularStd-Bold";
-        }  
+        }
     </style>
 </body>
 </html>

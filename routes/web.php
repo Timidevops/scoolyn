@@ -152,6 +152,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                     Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
                     Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
                     Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');
+                    Route::get('fee/format/edit/{uuid}', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'edit'])->name('editFeeStructure');
 
                     Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsController::class, 'store'])->name('storeClassFee');
 

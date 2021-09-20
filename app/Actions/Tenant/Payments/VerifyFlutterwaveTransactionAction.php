@@ -11,10 +11,9 @@ use GuzzleHttp\Exception\GuzzleException;
 
 class VerifyFlutterwaveTransactionAction
 {
-    public function execute(string $reference)
+    public function execute(string $transactionId)
     {
         PaymentService::setFlutterwaveSecretKey();
-        $transaction = Transaction::query()->where('reference','=', $reference)->first();
-        return \Digikraaft\Flutterwave\Transaction::verify($transaction->payment_method_reference);
+        return \Digikraaft\Flutterwave\Transaction::verify($transactionId);
     }
 }

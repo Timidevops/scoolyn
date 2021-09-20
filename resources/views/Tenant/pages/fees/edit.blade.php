@@ -9,13 +9,15 @@
          @include('Tenant.partials._sidebar')
         </div>
         <div class="flex-1 overflow-auto bg-purple-100 focus:outline-none px-4 py-8" tabindex="0" @keydown.escape="showModal = false" @keydown.escape="showSuccess = false" x-cloak id="tab_wrapper">
-            @include('Tenant.partials.fees._create')
+            @include('Tenant.partials.fees._edit')
         </div>
-     {{--@include('Tenant.partials._notification')--}}
      </div>
 @endsection
 @section('scripts')
     <script>
+        // $(document).ready(function() {
+        //     calculateTotalFees();
+        // });
         function calculateTotalFees()
         {
             let sum = 0;
