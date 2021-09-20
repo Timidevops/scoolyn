@@ -53,7 +53,7 @@ class AcademicSessionsController extends Controller
         if ($request->has('update')){
             return $this->update($request);
         }
-        dd('here');
+
         $this->validate($request, [
             'term'    => ['required', 'exists:'.config('env.tenant.tenantConnection').'.academic_terms,uuid'],
             'sessionName' => ['required'],

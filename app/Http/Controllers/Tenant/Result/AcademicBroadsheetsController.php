@@ -10,6 +10,7 @@ use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
 use App\Models\Tenant\AcademicGradingFormat;
+use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
 use App\Models\Tenant\ReportCardBreakdownFormat;
@@ -66,15 +67,6 @@ class AcademicBroadsheetsController extends Controller
             return back();
         }
 
-//        if ( $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
-//
-//            $currentFormat = Setting::getCurrentCardBreakdownFormat(true);
-//
-//            Session::flash('warningFlash', "{$currentFormat} broadsheet record already exist, kindly contact school admin.");
-//
-//            return back();
-//        }
-
         $this->uuid = $uuid;
 
         // get c.a format for class
@@ -95,49 +87,62 @@ class AcademicBroadsheetsController extends Controller
         //get students if subject teacher is for all class arms
         if($this->classSubject->class_arm){
 
-            dd('here');
+            $this->students = collect($this->classSubject->class_arm)->map(function ($classArmId) use($studentSubjects){
 
-//            $this->students = collect($this->classSubject->class_arm)->map(function ($classArmId) use($studentSubjects){
-//
-//                $subjectDetail['classArm'] = $classArmId;
-//
-//                $subjectDetail['classSection'] = $this->classSubject->getClassArm($classArmId)->classSection;
-//
-//                $subjectDetail['classSectionCategory'] = $this->classSubject->getClassArm($classArmId)->classSectionCategory;
-//
-//                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArmId)
-//                    ->load('student')->map(function ($student){
-//                        return $student->student;
-//                    });
-//
-//                $subjectDetail['academicBroadsheets'] = null;
-//
-//                $subjectDetail['broadsheetStatus'] = null;
-//
-//                if( ! $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
-//                    return  $subjectDetail;
-//                }
-//
-//                if($this->classSubject->academicBroadsheet()->where('class_arm', $classArmId)->exists()){
-//
-//                    $academicBroadSheet = $this->classSubject->academicBroadsheet()->where('class_arm', $classArmId)->first();
-//
-//                    $subjectDetail['academicBroadsheets'] = collect(collect($this->edit($academicBroadSheet))->get('broadsheets'));
-//
-//                    $subjectDetail['caAssessmentStructureFormat'] = collect(collect($this->edit($academicBroadSheet))->get('caAssessmentStructure'));
-//
-//                    $subjectDetail['gradeFormats'] = collect(collect( collect($this->edit($academicBroadSheet))->get('gradeFormat') )->get('meta'));
-//
-//                    $subjectDetail['broadsheetStatus'] = $academicBroadSheet->status;
-//                }
-//
-//                return $subjectDetail;
-//
-//
-//            })->values();
-//
-//            //set subject placement to all class arms...
-//            $this->subjectPlacement = (bool) $this->classSubject->class_arm ? 'all' : '';
+                $subjectDetail['classArm'] = $classArmId;
+
+                $subjectDetail['classSection'] = $this->classSubject->getClassArm($classArmId)->classSection;
+
+                $subjectDetail['classSectionCategory'] = $this->classSubject->getClassArm($classArmId)->classSectionCategory;
+
+                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArmId)
+                    ->load('student')->map(function ($student){
+                        return $student->student;
+                    });
+
+                $subjectDetail['academicBroadsheets'] = null;
+
+                $subjectDetail['broadsheetStatus'] = null;
+
+                $subjectDetail['previousReportCard'] = null;
+
+                $classArm = ClassArm::whereUuid($classArmId)->first();
+
+                if( ! $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
+                    if ( $this->classSubject->academicBroadsheet ){
+
+                        $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                        $subjectDetail = collect($subjectDetail)->put('previousReportCard', $classSubjectBroadsheet);
+
+                    }
+
+                    return  $subjectDetail;
+                }
+
+                if ( $this->classSubject->academicBroadsheet ){
+
+                    $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                    array_splice($classSubjectBroadsheet, ReportCardBreakdownFormat::currentFormatPlacementId(),1);
+
+                    $subjectDetail = collect($subjectDetail)->put('previousReportCard', $classSubjectBroadsheet);
+
+                }
+
+                $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                $currentReportExists = $this->classSubject->academicBroadsheet()->where('report_card', ReportCardBreakdownFormat::getPreviousReportCard())->exists();
+
+                $classSubjectBroadsheet = $currentReportExists ? $classSubjectBroadsheet[ReportCardBreakdownFormat::currentFormatPlacementId()] : $classSubjectBroadsheet[0];
+
+                return collect($subjectDetail)->merge($classSubjectBroadsheet);
+
+
+            })->values();
+
+            //set subject placement to all class arms...
+            $this->subjectPlacement = (bool) $this->classSubject->class_arm ? 'all' : '';
         }
         // get students if subject teacher is for only all class sections
         elseif ($this->classSubject->class_section_id && ! $this->classSubject->class_section_category_id){
@@ -193,48 +198,58 @@ class AcademicBroadsheetsController extends Controller
                 return collect($subjectDetail)->merge($classSubjectBroadsheet);
 
             });
-            //dd($this->students);
-            //set subject placement to all class arms...
-            $this->subjectPlacement = 'all';// $this->classSubject->class_arm ? 'all' : '';
-
         }
         else{
-            dd('here');
-//            $this->students = $this->classSubject->getClassArmsByClassSectionCategoryId()->map(function ($classArm) use($studentSubjects){
-//                $subjectDetail['classArm'] = $classArm->uuid;
-//
-//                $subjectDetail['classSection'] = $classArm->classSection;
-//
-//                $subjectDetail['classSectionCategory'] = $classArm->classSectionCategory;
-//
-//                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArm->uuid)
-//                    ->load('student')->map(function ($student){
-//                        return $student->student;
-//                    });
-//
-//                $subjectDetail['academicBroadsheets'] = null;
-//
-//                $subjectDetail['broadsheetStatus'] = null;
-//
-//                if( ! $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
-//                    return  $subjectDetail;
-//                }
-//
-//                if($this->classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->exists()){
-//                    $academicBroadSheet = $this->classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->first();
-//
-//                    $subjectDetail['academicBroadsheets'] = collect(collect($this->edit($academicBroadSheet))->get('broadsheets'));
-//
-//                    $subjectDetail['caAssessmentStructureFormat'] = collect(collect($this->edit($academicBroadSheet))->get('caAssessmentStructure'));
-//
-//                    $subjectDetail['gradeFormats'] = collect(collect( collect($this->edit($academicBroadSheet))->get('gradeFormat') )->get('meta'));
-//
-//                    $subjectDetail['broadsheetStatus'] = $academicBroadSheet->status;
-//                }
-//                return $subjectDetail;
-//            });
-//
-//            $this->subjectPlacement = 'all';
+
+            $this->students = $this->classSubject->getClassArmsByClassSectionCategoryId()->map(function ($classArm) use($studentSubjects){
+                $subjectDetail['classArm'] = $classArm->uuid;
+
+                $subjectDetail['classSection'] = $classArm->classSection;
+
+                $subjectDetail['classSectionCategory'] = $classArm->classSectionCategory;
+
+                $subjectDetail['students'] = $studentSubjects->whereIn("student.class_arm", $classArm->uuid)
+                    ->load('student')->map(function ($student){
+                        return $student->student;
+                    });
+
+                $subjectDetail['academicBroadsheets'] = null;
+
+                $subjectDetail['broadsheetStatus'] = null;
+
+                $subjectDetail['previousReportCard'] = null;
+
+                if( ! $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
+                    if ( $this->classSubject->academicBroadsheet ){
+
+                        $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                        $subjectDetail = collect($subjectDetail)->put('previousReportCard', $classSubjectBroadsheet);
+
+                    }
+
+                    return  $subjectDetail;
+                }
+
+                if ( $this->classSubject->academicBroadsheet ){
+
+                    $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                    array_splice($classSubjectBroadsheet, ReportCardBreakdownFormat::currentFormatPlacementId(),1);
+
+                    $subjectDetail = collect($subjectDetail)->put('previousReportCard', $classSubjectBroadsheet);
+
+                }
+
+                $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($classArm, $this->classSubject);
+
+                $currentReportExists = $this->classSubject->academicBroadsheet()->where('report_card', ReportCardBreakdownFormat::getPreviousReportCard())->exists();
+
+                $classSubjectBroadsheet = $currentReportExists ? $classSubjectBroadsheet[ReportCardBreakdownFormat::currentFormatPlacementId()] : $classSubjectBroadsheet[0];
+
+                return collect($subjectDetail)->merge($classSubjectBroadsheet);
+            });
+
         }
 
         return view('Tenant.pages.result.academicBroadsheet.create', [
@@ -242,7 +257,6 @@ class AcademicBroadsheetsController extends Controller
             'students'              => $this->students,
             'classSubjectId'        => $uuid,
             'classSubject'          => $this->classSubject,
-            'subjectPlacement'      => $this->subjectPlacement,
         ]);
     }
 

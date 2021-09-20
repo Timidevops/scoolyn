@@ -18,9 +18,7 @@
 
 <div class="h-screen py-10">
     <div class="bg-white rounded-md py-2">
-        @if($subjectPlacement == 'all')
-            @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
-        @endif
+        @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
     </div>
 </div>
 </div>
