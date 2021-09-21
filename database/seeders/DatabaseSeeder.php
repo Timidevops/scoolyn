@@ -20,10 +20,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->runTenantSpecificSeeders();
-//        ScoolynTenant::checkCurrent()
-//            ? $this->runTenantSpecificSeeders()
-//            : $this->runLandlordSpecificSeeders();
+        ScoolynTenant::checkCurrent()
+            ? $this->runTenantSpecificSeeders()
+            : $this->runLandlordSpecificSeeders();
     }
 
     public function runTenantSpecificSeeders()
