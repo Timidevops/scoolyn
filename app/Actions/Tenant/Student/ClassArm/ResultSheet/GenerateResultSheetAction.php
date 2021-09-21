@@ -3,8 +3,12 @@
 
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
+use App\Actions\Tenant\Result\Helpers\UpdateStudentBroadsheetsOrStudentReportWithStudentPosition;
+use App\Jobs\Tenant\GenerateSessionResultJob;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\AcademicResult;
+use App\Models\Tenant\AcademicSession;
+use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
@@ -38,11 +42,12 @@ class GenerateResultSheetAction
 
         $this->studentBroadsheets = $studentBroadsheets;
 
-        $this->studentBroadsheets = $this->updateStudentBroadsheetsWithStudentPosition();
+        $this->studentBroadsheets = (new UpdateStudentBroadsheetsOrStudentReportWithStudentPosition)->execute($this->studentBroadsheets);//$this->updateStudentBroadsheetsWithStudentPosition();
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
         //add data to resultTable of each student
+
         try{
             DB::beginTransaction();
 
@@ -85,6 +90,14 @@ class GenerateResultSheetAction
         }
 
         $classArm->setStatus(ClassArm::RESULT_GENERATED_STATUS);
+
+        $lastTerm = AcademicTerm::all()->last();
+
+        $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
+
+        if ( $currentSession->term == $lastTerm->uuid){
+            GenerateSessionResultJob::dispatch($classArm);
+        }
     }
 
     private function updateStudentBroadsheetsWithStudentPosition()
@@ -138,6 +151,5 @@ class GenerateResultSheetAction
         $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
         return $gradeFormats['gradingFormat'];
-
     }
 }

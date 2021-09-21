@@ -2,7 +2,7 @@
 <div x-data="academicResult()">
     <div class="md:flex md:items-center md:mt-2 px-2 py-3">
 
-        @if( $classArm->status == \App\Models\Tenant\ClassArm::RESULT_GENERATED_STATUS )
+        @if($finalizedResult)
             <p class="text-grey-100 text-sm py-1">
                 Result generated,
                 <a href="{{route('listReportSheet', $classArm->uuid)}}">

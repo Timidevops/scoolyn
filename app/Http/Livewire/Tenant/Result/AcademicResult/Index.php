@@ -43,7 +43,14 @@ class Index extends Component
 
         $this->getBroadsheets();
 
-        return view('livewire.tenant.result.academic-result.index');
+        $finalizedResult =
+            $this->classArm->status == ClassArm::RESULT_GENERATED_STATUS
+            || $this->classArm->status == ClassArm::SESSION_REPORT_GENERATED_STATUS
+            || $this->classArm->status == ClassArm::SESSION_COMPLETED_STATUS;
+
+        return view('livewire.tenant.result.academic-result.index', [
+            'finalizedResult' => $finalizedResult,
+        ]);
     }
 
     public function generateResult()
@@ -59,7 +66,7 @@ class Index extends Component
         }
 
         //initial class arm result status;
-        $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
+        //$this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
 
         GenerateResultJob::dispatch($this->classArm);
 

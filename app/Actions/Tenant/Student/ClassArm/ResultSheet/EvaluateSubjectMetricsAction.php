@@ -4,6 +4,7 @@
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
 use App\Actions\Tenant\Result\Broadsheet\Helper\result\GetAllBroadsheetWithCaFormatAction;
+use App\Actions\Tenant\Result\Helpers\GetSubjectMetricAction;
 use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Model;
 
@@ -42,7 +43,7 @@ class EvaluateSubjectMetricsAction
 
             $getAllBroadsheetWithCaFormat = [];
 
-            foreach ( collect(collect($academicBroadsheet->meta)->get('academicBroadsheet'))->keys() as $studentId){;
+            foreach ( collect(collect($academicBroadsheet->meta)->get('academicBroadsheet'))->keys() as $studentId){
 
                 $getAllBroadsheetWithCaFormat = (new GetAllBroadsheetWithCaFormatAction($studentId))->execute($academicBroadsheets);
             }
@@ -63,7 +64,7 @@ class EvaluateSubjectMetricsAction
 
         $this->subjectScore = $subjectScores;
 
-        return $this->getSubjectMetric($subjectScores);
+        return (new GetSubjectMetricAction)->execute($subjectScores);//$this->getSubjectMetric($subjectScores);
     }
 
     private function getSubjectMetric(array $subjectScores)

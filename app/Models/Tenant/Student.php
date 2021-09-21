@@ -35,6 +35,11 @@ class Student extends Model
         return $this->hasMany(AcademicResult::class, 'student_id', 'uuid');
     }
 
+    public function academicSessionResult(): HasMany
+    {
+        return $this->hasMany(AcademicSessionResult::class, 'student_id', 'uuid');
+    }
+
     public function schoolFee(): HasOne
     {
         return $this->hasOne(SchoolFee::class, 'student_id', 'uuid');

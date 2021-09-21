@@ -27,6 +27,9 @@ class ClassArm extends Model
     const RESULT_INCOMPLETE_STATUS = 'result_incomplete';
     const RESULT_ERROR_STATUS = 'error_generating_result';
     const NEW_REPORT_STATUS = 'new_report_status';
+    const SESSION_REPORT_GENERATED_STATUS = 'session_report_generated';
+    const SESSION_REPORT_ERROR_STATUS = 'error_generating_session_report';
+    const SESSION_COMPLETED_STATUS = 'session_completed';
 
     protected $guarded = [];
 
@@ -81,6 +84,11 @@ class ClassArm extends Model
         return $this
             ->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id')
             ->withoutGlobalScope('teacher');
+    }
+
+    public function hasStudent(string $studentId)
+    {
+        return (collect($this->students)->contains($studentId));
     }
 
     public function teacher()

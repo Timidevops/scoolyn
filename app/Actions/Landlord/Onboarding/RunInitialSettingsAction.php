@@ -88,7 +88,7 @@ class RunInitialSettingsAction
                 [
                     'name' => OnboardingTodoList::ADD_CA_FORMAT,
                     'done' => 0,
-                    'description' => 'Go to Results / Continuous assessment format to add c.a format',
+                    'description' => 'Go to Results / Continuous assessment format to add C.A format',
                     'url' => 'createCAStructure',
                 ],
                 [

@@ -17,10 +17,41 @@
 
     <div class="bg-white rounded-md py-6 px-2 mt-6">
 
-        <div class="pl-2 py-3">
-            <button type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-5 text-sm flex items-center">
-                Print result
-            </button>
+        <div class="pl-2 py-3 flex ">
+            <div>
+                <a href="{{route('authPrintResult',[$academicResult->classArm->uuid, $academicResult->uuid, $academicResult->student->uuid])}}" target="_blank">
+                    <button type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                        Print result
+                    </button>
+                </a>
+            </div>
+
+            @if( ! $approvedResult )
+                <div>
+                    <form class="flex" action="{{route('updateReportSheet',[$academicResult->classArm->uuid, $academicResult->student->uuid])}}" method="post">
+                        @csrf
+                        @method('PATCH')
+{{--                        <div>--}}
+{{--                            <button name="disapprove" type="submit" class="bg-white border border-red-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">--}}
+{{--                                Disapprove result--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
+                        <div>
+                            <button name="approve" type="submit" class="bg-white border border-blue-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                                Approve result
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @else
+                <div>
+                    <a href="{{route('sessionResult',[$academicResult->classArm->uuid, $academicResult->student->uuid])}}">
+                        <button type="button" class="bg-white border border-blue-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                            View session result
+                        </button>
+                    </a>
+                </div>
+            @endif
         </div>
 
         <div class="flex items-center flex-col my-5">
@@ -185,7 +216,7 @@
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['subjectMetric']['total']}}')}`" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
                                 </span>
                             </td>
                         </tr>
@@ -262,6 +293,12 @@
                 let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
 
                 return grade === 'name' ? format[0].grade : format[0].comment;
+            },
+            getGradeFormatColor(score){
+
+                let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
+
+                return format[0].color;
             },
             getTotalAssessment(){
                 let total = 0;

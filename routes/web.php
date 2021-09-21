@@ -141,6 +141,10 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('result/report-sheet/{uuid}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'index'])->name('listReportSheet');
                 Route::get('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'single'])->name('singleReportSheet');
+                Route::patch('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'update'])->name('updateReportSheet');
+                Route::get('result/print/{classArmId}/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\Result\PrintResultController::class, 'store'])->name('authPrintResult');
+
+                Route::get('result/session-report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\SessionResultsController::class, 'index'])->name('sessionResult');
 
                 Route::post('result/report-sheet-addition/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultAdditionalCommentsController::class, 'store'])->name('storeReportComment');
 

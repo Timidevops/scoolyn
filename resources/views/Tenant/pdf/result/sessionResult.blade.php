@@ -31,9 +31,8 @@
         |
         <span>{{$schoolDetails['contactEmail']}}</span>
     </p>
-    <h3 style="text-align: center;">REPORT SHEET</h3>
+    <h3 style="text-align: center;">{{$session['session_name']}} REPORT SHEET</h3>
     <p style="text-align: center;">
-        <span style="text-transform: capitalize;">{{$sessionInWord}}</span> -
         <span>{{$result->student->classArm->schoolClass->class_name}}</span>
         <span>
             {{$result->student->classArm->classSection ?
@@ -44,6 +43,7 @@
             $result->student->classArm->classSection->classSectionCategory->category_name : ''}}
         </span>
     </p>
+
     <table style="height: 78px; width: 80%; border-collapse: collapse; border-style: dotted; margin-left: auto; margin-right: auto;" border="1" cellspacing="2" cellpadding="2">
         <tbody>
         <tr style="height: 78px;">
@@ -67,45 +67,39 @@
     <p>&nbsp;</p>
     <table style="border-collapse: collapse; width: 100%;" border="1">
         <thead>
-        <tr style="background-color: #eceff3; font-size: 10px;">
+        <tr style="background-color: #eceff3; font-size: 10px; text-transform: uppercase;">
             <th style="width: 1%; text-align: center;">S/N</th>
             <th style="width: 20%; text-align: center;">SUBJECT</th>
-            @foreach($result['ca_format'] as $caFormat)
-            <th style="width: 12.5%; text-align: center;">
-                <span style="text-transform: lowercase;">{{$caFormat['name']}}</span>
-                <p>
-                    ({{$caFormat['score']}}%)
-                </p>
-            </th>
-            @endforeach
-            <th style="width: 12.5%; text-align: center;">TOTAL (100%)</th>
+            <th style="width: 12.5%; text-align: center;">1st Term <br/> (100%)</th>
+            <th style="width: 12.5%; text-align: center;">2nd Term <br/> (100%)</th>
+            <th style="width: 12.5%; text-align: center;">3rd Term <br/> (100%)</th>
+            <th style="width: 12.5%; text-align: center;">TOTAL Avg. <br/> (100%)</th>
             <th style="width: 12.5%; text-align: center;">SUBJECT POS.</th>
-            <th style="width: 12.5%; text-align: center;">CLASS AVG. (100%)</th>
+            <th style="width: 12.5%; text-align: center;">CLASS AVG. <br/> (100%)</th>
             <th style="width: 1%; text-align: center;">GRADE</th>
             <th style="width: 25%; text-align: center;">GRADE REMARK</th>
         </tr>
         </thead>
         <tbody>
         @foreach($subjects as $key => $subject)
-        <tr>
-            <td style="width: 1%; text-align: center;">{{$key + 1}}</td>
-            <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 13px; text-align: center;">{{$subject['subjectName']}}</td>
-            @foreach($result['ca_format'] as $caFormat)
-            <td style="width: 12.5%; text-align: center;">
-                {{$subject[$caFormat['name']]}}
-            </td>
-            @endforeach
-            <td style="width: 12.5%; text-align: center;">{{$subject['subjectMetric']['total']}}</td>
-            <td style="width: 12.5%; text-align: center;">{{strOrdinal($subject['subjectMetric']['subjectPosition'])}}</td>
-            <td style="width: 12.5%; text-align: center;">{{$subject['subjectMetric']['classAverage']}}</td>
-            <td style="width: 1%; text-align: center; text-transform: uppercase;font-size: 13px">
-                {{$subject['grade']}}
-            </td>
-            <td style="width: 25%; text-align: center; text-transform: uppercase; font-size: 13px; color: {{$subject['color']}}">{{$subject['gradeRemark']}}</td>
-        </tr>
+            <tr>
+                <td style="width: 1%; text-align: center; font-size: 12px;">{{$key + 1}}</td>
+                <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 10px; text-align: center;">{{$subject['subjectName']}}</td>
+                <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 12px; text-align: center;">{{$subject['1_term']}}</td>
+                <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 12px; text-align: center;">{{$subject['2_term']}}</td>
+                <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 12px; text-align: center;">{{$subject['3_term']}}</td>
+                <td style="width: 20%; padding-left: 2px; text-transform: uppercase; font-size: 12px; text-align: center;">{{$subject['overallTermTotalAvg']}}</td>
+                <td style="width: 12.5%; text-align: center; font-size: 12px;">{{strOrdinal($subject['subjectMetric']['subjectPosition'])}}</td>
+                <td style="width: 12.5%; text-align: center; font-size: 12px;">{{$subject['subjectMetric']['classAverage']}}</td>
+                <td style="width: 1%; text-align: center; text-transform: uppercase;font-size: 10px">
+                    {{$subject['grade']}}
+                </td>
+                <td style="width: 25%; text-align: center; text-transform: uppercase; font-size: 10px; color: {{$subject['color']}}">{{$subject['gradeRemark']}}</td>
+            </tr>
         @endforeach
         </tbody>
     </table>
+
     <p>&nbsp;</p>
     <p>GRADES FORMAT:</p>
     <div>
@@ -139,7 +133,4 @@
     </table>
 
 </main>
-
-
 </body>
-</html>
