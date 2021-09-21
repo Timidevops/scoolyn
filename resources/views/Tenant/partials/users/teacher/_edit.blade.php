@@ -27,6 +27,9 @@
                         <div>
                             Email: {{$teacher->email}}
                         </div>
+                        <div>
+                            Phone Number: {{$teacher->user->phone}}
+                        </div>
                         <div class="capitalize">
                             Designation: {{$teacher->subjectTeacher()->exists() ? 'subject teacher,' : ''}} {{$teacher->classArm()->exists() ? 'class teacher' : ''}}
                         </div>
@@ -36,9 +39,15 @@
                     </div>
                     <div class="w-1/2">
                         <div class="space-x-4">
-                            <button x-on:click="isSuspendModalOpen = true;" type="button" class="bg-purple-300 text-grey-300 px-6 py-2 rounded-md text-sm">
-                                Suspend Access
-                            </button>
+                            @if(! $teacher->user->isSuspended())
+                                <button x-on:click="isSuspendModalOpen = true;" type="button" class="bg-purple-300 text-grey-300 px-6 py-2 rounded-md text-sm">
+                                    Suspend Access
+                                </button>
+                            @else
+                                <button x-on:click="isUnsuspendModalOpen = true;" type="button" class="bg-purple-300 text-grey-300 px-6 py-2 rounded-md text-sm">
+                                    Unsuspend Access
+                                </button>
+                            @endif
                             <button x-on:click="isDeleteModalOpen = true;" type="button" class="bg-red-200 text-blue-100 px-6 py-2 rounded-md text-sm">
                                 Remove Teacher
                             </button>
@@ -86,6 +95,10 @@
             @include('Tenant.partials.users.teacher.partials._confirmSuspendModal')
         <!--/: suspend modal -->
 
+        <!-- unsuspend modal -->
+            @include('Tenant.partials.users.teacher.partials._confirmUnSuspendModal')
+        <!--/: unsuspend modal -->
+
     </div>
 
 </div>
@@ -100,6 +113,7 @@
 
             isDeleteModalOpen: false,
             isSuspendModalOpen: false,
+            isUnsuspendModalOpen: false,
         }
     }
 </script>

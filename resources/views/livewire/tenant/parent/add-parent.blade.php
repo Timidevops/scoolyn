@@ -40,7 +40,6 @@
                        shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                             <li wire:click="selectParentGender('Female')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Female</li>
                             <li wire:click="selectParentGender('Male')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Male</li>
-                            <li wire:click="selectParentGender('Others')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Others</li>
                         </ul>
                     </div>
                 </div>

@@ -22,7 +22,7 @@ class Student extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(Parents::class, 'parent_id', 'uuid');
+        return $this->belongsTo(StudentParent::class, 'parent_id', 'uuid');
     }
 
     public function subjects()
@@ -33,6 +33,11 @@ class Student extends Model
     public function academicReport(): HasMany
     {
         return $this->hasMany(AcademicResult::class, 'student_id', 'uuid');
+    }
+
+    public function academicSessionResult(): HasMany
+    {
+        return $this->hasMany(AcademicSessionResult::class, 'student_id', 'uuid');
     }
 
     public function schoolFee(): HasOne

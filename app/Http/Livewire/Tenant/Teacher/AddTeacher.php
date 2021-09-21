@@ -22,6 +22,7 @@ class AddTeacher extends Component
     public string $email = '';
     public string $staffId = '';
     public string $address = '';
+    public string $phone = '';
 
     public string $schoolClassId = '';
     public string $classSectionId = '';
@@ -44,7 +45,8 @@ class AddTeacher extends Component
 
     protected $rules = [
         'fullName' => ['required'],
-        'email' => ['required', 'unique:tenant.users,email'],
+        'email' => ['nullable','required_without:phone','sometimes','unique:tenant.users,email'],
+        'phone' => ['nullable','required_without:email','sometimes','unique:tenant.users,phone'],
     ];
 
     public function render()
@@ -73,10 +75,16 @@ class AddTeacher extends Component
     {
         $this->validate();
 
+        $password = strtolower(str_replace(' ', '', $this->fullName));
+        if($this->phone != ''){
+            $password = $this->phone;
+        }
+        $password = Hash::make($password);
         $user = (new CreateUserAction())->execute([
-            'name'      => $this->fullName,
-            'email'     => $this->email,
-            'password'  => Hash::make('password')//Hash::make(random_number(1,9,5)),
+            'name' => $this->fullName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'password'  => $password,
         ]);
 
         $teacher =  (new CreateNewTeacherAction())->execute($user, [

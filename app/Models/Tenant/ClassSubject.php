@@ -45,12 +45,12 @@ class ClassSubject extends Model
 
     public function academicBroadsheet()
     {
-        return $this->hasOne(AcademicBroadSheet::class, 'class_subject_id', 'uuid');
+        return $this->hasMany(AcademicBroadSheet::class, 'class_subject_id', 'uuid');
     }
 
     public function subject(): BelongsTo
     {
-        return $this->belongsTo(SchoolSubject::class, 'subject_id', 'uuid');
+        return $this->belongsTo(SchoolSubject::class, 'subject_id', 'subject_id');
     }
 
     public function teacher(): HasOne

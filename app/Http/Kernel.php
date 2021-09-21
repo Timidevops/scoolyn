@@ -8,10 +8,13 @@ use App\Http\Middleware\Landlord\CheckOnboardMiddleware;
 use App\Http\Middleware\Landlord\CheckTotalStudentFeatureMiddleware;
 use App\Http\Middleware\Landlord\IsSubscriptionActiveMiddleware;
 use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
+use App\Http\Middleware\Tenant\CheckIfUserIsSuspendedMiddleware;
 use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
 use App\Http\Middleware\Tenant\IsPaymentOptionOnMiddleware;
+use App\Http\Middleware\Tenant\IsReportCardBreakdownFormatSetMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackWebhookMiddleware;
+use App\Http\Middleware\Tenant\VerifyFlutterwaveCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyPasswordResetMiddleware;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -81,11 +84,14 @@ class Kernel extends HttpKernel
         'tenant.admissionOn.confirm' => CheckIfAdmissionIsOnMiddleware::class,
         'tenant.verifyPassword.reset' => VerifyPasswordResetMiddleware::class,
         'tenant.academicCalendar.confirm' => IsAcademicCalendarSetMiddleware::class,
+        'tenant.reportCardBreakdownFormat.confirm' => IsReportCardBreakdownFormatSetMiddleware::class,
         'tenant.paymentOption.confirm' => IsPaymentOptionOnMiddleware::class,
         'landlord.checkOnboard' => CheckOnboardMiddleware::class,
         'landlord.checkCurrentTenant' => CheckCurrentTenantMiddleware::class,
         'landlord.isSubscriptionActive' => IsSubscriptionActiveMiddleware::class,
         'landlord.isTotalStudent.confirm' => CheckTotalStudentFeatureMiddleware::class,
         'landlord.admissionAutomationFeature.confirm' => CheckAdmissionAutomationFeatureMiddleware::class,
+        'tenant.checkUserSuspensionStatus' => CheckIfUserIsSuspendedMiddleware::class,
+        'tenant.callback.verify.flutterwave' => VerifyFlutterwaveCallbackMiddleware::class,
     ];
 }

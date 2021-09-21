@@ -17,41 +17,103 @@
 
     <div class="bg-white rounded-md py-6 px-2 mt-6">
 
-        <div class="pl-2">
-            <span class="capitalize">{{$academicResult->classArm->schoolClass->class_name}}</span>
-            <span class="font-medium text-xs text-gray-200 capitalize">
+        <div class="pl-2 py-3 flex ">
+            <div>
+                <a href="{{route('authPrintResult',[$academicResult->classArm->uuid, $academicResult->uuid, $academicResult->student->uuid])}}" target="_blank">
+                    <button type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                        Print result
+                    </button>
+                </a>
+            </div>
+
+            @if( ! $approvedResult )
+                <div>
+                    <form class="flex" action="{{route('updateReportSheet',[$academicResult->classArm->uuid, $academicResult->student->uuid])}}" method="post">
+                        @csrf
+                        @method('PATCH')
+{{--                        <div>--}}
+{{--                            <button name="disapprove" type="submit" class="bg-white border border-red-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">--}}
+{{--                                Disapprove result--}}
+{{--                            </button>--}}
+{{--                        </div>--}}
+                        <div>
+                            <button name="approve" type="submit" class="bg-white border border-blue-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                                Approve result
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                @else
+                <div>
+                    <a href="{{route('sessionResult',[$academicResult->classArm->uuid, $academicResult->student->uuid])}}">
+                        <button type="button" class="bg-white border border-blue-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">
+                            View session result
+                        </button>
+                    </a>
+                </div>
+            @endif
+        </div>
+
+        <div class="flex items-center flex-col my-5">
+
+            <div class="pl-2">
+                <span class="uppercase">{{$academicResult->student->first_name}}</span>
+                <span class="capitalize">{{$academicResult->student->other_name}}</span>
+                <span class="capitalize">{{$academicResult->student->last_name}}</span>
+            </div>
+
+            <div class="pl-2">
+                <span class="capitalize">{{$academicResult->classArm->schoolClass->class_name}}</span>
+                <span class="font-medium text-xs text-gray-200 capitalize">
                     {{$academicResult->classArm->classSection ? "| {$academicResult->classArm->classSection->section_name}" : ''}}
-                {{$academicResult->classArm->classSectionCategory ? "| {$academicResult->classArm->classSectionCategory->category_name}" : ''}}
+                    {{$academicResult->classArm->classSectionCategory ? "| {$academicResult->classArm->classSectionCategory->category_name}" : ''}}
                 </span>
-        </div>
+            </div>
 
-        <div class="pl-2 py-3">
-            <span class="uppercase">{{strOrdinal($academicResult->academicSession->term)}} &nbsp;term</span>
-            &nbsp;
-            <span class="capitalize">{{str_replace('-','/',$academicResult->academicSession->session_name)}}</span>
-            &nbsp;
-            <span class="uppercase">Academic Session</span>
-        </div>
+            <div class="pl-2 py-3">
+                <span class="uppercase">{{strOrdinal($academicResult->academicSession->getTerm->number)}} &nbsp;term</span>
+                &nbsp;
+                <span class="capitalize">{{str_replace('-','/',$academicResult->academicSession->session_name)}}</span>
+                &nbsp;
+                <span class="uppercase">Academic Session</span>
 
-        <div class="pl-2 py-3">
-            <table>
-                <tr>
-                    <td>
-                        <span class="capitalize text-sm">position:</span>
-                    </td>
-                    <td>
-                        <span class=" text-sm">{{strOrdinal($academicResult->class_position)}}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="capitalize text-sm">total mark obtained:</span>
-                    </td>
-                    <td>
-                        <span class="capitalize text-sm">{{$academicResult->total_mark_obtained}}</span>
-                    </td>
-                </tr>
-            </table>
+            </div>
+
+            <div class="pl-2 py-3">
+                <h4 class="uppercase text-blue-100 font-bold">
+                    {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                </h4>
+            </div>
+
+            <div class="pl-2 py-3">
+                <table>
+                    <tr>
+                        <td>
+                            <span class="capitalize text-sm">position:</span>
+                        </td>
+                        <td>
+                            <span class=" text-sm">{{strOrdinal($academicResult->class_position)}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="capitalize text-sm">total mark obtained:</span>
+                        </td>
+                        <td>
+                            <span class="capitalize text-sm">{{$academicResult->total_mark_obtained}}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="capitalize text-sm">total mark attainable:</span>
+                        </td>
+                        <td>
+                            <span class="capitalize text-sm">{{$academicResult->total_mark_attainable}}</span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
         </div>
 
         <div x-data="academicReport()" class="pl-2 py-3">
@@ -73,15 +135,16 @@
                         <template x-for="(item, index) in caAssessmentStructure" :key="item">
                             <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                                 <div>
-                                    <span class="capitalize" x-text="item.name"></span>
+                                    <span class="uppercase text-xs" x-text="item.name"></span>
                                     <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
+                                    <input type="hidden" class="assessmentScore" :value="item.score">
                                 </div>
                             </th>
                         </template>
                         <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
                             <div>
                                 <span>Total</span>
-                                <p class="text-gray-300">(<span>100</span>%)</p>
+                                <p class="text-gray-300">(<span x-text="getTotalAssessment()"></span>%)</p>
                             </div>
                         </th>
                         <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
@@ -135,7 +198,7 @@
                             </template>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{$subject['total']}}
+                                    {{$subject['subjectMetric']['total']}}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
@@ -149,11 +212,11 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                                <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}')"></span>
+                                <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}')"></span>
                             </td>
                             <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['subjectMetric']['total']}}')}`" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
                                 </span>
                             </td>
                         </tr>
@@ -230,7 +293,20 @@
                 let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
 
                 return grade === 'name' ? format[0].grade : format[0].comment;
-            }
+            },
+            getGradeFormatColor(score){
+
+                let format = this.gradeFormats.filter(format => score >= parseInt(format.from) && score <= parseInt(format.to) );
+
+                return format[0].color;
+            },
+            getTotalAssessment(){
+                let total = 0;
+                document.querySelectorAll(`.assessmentScore`).forEach(function (e) {
+                    total += Number(e.value);
+                })
+                return total;
+            },
         }
     }
 </script>

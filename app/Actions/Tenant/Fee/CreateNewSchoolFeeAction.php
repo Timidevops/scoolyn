@@ -11,30 +11,23 @@ use Ramsey\Uuid\Uuid;
 
 class CreateNewSchoolFeeAction
 {
-    public function execute(Model $student, array $input)
+    public function execute(array $input, array $feeStructures, array $classes)
     {
 
-        if ( ! $student->schoolFee()->exists() ){
+        $input['uuid'] = Uuid::uuid4();
+        $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
+        $schoolFee = SchoolFee::query()->create($input);
 
-            $input['uuid'] = Uuid::uuid4();
-
-            $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
-
-            $schoolFee = $student->schoolFee()->create($input);
-
-            $schoolFee->setStatus(SchoolFee::NOT_PAID_STATUS);
-
-            return;
+        //add fee structure
+        foreach($feeStructures as $fee){
+            (new CreateNewFeeStructureAction())->execute($schoolFee->uuid, camel_to_snake($fee));
         }
 
-        //fee_structure_id
-        $amount = $student->schoolFee->amount + $input['amount'];
+        //add to classes
+        foreach ($classes as $class){
+            (new AttachFeeToSchoolClassAction())->execute($class, $schoolFee->uuid);
+        }
 
-        $feeStructureId = collect($student->schoolFee->fee_structure_id)->merge($input['fee_structure_id']);
-
-         $student->schoolFee()->update([
-             'amount' => $amount,
-             'fee_structure_id' => $feeStructureId,
-         ]);
+        return $schoolFee;
     }
 }

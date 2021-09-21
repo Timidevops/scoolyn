@@ -1,7 +1,5 @@
-
 <form wire:submit.prevent="store">
     @csrf
-
     @if($errorDiv)
         <div class="mx-8 bg-red-100 p-4">
             <p class="text-white text-sm">
@@ -119,7 +117,7 @@
                       </svg>
                 </span>
                 <a href="{{route('createStudent')}}">
-                    <span class="mx-5">Add by student via form </span>
+                    <span class="mx-5">Add via form </span>
                 </a>
             </button>
         </div>

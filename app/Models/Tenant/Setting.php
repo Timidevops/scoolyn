@@ -29,6 +29,8 @@ class Setting extends Model
     const SCHOOL_LOGO = 'school_logo';
     const INITIAL_TODO_SETTING = 'initial_todo';
     const FRONTEND_AUTH_IMAGE = 'frontend_auth_image';
+    const REPORT_CARD_BREAKDOWN_FORMAT = 'report_card_breakdown_format';
+    const REPORT_CARD_BREAKDOWN_FORMAT_SETTING = 'report_card_breakdown_format_setting';
 
     protected $guarded = [];
 
@@ -56,6 +58,8 @@ class Setting extends Model
             'contactNumber' => self::whereSettingName(self::CONTACT_NUMBER_SETTING)->first()->setting_value,
             'contactEmail' => self::whereSettingName(self::CONTACT_EMAIL_SETTING)->first()->setting_value,
             'schoolType' => self::whereSettingName(self::SCHOOL_TYPE_SETTING)->first()->setting_value,
+            'payment_currency' => self::whereSettingName(self::PAYMENT_CURRENCY)->first()->setting_value,
+            'flutterwave_sub_account' => Setting::has('flutterwave_sub_account_ref')? self::whereSettingName('flutterwave_sub_account_ref')->first()->setting_value : null,
         ];
     }
 
@@ -97,7 +101,7 @@ class Setting extends Model
 
         $academicSession = AcademicSession::query()->where('uuid', $setting->setting_value)->first();
 
-        return "$academicSession->session_name academic session, ".strOrdinal($academicSession->term)."  term";
+        return "$academicSession->session_name academic session, ".strOrdinal($academicSession->getTerm->number)."  term";
     }
 
     public static function isAcademicCalendarSet(): bool
@@ -113,5 +117,27 @@ class Setting extends Model
     public static function isPaymentStatusOn()
     {
         return (bool) self::query()->where('setting_name', self::PAYMENT_STATUS)->first()->setting_value;
+    }
+
+
+    public static function isReportCardBreakdownFormatCreated(): bool
+    {
+        return (bool) ! ReportCardBreakdownFormat::all()->isEmpty();
+    }
+
+    public static function getCurrentCardBreakdownFormat(bool $byName = false)
+    {
+        $setting = self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT_SETTING)->first();
+
+        if ($byName) {
+            return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->name : '';
+        }
+
+        return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->uuid : '';
+    }
+
+    public static function has(string $settingName) : bool
+    {
+        return self::whereSettingName($settingName)->get()->isNotEmpty();
     }
 }

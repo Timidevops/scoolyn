@@ -79,10 +79,10 @@ class AddSubject extends Component
             }
 
             (new CreateNewClassSubjectAction())->execute([
-                'subject_id'                => $subjectId,
-                'class_arm'                 => $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid'),
-                'school_class_id'           => $this->schoolClass->uuid,
-                'class_section_id'          => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
+                'subject_id' => $subjectId,
+                'class_arm' => $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid'),
+                'school_class_id' => $this->schoolClass->uuid,
+                'class_section_id' => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
                 'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
             ]);
         }

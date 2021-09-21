@@ -2,12 +2,12 @@
 <div x-data="academicResult()">
     <div class="md:flex md:items-center md:mt-2 px-2 py-3">
 
-        @if( $classArm->status == \App\Models\Tenant\ClassArm::RESULT_GENERATED_STATUS )
+        @if($finalizedResult)
             <p class="text-grey-100 text-sm py-1">
                 Result generated,
                 <a href="{{route('listReportSheet', $classArm->uuid)}}">
                     <span class="text-blue-100 border-b border-dashed cursor-pointer">
-                        view result sheet.
+                        view {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}} result sheet.
                     </span>
                 </a>
             </p>
@@ -21,13 +21,13 @@
                 </p>
             @else
                 @if($totalSubjects == $totalApprovedBroadsheet && $totalSubjects > 0)
-                    <button wire:click="generateResult" type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
+                    <button wire:click="generateResult" type="button" class="bg-blue-100 text-white rounded-md py-3 mx-2 px-5 text-sm flex items-center" >
                         <span class="mx-1">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                         </span>
-                        <span class="mx-1">Generate Result</span>
+                        <span class="mx-1 capitalize">Generate {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}} Results</span>
                     </button>
                 @endif
             @endif

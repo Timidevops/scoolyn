@@ -42,7 +42,7 @@
 
             @else
                 <div class="px-4 py-4">
-                    <p class="capitalize">Broadsheet approved.</p>
+                    <p class="capitalize">{{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}} Broadsheet approved.</p>
                 </div>
             @endif
         </div>

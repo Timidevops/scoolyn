@@ -14,8 +14,8 @@
                 <form action="{{route('suspendTeacherAccess',$teacher->uuid)}}" method="post">
                     @csrf
                     <div class="py-10 flex space-x-5 justify-center">
-                        <button type="submit" class="bg-blue-100 text-white px-4 py-2 rounded-md text-base">Confirm</button>
                         <button type="button" class="bg-blue-200 text-gray-200 px-4 py-2 rounded-md text-base"  x-on:click="isSuspendModalOpen = false;" class="focus:outline-none">Cancel</button>
+                        <button type="submit" class="bg-blue-100 text-white px-4 py-2 rounded-md text-base">Confirm</button>
                     </div>
                 </form>
             </div>

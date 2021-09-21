@@ -9,13 +9,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Multitenancy\Models\Concerns\UsesTenantConnection;
 
-class Parents extends Model
+class StudentParent extends Model
 {
     use HasFactory;
     use SoftDeletes;
     use UsesTenantConnection;
 
     protected $guarded = [];
+    protected $table = 'parents';
 
     protected static function booted()
     {

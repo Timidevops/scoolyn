@@ -24,7 +24,6 @@ class ExcelFileReaderAction
 
         $headers = SimpleExcelReader::create($path)->headersToSnakeCase()->getHeaders();
 
-
         if( ! in_array_all($format, array_flip($headers)) ) {
             Storage::disk('temp')->delete($file);
             throw new InvalidFileFormatException("Kindly use the valid sheet formats");

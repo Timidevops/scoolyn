@@ -2,7 +2,7 @@
 
 namespace Database\Factories\Tenant;
 
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Ramsey\Uuid\Uuid;
 
@@ -13,7 +13,7 @@ class ParentsFactory extends Factory
      *
      * @var string
      */
-    protected $model = Parents::class;
+    protected $model = StudentParent::class;
 
     /**
      * Define the model's default state.

@@ -11,11 +11,19 @@ use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\SchoolSubject;
 use App\Models\Tenant\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ClassSubjectsController extends Controller
 {
     public function index(string $uuid)
     {
+
+        if ( ! SchoolSubject::all()->count() > 0 ){
+            Session::flash('warningFlash', 'Kindly add subjects.');
+
+            return redirect()->route('listSubject');
+        }
+
         $schoolClass   = SchoolClass::query()->where('slug', '=', $uuid)->first();
 
         $schoolClass->subject->load('subject');

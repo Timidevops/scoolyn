@@ -10,7 +10,7 @@ use App\Exceptions\FileNotFoundException;
 use App\Exceptions\InvalidFileFormatException;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
@@ -85,7 +85,7 @@ class UploadStudent extends Component
             return;
         }
 
-        $dummyParent = Parents::withoutGlobalScope('dummyParent')->find(1);
+        $dummyParent = StudentParent::withoutGlobalScope('dummyParent')->find(1);
 
         //add new student with dummy parent..
         foreach ($this->studentsDetail as $student){

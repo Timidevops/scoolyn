@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant\Result;
 
+use App\Actions\Tenant\Result\Broadsheet\Helper\GetClassSubjectBroadsheetAction;
 use App\Actions\Tenant\Result\Helpers\GetAcademicBroadsheet;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicBroadSheet;
@@ -9,6 +10,8 @@ use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\ContinuousAssessmentStructure;
+use App\Models\Tenant\ReportCardBreakdownFormat;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\Teacher;
 use App\Models\Tenant\User;
@@ -22,6 +25,9 @@ class AcademicResultsController extends Controller
 {
     private $classArm;
     private $subjectBroadsheet;
+    private array $student = [
+        'previousReportCard' => null,
+    ];
 
     public function index()
     {
@@ -78,9 +84,19 @@ class AcademicResultsController extends Controller
 
         $classSubject = ClassSubject::whereUuid($classSubjectId)->withoutGlobalScope('teacher')->first();
 
+        if ( $classSubject->academicBroadsheet ){
+            $classSubjectBroadsheet = (new GetClassSubjectBroadsheetAction)->execute($this->classArm, $classSubject);
+
+            array_splice($classSubjectBroadsheet, ReportCardBreakdownFormat::currentFormatPlacementId(),1);
+
+            $this->student['previousReportCard'] = $classSubjectBroadsheet;
+        }
+
         $academicBroadsheet = AcademicBroadSheet::query()
             ->where('class_arm', $classArmId)
-            ->where('class_subject_id', $classSubjectId)->first();
+            ->where('class_subject_id', $classSubjectId)
+            ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+            ->first();
 
 
         ! $academicBroadsheet ? abort(404) : null;
@@ -102,16 +118,19 @@ class AcademicResultsController extends Controller
             return back();
         }
 
+        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+
         $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
 
         return view('Tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructureFormat' => collect( $academicBroadsheet->meta['caFormat'] ),
-            'gradeFormats'          => collect($gradeFormats->meta),
+            'gradeFormats'          => collect($gradeFormats['gradingFormat']),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $this->getStudentBroadsheets() ),
             'broadsheetStatus'      => (string) $academicBroadsheet->status,
             'classArm'              => ($this->classArm instanceof ClassArm) ? $this->classArm->uuid : $this->classArm,
+            'student'               => $this->student,
         ]);
 
     }
@@ -149,22 +168,22 @@ class AcademicResultsController extends Controller
 
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $classSubject->school_class_id)->first() ;
 
+        $reportFormat =collect($caFormat->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
         return view('Tenant.pages.result.academicResult.singleSubject', [
-            'caAssessmentStructure' => collect( $caFormat->meta ),
+            'caAssessmentStructure' => collect( $reportFormat ),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,
             'academicBroadsheets'   => collect( $broadsheets ),
             'broadsheetStatus'      => (string) $academicBroadsheet->status,
             'classArm'              => ($this->classArm instanceof ClassArm) ? $this->classArm->uuid : $this->classArm,
+            'student'               => $this->student,
         ]);
     }
 
     public function approval(string $classArmId, string $classSubjectId, Request $request)
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
-
-        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail(); //$teacher->classArm()->where('uuid', $classArmId)->first();
+        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
         if( ! $this->classArm ){
             abort(404);
@@ -178,7 +197,9 @@ class AcademicResultsController extends Controller
 
         $academicBroadsheet = AcademicBroadSheet::query()
             ->where('class_arm', $classArmId)
-            ->where('class_subject_id', $classSubjectId)->first();//$classSubject->academicBroadsheet->where('class_arm', $classArmId)->first();
+            ->where('class_subject_id', $classSubjectId)
+            ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+            ->first();
 
         ! $academicBroadsheet ? abort(404) : null;
 

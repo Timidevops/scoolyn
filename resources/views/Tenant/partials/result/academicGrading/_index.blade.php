@@ -5,7 +5,7 @@
         </div>
         <span class="mt-2 text-base text-gray-300">{{$totalGradeFormat}} Total Grading Format</span>
     </div>
-    
+
     <div class="bg-white rounded-md" x-data="academicFormat()">
         <div class="md:flex md:items-center md:mt-2 ">
             <div class="py-6 px-2 relative w-full">
@@ -17,7 +17,7 @@
                          </svg>
                     </span>
                 </div>
-    
+
             </div>
             <a href="{{route('createGradeFormat')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3 text-sm flex items-center" >
                 <span class="mx-1">
@@ -29,7 +29,7 @@
             </a>
         </div>
         @include('Tenant.partials.result.academicGrading._indexTable')
-    
+
         <!--- classes modal --->
             <div x-show="isClassModalOpen" @click="isClassModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);display:none">
             <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
@@ -55,7 +55,7 @@
             </div>
         </div>
         <!---/: classes modal --->
-    
+
         <!--- format modal --->
             <div x-show="isGradeFormatModalOpen" @click="isGradeFormatModalOpen = false;" class="overflow-auto absolute inset-0 z-10 flex items-center justify-center" style="background-color:rgba(190,192,201,0.7);display:none">
             <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
@@ -70,39 +70,48 @@
                     </button>
                 </div>
                 <div class="my-6 mx-4">
-                    <table class="min-w-full divide-y  divide-purple-100">
-                        <thead>
-                            <tr>
-                                <th class="text-center">From</th>
-                                <th class="text-center">To</th>
-                                <th class="text-center">Grade Alphabet</th>
-                                <th class="text-center">Grade Comment</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template x-for="item in gradeModalFormats">
-                                <tr class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
-                                    <td class="text-center">
-                                        <span x-text="item.from">></span>
-                                    </td>
-                                    <td class="text-center">
-                                        <span class="mx-1" x-text="item.to"></span>
-                                    </td>
-                                    <td class="text-center capitalize">
-                                        <span class="mx-1" x-text="item.grade"></span>
-                                    </td>
-                                    <td class="text-center capitalize">
-                                        <span class="mx-1" x-text="item.comment"></span>
-                                    </td>
-                                </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                    <ul>
+                        <template x-for="item in gradeModalFormats">
+                            <li class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                <span class="capitalize" x-text="getReportBreakdownName(item.nameOfReport)"></span>:
+                                <div>
+                                    <table class="min-w-full divide-y  divide-purple-100">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">From</th>
+                                            <th class="text-center">To</th>
+                                            <th class="text-center">Grade Alphabet</th>
+                                            <th class="text-center">Grade Comment</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <template x-for="item in item.gradingFormat">
+                                            <tr class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">
+                                                <td class="text-center">
+                                                    <span x-text="item.from">></span>
+                                                </td>
+                                                <td class="text-center">
+                                                    <span class="mx-1" x-text="item.to"></span>
+                                                </td>
+                                                <td class="text-center capitalize">
+                                                    <span class="mx-1" x-text="item.grade"></span>
+                                                </td>
+                                                <td class="text-center capitalize">
+                                                    <span class="mx-1" x-text="item.comment"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </li>
+                        </template>
+                    </ul>
                 </div>
             </div>
         </div>
         <!---/: format modal --->
-    
+
     </div>
 </div>
 
@@ -126,6 +135,12 @@
                 this.gradeFormatName = gradeFormat[0]['name'];
                 this.gradeModalFormats = gradeFormat[0]['format'];
                 this.isGradeFormatModalOpen = true;
+            },
+            reportBreakdown: {!! $reportBreakdown !!},
+            getReportBreakdownName(id){
+                let reportBreakdown = this.reportBreakdown.filter(e => e.uuid === id);
+
+                return reportBreakdown[0]['name'];
             },
             search: "",
             pageNumber: 0,

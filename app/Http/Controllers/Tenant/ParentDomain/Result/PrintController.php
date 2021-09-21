@@ -19,7 +19,6 @@ class PrintController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
-
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
 
         $result->load(['student', 'academicSession', 'classArm']);

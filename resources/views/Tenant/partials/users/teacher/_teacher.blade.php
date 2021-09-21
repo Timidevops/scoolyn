@@ -9,14 +9,35 @@
     <div class="bg-white rounded-md" x-data="teacher()">
         <div class="md:flex md:items-center md:mt-2 ">
             <div class="py-6 px-2 relative w-full">
-                <div class="">
-                    <input type="search" name="" id="" class="py-3 px-10 w-full border border-purple-100 rounded-md  bg-white"  placeholder="Search">
-                    <span class="absolute inset-y-0 left-0 pl-6 py-10"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-         </svg>
-       </span>
+                <div>
+                    <form action="{{route('listTeacher')}}" method="GET">
+                        @csrf
+                        <div class="mt-1 flex rounded-md shadow-sm">
+                            <div class="relative flex items-stretch flex-grow focus-within:z-10">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="h-5 w-5">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-100" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                        </svg>
+                                    </span>
+                                </div>
+                                <input type="text" name="search" id="search" class="py-3 px-10 w-full border border-purple-100 rounded-md rounded-r-none  bg-white" placeholder="Search by full name or Staff ID">
+                            </div>
+                            <button type="submit" class="-ml-px relative inline-flex items-center space-x-2 px-4 py-2 bg-blue-100 text-white">
+                                <span>Search</span>
+                            </button>
+                        </div>
+                    </form>
+                    @if(request()->has('search'))
+                        <div class="text-sm mt-2 flex">
+                            <a href="{{route('listTeacher')}}">
+                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path></svg>
+                            </a>
+                            <a href="{{route('listTeacher')}}" class="text-xs">
+                                Clear filter</a>
+                        </div>
+                    @endif
                 </div>
-
             </div>
             <a href="{{route('createTeacher')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
         <span class="mx-2">
@@ -37,7 +58,7 @@
         return{
             search: "",
             pageNumber: 0,
-            size: 5,
+            size: 10,
             total: "",
             teacherTable: {!! $teachers !!},
             get filteredTeacherTable() {

@@ -8,11 +8,15 @@
             </div>
             <div class="mt-2">
                 <label for="email" class="block text-sm font-normal text-gray-100">Email</label>
-                <input type="email" wire:model="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
+                <input type="email" wire:model="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
             </div>
             <div class="mt-2">
                 <label for="staffId" class="block text-sm font-normal text-gray-100">Staff Number</label>
                 <input type="text" wire:model="staffId" id="staffId" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+            </div>
+            <div class="mt-2">
+                <label for="phone" class="block text-sm font-normal text-gray-100">Phone Number</label>
+                <input type="text" wire:model="phone" id="phone" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
             </div>
             <div class="mt-2">
                 <label for="address" class="block text-sm font-normal text-gray-100">Address</label>

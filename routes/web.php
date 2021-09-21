@@ -62,7 +62,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
     Route::post('logout', [\App\Http\Controllers\Tenant\DashboardsController::class, 'logout'])->name('logout')->middleware('auth');
 
-    Route::middleware(['auth', 'landlord.isSubscriptionActive'])->group(function (){
+    Route::middleware(['auth', 'landlord.isSubscriptionActive', 'tenant.checkUserSuspensionStatus'])->group(function (){
 
         Route::get('dashboard', [\App\Http\Controllers\Tenant\DashboardsController::class, 'index'])->name('dashboard');
         Route::get('hide-to-list', [\App\Http\Controllers\Tenant\DashboardsController::class, 'hideTodoList'])->name('hideTodoList');
@@ -71,7 +71,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
         Route::prefix('auth')->group(function (){
 
-            Route::middleware('tenant.academicCalendar.confirm')->group(function (){
+            Route::middleware(['tenant.academicCalendar.confirm', 'tenant.reportCardBreakdownFormat.confirm'])->group(function (){
 
                 Route::get('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'index'])->name('listSubject');
                 Route::post('subject', [\App\Http\Controllers\Tenant\Subject\SubjectsController::class, 'store'])->name('storeSubject');
@@ -102,10 +102,12 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('teacher', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'index'])->name('listTeacher');
                 Route::get('teacher/add-new', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'create'])->name('createTeacher');
+                Route::get('teacher/upload-teachers', [\App\Http\Controllers\Tenant\Teacher\UploadTeachersController::class, 'create'])->name('uploadTeachers');
                 Route::get('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'edit'])->name('editTeacher');
                 Route::delete('teacher/{uuid}', [\App\Http\Controllers\Tenant\Teacher\TeachersController::class, 'delete'])->name('deleteTeacher');
 
                 Route::post('teacher/{uuid}/suspend-access', [\App\Http\Controllers\Tenant\Teacher\SuspendController::class, 'store'])->name('suspendTeacherAccess');
+                Route::post('teacher/{uuid}/unsuspend-access', [\App\Http\Controllers\Tenant\Teacher\SuspendController::class, 'unSuspend'])->name('unSuspendTeacherAccess');
 
                 Route::get('student', [\App\Http\Controllers\Tenant\Student\StudentsController::class, 'index'])->name('listStudent');
                 Route::middleware('landlord.isTotalStudent.confirm')->group(function (){
@@ -119,6 +121,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'index'])->name('listParent');
                 Route::get('parent/add-new', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'create'])->name('createParent');
+                Route::get('parent/upload-parents', [\App\Http\Controllers\Tenant\Parent\UploadParentsController::class, 'create'])->name('uploadParents');
                 Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
 
                 Route::get('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'index'])->name('listCAStructure');
@@ -141,6 +144,10 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('result/report-sheet/{uuid}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'index'])->name('listReportSheet');
                 Route::get('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'single'])->name('singleReportSheet');
+                Route::patch('result/report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultSheetsController::class, 'update'])->name('updateReportSheet');
+                Route::get('result/print/{classArmId}/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\Result\PrintResultController::class, 'store'])->name('authPrintResult');
+
+                Route::get('result/session-report-sheet/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\SessionResultsController::class, 'index'])->name('sessionResult');
 
                 Route::post('result/report-sheet-addition/{uuid}/student/{id}', [\App\Http\Controllers\Tenant\Result\ResultAdditionalCommentsController::class, 'store'])->name('storeReportComment');
 
@@ -149,6 +156,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                     Route::get('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'index'])->name('listFeeStructure');
                     Route::get('fee/format/add-new', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'create'])->name('createFeeStructure');
                     Route::post('fee/format', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'store'])->name('storeFeeStructure');
+                    Route::get('fee/format/edit/{uuid}', [\App\Http\Controllers\Tenant\Fee\FeeStructuresController::class, 'edit'])->name('editFeeStructure');
 
                     Route::post('fee/class', [\App\Http\Controllers\Tenant\Fee\ClassSectionsController::class, 'store'])->name('storeClassFee');
 
@@ -179,9 +187,15 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'edit'])->name('schoolDetailsSettings');
                 Route::post('school-details', [\App\Http\Controllers\Tenant\Setting\SchoolDetailsController::class, 'update'])->name('updateSchoolDetailsSettings');
 
+                Route::get('payments', [\App\Http\Controllers\Tenant\Setting\PaymentSettingsController::class, 'edit'])->name('paymentSettings');
+                Route::post('payments', [\App\Http\Controllers\Tenant\Setting\PaymentSettingsController::class, 'update'])->name('savePaymentSettings');
+
                 Route::post('school-detail/principal', [\App\Http\Controllers\Tenant\Setting\PrincipalDetailsController::class, 'update'])->name('updateSchoolPrincipal');
 
                 Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
+
+                Route::get('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'edit'])->name('reportCardBreakdownFormatSetting');
+                Route::post('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'update'])->name('updateReportCardBreakdownFormatSetting');
 
                 Route::get('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'edit'])->name('frontendSetting');
                 Route::post('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'update'])->name('updateFrontendSetting');
@@ -205,10 +219,10 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
         Route::middleware('tenant.paymentOption.confirm')->group(function (){
             Route::get('ward/fees', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'index'])->name('listWardFee');
             Route::get('fees/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'single'])->name('singleWardFee');
-            Route::post('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
+            Route::get('fees/payment/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\FeesController::class, 'store'])->name('payWardFee');
             Route::get('print-school-receipt/{uuid}/{studentId}', [\App\Http\Controllers\Tenant\ParentDomain\Fee\PrintController::class, 'store'])->name('printWardFeeReceipt');
 
-            Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify')->name('getSchoolFeesCallback');
+            Route::get('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware('tenant.callback.verify.flutterwave')->name('getSchoolFeesCallback');
             Route::post('school-fees/payment/call-back', [\App\Http\Controllers\Tenant\ParentDomain\Fee\CallbackFromCheckoutsController::class, 'update'])->middleware([
                 'tenant.callback.verify',
                 'tenant.callback.webhook'

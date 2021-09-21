@@ -44,6 +44,17 @@
                         </tr>
                     </table>
                 </div>
+                <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{route('paymentSettings')}}">
+                                        <span>Payment Settings</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
             @endcan
 
             @if(\App\Models\Landlord\FeatureChecker::hasAdmissionAutomationFeature())
@@ -61,6 +72,20 @@
                         </div>
                     @endcan
             @endif
+
+            @can('read report card assessment format')
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <a href="{{route('reportCardBreakdownFormatSetting')}}">
+                                    <span>Report Card Breakdown Format</span>
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            @endcan
 
             @can('update admission')
                 <div>

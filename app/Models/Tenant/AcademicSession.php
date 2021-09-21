@@ -30,4 +30,14 @@ class AcademicSession extends Model
             ->saveSlugsTo('slug');
     }
 
+    public function getTerm()
+    {
+        return $this->hasOne(AcademicTerm::class, 'uuid', 'term');
+    }
+
+    public static function whereUuid(string $uuid)
+    {
+        return self::query()->where('uuid', $uuid)->first();
+    }
+
 }

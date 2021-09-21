@@ -7,7 +7,7 @@ use App\Actions\Tenant\Parent\CreateNewParentAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,8 +20,8 @@ class ParentsController extends Controller
     public function index()
     {
         return view('tenant.pages.parent.parent', [
-            'totalParent' => Parents::query()->count(),
-            'parents'     => Parents::query()->get(['uuid', 'first_name', 'last_name', 'email']),
+            'totalParent' => StudentParent::query()->count(),
+            'parents'     => StudentParent::query()->get(['uuid', 'first_name', 'last_name', 'email']),
         ]);
     }
 

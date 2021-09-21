@@ -11,7 +11,7 @@ use App\Models\Landlord\Plan;
 use App\Models\Landlord\SchoolAdmin;
 use App\Models\Landlord\Transaction;
 use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\ScoolynTenant;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\User;
