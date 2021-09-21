@@ -44,6 +44,17 @@
                         </tr>
                     </table>
                 </div>
+                <div>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="{{route('paymentSettings')}}">
+                                        <span>Payment Settings</span>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
             @endcan
 
             @if(\App\Models\Landlord\FeatureChecker::hasAdmissionAutomationFeature())

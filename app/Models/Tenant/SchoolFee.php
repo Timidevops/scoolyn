@@ -23,10 +23,6 @@ class SchoolFee extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'fee_structure_id' => 'array',
-    ];
-
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id', 'uuid');
@@ -57,4 +53,13 @@ class SchoolFee extends Model
         return $this->amount - $this->schoolFeesPaid();
     }
 
+    public function feesItems()
+    {
+        return $this->hasMany(FeeStructure::class, 'school_fees_id', 'uuid');
+    }
+
+    public function schoolClasses()
+    {
+        return $this->hasMany(SchoolClass::class, 'school_fees_id', 'uuid');
+    }
 }

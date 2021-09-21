@@ -6,9 +6,9 @@
             </div>
             <div class="pl-2">
                 <p class="text-sm">
-                    <span class="uppercase font-bold">{{$wardSchoolFee->student->first_name}}</span>
-                    <span class="capitalize">{{$wardSchoolFee->student->other_name}}</span>
-                    <span class="capitalize">{{$wardSchoolFee->student->last_name}}</span>
+                    <span class="uppercase font-bold">{{$ward->first_name}}</span>
+                    <span class="capitalize">{{$ward->other_name}}</span>
+                    <span class="capitalize">{{$ward->last_name}}</span>
                 </p>
             </div>
         </div>
@@ -21,9 +21,9 @@
     <div class="flex">
         <div class="w-3/5">
             <h4 class="text-blue-100 py-1">
-                <span class="uppercase">{{$wardSchoolFee->student->first_name}}</span>
-                <span class="capitalize">{{$wardSchoolFee->student->other_name}}</span>
-                <span class="capitalize">{{$wardSchoolFee->student->last_name}}</span>
+                <span class="uppercase">{{$ward->first_name}}</span>
+                <span class="capitalize">{{$ward->other_name}}</span>
+                <span class="capitalize">{{$ward->last_name}}</span>
             </h4>
             <p class="text-sm text-gray-300 py-1">
                 Find below details of receipt for
@@ -59,14 +59,15 @@
             <div class="flex justify-end">
                 <div class="py-5">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
-                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">
-                            @csrf
-                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >
-                                Proceed to payment
-                            </button>
-                        </form>
+{{--                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">--}}
+{{--                            @csrf--}}
+{{--                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >--}}
+{{--                                Proceed to payment--}}
+{{--                            </button>--}}
+{{--                        </form>--}}
+                        @include('Tenant.parentDomain.fees.partials._flutterwaveCheckout')
                     @else
-                        <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}">
+                        <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $ward->uuid])}}">
                             <button type="button" class="bg-blue-100 w-full text-white rounded-md py-3 px-3  text-sm" >
                                 Print
                             </button>

@@ -15,14 +15,24 @@ use Illuminate\Support\Facades\Session;
 
 class TeachersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = Teacher::query()->get(['full_name', 'staff_id', 'uuid']);
+        $teachers = Teacher::query()->get();
+        if($request->has('search')){
+            $teachers = Teacher::where('full_name', 'like', '%'.$request->search . '%')
+                ->orWhere('staff_id', '=', $request->search)
+                ->get();
+        }
         $teachers->load(['subjectTeacher', 'classArm']);
+
+        collect($teachers)->map(function ($teacher){
+            $teacher['phone'] = $teacher->user->phone;
+            return $teacher;
+        });
 
         return view('tenant.pages.teacher.teacher', [
             'totalTeachers' => Teacher::query()->count(),
-            'teachers'      => collect($teachers),
+            'teachers' => collect($teachers),
         ]);
     }
 

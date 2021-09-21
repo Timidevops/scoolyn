@@ -10,7 +10,7 @@ use App\Actions\Tenant\SchoolClass\CreateNewSchoolClassAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Models\Tenant\ClassFee;
 use App\Models\Tenant\FeeStructure;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentFee;
@@ -25,7 +25,7 @@ class SchoolFeesControllerTest extends TestCase
      */
     public function test_that_school_fee_controller_is_stored()
     {
-        $getParent = Parents::factory()->make();
+        $getParent = StudentParent::factory()->make();
         $getClass = SchoolClass::factory()->make();
 
         $getClassSection = (new CreateNewClassSectionAction())->execute($getClass, [

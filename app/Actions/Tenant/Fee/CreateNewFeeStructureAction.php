@@ -9,9 +9,10 @@ use Ramsey\Uuid\Uuid;
 
 class CreateNewFeeStructureAction
 {
-    public function execute(array $input)
+    public function execute(string $schoolFeeId, array $input)
     {
         $input['uuid'] = Uuid::uuid4();
+        $input['school_fees_id'] = $schoolFeeId;
         FeeStructure::query()->create($input);
     }
 }

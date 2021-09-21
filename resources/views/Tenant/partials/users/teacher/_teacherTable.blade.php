@@ -18,17 +18,18 @@
                      </span>
                     </span>
                             </th>
-
                             <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
                                 Staff Id
                             </th>
                             <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
-                                Desgination
+                                Phone no.
+                            </th>
+                            <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm">
+                                Designation
                             </th>
                             <th class="px-6 py-3 w-  text-left text-sm font-medium text-gray-500">
                                 Action
                             </th>
-
                         </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-purple-100">
@@ -54,6 +55,10 @@
 
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
                                         <span class="text-gray-200 font-normal" x-text="content.staff_id"></span>
+                                    </td>
+
+                                    <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
+                                        <span class="text-gray-200 font-normal" x-text="content.phone"></span>
                                     </td>
 
                                     <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">

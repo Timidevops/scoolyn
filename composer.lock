@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "42882ffc30edf2af31303298dda157fe",
+    "content-hash": "18d416f53148221e52fa278f4352f1aa",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -550,6 +550,64 @@
                 "source": "https://github.com/dflydev/dflydev-dot-access-data/tree/v3.0.1"
             },
             "time": "2021-08-13T13:06:58+00:00"
+        },
+        {
+            "name": "digikraaft/flutterwave-php",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digikraaft/flutterwave-php.git",
+                "reference": "67d5d7894a5b9b69c03dae146309195d730f84f3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digikraaft/flutterwave-php/zipball/67d5d7894a5b9b69c03dae146309195d730f84f3",
+                "reference": "67d5d7894a5b9b69c03dae146309195d730f84f3",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "guzzlehttp/guzzle": "^7.3",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2.16",
+                "mockery/mockery": "^1.4",
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpunit/phpunit": "^9.0",
+                "scrutinizer/ocular": "^1.7",
+                "vimeo/psalm": "^3.11"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Digikraaft\\Flutterwave\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Oladoyinbo",
+                    "email": "dev@digitalkraaft.com",
+                    "homepage": "https://digitalkraaft.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP Implementation of Flutterwave API",
+            "homepage": "https://github.com/digikraaft/flutterwave-php",
+            "keywords": [
+                "digikraaft",
+                "flutterwave",
+                "flutterwave-php"
+            ],
+            "support": {
+                "issues": "https://github.com/digikraaft/flutterwave-php/issues",
+                "source": "https://github.com/digikraaft/flutterwave-php/tree/v2.0.0"
+            },
+            "time": "2021-09-14T06:53:46+00:00"
         },
         {
             "name": "digikraaft/laravel-model-suspension",
@@ -10458,7 +10516,8 @@
     "platform": {
         "php": "^7.4|^8.0",
         "ext-intl": "*",
-        "ext-json": "*"
+        "ext-json": "*",
+        "ext-zip": "*"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

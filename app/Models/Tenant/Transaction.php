@@ -21,6 +21,10 @@ class Transaction extends Model
 
     const CREDIT_TYPE =  'credit';
 
+    protected $casts = [
+        'meta' => 'array',
+    ];
+
     public function schoolFees(): BelongsTo
     {
         return $this->belongsTo(SchoolFee::class, 'school_fees_id', 'uuid');

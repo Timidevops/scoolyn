@@ -1,5 +1,11 @@
 <div class="py-10 lg:px-8 px-4">
     <div class="bg-white rounded-md">
+        <div class="flex justify-end px-4 py-4">
+            <a href="{{route('uploadParents')}}" class="bg-blue-100 text-white rounded-md py-3 px-2 mx-2 md:w-1/5 text-sm text-center">
+                Bulk upload
+            </a>
+        </div>
+
         <form x-data="add()" action="{{route('storeParent')}}" method="post">
             @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
@@ -78,9 +84,6 @@
                           },
                           {
                               value:'Male',
-                          },
-                          {
-                          value:'Others',
                           },
                   ],
 

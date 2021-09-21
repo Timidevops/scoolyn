@@ -120,7 +120,7 @@
                         @enderror
                     </div>
                     <div class="mt-2">
-                        <label for="principalSignature" class="block text-sm font-normal text-gray-100">Principal Signature</label>
+                        <label for="principalSignature" class="block text-sm font-normal text-gray-100">Principal's Signature</label>
                         <input type="file" name="principalSignature" id="principalSignature" class="w-full text-gray-100 rounded-md py-2 px-2 border @error('principalSignature') border-red-100 @else border-purple-100 @enderror" required>
                         @error('principalSignature')
                         <div>

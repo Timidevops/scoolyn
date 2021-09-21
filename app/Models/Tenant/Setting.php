@@ -58,6 +58,8 @@ class Setting extends Model
             'contactNumber' => self::whereSettingName(self::CONTACT_NUMBER_SETTING)->first()->setting_value,
             'contactEmail' => self::whereSettingName(self::CONTACT_EMAIL_SETTING)->first()->setting_value,
             'schoolType' => self::whereSettingName(self::SCHOOL_TYPE_SETTING)->first()->setting_value,
+            'payment_currency' => self::whereSettingName(self::PAYMENT_CURRENCY)->first()->setting_value,
+            'flutterwave_sub_account' => Setting::has('flutterwave_sub_account_ref')? self::whereSettingName('flutterwave_sub_account_ref')->first()->setting_value : null,
         ];
     }
 
@@ -117,6 +119,7 @@ class Setting extends Model
         return (bool) self::query()->where('setting_name', self::PAYMENT_STATUS)->first()->setting_value;
     }
 
+
     public static function isReportCardBreakdownFormatCreated(): bool
     {
         return (bool) ! ReportCardBreakdownFormat::all()->isEmpty();
@@ -126,10 +129,15 @@ class Setting extends Model
     {
         $setting = self::query()->where('setting_name', self::REPORT_CARD_BREAKDOWN_FORMAT_SETTING)->first();
 
-        if ( $byName ){
+        if ($byName) {
             return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->name : '';
         }
 
         return $setting ? ReportCardBreakdownFormat::whereUuid($setting->setting_value)->uuid : '';
+    }
+
+    public static function has(string $settingName) : bool
+    {
+        return self::whereSettingName($settingName)->get()->isNotEmpty();
     }
 }
