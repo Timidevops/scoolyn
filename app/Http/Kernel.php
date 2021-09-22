@@ -11,6 +11,7 @@ use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
 use App\Http\Middleware\Tenant\CheckIfUserIsSuspendedMiddleware;
 use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
 use App\Http\Middleware\Tenant\IsPaymentOptionOnMiddleware;
+use App\Http\Middleware\Tenant\IsReportCardBreakdownFormatSetMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackWebhookMiddleware;
 use App\Http\Middleware\Tenant\VerifyFlutterwaveCallbackMiddleware;
@@ -83,6 +84,7 @@ class Kernel extends HttpKernel
         'tenant.admissionOn.confirm' => CheckIfAdmissionIsOnMiddleware::class,
         'tenant.verifyPassword.reset' => VerifyPasswordResetMiddleware::class,
         'tenant.academicCalendar.confirm' => IsAcademicCalendarSetMiddleware::class,
+        'tenant.reportCardBreakdownFormat.confirm' => IsReportCardBreakdownFormatSetMiddleware::class,
         'tenant.paymentOption.confirm' => IsPaymentOptionOnMiddleware::class,
         'landlord.checkOnboard' => CheckOnboardMiddleware::class,
         'landlord.checkCurrentTenant' => CheckCurrentTenantMiddleware::class,

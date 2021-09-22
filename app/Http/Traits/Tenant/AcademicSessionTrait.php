@@ -11,8 +11,13 @@ trait AcademicSessionTrait{
 
     public static function bootAcademicSessionTrait()
     {
+
         static::addGlobalScope('academicSession', function (Builder $builder) {
-            $builder->where('academic_session_id', Setting::getCurrentAcademicSessionId());
+
+            $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
+
+            $builder
+                ->where('academic_session_id', $currentSession->uuid);
         });
     }
 

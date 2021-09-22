@@ -18,9 +18,7 @@
 
 <div class="h-screen py-10">
     <div class="bg-white rounded-md py-2">
-        @if($subjectPlacement == 'all')
-            @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
-        @endif
+        @include('Tenant.partials.result.academicBroadsheet.broadSheetTable._allClassArm')
     </div>
 </div>
 </div>
@@ -33,6 +31,12 @@
         let scoreIdText = `totalScore_${id}_${index}`;
         let scoreIdValue = `totalScoreValue_${id}_${index}`;
         let totalScore = 0;
+
+        let previousReportContentScore = `previousReportContentScore_${id}_${index}`;
+
+        document.querySelectorAll(`.${previousReportContentScore}`).forEach((value => {
+            totalScore += Number(value.innerText);
+        }));
 
         document.querySelectorAll(`.${scoreIdText}`).forEach((value) => {
             let score = parseFloat(value.value);

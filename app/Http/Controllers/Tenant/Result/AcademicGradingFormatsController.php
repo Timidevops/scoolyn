@@ -8,6 +8,7 @@ use App\Actions\Tenant\Result\Helpers\GetNewStructureFormat;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\OnboardingTodoList;
+use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -21,13 +22,21 @@ class AcademicGradingFormatsController extends Controller
         return view('Tenant.pages.result.academicGrading.index', [
             'totalGradeFormat' => AcademicGradingFormat::query()->count(),
             'gradeFormats'     => collect( (new GetNewStructureFormat())->execute($gradeFormats) ),
+            'reportBreakdown'  => ReportCardBreakdownFormat::query()->get(['uuid', 'name']),
         ]);
     }
 
     public function create()
     {
+        $schoolClasses = AcademicGradingFormat::all()->map(function ($item){
+            return $item->school_class;
+        });
+
+        $schoolClasses = collect( collect($schoolClasses)->flatten() )->unique();
+
         return view('Tenant.pages.result.academicGrading.create', [
-            'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
+            'schoolClasses' => SchoolClass::query()->whereNotIn('uuid', $schoolClasses)->get(['uuid', 'class_name']),
+            'reportCardFormats' => (ReportCardBreakdownFormat::query()->get(['uuid', 'name'])),
         ]);
     }
 
@@ -35,9 +44,23 @@ class AcademicGradingFormatsController extends Controller
     {
         $this->validate($request, [
             'schoolClass' => ['required'],
-            'meta' => ['required']
+            'meta' => ['required', 'array'],
+            'meta.*.nameOfReport' => ['required'],
+            'meta.*.gradingFormat' => ['required', 'array'],
+            'meta.*.gradingFormat.*.from' => ['required'],
+            'meta.*.gradingFormat.*.to' => ['required'],
+            'meta.*.gradingFormat.*.grade' => ['required'],
+            'meta.*.gradingFormat.*.comment' => ['required'],
+            'meta.*.gradingFormat.*.color' => ['required'],
         ], [
-            'meta.required' => 'Academic grading is required'
+            'meta.required' => 'Academic grading is required',
+            'meta.*.nameOfReport.required' => 'Invalid, try again.',
+            'meta.*.gradingFormat.required' => 'Kindly fill all fields.',
+            'meta.*.gradingFormat.*.from.required' => 'Kindly fill all fields.',
+            'meta.*.gradingFormat.*.to.required' => 'Kindly fill all fields.',
+            'meta.*.gradingFormat.*.grade.required' => 'Kindly fill all fields.',
+            'meta.*.gradingFormat.*.comment.required' => 'Kindly fill all fields.',
+            'meta.*.gradingFormat.*.color.required' => 'Kindly fill all fields.',
         ]);
 
         $lastEntry   = AcademicGradingFormat::query()->latest();

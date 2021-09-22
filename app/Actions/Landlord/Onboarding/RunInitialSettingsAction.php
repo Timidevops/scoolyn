@@ -68,6 +68,12 @@ class RunInitialSettingsAction
                     'url' => 'academicSession',
                 ],
                 [
+                    'name' => OnboardingTodoList::SET_REPORT_CARD_BREAKDOWN_FORMAT,
+                    'done' => 0,
+                    'description' => 'Go to settings to set report card breakdown format',
+                    'url' => 'reportCardBreakdownFormatSetting',
+                ],
+                [
                     'name' => OnboardingTodoList::ADD_SCHOOL_CLASSES,
                     'done' => 0,
                     'description' => 'Go to Classes to add class arm',
@@ -82,7 +88,7 @@ class RunInitialSettingsAction
                 [
                     'name' => OnboardingTodoList::ADD_CA_FORMAT,
                     'done' => 0,
-                    'description' => 'Go to Results / Continuous assessment format to add c.a format',
+                    'description' => 'Go to Results / Continuous assessment format to add C.A format',
                     'url' => 'createCAStructure',
                 ],
                 [

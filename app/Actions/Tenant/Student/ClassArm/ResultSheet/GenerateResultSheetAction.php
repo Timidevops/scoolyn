@@ -3,9 +3,14 @@
 
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
+use App\Actions\Tenant\Result\Helpers\UpdateStudentBroadsheetsOrStudentReportWithStudentPosition;
+use App\Jobs\Tenant\GenerateSessionResultJob;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\AcademicResult;
+use App\Models\Tenant\AcademicSession;
+use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -37,12 +42,12 @@ class GenerateResultSheetAction
 
         $this->studentBroadsheets = $studentBroadsheets;
 
-        $this->studentBroadsheets = $this->updateStudentBroadsheetsWithStudentPosition();
+        $this->studentBroadsheets = (new UpdateStudentBroadsheetsOrStudentReportWithStudentPosition)->execute($this->studentBroadsheets);//$this->updateStudentBroadsheetsWithStudentPosition();
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-
         //add data to resultTable of each student
+
         try{
             DB::beginTransaction();
 
@@ -53,7 +58,7 @@ class GenerateResultSheetAction
 
                 $input['classArm'] = (string) $classArm->uuid;
 
-                $input['gradingFormat'] = $this->getGradingFormat()->meta;
+                $input['gradingFormat'] = $this->getGradingFormat();
 
                 $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
 
@@ -61,10 +66,11 @@ class GenerateResultSheetAction
             }
 
             //check if result generated equals to number of students in class
-            if( count($classArm->academicResult) !=  count($studentIds) ){
+            if( count($classArm->academicResult
+                    ->where('class_arm', $this->classArm->uuid)
+                    ->where('report_card', Setting::getCurrentCardBreakdownFormat())) !=  count($studentIds) ){
 
                 //@todo log
-
                 DB::rollBack();
 
                 $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
@@ -77,10 +83,21 @@ class GenerateResultSheetAction
         catch (\Exception $exception){
             //@todo log
             DB::rollBack();
+
             $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
+
+            return;
         }
 
         $classArm->setStatus(ClassArm::RESULT_GENERATED_STATUS);
+
+        $lastTerm = AcademicTerm::all()->last();
+
+        $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
+
+        if ( $currentSession->term == $lastTerm->uuid){
+            GenerateSessionResultJob::dispatch($classArm);
+        }
     }
 
     private function updateStudentBroadsheetsWithStudentPosition()
@@ -129,7 +146,10 @@ class GenerateResultSheetAction
 
     private function getGradingFormat()
     {
-        return AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+        $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
 
+        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+
+        return $gradeFormats['gradingFormat'];
     }
 }

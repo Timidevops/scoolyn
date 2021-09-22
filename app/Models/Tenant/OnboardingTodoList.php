@@ -7,6 +7,7 @@ namespace App\Models\Tenant;
 class OnboardingTodoList
 {
     const SET_ACADEMIC_CALENDAR = 'set_academic_calendar';
+    const SET_REPORT_CARD_BREAKDOWN_FORMAT = 'set_report_card_breakdown_format';
     const ADD_SCHOOL_CLASSES = 'add_school_classes';
     const ADD_SUBJECT = 'add_subject';
     const ADD_CA_FORMAT = 'add_ca_format';
@@ -24,19 +25,19 @@ class OnboardingTodoList
 
     public static function isTodoListCompleted() :bool
     {
-        return self::setting()->setting_value == 10;
+        return self::setting()->setting_value == 11;
     }
 
     public static function hideTodoList()
     {
         self::setting()->update([
-            'setting_value' => '11',
+            'setting_value' => '12',
         ]);
     }
 
     public static function isHideTodoList(): bool
     {
-        return self::setting()->setting_value == 11;
+        return self::setting()->setting_value == 12;
     }
 
     public static function isTodoItemCompleted(string $itemName): bool
