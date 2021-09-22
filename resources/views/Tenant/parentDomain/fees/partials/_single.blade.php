@@ -33,12 +33,13 @@
             <p class="text-blue-100 py-1">
                 {{ str_replace('-', '/', $wardSchoolFee->academicSession->session_name)  }}
                 academic session,
-                {{strOrdinal($wardSchoolFee->academicSession->term)}}
+                {{strOrdinal($wardSchoolFee->academicSession->getTerm->number)}}
                 term.
             </p>
         </div>
         <div class="w-2/5">
-            <div class="flex justify-between py-1">
+            @if($wardSchoolFee->status)
+                <div class="flex justify-between py-1">
                 <div>
                     <p class="text-sm">Status</p>
                 </div>
@@ -48,15 +49,10 @@
                     </p>
                 </div>
             </div>
+            @endif
             <div class="flex justify-end">
                 <div class="py-5">
                     @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
-{{--                        <form action="{{route('payWardFee',[$wardSchoolFee->uuid, $wardSchoolFee->student_id])}}" method="post">--}}
-{{--                            @csrf--}}
-{{--                            <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm" >--}}
-{{--                                Proceed to payment--}}
-{{--                            </button>--}}
-{{--                        </form>--}}
                         @include('Tenant.parentDomain.fees.partials._flutterwaveCheckout')
                     @else
                         <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $ward->uuid])}}">
@@ -70,7 +66,7 @@
         </div>
     </div>
     <div class="w-full text-center">
-        <span class="text-blue-100">{{$wardSchoolFee->name}}</span>
+        <span class="text-blue-100">{{$wardSchoolFee->academicSession->getTerm->name}}</span>
     </div>
     <div class="pl-2 py-3 mt-10">
         <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">

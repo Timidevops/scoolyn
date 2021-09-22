@@ -15,7 +15,7 @@
     <div class="bg-white rounded-md " x-data="createFeeStructure()">
         <form action="{{route('storeFeeStructure')}}" method="post">
             @csrf
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
                 <div class="mt-2">
                     <label for="feesName" class="block text-sm font-normal text-gray-100">Name</label>
                     <input type="text" name="feesName" id="feesName" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
@@ -24,6 +24,32 @@
                     <label for="feesAmount" class="block text-sm font-normal text-gray-100">Amount</label>
                     <input type="hidden" name="feesAmount" id="feesAmount">
                     <input type="text" name="feesAmountFormatted" id="feesAmountFormatted" class="w-full text-gray-100 py-2 px-2" readonly>
+                </div>
+                <div class="mt-2 relative">
+                    <label for="schoolTerm" class="block text-sm font-normal text-gray-100">Term</label>
+                    <div class="relative inline-block w-full rounded-md ">
+                        <button @click="isTermDropdownOpen = ! isTermDropdownOpen" type="button" class="z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                            <span class="px-2 mr-auto" x-text="termDropdownLabel()"></span>
+                        </button>
+                    </div>
+                    <div class="border border-purple-100 absolute w-full bg-white" x-show.transition="isTermDropdownOpen" @click.away="isTermDropdownOpen = false">
+                        <ul class="py-1 overflow-auto h-32 text-base leading-6
+                       shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                            <template x-for="item in schoolTerms">
+                                <li class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9">
+                                    <label class="flex items-center">
+                                        <input name="schoolTerm[]"
+                                               type="checkbox"
+                                               x-bind:checked="onCheckedTerm(item.name)"
+                                               x-on:change="onToggleTerm(item.name, item.uuid, event.target)"
+                                        >
+                                        <span class="px-1"></span>
+                                        <span x-text="item.name"></span>
+                                    </label>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
                 </div>
                 <div class="mt-2 relative">
                     <label for="schoolClass" class="block text-sm font-normal text-gray-100">Classes</label>
@@ -135,6 +161,27 @@
                 }
                 else {
                     this.selectedClasses.push(item)
+                    event.value = value
+                }
+            },
+
+            schoolTerms: {!! $schoolTerms !!},
+            isTermDropdownOpen: false,
+            selectedTerms: [],
+            termDropdownLabel(){
+                if (this.selectedTerms.length > 0) return this.selectedTerms.join(', ');
+                else return "-- select term --";
+            },
+            onCheckedTerm(item){
+                return this.selectedTerms.indexOf(item) > -1;
+            },
+            onToggleTerm(item, value, event){
+                if (this.onCheckedTerm(item)) {
+                    let getIndex = (element) => element === item;
+                    this.selectedTerms.splice( this.selectedTerms.findIndex(getIndex), 1);
+                }
+                else {
+                    this.selectedTerms.push(item)
                     event.value = value
                 }
             }

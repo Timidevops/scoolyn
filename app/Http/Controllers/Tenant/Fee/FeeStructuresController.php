@@ -6,6 +6,7 @@ use App\Actions\Tenant\Fee\CreateNewFeeStructureAction;
 use App\Actions\Tenant\Fee\CreateNewSchoolFeeAction;
 use App\Http\Controllers\Controller;
 use App\Models\Support\Support;
+use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\SchoolFee;
@@ -32,17 +33,28 @@ class FeeStructuresController extends Controller
     {
         return view('Tenant.pages.fees.create', [
             'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
+            'schoolTerms' => AcademicTerm::all(),
         ]);
     }
 
     public function store(Request $request)
     {
-        $schoolFee = (new CreateNewSchoolFeeAction())->execute([
-            'name' => $request->input('feesName'),
-            'amount' => $request->input('feesAmount'),
-        ], $request->input('fee'), $request->input('schoolClass'));
+        $terms = $request->input('schoolTerm');
+        $errors = null;
 
-        if(! $schoolFee){
+        foreach ($terms as $term){
+            $schoolFee = (new CreateNewSchoolFeeAction())->execute([
+                'name' => $request->input('feesName'),
+                'amount' => $request->input('feesAmount'),
+                'term_id' => $term,
+            ], $request->input('fee'), $request->input('schoolClass'));
+
+            if(! $schoolFee){
+                $errors = true;
+            }
+        }
+
+        if($errors){
             Session::flash('errorFlash', 'Fee could not be added');
         }
 
