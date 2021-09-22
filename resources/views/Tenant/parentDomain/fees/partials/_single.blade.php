@@ -14,8 +14,11 @@
         </div>
     </div>
         <a href="{{route('listWardFee')}}">
-            <span class="mt-2text-sm text-gray-300 d-inline">
-                {!! \App\Models\Support\Support::backSvg() !!} School Fees</span>
+            <span class="text-sm text-gray-300 absolute">
+                {!! \App\Models\Support\Support::backSvg() !!}
+            </span>
+            <span class="text-sm text-gray-300 pl-8">
+                 School Fees</span>
         </a>
 </div>
 
