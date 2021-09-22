@@ -4,18 +4,24 @@ namespace App\Http\Livewire\Tenant\Student;
 
 use App\Actions\Tenant\File\ExcelFileReaderAction;
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
+use App\Actions\Tenant\Student\AttachSubjectsToStudents;
 use App\Actions\Tenant\Student\ClassArm\AttachStudentToClassArmAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
 use App\Exceptions\FileNotFoundException;
 use App\Exceptions\InvalidFileFormatException;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\OnboardingTodoList;
+use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Ramsey\Uuid\Uuid;
+use Spatie\SimpleExcel\SimpleExcelWriter;
 
 class UploadStudent extends Component
 {
@@ -47,6 +53,9 @@ class UploadStudent extends Component
     protected $rules = [
         'file' => ['required']
     ];
+    protected $messages = [
+        'file.required' => 'Select a file to upload.',
+    ];
 
     public function render()
     {
@@ -73,23 +82,33 @@ class UploadStudent extends Component
             'first_name',
             'last_name',
             'other_name',
+            'student_id',
             'gender',
             'dob',
-            'address'
+            'address',
+            'parent_code',
         ];
 
         try {
             $this->studentsDetail = (new ExcelFileReaderAction())->execute($file, $format);
         } catch (FileNotFoundException | InvalidFileFormatException $e) {
-
             return;
         }
 
-        $dummyParent = StudentParent::withoutGlobalScope('dummyParent')->find(1);
+        $studentParent = StudentParent::withoutGlobalScope('dummyParent')->find(1);
 
         //add new student with dummy parent..
         foreach ($this->studentsDetail as $student){
-            $newStudent = (new CreateNewStudentAction())->execute($dummyParent, [
+            if($this->studentExist($student['first_name'], $student['last_name'], $student['student_id'])){
+                continue;
+            }
+            $parent = StudentParent::query()->where('code', $student['parent_code'])->get();
+
+            if($parent->isNotEmpty()){
+                $studentParent = $parent->first();
+            }
+
+            $newStudent = (new CreateNewStudentAction())->execute($studentParent, [
                 'first_name' => $student['first_name'],
                 'last_name' => $student['last_name'],
                 'other_name' => $student['other_name'],
@@ -97,12 +116,14 @@ class UploadStudent extends Component
                 'dob' => $student['dob'],
                 'address' => $student['address'],
                 'class_arm' => $this->getClassArm()->uuid,
+                'matriculation_number' => $student['student_id'],
             ]);
 
             (new AttachStudentToClassArmAction())->execute($this->getClassArm(), [
                 'studentId' => (string) $newStudent->uuid,
             ]);
 
+            (new AttachSubjectsToStudents($newStudent))->execute();
         }
 
         //set marker
@@ -180,4 +201,46 @@ class UploadStudent extends Component
         $this->classSectionCategoryDropdown = false;
     }
 
+    private function getStudentsExcelFormat()
+    {
+        return [
+            [
+                'FirstName' => 'John',
+                'LastName' => 'Doe',
+                'OtherName' => 'James',
+                'StudentId' => '123456789',
+                'Gender' => 'male',
+                'DOB' => '12/09/2011',
+                'Address' => '186, Obafemi Awolowo Way, Oke-Ado, Ibadan',
+                'parentCode' => '0315947',
+            ]
+        ];
+    }
+    public function downloadExcelFormat()
+    {
+        $requestRef = Uuid::uuid4()->toString();
+        $fileName = 'ScoolynStudentsUploadFormat_'.$requestRef.'.xlsx';
+        File::makeDirectory(Storage::disk('temp')->path($requestRef));
+        $pathToFile = Storage::disk('temp')->path($requestRef.'/'.$fileName);
+        $studentFormat = $this->getStudentsExcelFormat();
+        SimpleExcelWriter::create($pathToFile)
+            ->addRows($studentFormat);
+        return Storage::disk('temp')->download($requestRef.'/'.$fileName);
+    }
+    public function downloadParentCodes()
+    {
+        $requestRef = Uuid::uuid4()->toString();
+        $fileName = 'ScoolynParentCodes_'.$requestRef.'.xlsx';
+        File::makeDirectory(Storage::disk('temp')->path($requestRef));
+        $pathToFile = Storage::disk('temp')->path($requestRef.'/'.$fileName);
+        $parents = StudentParent::all('title','first_name','last_name','phone_number','code')->toArray();
+        SimpleExcelWriter::create($pathToFile)
+            ->addRows($parents);
+        return Storage::disk('temp')->download($requestRef.'/'.$fileName);
+    }
+
+    private function studentExist($firstName, $lastName, $studentId)
+    {
+        return Student::where('first_name', $firstName)->where('last_name', $lastName)->where('matriculation_number', $studentId)->get()->isNotEmpty();
+    }
 }

@@ -63,8 +63,8 @@
                                     </td>
                                     <td class="md:px-6 py-4 text-left whitespace-nowrap text-sm text-gray-200 flex items-center">
                                         <a :href="`{{route('singleWardFee',['',''])}}/${content.school_fee_id}/${content.uuid}`">
-                                            <button class="focus:outline-none">
-                                                /!/
+                                            <button class="focus:outline-none" title="View Details">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
                                             </button>
                                         </a>
                                     </td>

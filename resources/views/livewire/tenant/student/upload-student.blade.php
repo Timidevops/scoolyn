@@ -17,7 +17,20 @@
             @endforeach
         </div>
     @endif
-
+    <div class="p-4 lg:px-8">
+        <div class="bg-white md:grid-cols-2 gap-6 p-3">
+            Uploading students in bulk can be done in 3 simple steps:
+            <ul>
+                <li>1. Download Parent codes file</li>
+                <li>2. Download the excel format. Use this file to prepare the student information. Student information should be prepared per class. E.g JSS1 A, etc.</li>
+                <li>
+                    3. Select class name and class section from the form below.
+                </li>
+                <li>4. Upload the file for the selected class.</li>
+                <li>5. Click Submit.</li>
+            </ul>
+        </div>
+    </div>
     <div class="p-4 lg:px-8">
         <div class="grid grid-cols-1 bg-white md:grid-cols-2 gap-6 p-3">
             <div class="mt-2 ">
@@ -102,7 +115,15 @@
         </div>
 
         <div class="flex justify-center items-center my-6">
-            <button type="button" class="relative px-2 py-2 bg-gray-100 text-white mx-2 rounded-md">
+            <button wire:click="downloadParentCodes" type="button" class="relative px-2 py-2 bg-gray-100 text-white mx-2 rounded-md">
+                <span class="absolute inset-y-0 left-0 my-3 mx-2 focus:outline-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                  </svg>
+                </span>
+                <span class="mx-5">Download Parent Codes</span>
+            </button>
+            <button wire:click="downloadExcelFormat" type="button" class="relative px-2 py-2 bg-gray-100 text-white mx-2 rounded-md">
                 <span class="absolute inset-y-0 left-0 my-3 mx-2 focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />

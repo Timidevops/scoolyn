@@ -52,6 +52,7 @@ class FeesController extends Controller
             'schoolFees' => $schoolFees,
             'reference' => $reference,
             'ward' => $ward,
+            'payments' => $wardSchoolFee->transactions()->whereNotNull('payment_method_reference')->get(),
         ]);
     }
 

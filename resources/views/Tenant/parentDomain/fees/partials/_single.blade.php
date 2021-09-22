@@ -13,11 +13,13 @@
             </div>
         </div>
     </div>
-        <a href="{{route('listWardFee')}}"><span class="mt-2  text-sm text-gray-300">/!/ School Fees</span></a>
+        <a href="{{route('listWardFee')}}">
+            <span class="mt-2text-sm text-gray-300 d-inline">
+                {!! \App\Models\Support\Support::backSvg() !!} School Fees</span>
+        </a>
 </div>
 
 <div class="bg-white rounded-md py-6 px-6 mt-5">
-
     <div class="flex">
         <div class="w-3/5">
             <h4 class="text-blue-100 py-1">
@@ -36,16 +38,6 @@
             </p>
         </div>
         <div class="w-2/5">
-            <div class="flex justify-between py-1">
-                <div>
-                    <p class="text-sm">Receipt Number:</p>
-                </div>
-                <div class="">
-                    <p class="text-sm text-gray-100">
-                        10029443844
-                    </p>
-                </div>
-            </div>
             <div class="flex justify-between py-1">
                 <div>
                     <p class="text-sm">Status</p>
@@ -77,7 +69,9 @@
             </div>
         </div>
     </div>
-
+    <div class="w-full text-center">
+        <span class="text-blue-100">{{$wardSchoolFee->name}}</span>
+    </div>
     <div class="pl-2 py-3 mt-10">
         <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
             <table class="min-w-full divide-y  divide-purple-100">
@@ -129,5 +123,51 @@
             </table>
         </div>
     </div>
-
+    @if($payments->isNotEmpty())
+        <div class="pl-2 py-3 mt-10">
+            <div class="mb-3">
+            <h2 class="text-blue-100">Payment Details</h2>
+        </div>
+            <div class="align-middle min-w-full overflow-x-auto overflow-hidden">
+                <table class="min-w-full divide-y  divide-purple-100">
+                    <thead>
+                        <tr>
+                            <th class="px-6 py-3  text-left text-sm font-medium text-blue-100">
+                            Payment Date
+                        </th>
+                            <th class="px-6 py-3  text-left text-sm font-medium text-blue-100">
+                            Payment Reference
+                        </th>
+                            <th class="px-6 py-3 text-right  font-medium text-blue-100 text-sm ">
+                            <p class="">
+                                Amount
+                            </p>
+                        </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($payments as $payment)
+                            <tr>
+                                <td class="max-w-0 text-sm px-6 py-4 whitespace-nowrap text-gray-900">
+                                        <span class="text-gray-500 truncate capitalize">
+                                            {{$payment->created_at}}
+                                        </span>
+                                </td>
+                                <td class="max-w-0 text-sm px-6 py-4 whitespace-nowrap text-gray-900">
+                                        <span class="text-gray-500 truncate capitalize">
+                                            {{$payment->payment_method_reference}}
+                                        </span>
+                                </td>
+                                <td class="max-w-0 text-sm text-right px-6 py-4 whitespace-nowrap text-gray-900">
+                                    <p class="text-gray-500 text-right capitalize">
+                                        {{number_format($payment->amount, 2)}}
+                                    </p>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    @endif
 </div>
