@@ -64,22 +64,7 @@ class StudentSubjectsController extends Controller
         ]);
 
 
-        $student = Student::query()->where('uuid', '=', $uuid)->first();
 
-        if( ! $student->subjects ){
-
-            (new CreateNewStudentSubjectAction())->execute($student, [
-                'subjects' => $request->input('subjects'),
-            ]);
-
-            Session::flash('successFlash', 'Subject added successfully!!!');
-
-            return back();
-        }
-
-        $student->subjects->subjects = collect($student->subjects->subjects)->merge($request->input('subjects'));
-
-        $student->subjects->save();
 
         Session::flash('successFlash', 'Subject added successfully!!!');
 

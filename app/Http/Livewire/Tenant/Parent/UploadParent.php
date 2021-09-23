@@ -44,6 +44,9 @@
         protected $rules = [
             'file' => ['required']
         ];
+        protected $messages = [
+            'file.required' => 'Select a file to upload.',
+        ];
 
         public function render()
         {
@@ -97,16 +100,12 @@
 
             } catch (FileNotFoundException | InvalidFileFormatException $e) {
                 Log::info("Error while uploading file. ". $e->getMessage());
-//                Session::flash('errorMessage', "Invalid File supplied. Please ensure you use the correct file format");
-//                $this->redirectRoute('uploadParents');
             }
-
 
             //add new teacher and attach to class
             try{
                 foreach ($this->parentsDetail as $parent) {
                     if (! $this->userExist($parent['email'], $parent['phone_number'])) {
-                        Log::info("User -- ");
                         $password = "password";
 
                         if ($parent['phone_number'] != '') {
@@ -121,6 +120,7 @@
                                 'phone' => $parent['phone_number'],
                                 'password' => $password
                             ]);
+                                $user->assignRole(User::PARENT_USER);
                                 (new CreateNewParentAction())->execute($user, [
                                 'first_name' => $parent['first_name'],
                                 'last_name' => $parent['last_name'],

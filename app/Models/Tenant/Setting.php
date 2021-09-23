@@ -91,6 +91,13 @@ class Setting extends Model
         return $setting->setting_value;
     }
 
+    public static function getCurrentAcademicSession()
+    {
+        $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
+
+        return AcademicSession::whereUuid($setting->setting_value)->first();
+    }
+
     public static function getCurrentAcademicCalendarInWord(): String
     {
         $setting = self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->first();
@@ -105,6 +112,8 @@ class Setting extends Model
     }
 
     public static function isAcademicCalendarSet(): bool
+
+
     {
         return self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->exists();
     }

@@ -18,18 +18,18 @@ class FeesController extends Controller
 {
     public function index(Request $request)
     {
+        if(Setting::getCurrentAcademicSession()->getTerm()->doesntExist()){
+            Session::flash('errorFlash', 'No fees have been set for the current term.');
+            return back();
+        }
         $parent = Auth::user()->parent;
-
-//        $wards  =  $parent->ward()->with(['classArm', 'classArm.schoolClass','classArm.schoolClass.schoolFees'])->get();
         $wards = $parent->ward->map(function ($student){
-            $student['fee_amount'] = Support::moneyFormat($student->classArm->schoolClass->schoolFees->amount);
-            $student['school_fee_id'] = $student->classArm->schoolClass->schoolFees->uuid;
+            $schoolFee = $student->classArm->schoolClass->schoolFees()->where('term_id', Setting::getCurrentAcademicSession()->getTerm->uuid)->get()->first();
+
+            $student['fee_amount'] = Support::moneyFormat($schoolFee->amount);
+            $student['school_fee_id'] = $schoolFee->uuid;
             return $student;
         });
-
-        //$schoolFees = SchoolFee::query()->whereIn('student_id', $wards)->get();
-
-        //$schoolFees->load(['student', 'academicSession']);
 
         return view('livewire.tenant.parent-domain.fees.index', [
             'schoolFees' => $wards,
@@ -42,7 +42,6 @@ class FeesController extends Controller
         $parent = Auth::user()->parent;
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
-
         $wardSchoolFee = $ward->classArm->schoolClass->schoolFees;
         $schoolFees = $wardSchoolFee->feesItems;
         $reference = generateUniqueReference('12','rp_');
@@ -52,15 +51,14 @@ class FeesController extends Controller
             'schoolFees' => $schoolFees,
             'reference' => $reference,
             'ward' => $ward,
+            'payments' => $wardSchoolFee->transactions()->whereNotNull('payment_method_reference')->get(),
         ]);
     }
 
     public function store(string $uuid, string $studentId)
     {
         $parent = Auth::user()->parent;
-
         $ward = $parent->ward()->where('uuid', $studentId)->first() ?? false;
-
         $wardSchoolFee = $ward ? $ward->classArm->schoolClass->schoolFees()->where('uuid', $uuid)->first() : false;
 
         if( ! $ward || ! $wardSchoolFee ){
@@ -69,20 +67,6 @@ class FeesController extends Controller
         }
 
         $reference = generateUniqueReference('12','rp_');
-
-        //call checkout initiation
-//        $response = (new InitializeCheckoutAction)->execute([
-//            'reference' => $reference,
-//            'amount' => $wardSchoolFee->amount,
-//            'email' => $parent->email,
-//            'callbackUrl' => route('getSchoolFeesCallback'),
-//        ]);
-//        if ( ! $response ){
-//            Session::flash('errorFlash', 'Error processing request.');
-//
-//            return back();
-//        }
-
         //create transaction
         (new CreateNewTransactionAction())->execute([
             'reference'      => $reference,
