@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Tenant\AcademicSession;
 
 use App\Actions\Tenant\AcademicSession\CreateNewAcademicSessionAction;
+use App\Actions\Tenant\AcademicSession\ProcessNewSessionAction;
 use App\Actions\Tenant\AcademicTerm\CreateNewAcademicTermAction;
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
+use App\Actions\Tenant\Setting\IsSessionCompletedAction;
 use App\Actions\Tenant\Setting\SetCurrentAcademicCalendarAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicSession;
@@ -14,6 +16,7 @@ use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
 use function Spatie\Backup\BackupDestination\exists;
@@ -42,9 +45,14 @@ class AcademicSessionsController extends Controller
             ]);
         }
 
+        $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
+
+        $possibleNexSession = $currentSession->session_year + 1 ."/". (($currentSession->session_year + 1) + 1 );
+
         return  view('Tenant.pages.setting.academicCalendar.edit', [
             'terms' => AcademicTerm::query()->get(['name', 'uuid']),
-            'currentSession' => AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId()),
+            'currentSession' => $currentSession,
+            'possibleNexSession' => $possibleNexSession,
         ]);
     }
 
@@ -56,25 +64,52 @@ class AcademicSessionsController extends Controller
 
         $this->validate($request, [
             'term'    => ['required', 'exists:'.config('env.tenant.tenantConnection').'.academic_terms,uuid'],
-            'sessionName' => ['required'],
-            'sessionYear' => ['required'],
+            //'sessionName' => ['required', 'unique:'.config('env.tenant.tenantConnection').'.academic_sessions,session_name'],
+            //'sessionYear' => ['required', 'unique:'.config('env.tenant.tenantConnection').'.academic_sessions,session_year'],
         ]);
+
+        if ( ! (new IsSessionCompletedAction)->execute() ){
+            Session::flash('warningFlash', 'Cannot change session, pending report and term sheet.');
+
+            return back();
+        }
 
         $sessionName = str_replace(' ', '/', $request->input('sessionName'));
 
         $request['sessionName'] = str_replace('-', '/', $sessionName);
 
-        $academicSession = (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear', 'term')));
+        try {
+            DB::beginTransaction();
 
-        (new SetCurrentAcademicCalendarAction())->execute([
-            'setting_name'  => Setting::ACADEMIC_CALENDAR_SETTING,
-            'setting_value' => (string) $academicSession->uuid,
-        ]);
+            //$academicSession = (new CreateNewAcademicSessionAction())->execute(camel_to_snake($request->only('sessionName','sessionYear', 'term')));
 
-        //set marker
-        (new UpdateTodoItemAction())->execute([
-            'name' => OnboardingTodoList::SET_ACADEMIC_CALENDAR
-        ]);
+            $academicSession = AcademicSession::find(2);
+
+            if ( AcademicSession::all()->last()->exists() ){
+                //@todo retain previous session data --
+                (new ProcessNewSessionAction($academicSession))->execute();
+            }
+
+            (new SetCurrentAcademicCalendarAction())->execute([
+                'setting_name'  => Setting::ACADEMIC_CALENDAR_SETTING,
+                'setting_value' => (string) $academicSession->uuid,
+            ]);
+
+            //set marker
+            (new UpdateTodoItemAction())->execute([
+                'name' => OnboardingTodoList::SET_ACADEMIC_CALENDAR
+            ]);
+
+            DB::commit();
+        }
+        catch (\Exception $exception){
+            //@todo log
+            dd($exception);
+            DB::rollBack();
+
+            Session::flash('errorFlash', 'Error creating academic session, try again.');
+            return back();
+        }
 
         Session::flash('successFlash', 'Current Academic Calendar set Successfully!!!');
 

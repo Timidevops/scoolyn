@@ -16,6 +16,7 @@ use App\Models\Tenant\ClassSectionCategoryType;
 use App\Models\Tenant\ClassSectionType;
 use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
+use App\Models\Tenant\Setting;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -99,6 +100,7 @@ class AddClassSection extends Component
             'school_class_id' => $schoolClassId,
             'class_section_id' => $classSectionTypeId,
             'class_section_category_id' => $classSectionCategoryTypeId,
+            'academic_session_id' => Setting::getCurrentAcademicSessionId(),
         ]);
 
         //set marker

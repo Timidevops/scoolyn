@@ -91,6 +91,13 @@ class ClassArm extends Model
         return (collect($this->students)->contains($studentId));
     }
 
+    public function getStudents()
+    {
+        return collect($this->students)->map(function ($student){
+            return Student::whereUuid($student);
+        });
+    }
+
     public function teacher()
     {
         return $this->hasOne(Teacher::class, 'uuid', 'class_teacher');

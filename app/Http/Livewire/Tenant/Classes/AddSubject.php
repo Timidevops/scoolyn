@@ -6,6 +6,7 @@ use App\Actions\Tenant\SchoolClass\ClassSubject\CreateNewClassSubjectAction;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolSubject;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Subject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
@@ -84,6 +85,7 @@ class AddSubject extends Component
                 'school_class_id' => $this->schoolClass->uuid,
                 'class_section_id' => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
                 'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
+                'academic_session_id' => Setting::getCurrentAcademicSessionId(),
             ]);
         }
 

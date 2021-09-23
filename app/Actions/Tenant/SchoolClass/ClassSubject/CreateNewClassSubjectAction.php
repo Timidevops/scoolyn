@@ -14,7 +14,6 @@ class CreateNewClassSubjectAction
     {
         $input['uuid'] = Uuid::uuid4();
 
-        $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
         $input['code'] = random_number(0, 9, 7);
 
         ClassSubject::query()->create($input);
