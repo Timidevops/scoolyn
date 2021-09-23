@@ -72,8 +72,10 @@ class AcademicBroadsheetsController extends Controller
         // get c.a format for class
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
 
+
+
         if( ! $caFormat ){
-            Session::flash('warningFlash', 'Cannot process request, kindly contact school admin.');
+            Session::flash('warningFlash', 'Cannot process request, C.A format missing kindly contact school admin.');
             return back();
         }
 

@@ -163,7 +163,7 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                     Route::get('fee/student/{uuid}', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'index'])->name('listStudentFee');
                     Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
 
-                    Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
+                    //Route::post('school-fee/{uuid}', [\App\Http\Controllers\Tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
 
                     Route::get('fee/student/{uuid}/receipt', [\App\Http\Controllers\Tenant\Fee\ReceiptsController::class, 'index'])->name('listStudentReceipt');
 

@@ -5,6 +5,7 @@
 
 
     use App\Actions\Tenant\Student\StudentSubject\CreateNewStudentSubjectAction;
+    use App\Models\Tenant\Setting;
     use App\Models\Tenant\Student;
     use Illuminate\Support\Facades\Session;
 
@@ -17,8 +18,15 @@
             $this->student = $student;
         }
 
-        public function execute(array $subjectIds = null) : bool
+        public function execute(array $subjectIds = null, string $newSessionId = '') : bool
         {
+            if( $newSessionId ){
+                (new CreateNewStudentSubjectAction())->execute($this->student, [
+                    'subjects' => $subjectIds,
+                    'academic_session_id' => $newSessionId,
+                ]);
+            }
+
             if( $this->student->subjects()->doesntExist() ){
 
                 if(empty($subjectIds)){
@@ -27,6 +35,7 @@
 
                 (new CreateNewStudentSubjectAction())->execute($this->student, [
                     'subjects' => $subjectIds,
+                    'academic_session_id' => Setting::getCurrentAcademicSessionId(),
                 ]);
 
                 return true;
@@ -45,6 +54,8 @@
 
         private function fetchClassSubjects() : array
         {
-            return $this->student->classArm->classSubjects()->get('uuid')->toArray();
+            return $this->student->classArm->getClassSubjects()->map(function ($classSubject){
+                return $classSubject->uuid;
+            });
         }
     }

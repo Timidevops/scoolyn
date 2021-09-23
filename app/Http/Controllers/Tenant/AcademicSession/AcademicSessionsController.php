@@ -7,6 +7,7 @@ use App\Actions\Tenant\AcademicSession\ProcessNewSessionAction;
 use App\Actions\Tenant\AcademicTerm\CreateNewAcademicTermAction;
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Setting\IsSessionCompletedAction;
+use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\UpdateReportCardBreakdownFormatSettingAction;
 use App\Actions\Tenant\Setting\SetCurrentAcademicCalendarAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicSession;
@@ -93,6 +94,11 @@ class AcademicSessionsController extends Controller
             (new SetCurrentAcademicCalendarAction())->execute([
                 'setting_name'  => Setting::ACADEMIC_CALENDAR_SETTING,
                 'setting_value' => (string) $academicSession->uuid,
+            ]);
+
+            (new UpdateReportCardBreakdownFormatSettingAction)->execute([
+                'setting_name'  => Setting::REPORT_CARD_BREAKDOWN_FORMAT_SETTING,
+                'setting_value' => (string) ReportCardBreakdownFormat::query()->first()->uuid,
             ]);
 
             //set marker

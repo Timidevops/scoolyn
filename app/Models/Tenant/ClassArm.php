@@ -86,6 +86,28 @@ class ClassArm extends Model
             ->withoutGlobalScope('teacher');
     }
 
+    public function getClassSubjects(bool $withScope = true, string $newAcademicSession = '')
+    {
+        $classSubjects =  $this->classSubject();
+        if ( ! $withScope ){
+           $classSubjects =  $this->classSubject()
+               ->withoutGlobalScope('academicSession')
+               ->where('academic_session_id', $newAcademicSession);
+        }
+
+        return $classSubjects->get()->map(function ($classSubject){
+            if( $classSubject->classArm ){
+                return $classSubject;
+            }
+            elseif( $classSubject->class_section_id === $this->class_section_id && $classSubject->class_section_category_id == $this->class_section_category_id ){
+                return $classSubject;
+            }
+            else{
+                return $classSubject;
+            }
+        });
+    }
+
     public function hasStudent(string $studentId)
     {
         return (collect($this->students)->contains($studentId));
