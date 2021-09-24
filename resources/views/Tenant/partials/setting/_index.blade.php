@@ -4,7 +4,7 @@
             Settings
         </div>
     </div>
-    <div class="bg-white rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
+    <div class="bg-white mt-8 rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
         <div class="w-full space-y-4 px-5">
             @can('read set academic session')
                 <div>

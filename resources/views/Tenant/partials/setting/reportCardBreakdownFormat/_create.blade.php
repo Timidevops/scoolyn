@@ -10,7 +10,7 @@
                 @endforeach
             </div>
         @endif
-        <div class="p-4 w-2/5">
+        <div class="p-4">
             <div class="mt-2">
                 <label for="numberOfReport" class="block text-sm font-normal text-gray-100">Number of Report card per term. <span class="text-red-100">*</span></label>
                 <input x-model="numberOfReport" @input="onchangeNumberOfReport()" type="text" name="numberOfReport" id="numberOfReport" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">

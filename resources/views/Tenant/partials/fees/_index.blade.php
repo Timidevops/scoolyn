@@ -6,7 +6,7 @@
         <span class="mt-2 text-base text-gray-300">{{$totalFees}} Total Fees</span>
     </div>
 
-    <div class="bg-white rounded-md" x-data="fees()">
+    <div class="bg-white rounded-md mt-8 px-4 py-4" x-data="fees()">
         <div class="md:flex md:items-center md:mt-2 ">
             <a href="{{route('createFeeStructure')}}" class="bg-blue-100 text-white rounded-md py-3 mx-2 md:w-1/4 w-1/3  text-sm flex items-center" >
         <span class="mx-2">
