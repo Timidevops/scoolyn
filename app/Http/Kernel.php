@@ -10,6 +10,7 @@ use App\Http\Middleware\Landlord\IsSubscriptionActiveMiddleware;
 use App\Http\Middleware\Tenant\CheckIfAdmissionIsOnMiddleware;
 use App\Http\Middleware\Tenant\CheckIfUserIsSuspendedMiddleware;
 use App\Http\Middleware\Tenant\IsAcademicCalendarSetMiddleware;
+use App\Http\Middleware\Tenant\IsClassArmNullOrEmptyMiddleware;
 use App\Http\Middleware\Tenant\IsPaymentOptionOnMiddleware;
 use App\Http\Middleware\Tenant\IsReportCardBreakdownFormatSetMiddleware;
 use App\Http\Middleware\Tenant\VerifyCallbackMiddleware;
@@ -86,6 +87,7 @@ class Kernel extends HttpKernel
         'tenant.academicCalendar.confirm' => IsAcademicCalendarSetMiddleware::class,
         'tenant.reportCardBreakdownFormat.confirm' => IsReportCardBreakdownFormatSetMiddleware::class,
         'tenant.paymentOption.confirm' => IsPaymentOptionOnMiddleware::class,
+        'tenant.classArm.isNullOrEmpty' => IsClassArmNullOrEmptyMiddleware::class,
         'landlord.checkOnboard' => CheckOnboardMiddleware::class,
         'landlord.checkCurrentTenant' => CheckCurrentTenantMiddleware::class,
         'landlord.isSubscriptionActive' => IsSubscriptionActiveMiddleware::class,

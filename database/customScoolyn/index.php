@@ -8,7 +8,6 @@ use Database\Seeders\Tenant\AcademicTermSeeder;
 use Database\Seeders\Tenant\NewPermissionSeeder;
 use Database\Seeders\Tenant\PermissionSeeder;
 use Database\Seeders\Tenant\RoleSeeder;
-use Database\Seeders\Tenant\SchoolClassesSeeder;
 use Database\Seeders\Tenant\SubjectSeeders;
 use Illuminate\Database\Seeder;
 
@@ -21,9 +20,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        ScoolynTenant::checkCurrent()
-            ? $this->runTenantSpecificSeeders()
-            : $this->runLandlordSpecificSeeders();
+        $this->runTenantSpecificSeeders();
+//        ScoolynTenant::checkCurrent()
+//            ? $this->runTenantSpecificSeeders()
+//            : $this->runLandlordSpecificSeeders();
     }
 
     public function runTenantSpecificSeeders()
@@ -35,7 +35,6 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SubjectSeeders::class,
             AcademicTermSeeder::class,
-            SchoolClassesSeeder::class,
         ]);
     }
 

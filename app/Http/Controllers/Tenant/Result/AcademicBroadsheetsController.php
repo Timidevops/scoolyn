@@ -72,8 +72,6 @@ class AcademicBroadsheetsController extends Controller
         // get c.a format for class
         $caFormat = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classSubject->school_class_id)->first();
 
-
-
         if( ! $caFormat ){
             Session::flash('warningFlash', 'Cannot process request, C.A format missing kindly contact school admin.');
             return back();
@@ -108,7 +106,7 @@ class AcademicBroadsheetsController extends Controller
 
                 $subjectDetail['previousReportCard'] = null;
 
-                $classArm = ClassArm::whereUuid($classArmId)->first();
+                $classArm = ClassArm::withoutGlobalScope('teacher')->whereUuid($classArmId)->first();
 
                 if( ! $this->classSubject->academicBroadsheet()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() ){
                     if ( $this->classSubject->academicBroadsheet ){
@@ -314,7 +312,7 @@ class AcademicBroadsheetsController extends Controller
             'classArm.required' => 'Error submitting, try again',
         ]);
 
-        $this->classSubject = ClassSubject::whereUuid($uuid)->withoutGlobalScope('teacher')->first(); //$teacher->subjectTeacher()->where('uuid', $uuid)->first();
+        $this->classSubject = ClassSubject::whereUuid($uuid)->withoutGlobalScope('teacher')->first();
 
         $academicBroadsheet = $this->classSubject->academicBroadsheet()
             ->where('class_arm', $request->input('classArm'))

@@ -10,6 +10,7 @@ use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\AcademicSession;
 use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\ReportCardBreakdownFormat;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Database\Eloquent\Model;
@@ -42,7 +43,7 @@ class GenerateResultSheetAction
 
         $this->studentBroadsheets = $studentBroadsheets;
 
-        $this->studentBroadsheets = (new UpdateStudentBroadsheetsOrStudentReportWithStudentPosition)->execute($this->studentBroadsheets);//$this->updateStudentBroadsheetsWithStudentPosition();
+        $this->studentBroadsheets = (new UpdateStudentBroadsheetsOrStudentReportWithStudentPosition)->execute($this->studentBroadsheets);
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
@@ -95,45 +96,26 @@ class GenerateResultSheetAction
 
         $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
 
-        if ( $currentSession->term == $lastTerm->uuid){
+        $lastReport = ReportCardBreakdownFormat::all()->last();
+
+        if ( $currentSession->term == $lastTerm->uuid && Setting::getCurrentCardBreakdownFormat() == $lastReport->uuid){
             GenerateSessionResultJob::dispatch($classArm);
         }
     }
 
-    private function updateStudentBroadsheetsWithStudentPosition()
-    {
-        $totalMarkObtained = [];
-
-        foreach ($this->studentBroadsheets as $key => $studentBroadsheet){
-            $totalMarkObtained [$key] = $studentBroadsheet['totalMarkObtained'];
-        }
-
-        $positions = getPosition($totalMarkObtained, 'classPosition');
-
-        collect($positions)->map(function ($item, $key){
-
-            $studentBroadsheet = collect($this->studentBroadsheets)->get($key);
-
-            $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $item['classPosition'])->toArray();
-        });
-
-        return $this->studentBroadsheets;
-
-    }
-
     private function updateStudentBroadsheetWithStudentMetric()
     {
+        $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
 
         foreach ($this->studentBroadsheets as $key => $broadsheet){
-            $this->getSubjectMetric($key, $broadsheet['subjects']);
+            $this->getSubjectMetric($key, $broadsheet['subjects'], $subjectMetrics);
         }
 
         return $this->studentBroadsheets;
     }
 
-    private function getSubjectMetric($studentId, array $subjectIds)
+    private function getSubjectMetric($studentId, array $subjectIds, array $subjectMetrics)
     {
-        $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
 
         foreach ($subjectIds as $key => $subjectId){
 

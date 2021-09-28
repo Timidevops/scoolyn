@@ -1,5 +1,5 @@
 <div x-data="reportCard()">
-    <form action="{{route('updateReportCardBreakdownFormatSetting')}}" method="post">
+    <form action="{{route('createReportCardBreakdownFormatSetting')}}" method="post">
         @csrf
         @if($errors->any())
             <div class="mt-1 mb-5 bg-red-100 p-5">
@@ -11,7 +11,7 @@
             </div>
         @endif
         <div class="p-4">
-            <div class="mt-2">
+            <div class="mt-2 w-2/5">
                 <label for="numberOfReport" class="block text-sm font-normal text-gray-100">Number of Report card per term. <span class="text-red-100">*</span></label>
                 <input x-model="numberOfReport" @input="onchangeNumberOfReport()" type="text" name="numberOfReport" id="numberOfReport" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
             </div>
@@ -21,7 +21,7 @@
                 <div class="w-2/5">
                     <div class="mt-2">
                         <label for="nameOfReport" class="block text-sm font-normal text-gray-100">Name of <span x-text="contentIndex +1"></span> report card <span class="text-red-100">*</span></label>
-                        <input id="nameOfReport" type="text" @input="onchangeNumberOfCA()" name="nameOfReport[]" :id=`numberOfCA_${contentIndex}` class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
+                        <input id="nameOfReport" type="text" name="nameOfReport[]" :id=`numberOfCA_${contentIndex}` class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
                     </div>
                 </div>
             </div>

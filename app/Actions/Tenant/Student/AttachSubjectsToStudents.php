@@ -20,12 +20,13 @@
 
         public function execute(array $subjectIds = null, string $newSessionId = '') : bool
         {
-            if( $newSessionId ){
-                (new CreateNewStudentSubjectAction())->execute($this->student, [
-                    'subjects' => $subjectIds,
-                    'academic_session_id' => $newSessionId,
-                ]);
-            }
+//            if( $newSessionId ){
+//                (new CreateNewStudentSubjectAction())->execute($this->student, [
+//                    'subjects' => $subjectIds,
+//                    'academic_session_id' => $newSessionId,
+//                ]);
+//                return true;
+//            }
 
             if( $this->student->subjects()->doesntExist() ){
 
@@ -56,6 +57,6 @@
         {
             return $this->student->classArm->getClassSubjects()->map(function ($classSubject){
                 return $classSubject->uuid;
-            });
+            })->toArray();
         }
     }

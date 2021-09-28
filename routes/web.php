@@ -179,7 +179,8 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                 Route::get('academic-session', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'index'])->name('listAcademicCalendar');
                 Route::get('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'create'])->name('academicSession');
-                Route::post('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession');
+                Route::post('academic-calendar', [\App\Http\Controllers\Tenant\AcademicSession\AcademicSessionsController::class, 'store'])->name('storeAcademicSession')
+                    ->middleware('tenant.classArm.isNullOrEmpty');
 
                 Route::get('admission', [\App\Http\Controllers\Tenant\Setting\AdmissionSettingsController::class, 'edit'])->name('admissionSetting')->middleware('tenant.academicCalendar.confirm');
                 Route::post('admission', [\App\Http\Controllers\Tenant\Setting\AdmissionSettingsController::class, 'update'])->name('storeAdmissionSetting')->middleware('tenant.academicCalendar.confirm');
@@ -195,7 +196,9 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::post('school-detail/logo', [\App\Http\Controllers\Tenant\Setting\SchoolLogoController::class, 'update'])->name('updateSchoolLogo');
 
                 Route::get('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'edit'])->name('reportCardBreakdownFormatSetting');
-                Route::post('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'update'])->name('updateReportCardBreakdownFormatSetting');
+                Route::post('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'create'])->name('createReportCardBreakdownFormatSetting');
+                Route::patch('report-card-breakdown-format', [\App\Http\Controllers\Tenant\Setting\ReportCardBreakdownFormatsController::class, 'update'])->name('updateReportCardBreakdownFormatSetting')
+                    ->middleware('tenant.classArm.isNullOrEmpty');
 
                 Route::get('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'edit'])->name('frontendSetting');
                 Route::post('frontend', [\App\Http\Controllers\Tenant\Setting\FrontendSettingsController::class, 'update'])->name('updateFrontendSetting');

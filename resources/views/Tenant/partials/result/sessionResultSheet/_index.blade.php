@@ -183,11 +183,11 @@
                                 </span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}')"></span>
+                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['overallTermTotalAvg']}}')"></span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['subjectMetric']['total']}}')}`" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['overallTermTotalAvg']}}')}`" x-text="getGradeName('{{$subject['overallTermTotalAvg']}}', 'comment')"></span>
                                 </span>
                                 </td>
                             </tr>

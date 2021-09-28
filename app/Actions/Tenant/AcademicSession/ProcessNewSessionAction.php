@@ -8,6 +8,7 @@ use App\Actions\Tenant\ClassArm\CreateNewClassArmAction;
 use App\Actions\Tenant\Fee\CreateNewSchoolFeeAction;
 use App\Actions\Tenant\SchoolClass\ClassSubject\CreateNewClassSubjectAction;
 use App\Actions\Tenant\Student\AttachSubjectsToStudents;
+use App\Actions\Tenant\Student\StudentSubject\CreateNewStudentSubjectAction;
 use App\Models\Tenant\AcademicSession;
 use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
@@ -86,12 +87,29 @@ class ProcessNewSessionAction
 
                 //update student class -- promoting student
                 $classArm->getStudents()->map(function ($student) use($newClassArm, $classArm){
+                    //retain student subjects
+                    $this->retainStudentSubject($student, $newClassArm);
+
                     $student->update([
                         'class_arm' => $newClassArm->uuid,
                     ]);
-                    //retain student subjects
-                    $this->retainStudentSubject($student, $classArm);
                 });
+            }
+
+            if($classArm->schoolClass->level == 3){
+
+                $dummyClassArm = ClassArm::withoutGlobalScope('dummyClassArm')->where('id', 1)->first();
+
+                $classArm->getStudents()->map(function ($student) use($dummyClassArm){
+
+                    $student->update([
+                        'class_arm' => $dummyClassArm->uuid,
+                    ]);
+                });
+
+                $dummyClassArm->update([
+                    'academic_session_id' => $this->academicSession->uuid,
+                ]);
             }
         }
     }
@@ -108,7 +126,7 @@ class ProcessNewSessionAction
             (new CreateNewClassSubjectAction)->execute([
                 'subject_id' => $classSubject->subject_id,
                 'class_arm' => $classSubject->class_arm == null ? null : ($classArms->isEmpty() ? null : $classArms),
-                'school_class_id' => $nextClass->school_class_id,
+                'school_class_id' => $nextClass->uuid,
                 'class_section_id' => $classSubject->class_section_id ?? null,
                 'class_section_category_id' => $classSubject->class_section_category_id ?? null,
                 'academic_session_id' => $this->academicSession->uuid,
@@ -123,6 +141,11 @@ class ProcessNewSessionAction
             return $classSubject->uuid;
         })->toArray();
 
-        (new AttachSubjectsToStudents($student))->execute($classSubjectIds, $this->academicSession->uuid);
+        //(new AttachSubjectsToStudents($student))->execute($classSubjectIds, $this->academicSession->uuid);
+
+        (new CreateNewStudentSubjectAction())->execute($student, [
+            'subjects' => $classSubjectIds,
+            'academic_session_id' => $this->academicSession->uuid,
+        ]);
     }
 }

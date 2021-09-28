@@ -112,8 +112,6 @@ class Setting extends Model
     }
 
     public static function isAcademicCalendarSet(): bool
-
-
     {
         return self::query()->where('setting_name', self::ACADEMIC_CALENDAR_SETTING)->exists();
     }

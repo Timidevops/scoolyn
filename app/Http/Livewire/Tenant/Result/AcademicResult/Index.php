@@ -66,7 +66,7 @@ class Index extends Component
         }
 
         //initial class arm result status;
-        //$this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
+        $this->classArm->setStatus(ClassArm::GENERATING_RESULT_STATUS);
 
         GenerateResultJob::dispatch($this->classArm);
 

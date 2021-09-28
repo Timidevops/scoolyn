@@ -10,7 +10,7 @@
         </div>
         <div class="mt-2">
             <label for="sessionYear" class="block text-sm font-normal text-gray-100">Session year</label>
-            <input type="text" placeholder="{{$currentSession['session_year'] + 1 ?? '2021'}}" name="sessionYear" id="sessionYear" value="{{old('sessionYear')}}" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 @error('sessionYear') border-red-100 @else border-purple-100 @enderror" required>
+            <input type="text" placeholder="{{ $currentSession ? $currentSession['session_year'] + 1 ?? '2021'  : '2021'}}" name="sessionYear" id="sessionYear" value="{{old('sessionYear')}}" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 @error('sessionYear') border-red-100 @else border-purple-100 @enderror" required>
             @error('sessionYear')
             <p class="text-red-100 text-sm">{{$message}}</p>
             @enderror

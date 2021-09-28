@@ -40,6 +40,7 @@ class ClassArm extends Model
     protected static function booted()
     {
         parent::boot();
+
         if (auth()->check()) {
 
             if ( ! Auth::user()->hasRole(User::SUPER_ADMIN_USER) ) {

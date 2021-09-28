@@ -26,6 +26,10 @@ class FeesController extends Controller
         $wards = $parent->ward->map(function ($student){
             $schoolFee = $student->classArm->schoolClass->schoolFees()->where('term_id', Setting::getCurrentAcademicSession()->getTerm->uuid)->get()->first();
 
+            if( ! $schoolFee ){
+                return  [];
+            }
+
             $student['fee_amount'] = Support::moneyFormat($schoolFee->amount);
             $student['school_fee_id'] = $schoolFee->uuid;
             return $student;
@@ -59,7 +63,7 @@ class FeesController extends Controller
     {
         $parent = Auth::user()->parent;
         $ward = $parent->ward()->where('uuid', $studentId)->first() ?? false;
-        $wardSchoolFee = $ward ? $ward->classArm->schoolClass->schoolFees()->where('uuid', $uuid)->first() : false;
+        $wardSchoolFee = $ward ? $ward : false;
 
         if( ! $ward || ! $wardSchoolFee ){
             Session::flash('errorFlash', 'Error processing request');

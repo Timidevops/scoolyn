@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 class EvaluateSubjectMetricsAction
 {
     public array $subjectScore;
+    public array $academicBroadsheetScore;
 
     public function execute(Model $classArm)
     {
@@ -34,21 +35,38 @@ class EvaluateSubjectMetricsAction
 
         foreach ($classSubjects as $classSubject){
 
-            $academicBroadsheet =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->
-                where('report_card', Setting::getCurrentCardBreakdownFormat())
-                ->first();
-
             $academicBroadsheets =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)
                 ->get();
 
-            $getAllBroadsheetWithCaFormat = [];
+//            if ( $academicBroadsheets->count() <= 1 ){
+//
+//                $academicBroadsheets =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->
+//                where('report_card', Setting::getCurrentCardBreakdownFormat())
+//                    ->first();
+//
+//                $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($academicBroadsheets->meta)->get('academicBroadsheet') );
+//
+//                return $classSubjectBroadsheet;
+//            }
+
+            $academicBroadsheet =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->
+            where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
+
+            $getAllBroadsheetWithCaFormats = [];
 
             foreach ( collect(collect($academicBroadsheet->meta)->get('academicBroadsheet'))->keys() as $studentId){
-
-                $getAllBroadsheetWithCaFormat = (new GetAllBroadsheetWithCaFormatAction($studentId))->execute($academicBroadsheets);
+                $getAllBroadsheetWithCaFormats []  = (new GetAllBroadsheetWithCaFormatAction($studentId))->execute($academicBroadsheets);
             }
 
-            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( ($getAllBroadsheetWithCaFormat['academicBroadsheets']) );
+            collect($getAllBroadsheetWithCaFormats)->map(function ($broadsheet){
+                collect($broadsheet['academicBroadsheets'])->map(function ($item, $index){
+                    $this->academicBroadsheetScore [$index] = $item;
+                })->toArray();
+            })->toArray();
+
+            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( $this->academicBroadsheetScore );
+
         }
 
         return $classSubjectBroadsheet;
@@ -58,20 +76,38 @@ class EvaluateSubjectMetricsAction
     {
         $subjectScores = [];
 
-        foreach ($broadsheets as $key => $broadsheet){
+        $subjectMetrics = [];
+
+        foreach ( $broadsheets as $key => $broadsheet){
+            //@todo if not 3rd term
+//            $subjectScores[$key] = collect($broadsheet['total'])->sum();
+//
+//            $subjectMetrics [$key]['total'] = $broadsheet['total'];
+
+
             $subjectScores[$key] = collect($broadsheet)->sum();
+
+            $subjectMetrics [$key]['total'] = collect($broadsheet)->sum();
         }
 
-        $this->subjectScore = $subjectScores;
+        $getSubjectMetrics = (new GetSubjectMetricAction)->execute($subjectScores);
 
-        return (new GetSubjectMetricAction)->execute($subjectScores);//$this->getSubjectMetric($subjectScores);
+        return collect($subjectMetrics)->map(function ($subjectMetric, $key) use ($getSubjectMetrics){
+            $subjectMetrics ['subjectPosition'] = $getSubjectMetrics[$key]['subjectPosition'];
+
+            $subjectMetrics ['classAverage']    = $getSubjectMetrics[$key]['classAverage'];
+
+            $subjectMetrics ['total']    = $subjectMetric['total'];
+
+            return $subjectMetrics;
+        });
     }
 
     private function getSubjectMetric(array $subjectScores)
     {
         $studentPositions = getPosition($subjectScores, 'subjectPosition');
 
-        $classAvg = $this->getClassSubjectAverage($subjectScores);
+        $classAvg = 0;//$this->getClassSubjectAverage($subjectScores);
 
         return collect($studentPositions)->map(function ($item, $index) use($classAvg, $subjectScores){
             $item['classAverage'] = $classAvg;

@@ -1,6 +1,7 @@
 <div class="">
     <form action="{{route('updateReportCardBreakdownFormatSetting')}}" method="post">
         @csrf
+        @method('PATCH')
         @if($errors->any())
             <div class="mt-1 mb-5 bg-red-100 p-5">
                 @foreach ($errors->all() as $error)

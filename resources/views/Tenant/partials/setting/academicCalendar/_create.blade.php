@@ -16,9 +16,7 @@
     </div>
 
     <div class="bg-white rounded-md md:flex md:items-center md:mt-2 py-6 px-2 ">
-        <div class="mt-12 sm:mx-auto sm:w-full sm:max-w-md md:max-w-md  bg-white rounded-lg shadow-md">
-            @include('Tenant.partials.setting.academicCalendar.partials._createForm')
-        </div>
+        @include('Tenant.partials.setting.academicCalendar.partials._createForm')
     </div>
 
 </div>

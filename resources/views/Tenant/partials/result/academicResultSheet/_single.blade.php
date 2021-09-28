@@ -50,7 +50,7 @@
                         </div>
                     </form>
                 </div>
-                @else
+                @elseif($sessionResult)
                 <div>
                     <a href="{{route('sessionResult',[$academicResult->classArm->uuid, $academicResult->student->uuid])}}">
                         <button type="button" class="bg-white border border-blue-100  rounded-md py-3 mx-2 px-5 text-sm flex items-center">

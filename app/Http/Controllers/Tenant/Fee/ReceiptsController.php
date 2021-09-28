@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Fee;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Student;
+use App\Models\Tenant\StudentSchoolFee;
 use Illuminate\Http\Request;
 
 class ReceiptsController extends Controller
@@ -12,12 +13,12 @@ class ReceiptsController extends Controller
     {
         $student = Student::whereUuid($uuid);
 
-        if ( ! $student || ! $student->schoolFee->schoolFeesPaid()){
+        if ( ! $student || ! (new StudentSchoolFee($student))->schoolFeesPaid()){
             abort(404);
         }
 
         return view('Tenant.pages.fees.student.receipt.index', [
-            'transactions' => $student->schoolFee->transactions()->get(),
+            'transactions' => (new StudentSchoolFee($student))->transactions,
             'student' => $student,
         ]);
     }

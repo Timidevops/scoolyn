@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Tenant\Student;
 
+use App\Actions\Tenant\Student\AttachSubjectsToStudents;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Student;
@@ -62,8 +63,9 @@ class StudentSubjectsController extends Controller
             'subjects'   => ['required', 'array','min:1']
         ]);
 
+        $student = Student::whereUuid($uuid);
 
-
+        (new AttachSubjectsToStudents($student))->execute($request->input('subjects'));
 
         Session::flash('successFlash', 'Subject added successfully!!!');
 

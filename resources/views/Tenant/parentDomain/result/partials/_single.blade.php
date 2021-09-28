@@ -32,7 +32,7 @@
     </div>
 
     <div class="pl-2 py-3">
-        <span class="uppercase">{{$result->academicSession->term}} &nbsp;term</span>
+        <span class="uppercase">{{$result->academicSession->getTerm->name}} &nbsp;term</span>
         &nbsp;
         <span class="capitalize">{{str_replace('-','/',$result->academicSession->session_name)}}</span>
         &nbsp;
@@ -148,12 +148,12 @@
                         </template>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{$subject['total']}}
+                                    {{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{strOrdinal($subject['subjectMetric']['SubjectPosition'])}}
+                                    {{strOrdinal($subject['subjectMetric']['subjectPosition'])}}
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
@@ -162,11 +162,11 @@
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                            <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}')"></span>
+                            <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}')"></span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}', 'comment')"></span>
                                 </span>
                         </td>
                     </tr>

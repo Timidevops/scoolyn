@@ -8,6 +8,7 @@ use App\Models\Tenant\FeeStructure;
 use App\Models\Tenant\SchoolFee;
 use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
+use App\Models\Tenant\StudentSchoolFee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -18,21 +19,15 @@ class StudentFeesController extends Controller
     {
         $student = Student::whereUuid($uuid);
 
-        $fees = collect([]);
-
-        $studentFees = collect([]);
-
-        if($student->schoolFee){
-            $studentFees = $student->schoolFee->fee_structure_id;
-
-            $fees = FeeStructure::query()->whereIn('uuid', $studentFees)->get();
-        }
+        $studentFees = (new StudentSchoolFee($student));
 
         return view('Tenant.pages.fees.student.index', [
-            'totalFees' => $fees->count(),
+            'totalFees' => $studentFees->feesItems()->count(),
             'student' => $student,
-            'studentFees' => $fees,
-            'feesStructures' => FeeStructure::query()->whereNotIn('uuid', $studentFees)->get(['uuid', 'name', 'amount']),
+            'feeStatus' => $studentFees->status(),
+            'studentFees' => $studentFees->schoolFees,
+            'feesItems' => $studentFees->feesItems(),
+            'feesStructures' => [],//FeeStructure::query()->whereNotIn('uuid', $studentFees)->get(['uuid', 'name', 'amount']),
             'academicSessionInWord' => Setting::getCurrentAcademicCalendarInWord(),
 
         ]);
