@@ -9,6 +9,8 @@ use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
+use App\Models\Tenant\ReportCardBreakdownFormat;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -54,6 +56,7 @@ class ResultSheetsController extends Controller
             'studentId'         => $studentId,
             'approvedResult'    => $academicResult->status === AcademicResult::APPROVED_RESULT_STATUS,
             'disapprovedResult' => $academicResult->status === AcademicResult::DISAPPROVED_RESULT_STATUS,
+            'sessionResult'     => Student::whereUuid($studentId)->academicSessionResult()->exists(),
         ]);
 
     }
@@ -72,6 +75,8 @@ class ResultSheetsController extends Controller
 
         $lastTerm = AcademicTerm::all()->last();
 
+        $lastReport = ReportCardBreakdownFormat::all()->last();
+
 //        if ( $request->has('disapprove') ){
 //            Session::flash('successFlash', 'Academic result disapproved successfully!!!');
 //
@@ -82,7 +87,9 @@ class ResultSheetsController extends Controller
 
             $academicResult->setStatus(AcademicResult::APPROVED_RESULT_STATUS);
 
-            $academicResult->term == $lastTerm->uuid ? (new ProcessSessionReportStatusAction)->execute($classArm) : null;
+            ($academicResult->term == $lastTerm->uuid) && (Setting::getCurrentCardBreakdownFormat() == $lastReport->uuid)
+                ? (new ProcessSessionReportStatusAction)->execute($classArm)
+                : null;
 
             Session::flash('successFlash', 'Academic result approved successfully!!!');
 

@@ -32,6 +32,10 @@ class SchoolFee extends Model
     {
         return $this->hasOne(AcademicSession::class, 'uuid', 'academic_session_id');
     }
+    public function academicTerm()
+    {
+        return $this->hasOne(AcademicTerm::class, 'uuid', 'term_id');
+    }
 
     public function transactions()
     {

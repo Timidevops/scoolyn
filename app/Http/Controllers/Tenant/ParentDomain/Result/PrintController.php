@@ -30,7 +30,7 @@ class PrintController extends Controller
         $this->gradeFormats = $result->grading_format;
 
         $subjects = $subjects->map(function ($subject) use ($result){
-            return collect($subject)->merge($this->getGrade($subject['total']));
+            return collect($subject)->merge($this->getGrade($subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']));
         });
 
         $pdf = App::make('dompdf.wrapper');
@@ -46,7 +46,7 @@ class PrintController extends Controller
         $pdfFile = "result-for-{$result->student->first_name}-{$result->academicSession->term}-term-{$result->academicSession->session_name}-session.pdf";
 
 
-        return $pdf->stream($pdfFile);
+        return $pdf->download($pdfFile);
     }
 
     private function getGrade($total)
@@ -58,6 +58,7 @@ class PrintController extends Controller
        return [
            'grade' => $format[0]['grade'],
            'gradeRemark' => $format[0]['comment'],
+           'color' => $format[0]['color'],
        ];
     }
 }

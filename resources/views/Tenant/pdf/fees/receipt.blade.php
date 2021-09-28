@@ -52,14 +52,14 @@
                         @endif
                         <tr style="height: 18px;">
                             <td style="width: 100%; height: 18px; text-align: left; padding-left: 40px;">
-                                <span>{{$feeDetails->student->classArm->schoolClass->class_name}}</span>
+                                <span>{{$ward->classArm->schoolClass->class_name}}</span>
                                 <p>
-                                    {{$feeDetails->student->classArm->classSection ?
-                                       $feeDetails->student->classArm->classSection->section_name : ''}}
+                                    {{$ward->classArm->classSection ?
+                                       $ward->classArm->classSection->section_name : ''}}
                                 </p>
                                 <span>
-                                {{$feeDetails->student->classArm->classSection->classSectionCategory ?
-                                    $feeDetails->student->classArm->classSection->classSectionCategory->category_name : ''}}
+                                {{$ward->classArm->classSection->classSectionCategory ?
+                                    $ward->classArm->classSection->classSectionCategory->category_name : ''}}
                                 </span>
                             </td>
                         </tr>

@@ -98,21 +98,21 @@ class RunInitialSettingsAction
                     'url' => 'createGradeFormat',
                 ],
                 [
+                    'name' => OnboardingTodoList::ADD_PARENT,
+                    'done' => 0,
+                    'description' => 'Go to Users / Parent to add parent',
+                    'url' => 'createParent',
+                ],
+                [
                     'name' => OnboardingTodoList::ADD_STUDENT,
                     'done' => 0,
                     'description' => 'Go to Users / Student to add student',
                     'url' => 'createStudent',
                 ],
                 [
-                    'name' => OnboardingTodoList::ADD_PARENT,
-                    'done' => 0,
-                    'description' => 'Go to Users / Student to add parent',
-                    'url' => 'createParent',
-                ],
-                [
                     'name' => OnboardingTodoList::ADD_TEACHER,
                     'done' => 0,
-                    'description' => 'Go to Users / Student to add teacher',
+                    'description' => 'Go to Users / Teacher to add teacher',
                     'url' => 'createTeacher',
                 ],
                 [

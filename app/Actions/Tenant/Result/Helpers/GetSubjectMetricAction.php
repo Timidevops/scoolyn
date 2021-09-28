@@ -14,7 +14,7 @@ class GetSubjectMetricAction
 
         return collect($studentPositions)->map(function ($item, $index) use($classAvg, $data){
             $item['classAverage'] = $classAvg;
-            $item['total'] = collect($data)->get($index);
+            //$item['total'] = collect($data)->get($index);
             return $item;
         })->toArray();
     }

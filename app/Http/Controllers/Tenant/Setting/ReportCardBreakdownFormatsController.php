@@ -6,6 +6,7 @@ use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\CreateReportCardBreakdownFormatAction;
 use App\Actions\Tenant\Setting\ReportCardBreakdownFormat\UpdateReportCardBreakdownFormatSettingAction;
 use App\Http\Controllers\Controller;
+use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\ReportCardBreakdownFormat;
@@ -26,18 +27,47 @@ class ReportCardBreakdownFormatsController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function create(Request $request)
     {
-        if ( ! Setting::isReportCardBreakdownFormatCreated() ){
-            return $this->create($request);
+        $this->validate($request, [
+            'nameOfReport' => ['required', 'array', 'min:1'],
+        ]);
+
+        foreach($request->input('nameOfReport') as $format){
+            (new CreateReportCardBreakdownFormatAction)->execute([
+                'name' => $format,
+            ]);
         }
 
+        (new UpdateReportCardBreakdownFormatSettingAction)->execute([
+            'setting_name'  => Setting::REPORT_CARD_BREAKDOWN_FORMAT_SETTING,
+            'setting_value' => (string) ReportCardBreakdownFormat::query()->first()->uuid,
+        ]);
+
+        //set marker
+        (new UpdateTodoItemAction())->execute([
+            'name' => OnboardingTodoList::SET_REPORT_CARD_BREAKDOWN_FORMAT
+        ]);
+
+        Session::flash('successFlash','Report card format set successfully!!!');
+
+        return back();
+    }
+
+    public function update(Request $request)
+    {
         $this->validate($request, [
             'currentReportFormat' => ['required', 'exists:'.config('env.tenant.tenantConnection').'.report_card_breakdown_formats,uuid'],
         ]);
 
         ClassArm::all()->map(function ($classArm){
-             $classArm->status != ClassArm::RESULT_GENERATED_STATUS ? $this->checker [] = $classArm : null;
+            $classArm->academicResult()->where('report_card', Setting::getCurrentCardBreakdownFormat())->exists() == false
+                ? $this->checker [] = $classArm
+                : null;
+        });
+
+        AcademicResult::query()->where('report_card', Setting::getCurrentCardBreakdownFormat())->get()->map(function ($result){
+            $result->status != AcademicResult::APPROVED_RESULT_STATUS ? $this->checker [] = $result : null;
         });
 
         if ( count($this->checker) > 0 ){
@@ -71,30 +101,4 @@ class ReportCardBreakdownFormatsController extends Controller
         return back();
     }
 
-    private function create(Request $request)
-    {
-        $this->validate($request, [
-            'nameOfReport' => ['required', 'array', 'min:1'],
-        ]);
-
-        foreach($request->input('nameOfReport') as $format){
-            (new CreateReportCardBreakdownFormatAction)->execute([
-                'name' => $format,
-            ]);
-        }
-
-        (new UpdateReportCardBreakdownFormatSettingAction)->execute([
-            'setting_name'  => Setting::REPORT_CARD_BREAKDOWN_FORMAT_SETTING,
-            'setting_value' => (string) ReportCardBreakdownFormat::query()->first()->uuid,
-        ]);
-
-        //set marker
-        (new UpdateTodoItemAction())->execute([
-            'name' => OnboardingTodoList::SET_REPORT_CARD_BREAKDOWN_FORMAT
-        ]);
-
-        Session::flash('successFlash','Report card format set successfully!!!');
-
-        return back();
-    }
 }

@@ -78,9 +78,7 @@ class AcademicResultsController extends Controller
 
     public function singleSubject(string $classArmId, string $classSubjectId)
     {
-        $teacher = Teacher::whereUserId(Auth::user()->uuid);
-
-        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail();  //$teacher->classArm()->where('uuid', $classArmId)->first();
+        $this->classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
         $classSubject = ClassSubject::whereUuid($classSubjectId)->withoutGlobalScope('teacher')->first();
 

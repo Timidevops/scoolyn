@@ -21,6 +21,10 @@ class GenerateSessionReportAction
 
     private array $overallStudentsReport = [];
 
+    private array $subjectScores = [];
+
+    private array $subjectMetrics = [];
+
     public function execute(Model $classArm)
     {
         $this->classArm = $classArm;
@@ -47,23 +51,18 @@ class GenerateSessionReportAction
                 return $this->getSubjectTotalPerTerm($academicReport->subjects);
             });
 
-            $subjects = collect($classSubjectIds)->map(function ($id) use ($subjectTotalPerTerm){
-
+            collect($classSubjectIds)->map(function ($id) use ($subjectTotalPerTerm){
                 foreach ($subjectTotalPerTerm as $index => $score){
                     $term = $index + 1;
-                    $subjectTotals[$id]["{$term}_term"] = collect($score)->first();
+                    $this->subjectScores[$id]["{$term}_term"] = collect($score)->get($id);
                 }
+               $this->subjectScores[$id]['overallTermTotalAvg'] = round(collect($this->subjectScores[$id])->sum() / collect($this->subjectScores[$id])->count(), 2);
+            });
 
-                $subjectTotals [$id]['overallTermTotalAvg'] = collect($subjectTotalPerTerm)->map(function ($term) use ($id){
-                        return $term[$id];
-                    })->sum() / 3;
 
-                return $subjectTotals;
-            })->first();
-
-            $students [$studentId]['subjects'] = $subjects;
-            $students [$studentId]['totalMarkObtained'] = collect($subjects)->map(function ($item){return $item['overallTermTotalAvg'];})->sum();
-            $students [$studentId]['totalMarkAttainable'] = count($subjects) * 100;
+            $students [$studentId]['subjects'] = $this->subjectScores;
+            $students [$studentId]['totalMarkObtained'] = collect($this->subjectScores)->map(function ($item){return $item['overallTermTotalAvg'];})->sum();
+            $students [$studentId]['totalMarkAttainable'] = count($this->subjectScores) * 100;
         }
 
         $this->overallStudentsReport = $students;
@@ -76,14 +75,16 @@ class GenerateSessionReportAction
         })->toArray();
 
         //update student with subject metrics
-        $subjectMetrics = collect($classSubjectIds)->map(function ($id) use($studentSubject){
+        collect($classSubjectIds)->map(function ($id) use($studentSubject){
             $subjectScores = collect($studentSubject)->map(function ($subject) use($id){
                 return collect($subject)->get($id)['overallTermTotalAvg'];
             })->toArray();
 
-            $subject [$id] = (new GetSubjectMetricAction)->execute($subjectScores);
-            return $subject;
-        })->first();
+            $this->subjectMetrics[$id] =(new GetSubjectMetricAction)->execute($subjectScores);
+
+        });
+
+        $subjectMetrics = $this->subjectMetrics;
 
         collect($this->overallStudentsReport)->map(function ($item, $studentId) use($subjectMetrics){
             collect($item['subjects'])->map(function ($item, $subjectId) use ($subjectMetrics, $studentId){
@@ -141,11 +142,11 @@ class GenerateSessionReportAction
 
     private function getCaFormat()
     {
-        $gradeFormats = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+        $caFormats = ContinuousAssessmentStructure::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
 
-        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+        $caFormats = collect($caFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
-        return $gradeFormats['caFormat'];
+        return $caFormats['caFormat'];
     }
 
 }

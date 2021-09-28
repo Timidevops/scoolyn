@@ -13,22 +13,11 @@ class PrintController extends Controller
     public function store(string $uuid, string $studentId)
     {
         $parent = Auth::user()->parent;
-
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
-
-        //dd($ward->schoolFee()->where('uuid', $uuid)->firstOrFail());
-
-
-        $wardSchoolFee = $ward->schoolFee()->where('uuid', $uuid)->firstOrFail();
-
-        $schoolFees = collect($wardSchoolFee->fee_structure_id)->map(function ($schoolFee){
-            return FeeStructure::whereUuid($schoolFee);
-        });
-
-
+        $wardSchoolFee = $ward->classArm->schoolClass->schoolFees;
+        $schoolFees = $schoolFees = $wardSchoolFee->feesItems;
 
         $pdf = App::make('dompdf.wrapper');
-
         $pdf->loadView('Tenant.pdf.fees.receipt',[
             'schoolFees' => $schoolFees,
             'feeDetails' => $wardSchoolFee,
@@ -38,8 +27,7 @@ class PrintController extends Controller
             'principal' => Setting::getSchoolPrincipal(),
         ]);
 
-        $pdfFile = "receipt-for-{$wardSchoolFee->student->first_name}-{$wardSchoolFee->academicSession->term}-term-{$wardSchoolFee->academicSession->session_name}-session.pdf";
-
+        $pdfFile = "receipt-for-{$ward->first_name}-{$wardSchoolFee->academicSession->term}-term-{$wardSchoolFee->academicSession->session_name}-session.pdf";
 
         return $pdf->stream($pdfFile);
     }

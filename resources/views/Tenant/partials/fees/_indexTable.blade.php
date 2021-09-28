@@ -1,6 +1,6 @@
 <div class="mt-8">
     <div class=" sm:block">
-        <div class="max-w-6xl mx-auto  sm:px-6 ">
+        <div class=" ">
             <div class="flex flex-col mt-2">
                 <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
                     <table class="min-w-full divide-y  divide-purple-100">

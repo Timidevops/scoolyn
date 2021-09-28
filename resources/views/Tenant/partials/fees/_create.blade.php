@@ -2,20 +2,23 @@
     <div class="mt-2 text-xl text-gray-200">
         Add New Fee
     </div>
-    <a href="{{route('listFeeStructure')}}">
-        <span class=" text-sm text-gray-300 absolute">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-          </svg>
+    <p>
+        <a href="{{route('listFeeStructure')}}" class="flex items-center space-x-1 mt-2">
+        <span class=" text-sm text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            </svg>
         </span>
-        <span class="px-7 text-sm text-gray-300"> Back to fees</span></a>
+            <span class="text-sm text-gray-300"> Back to fees</span>
+        </a>
+    </p>
 </div>
 
 <div class="h-screen py-10">
     <div class="bg-white rounded-md " x-data="createFeeStructure()">
         <form action="{{route('storeFeeStructure')}}" method="post">
             @csrf
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-4">
                 <div class="mt-2">
                     <label for="feesName" class="block text-sm font-normal text-gray-100">Name</label>
                     <input type="text" name="feesName" id="feesName" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
@@ -24,6 +27,32 @@
                     <label for="feesAmount" class="block text-sm font-normal text-gray-100">Amount</label>
                     <input type="hidden" name="feesAmount" id="feesAmount">
                     <input type="text" name="feesAmountFormatted" id="feesAmountFormatted" class="w-full text-gray-100 py-2 px-2" readonly>
+                </div>
+                <div class="mt-2 relative">
+                    <label for="schoolTerm" class="block text-sm font-normal text-gray-100">Term</label>
+                    <div class="relative inline-block w-full rounded-md ">
+                        <button @click="isTermDropdownOpen = ! isTermDropdownOpen" type="button" class="z-0 w-full py-2 pl-3 pr-10 text-left text-gray-100 font-normal border border-purple-100 rounded-md cursor-default focus:outline-none focus:shadow-outline-blue focus:border-blue-300 sm:text-sm sm:leading-5">
+                            <span class="px-2 mr-auto" x-text="termDropdownLabel()"></span>
+                        </button>
+                    </div>
+                    <div class="border border-purple-100 absolute w-full bg-white" x-show.transition="isTermDropdownOpen" @click.away="isTermDropdownOpen = false">
+                        <ul class="py-1 overflow-auto h-32 text-base leading-6
+                       shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
+                            <template x-for="item in schoolTerms">
+                                <li class="relative py-2 pl-3  text-gray-200 cursor-default select-none pr-9">
+                                    <label class="flex items-center">
+                                        <input name="schoolTerm[]"
+                                               type="checkbox"
+                                               x-bind:checked="onCheckedTerm(item.name)"
+                                               x-on:change="onToggleTerm(item.name, item.uuid, event.target)"
+                                        >
+                                        <span class="px-1"></span>
+                                        <span x-text="item.name"></span>
+                                    </label>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
                 </div>
                 <div class="mt-2 relative">
                     <label for="schoolClass" class="block text-sm font-normal text-gray-100">Classes</label>
@@ -85,7 +114,14 @@
                     </div>
                     <div class="mt-2">
                         <p class="cursor-pointer" @click="removeFeeStructureField(index)">
-                            /!/
+                            <span>
+                                    <svg class="h-6 w-6" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                         viewBox="0 0 409.6 409.6" style="enable-background:new 0 0 409.6 409.6;" xml:space="preserve">
+                                                                <path d="M392.533,187.733H17.067C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h375.467
+                            c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"/>
+
+                                    </svg>
+                            </span>
                         </p>
                     </div>
                 </div>
@@ -135,6 +171,27 @@
                 }
                 else {
                     this.selectedClasses.push(item)
+                    event.value = value
+                }
+            },
+
+            schoolTerms: {!! $schoolTerms !!},
+            isTermDropdownOpen: false,
+            selectedTerms: [],
+            termDropdownLabel(){
+                if (this.selectedTerms.length > 0) return this.selectedTerms.join(', ');
+                else return "-- select term --";
+            },
+            onCheckedTerm(item){
+                return this.selectedTerms.indexOf(item) > -1;
+            },
+            onToggleTerm(item, value, event){
+                if (this.onCheckedTerm(item)) {
+                    let getIndex = (element) => element === item;
+                    this.selectedTerms.splice( this.selectedTerms.findIndex(getIndex), 1);
+                }
+                else {
+                    this.selectedTerms.push(item)
                     event.value = value
                 }
             }

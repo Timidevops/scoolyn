@@ -11,7 +11,14 @@
                 </div>
             </div>
         </div>
-        <a href="{{route('singleReportSheet', [$classArm->uuid, $student->uuid])}}"><span class="mt-2  text-sm text-gray-300">/!/ Academic report sheet</span></a>
+        <a href="{{route('singleReportSheet', [$classArm->uuid, $student->uuid])}}" class="flex items-center space-x-1 mt-2">
+            <span class=" text-sm text-gray-300">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+                </svg>
+            </span>
+            <span class="text-sm text-gray-300">Academic report sheet</span>
+        </a>
     </div>
     <div class="bg-white rounded-md py-6 px-2 mt-6">
 
@@ -176,11 +183,11 @@
                                 </span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total']}}')"></span>
+                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['overallTermTotalAvg']}}')"></span>
                                 </td>
                                 <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['subjectMetric']['total']}}')}`" x-text="getGradeName('{{$subject['subjectMetric']['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" :style="`color:${getGradeFormatColor('{{$subject['overallTermTotalAvg']}}')}`" x-text="getGradeName('{{$subject['overallTermTotalAvg']}}', 'comment')"></span>
                                 </span>
                                 </td>
                             </tr>

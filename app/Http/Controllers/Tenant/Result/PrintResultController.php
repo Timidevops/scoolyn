@@ -72,8 +72,8 @@ class PrintResultController extends Controller
 
         $this->gradeFormats = $this->studentResult->grading_format;
 
-        return $subjects = $subjects->map(function ($subject){
-            return collect($subject)->merge($this->getGrade($subject['subjectMetric']['total']));
+        return $subjects->map(function ($subject){
+            return collect($subject)->merge($this->getGrade($subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']));
         });
     }
 
@@ -81,12 +81,12 @@ class PrintResultController extends Controller
     {
         $format = collect($this->gradeFormats)->filter(function ($item) use($total){
             return $total >= ($item['from']) && $total <= ($item['to']);
-        });
+        })->values();
 
         return [
             'grade' => $format[0]['grade'],
             'gradeRemark' => $format[0]['comment'],
-            'color' => $format[0]['color']
+            'color' => $format[0]['color'],
         ];
     }
 

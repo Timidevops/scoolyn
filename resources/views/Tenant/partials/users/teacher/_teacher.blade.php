@@ -6,7 +6,7 @@
         <span class="mt-2 text-base text-gray-300">{{$totalTeachers}} Total Teachers</span>
     </div>
 
-    <div class="bg-white rounded-md" x-data="teacher()">
+    <div class="bg-white mt-8 rounded-md" x-data="teacher()">
         <div class="md:flex md:items-center md:mt-2 ">
             <div class="py-6 px-2 relative w-full">
                 <div>
