@@ -242,7 +242,7 @@
                         </div>
                     @endcan
 
-                    @if(\App\Models\Tenant\Setting::isPaymentStatusOn())
+                    @if(\App\Models\tenant\Setting::isPaymentStatusOn())
                         @can('read a fee structure')
                             <div class="">
                                 <a href="{{route('listFeeStructure')}}" class="{{url()->current() == url()->route('listFeeStructure') ? 'bg-blue-100 text-white' : 'text-gray-300' }} cursor-pointer flex items-center  px-8 py-4 text-base font-medium leading-6 rounded-md focus:bg-blue-100 focus:text-white">
@@ -509,7 +509,7 @@
                     </div>
                     @endcan
 
-                    @if(\App\Models\Tenant\Setting::isPaymentStatusOn())
+                    @if(\App\Models\tenant\Setting::isPaymentStatusOn())
                         @can('read a fee structure')
                             <div class="" x-data="{ show: false }">
                         <a href="{{route('listFeeStructure')}}" class="cursor-pointer flex items-center  px-8 py-4 text-base leading-6 font-medium rounded-md text-gray-300 focus:bg-blue-100 focus:text-white" x-on:click="show = !show">

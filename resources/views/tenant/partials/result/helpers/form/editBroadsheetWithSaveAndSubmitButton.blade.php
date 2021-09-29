@@ -5,12 +5,12 @@
     <div class="flex justify-between items-center px-4 py-4">
         <div>
             <h3>
-                Assessment for {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                Assessment for {{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}}
             </h3>
         </div>
         <div>
             <button>
-                @if($broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
+                @if($broadsheetStatus == \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
                     <div>
                         <p class="text-red-100">Disapproved</p>
                     </div>

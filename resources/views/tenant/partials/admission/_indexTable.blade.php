@@ -10,11 +10,11 @@
                                 <label for="admissionStatus" class="block text-sm font-normal text-gray-100">Change Admission Status</label>
                                 <select id="admissionStatus" name="admissionStatus" class="w-full capitalize text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                     <option value="">-- Select Status --</option>
-                                    <option value="{{\App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS}}">
-                                        {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS)}}
+                                    <option value="{{\App\Models\tenant\AdmissionApplicant::ADMITTED_STATUS}}">
+                                        {{str_replace('_', ' ', \App\Models\tenant\AdmissionApplicant::ADMITTED_STATUS)}}
                                     </option>
-                                    <option value="{{\App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS}}">
-                                        {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS)}}
+                                    <option value="{{\App\Models\tenant\AdmissionApplicant::REJECTED_STATUS}}">
+                                        {{str_replace('_', ' ', \App\Models\tenant\AdmissionApplicant::REJECTED_STATUS)}}
                                     </option>
                                 </select>
                             </div>

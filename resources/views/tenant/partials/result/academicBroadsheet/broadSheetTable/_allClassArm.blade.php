@@ -33,22 +33,21 @@
     <!-- tab body -->
     @foreach($students as $index => $student)
        <div x-show="broadsheetTabOpen === '{{$index}}'">
-           @if( $student['broadsheetStatus'] == \App\Models\Tenant\AcademicBroadSheet::SUBMITTED_STATUS || $student['broadsheetStatus'] == \App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS)
-               @include('tenant.partials.result.academicBroadsheet._single', [
+           @if( $student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::SUBMITTED_STATUS || $student['broadsheetStatus']  == \App\Models\tenant\AcademicBroadSheet::APPROVED_STATUS)
+               @include('.tenant.partials.result.academicBroadsheet._single', [
                         'broadsheetStatus' => $student['broadsheetStatus'],
                         'gradeFormats' => $student['gradeFormats'],
                         'academicBroadsheets' => $student['academicBroadsheets'],
                         'caAssessmentStructureFormat' => $student['caAssessmentStructureFormat'],
                     ])
            @else
-               @if($student['broadsheetStatus'] == \App\Models\Tenant\AcademicBroadSheet::CREATED_STATUS)
+               @if($student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::CREATED_STATUS)
                    @include('tenant.partials.result.helpers.form.editBroadsheetWithSaveAndSubmitButton',[
                     'broadsheetStatus' => $student['broadsheetStatus'],
                     'academicBroadsheets' => $student['academicBroadsheets'],
                     'classArm' => $student['classArm'],
 
-                    ])
-               @elseif($student['broadsheetStatus'] == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
+                    ]) @elseif($student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
                     @include('tenant.partials.result.academicBroadsheet._edit', [
                         'classArm' => $student['classArm'],
                         'broadsheetStatus' => $student['broadsheetStatus'],
@@ -61,7 +60,7 @@
                        <div class="flex justify-between px-4 py-4">
                            <div>
                                <h3>
-                                   Assessment for {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                                   Assessment for {{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}}
                                </h3>
                            </div>
                            <div>

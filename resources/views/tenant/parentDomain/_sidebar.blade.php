@@ -51,7 +51,7 @@
                             <span class="focus:text-white" :class="{'hidden': navigationOpen === true}">Results</span>
                         </a>
                     </div>
-                        @if(\App\Models\Tenant\Setting::isPaymentStatusOn())
+                        @if(\App\Models\tenant\Setting::isPaymentStatusOn())
                         <div class="" >
                         <a href="{{route('listWardFee')}}" class="text-gray-300 flex items-center  px-8 py-4 text-base  leading-6 font-medium rounded-md focus:outline-none focus:bg-blue-100 focus:text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="mr-4 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" :class="{'hidden': navigationOpen === true}">

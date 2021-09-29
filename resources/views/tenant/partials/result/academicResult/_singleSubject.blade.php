@@ -25,12 +25,12 @@
 <div class="h-screen py-10">
     <div class="bg-white rounded-md ">
         <div>
-            @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS )
+            @if( $broadsheetStatus != \App\Models\tenant\AcademicBroadSheet::APPROVED_STATUS )
 
-                @if( $broadsheetStatus != \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
+                @if( $broadsheetStatus != \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
                     <form class="flex justify-end px-4 py-4" action="{{route('academicResultApproval',[$classArm, $classSubject->uuid])}}" method="post">
                         @csrf
-                        <button name="{{\App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS}}" type="submit" class="text-gray-200 border border-gray-20 rounded py-2 px-4  text-sm flex items-center mx-2">
+                        <button name="{{\App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS}}" type="submit" class="text-gray-200 border border-gray-20 rounded py-2 px-4  text-sm flex items-center mx-2">
                             <span class="mx-1">Disapprove</span>
                             <span class="mx-1">
                           <svg class="h-4 w-4 text-blue-100 mx-2" fill="red" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
@@ -46,7 +46,7 @@
                             </svg>
                             </span>
                         </button>
-                        <button name="{{\App\Models\Tenant\AcademicBroadSheet::APPROVED_STATUS}}" type="submit" class="text-white bg-blue-100 rounded py-2 px-4  text-sm flex items-center mx-2">
+                        <button name="{{\App\Models\tenant\AcademicBroadSheet::APPROVED_STATUS}}" type="submit" class="text-white bg-blue-100 rounded py-2 px-4  text-sm flex items-center mx-2">
                             <span class="mx-1">Approve</span>
                             <span class="mx-1">
                           <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100" viewBox="0 0 20 20" fill="currentColor">
@@ -59,11 +59,11 @@
 
             @else
                 <div class="px-4 py-4">
-                    <p class="capitalize">{{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}} Broadsheet approved.</p>
+                    <p class="capitalize">{{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}} Broadsheet approved.</p>
                 </div>
             @endif
         </div>
-        @if( $broadsheetStatus == \App\Models\Tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
+        @if( $broadsheetStatus == \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS )
             @include('tenant.partials.result.helpers.form.editBroadsheetWithSaveAndSubmitButton')
         @else
             <!-- broadsheet table with grades -->

@@ -41,13 +41,13 @@
                     <div>
                         Total Amount: NGN {{ number_format($studentFees->amount, 2)  }}
                     </div>
-                    @if($feeStatus == \App\Models\Tenant\SchoolFee::NOT_COMPLETE)
+                    @if($feeStatus == \App\Models\tenant\SchoolFee::NOT_COMPLETE)
                         <div>
                             Outstanding Amount: NGN {{ number_format($studentFees->schoolFeesLeft(), 2)  }}
                         </div>
                     @endif
                     <div class="lg:flex items-center space-x-3 lg:space-y-0 space-y-3">
-                        @if($feeStatus != \App\Models\Tenant\SchoolFee::PAID_STATUS)
+                        @if($feeStatus != \App\Models\tenant\SchoolFee::PAID_STATUS)
                             <div class="lg:w-1/3">
                                 <p x-on:click="isRecordStudentSchoolFeesModalOpen = true" class="bg-blue-100 cursor-pointer text-white rounded-md py-3 mx-1  text-sm flex items-center" >
                         <span class="mx-2">
@@ -60,7 +60,7 @@
                             </div>
                         @endif
 
-                        @if($feeStatus != \App\Models\Tenant\SchoolFee::NOT_PAID_STATUS)
+                        @if($feeStatus != \App\Models\tenant\SchoolFee::NOT_PAID_STATUS)
                             <div class="lg:w-1/4">
                                 <a class="text-sm text-blue-100 border-b border-blue-100 pb-1 border-dashed" href="{{route('listStudentReceipt',$student->uuid)}}">View payments made</a>
                             </div>

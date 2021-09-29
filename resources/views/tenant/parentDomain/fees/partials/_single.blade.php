@@ -55,7 +55,7 @@
             @endif
             <div class="flex justify-end">
                 <div class="py-5">
-                    @if( $wardSchoolFee->status !== \App\Models\Tenant\SchoolFee::PAID_STATUS)
+                    @if( $wardSchoolFee->status !== \App\Models\tenant\SchoolFee::PAID_STATUS)
                         @include('tenant.parentDomain.fees.partials._flutterwaveCheckout')
                     @else
                         <a target="_blank" href="{{route('printWardFeeReceipt',[$wardSchoolFee->uuid, $ward->uuid])}}">

@@ -88,7 +88,7 @@
 
             <div class="pl-2 py-3">
                 <h4 class="uppercase text-blue-100 font-bold">
-                    {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                    {{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}}
                 </h4>
             </div>
 

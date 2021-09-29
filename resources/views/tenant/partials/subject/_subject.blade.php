@@ -5,6 +5,17 @@
         </div>
         <span class="mt-2 text-base text-gray-300">{{$subjectTotal}} Total Subjects</span>
     </div>
+
+    @if($errors->any())
+        <div class="mt-1 mb-5 bg-red-100 p-5">
+            @foreach ($errors->all() as $error)
+                <p class="text-white">
+                    {!! $error !!}
+                </p>
+            @endforeach
+        </div>
+    @endif
+
     <div class="bg-white rounded-md" x-data="schoolSubjects()" @keydown.escape="showModal = false" @keydown.escape="showSuccess = false" x-cloak id="tab_wrapper">
 
         <div class="md:flex md:items-center md:mt-2 ">

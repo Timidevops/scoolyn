@@ -8,7 +8,7 @@
     </div>
 
     <div class="bg-white rounded-md" x-data="academicSession()">
-        @include('Tenant/partials.setting.academicCalendar._indexTable')
+        @include('tenant/partials.setting.academicCalendar._indexTable')
     </div>
 
 </div>

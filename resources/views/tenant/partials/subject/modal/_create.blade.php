@@ -59,6 +59,11 @@
                 </ul>
             </div>
 
+            <div class="my-6">
+                <label for="newSubject" class="block text-xs font-normal text-gray-100">Add New Subject</label>
+                <input id="newSubject" type="text" name="newSubject" class="w-full py-2 text-xs px-2 text-left text-gray-100 font-normal border border-purple-100 rounded-md">
+            </div>
+
             <div class="mb-6">
                 <button type="submit" class="bg-blue-100 text-white px-4 py-2 rounded-md text-base">
                     Create Subject

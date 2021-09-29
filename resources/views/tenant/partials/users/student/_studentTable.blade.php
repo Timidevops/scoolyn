@@ -67,7 +67,7 @@
                                         </svg>
                                     </a>
                                 </button>
-                                @if(\App\Models\Tenant\Setting::isPaymentStatusOn())
+                                @if(\App\Models\tenant\Setting::isPaymentStatusOn())
                                     @can('read a fee structure')
                                         <button>
                                     <a x-bind:href="`{{route('listStudentFee','')}}/${item.uuid}`">

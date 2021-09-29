@@ -20,8 +20,8 @@
                 <p>Exam date: {{$applicant->exam_schedule ?? 'not assigned'}}</p>
             </div>
             <div class="my-5">
-                @if( $applicant->status != \App\Models\Tenant\AdmissionApplicant::CLASS_ARM_ADDED )
-                    @if($applicant->status == \App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS )
+                @if( $applicant->status != \App\Models\tenant\AdmissionApplicant::CLASS_ARM_ADDED )
+                    @if($applicant->status == \App\Models\tenant\AdmissionApplicant::ADMITTED_STATUS )
                         <livewire:tenant.admission.convert-to-student :applicant="$applicant->uuid" />
                     @else
                         <form action="{{route('updateApplicant',$applicant->uuid)}}" method="post">
@@ -32,11 +32,11 @@
                                     <label for="admissionStatus" class="block text-sm font-normal text-gray-100">Change Admission Status</label>
                                     <select id="admissionStatus" name="admissionStatus" class="w-full capitalize text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
                                         <option value="">-- Select Status --</option>
-                                        <option value="{{\App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS}}">
-                                            {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::ADMITTED_STATUS)}}
+                                        <option value="{{\App\Models\tenant\AdmissionApplicant::ADMITTED_STATUS}}">
+                                            {{str_replace('_', ' ', \App\Models\tenant\AdmissionApplicant::ADMITTED_STATUS)}}
                                         </option>
-                                        <option value="{{\App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS}}">
-                                            {{str_replace('_', ' ', \App\Models\Tenant\AdmissionApplicant::REJECTED_STATUS)}}
+                                        <option value="{{\App\Models\tenant\AdmissionApplicant::REJECTED_STATUS}}">
+                                            {{str_replace('_', ' ', \App\Models\tenant\AdmissionApplicant::REJECTED_STATUS)}}
                                         </option>
                                     </select>
                                 </div>

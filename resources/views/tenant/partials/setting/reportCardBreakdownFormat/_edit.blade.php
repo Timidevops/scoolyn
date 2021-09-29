@@ -16,7 +16,7 @@
                 <label for="currentReportFormat" class="block text-sm font-normal text-gray-100">
                     Current report card:
                     <span class="capitalize text-blue-100 sm">
-                        {{\App\Models\Tenant\Setting::getCurrentCardBreakdownFormat(true)}}
+                        {{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}}
                     </span>.
                     <span class="text-red-100">*</span></label>
                 <select id="currentReportFormat" name="currentReportFormat" class="lg:w-1/4 w-full capitalize mt-2 text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
