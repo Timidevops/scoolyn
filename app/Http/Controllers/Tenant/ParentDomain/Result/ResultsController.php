@@ -59,7 +59,7 @@ class ResultsController extends Controller
         })->values();
 
 
-        return view('Tenant.parentDomain.result.single', [
+        return view('tenant.parentDomain.result.single', [
             'result' => $result,
             'subjects' => $subjects,
         ]);

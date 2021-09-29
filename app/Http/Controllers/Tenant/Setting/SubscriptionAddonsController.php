@@ -15,7 +15,7 @@ class SubscriptionAddonsController extends Controller
 {
     public function index()
     {
-        return view('Tenant.pages.setting.subscriptionSetting.addon.student.index', [
+        return view('tenant.pages.setting.subscriptionSetting.addon.student.index', [
             'featureAddons' => FeatureAddon::whereName(Feature::TOTAL_NUMBER_OF_STUDENT)->get(['name', 'value', 'amount', 'uuid']),
         ]);
     }

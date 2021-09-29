@@ -32,7 +32,7 @@ class StudentsController extends Controller
 
         $classArms = $classArm->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
-        return view('Tenant.pages.student.student', [
+        return view('tenant.pages.student.student', [
             'totalStudents' => Student::query()->count(),
             'students'      => $students,
             'classArm'      => $classArms,
@@ -41,7 +41,7 @@ class StudentsController extends Controller
 
     public function create()
     {
-        return view('Tenant.pages.student.addStudent', [
+        return view('tenant.pages.student.addStudent', [
             'parents' => StudentParent::query()->get(['uuid', 'first_name', 'last_name']),
         ]);
     }

@@ -81,16 +81,16 @@
                                 <!-- tab body -->
                                     <div class="pt-3">
                                         <div x-show="broadsheetTabOpen === '1'">
-                                            @include('Tenant.partials.result.academicResult.table._approved')
+                                            @include('tenant.partials.result.academicResult.table._approved')
                                         </div>
                                         <div x-show="broadsheetTabOpen === '2'">
-                                            @include('Tenant.partials.result.academicResult.table._submitted')
+                                            @include('tenant.partials.result.academicResult.table._submitted')
                                         </div>
                                         <div x-show="broadsheetTabOpen === '3'">
-                                            @include('Tenant.partials.result.academicResult.table._awaiting')
+                                            @include('tenant.partials.result.academicResult.table._awaiting')
                                         </div>
                                         <div x-show="broadsheetTabOpen === '4'">
-                                            @include('Tenant.partials.result.academicResult.table._notApproved')
+                                            @include('tenant.partials.result.academicResult.table._notApproved')
                                         </div>
                                     </div>
                                 <!--/: tab body -->

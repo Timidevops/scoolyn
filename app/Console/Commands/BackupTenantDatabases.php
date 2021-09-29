@@ -23,7 +23,7 @@ class BackupTenantDatabases extends SpatieBackupCommand
      *
      * @var string
      */
-    protected $description = 'Backup Tenant databases';
+    protected $description = 'Backup tenant databases';
 
     /**
      * Create a new command instance.

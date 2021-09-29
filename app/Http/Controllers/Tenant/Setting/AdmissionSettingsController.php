@@ -12,7 +12,7 @@ class AdmissionSettingsController extends Controller
 {
     public function edit()
     {
-        return view('Tenant.pages.setting.admissionSetting.edit', [
+        return view('tenant.pages.setting.admissionSetting.edit', [
             'settingValue' => (bool) Setting::isAdmissionOn(),
         ]);
     }

@@ -17,7 +17,7 @@ class ReceiptsController extends Controller
             abort(404);
         }
 
-        return view('Tenant.pages.fees.student.receipt.index', [
+        return view('tenant.pages.fees.student.receipt.index', [
             'transactions' => (new StudentSchoolFee($student))->transactions,
             'student' => $student,
         ]);

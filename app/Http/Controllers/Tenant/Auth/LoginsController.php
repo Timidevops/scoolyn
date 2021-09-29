@@ -12,7 +12,7 @@ class LoginsController extends Controller
 {
     public function form()
     {
-        return view('Tenant.auth.login', [
+        return view('tenant.auth.login', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
             'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);

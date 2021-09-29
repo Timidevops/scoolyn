@@ -18,7 +18,7 @@ class SubjectsController extends Controller
     {
         $schoolSubject = SchoolSubject::query()->pluck('subject_id');
 
-        return view('Tenant.pages.subject.subject', [
+        return view('tenant.pages.subject.subject', [
             'subjectTotal'   => SchoolSubject::all()->count(),
             'schoolSubjects' => SchoolSubject::query()->get(['uuid', 'subject_name', 'slug']),
             'subjects'       => Subject::query()->get(['uuid', 'subject_name', 'slug'])->whereNotIn('uuid', $schoolSubject),

@@ -16,6 +16,7 @@ use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -92,6 +93,7 @@ class UploadStudent extends Component
         try {
             $this->studentsDetail = (new ExcelFileReaderAction())->execute($file, $format);
         } catch (FileNotFoundException | InvalidFileFormatException $e) {
+            Log::info("Error while uploading file ". $e->getMessage());
             return;
         }
 

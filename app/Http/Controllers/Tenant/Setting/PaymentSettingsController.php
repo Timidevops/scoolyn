@@ -22,7 +22,7 @@ class PaymentSettingsController extends Controller
             PaymentService::setFlutterwaveSecretKey();
             $banks = Bank::list('NG');
             $hasSetting = Setting::has('flutterwave_sub_account_ref');
-            return view('Tenant.pages.setting.paymentSetting.edit', [
+            return view('tenant.pages.setting.paymentSetting.edit', [
                 'banks' => $banks,
                 'schoolDetails' => Setting::schoolDetails(),
                 'accountNumber' => $hasSetting ? Setting::whereSettingName('flutterwave_sub_account_ref')

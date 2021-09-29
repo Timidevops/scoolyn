@@ -57,7 +57,7 @@ class TeachersController extends Controller
 
         //$subjects->load('');
 
-        return view('Tenant.pages.teacher.edit', [
+        return view('tenant.pages.teacher.edit', [
             'teacher'   => $teacher,
             'classArms' => $classArms,
             'subjects'  => $subjects,
