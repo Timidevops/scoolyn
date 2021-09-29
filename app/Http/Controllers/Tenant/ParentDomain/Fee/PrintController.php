@@ -18,7 +18,7 @@ class PrintController extends Controller
         $schoolFees = $schoolFees = $wardSchoolFee->feesItems;
 
         $pdf = App::make('dompdf.wrapper');
-        $pdf->loadView('Tenant.pdf.fees.receipt',[
+        $pdf->loadView('tenant.pdf.fees.receipt',[
             'schoolFees' => $schoolFees,
             'feeDetails' => $wardSchoolFee,
             'ward' => $ward,

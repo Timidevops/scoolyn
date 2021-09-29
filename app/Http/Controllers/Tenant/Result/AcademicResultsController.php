@@ -46,7 +46,7 @@ class AcademicResultsController extends Controller
 
         $classArm->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
-        return view('Tenant.pages.result.academicResult.index', [
+        return view('tenant.pages.result.academicResult.index', [
            'totalClass'    => count($classArm),
             'classArm'     => $classArm,
         ]);
@@ -70,7 +70,7 @@ class AcademicResultsController extends Controller
             return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
         });
 
-        return view('Tenant.pages.result.academicResult.single', [
+        return view('tenant.pages.result.academicResult.single', [
             'classArm' => $classArm,
             'classSubjects' => $classSubject,
         ]);
@@ -120,7 +120,7 @@ class AcademicResultsController extends Controller
 
         $this->subjectBroadsheet = collect( $academicBroadsheet->meta['academicBroadsheet'] );
 
-        return view('Tenant.pages.result.academicResult.singleSubject', [
+        return view('tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructureFormat' => collect( $academicBroadsheet->meta['caFormat'] ),
             'gradeFormats'          => collect($gradeFormats['gradingFormat']),
             'classSubject'          => $classSubject,
@@ -168,7 +168,7 @@ class AcademicResultsController extends Controller
 
         $reportFormat =collect($caFormat->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
 
-        return view('Tenant.pages.result.academicResult.singleSubject', [
+        return view('tenant.pages.result.academicResult.singleSubject', [
             'caAssessmentStructure' => collect( $reportFormat ),
             'classSubject'          => $classSubject,
             'classSubjectId'        => $classSubject->uuid,

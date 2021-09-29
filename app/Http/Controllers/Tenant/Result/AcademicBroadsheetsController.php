@@ -45,7 +45,7 @@ class AcademicBroadsheetsController extends Controller
 
         $teacherSubject->load(['subject', 'schoolClass', 'classSectionType', 'classSectionCategoryType']);
 
-        return view('Tenant.pages.result.academicBroadsheet.index', [
+        return view('tenant.pages.result.academicBroadsheet.index', [
             'totalSubject' => $teacherSubject->count(),
             'subjects'     => $teacherSubject,
         ]);
@@ -254,7 +254,7 @@ class AcademicBroadsheetsController extends Controller
 
         //dd($this->students);
 
-        return view('Tenant.pages.result.academicBroadsheet.create', [
+        return view('tenant.pages.result.academicBroadsheet.create', [
             'caAssessmentStructure' => collect($this->caFormat),
             'students'              => $this->students,
             'classSubjectId'        => $uuid,

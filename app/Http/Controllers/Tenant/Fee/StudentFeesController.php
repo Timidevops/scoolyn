@@ -21,7 +21,7 @@ class StudentFeesController extends Controller
 
         $studentFees = (new StudentSchoolFee($student));
 
-        return view('Tenant.pages.fees.student.index', [
+        return view('tenant.pages.fees.student.index', [
             'totalFees' => $studentFees->feesItems()->count(),
             'student' => $student,
             'feeStatus' => $studentFees->status(),

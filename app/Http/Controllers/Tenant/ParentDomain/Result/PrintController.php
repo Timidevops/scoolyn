@@ -35,7 +35,7 @@ class PrintController extends Controller
 
         $pdf = App::make('dompdf.wrapper');
 
-        $pdf->loadView('Tenant.pdf.result.result',[
+        $pdf->loadView('tenant.pdf.result.result',[
             'result' => $result,
             'subjects' => $subjects,
             'schoolDetails' => Setting::schoolDetails(),

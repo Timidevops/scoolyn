@@ -20,7 +20,7 @@ class ReportCardBreakdownFormatsController extends Controller
 
     public function edit()
     {
-        return view('Tenant.pages.setting.reportCardBreakdownFormat.index', [
+        return view('tenant.pages.setting.reportCardBreakdownFormat.index', [
             'isReportCardAssessmentFormatSet' => Setting::isReportCardBreakdownFormatCreated(),
             'currentReportFormat' => Setting::getCurrentCardBreakdownFormat(),
             'reportCardBreakdownFormats' => ReportCardBreakdownFormat::query()->get(['name','uuid']),

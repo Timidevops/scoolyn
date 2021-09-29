@@ -12,7 +12,7 @@ class UsersController extends Controller
 {
     public function single()
     {
-        return view('Tenant.parentDomain.profile.index', [
+        return view('tenant.parentDomain.profile.index', [
             'parent' => Auth::user()->parent,
         ]);
     }

@@ -15,7 +15,7 @@ class SubscriptionSettingsController extends Controller
     {
         $planSubscription = ScoolynTenant::getCurrentSubscription();
 
-        return view('Tenant.pages.setting.subscriptionSetting.edit', [
+        return view('tenant.pages.setting.subscriptionSetting.edit', [
             'planName' => $planSubscription->getPlan->name,
             'planExpiry' => Carbon::parse($planSubscription->ends_at)->format('d F, Y h:i A'),
             'planStatus' => ScoolynTenant::getSubscriptionStatus(),

@@ -13,7 +13,7 @@ class WardsController extends Controller
     {
         $parent = Auth::user()->parent;
 
-        return view('Tenant.parentDomain.ward.index', [
+        return view('tenant.parentDomain.ward.index', [
             'totalWards' => $parent->ward()->count(),
             'wards' => $parent->ward,
         ]);

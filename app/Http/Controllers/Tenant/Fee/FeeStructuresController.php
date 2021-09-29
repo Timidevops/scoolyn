@@ -17,7 +17,7 @@ class FeeStructuresController extends Controller
 {
     public function index()
     {
-        return view('Tenant.pages.fees.index', [
+        return view('tenant.pages.fees.index', [
             'totalFees' => FeeStructure::query()->count(),
             'feesStructures' => FeeStructure::query()->get(['name', 'amount', 'description']),
             'schoolFees' => SchoolFee::with(['feesItems'])->get()->map(function($fee){
@@ -31,7 +31,7 @@ class FeeStructuresController extends Controller
 
     public function create()
     {
-        return view('Tenant.pages.fees.create', [
+        return view('tenant.pages.fees.create', [
             'schoolClasses' => SchoolClass::query()->get(['uuid', 'class_name']),
             'schoolTerms' => AcademicTerm::all(),
         ]);
@@ -72,7 +72,7 @@ class FeeStructuresController extends Controller
             return redirect()->route('listFeeStructure');
         }
 
-        return view('Tenant.pages.fees.edit', [
+        return view('tenant.pages.fees.edit', [
             'schoolFees' => $schoolFees->first(),
         ]);
     }

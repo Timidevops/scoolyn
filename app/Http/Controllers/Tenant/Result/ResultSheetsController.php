@@ -31,7 +31,7 @@ class ResultSheetsController extends Controller
             'classSectionCategory'
         ]);
 
-        return view('Tenant.pages.result.academicResultSheet.index', [
+        return view('tenant.pages.result.academicResultSheet.index', [
             'classArm'     => $classArm,
             'students'     => $students,
             'totalStudent' => $students->count(),
@@ -49,7 +49,7 @@ class ResultSheetsController extends Controller
             return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->withoutGlobalScope('teacher')->first()->subject->subject_name);
         })->values();
 
-        return view('Tenant.pages.result.academicResultSheet.single', [
+        return view('tenant.pages.result.academicResultSheet.single', [
             'academicResult'    => $academicResult,
             'subjects'          => $subjects,
             'classArmId'        => $classArmId,

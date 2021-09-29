@@ -19,10 +19,10 @@ class DashboardsController extends Controller
     {
         //dd(Auth::user()->hasRole('super_admin'));
         if( Auth::user()->roles->contains( 'name', User::PARENT_USER) ){
-            return view('Tenant.parentDomain.dashboard');
+            return view('tenant.parentDomain.dashboard');
         }
 
-        return view('Tenant.dashboard', [
+        return view('tenant.dashboard', [
             'totalTeachers'    => Teacher::query()->count(),
             'totalStudents'    => Student::query()->count(),
             'totalParents'     => StudentParent::query()->count(),

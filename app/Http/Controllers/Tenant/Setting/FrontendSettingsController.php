@@ -13,7 +13,7 @@ class FrontendSettingsController extends Controller
 {
     public function edit()
     {
-        return view('Tenant.pages.setting.frontendSetting.edit', [
+        return view('tenant.pages.setting.frontendSetting.edit', [
             'settings' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);
     }

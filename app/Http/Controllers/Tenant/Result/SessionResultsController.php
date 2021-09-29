@@ -24,7 +24,7 @@ class SessionResultsController extends Controller
             return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->withoutGlobalScope('teacher')->first()->subject->subject_name);
         })->values();
 
-        return view('Tenant.pages.result.sessionResultSheet.index', [
+        return view('tenant.pages.result.sessionResultSheet.index', [
             'student'         => Student::whereUuid($studentId),
             'classArm'        => $classArm,
             'sessionResult'   => Student::whereUuid($studentId)->academicSessionResult()->first(),

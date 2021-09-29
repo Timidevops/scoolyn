@@ -19,7 +19,7 @@ class AcademicGradingFormatsController extends Controller
     {
         $gradeFormats = AcademicGradingFormat::query()->get(['uuid','name','school_class','meta']);
 
-        return view('Tenant.pages.result.academicGrading.index', [
+        return view('tenant.pages.result.academicGrading.index', [
             'totalGradeFormat' => AcademicGradingFormat::query()->count(),
             'gradeFormats'     => collect( (new GetNewStructureFormat())->execute($gradeFormats) ),
             'reportBreakdown'  => ReportCardBreakdownFormat::query()->get(['uuid', 'name']),
@@ -34,7 +34,7 @@ class AcademicGradingFormatsController extends Controller
 
         $schoolClasses = collect( collect($schoolClasses)->flatten() )->unique();
 
-        return view('Tenant.pages.result.academicGrading.create', [
+        return view('tenant.pages.result.academicGrading.create', [
             'schoolClasses' => SchoolClass::query()->whereNotIn('uuid', $schoolClasses)->get(['uuid', 'class_name']),
             'reportCardFormats' => (ReportCardBreakdownFormat::query()->get(['uuid', 'name'])),
         ]);
