@@ -185,6 +185,7 @@
                         $user = User::where('email', $teacher['email'])->orWhere('phone', $teacher['phone'])->get()->first();
                         $newTeacher = $user->teacher;
                     }
+
                     //assign teacher to subject
                     $classSubjects = explode(",", trim($teacher['class_subject_code']));
 

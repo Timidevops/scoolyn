@@ -42,13 +42,13 @@
             <div x-show="isClassTeacherDivVisible" class="mt-2">
                 <p @click="isSelectClassModalOpen = true;" class="block cursor-pointer border-b border-dotted pb-1 w-1/3 text-sm font-normal text-blue-100">Choose a class</p>
                 <!-- Modal -->
-                    @include('Tenant.partials.users.teacher.modal._selectClass')
+                    @include('tenant.partials.users.teacher.modal._selectClass')
                 <!--/: Modal -->
             </div>
             <div x-show="isSubjectTeacherDivVisible" class="mt-2">
                 <p @click="isSelectSubjectModalOpen = true;" class="block cursor-pointer border-b border-dotted pb-1 w-5/12 text-sm font-normal text-blue-100">Choose class subject</p>
                 <!-- Modal -->
-                    @include('Tenant.partials.users.teacher.modal._selectSubject')
+                    @include('tenant.partials.users.teacher.modal._selectSubject')
                 <!--/: Modal -->
             </div>
         </div>
