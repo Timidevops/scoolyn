@@ -1,5 +1,16 @@
-@import "tailwindcss/base";
+@tailwind base;
+@tailwind components;
 
-@import "tailwindcss/components";
+.tooltip {
+    @apply invisible absolute top-0 left-0;
+}
 
-@import "tailwindcss/utilities";
+.has-tooltip:hover .tooltip {
+    @apply visible z-50;
+}
+
+.has-tooltip{
+   @apply py-10 relative;
+}
+
+@tailwind utilities;

@@ -6,7 +6,7 @@
         <span class="mt-2 text-base text-gray-300">{{$totalParent}} Total Parents</span>
     </div>
         <div class="bg-white rounded-md">
-    <div class="md:flex md:items-center md:mt-2 ">
+    <div class="md:flex mt-8 md:items-center md:mt-2 ">
       <div class="py-6 px-2 relative w-full">
         <div class="">
          <input type="search" name="" id="" class="py-3 px-10 w-full border border-purple-100 rounded-md  bg-white"  placeholder="Search">

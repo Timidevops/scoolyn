@@ -5,7 +5,7 @@
     </div>
     <span class="mt-2 text-base text-gray-300">{{$totalStudents}} Total Students</span>
 </div>
-<div class="bg-white rounded-md">
+<div class="bg-white mt-8 rounded-md">
 <div class="md:flex md:items-center md:mt-2 ">
   <div class="py-6 px-2 relative w-full">
       <div>

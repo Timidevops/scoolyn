@@ -14,8 +14,6 @@ class CreateNewClassArmAction
     {
         $input['uuid'] = Uuid::uuid4();
 
-        $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
-
-        ClassArm::query()->create($input);
+        return ClassArm::query()->create($input);
     }
 }

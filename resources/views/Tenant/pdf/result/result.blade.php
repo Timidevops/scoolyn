@@ -31,7 +31,7 @@
         |
         <span>{{$schoolDetails['contactEmail']}}</span>
     </p>
-    <h3 style="text-align: center;">REPORT SHEET</h3>
+    <h3 style="text-align: center; text-transform: uppercase">{{$result->getReportCard->name}}</h3>
     <p style="text-align: center;">
         <span style="text-transform: capitalize;">{{$sessionInWord}}</span> -
         <span>{{$result->student->classArm->schoolClass->class_name}}</span>

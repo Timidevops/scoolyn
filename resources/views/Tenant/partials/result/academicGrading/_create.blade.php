@@ -3,13 +3,13 @@
         <div class="mt-2 text-xl text-gray-200">
             Add New Academic Grading Format
         </div>
-        <a href="{{route('listGradeFormat')}}" class="relative">
-            <span class="text-sm text-gray-300 absolute">
+        <a href="{{route('listGradeFormat')}}" class="flex items-center space-x-1 mt-2">
+            <span class=" text-sm text-gray-300">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
-                  </svg>
+                </svg>
             </span>
-            <span class="text-sm text-gray-300 px-8">
+            <span class="text-sm text-gray-300">
                Academic Grading Formats
             </span>
         </a>
@@ -135,7 +135,14 @@
                                                             </td>
                                                             <td class="max-w-0  px-6 py-4 text-center whitespace-nowrap text-xs text-gray-900">
                                                                 <p class="cursor-pointer" @click="removeGradeFormatField(contentIndex, index)">
-                                                                    /!/
+                                                                    <span>
+                                                                        <svg class="h-6 w-6" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                                             viewBox="0 0 409.6 409.6" style="enable-background:new 0 0 409.6 409.6;" xml:space="preserve">
+                                                                                                    <path d="M392.533,187.733H17.067C7.641,187.733,0,195.374,0,204.8s7.641,17.067,17.067,17.067h375.467
+                                                                c9.426,0,17.067-7.641,17.067-17.067S401.959,187.733,392.533,187.733z"/>
+
+                                                                        </svg>
+                                                                    </span>
                                                                 </p>
                                                             </td>
                                                         </tr>

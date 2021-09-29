@@ -10,7 +10,14 @@
             </div>
         </div>
     </div>
-    <a href="{{route('listWardResult')}}"><span class="mt-2  text-sm text-gray-300">/!/ Results</span></a>
+    <a href="{{route('listWardResult')}}" class="flex items-center space-x-1 mt-2">
+        <span class=" text-sm text-gray-300">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16l-4-4m0 0l4-4m-4 4h18" />
+            </svg>
+        </span>
+        <span class="text-sm text-gray-300">Results</span>
+    </a>
 </div>
 
 
@@ -25,7 +32,7 @@
     </div>
 
     <div class="pl-2 py-3">
-        <span class="uppercase">{{$result->academicSession->term}} &nbsp;term</span>
+        <span class="uppercase">{{$result->academicSession->getTerm->name}} &nbsp;term</span>
         &nbsp;
         <span class="capitalize">{{str_replace('-','/',$result->academicSession->session_name)}}</span>
         &nbsp;
@@ -141,12 +148,12 @@
                         </template>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{$subject['total']}}
+                                    {{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    {{strOrdinal($subject['subjectMetric']['SubjectPosition'])}}
+                                    {{strOrdinal($subject['subjectMetric']['subjectPosition'])}}
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
@@ -155,11 +162,11 @@
                                 </span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
-                            <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}')"></span>
+                            <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}')"></span>
                         </td>
                         <td class="px-6 py-4 text-center text-xs whitespace-nowrap text-gray-200">
                                 <span class="text-gray-500 truncate capitalize">
-                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['total']}}', 'comment')"></span>
+                                    <span class="text-gray-500 truncate capitalize" x-text="getGradeName('{{$subject['subjectMetric']['total'] ?? $subject['overallTermTotalAvg']}}', 'comment')"></span>
                                 </span>
                         </td>
                     </tr>

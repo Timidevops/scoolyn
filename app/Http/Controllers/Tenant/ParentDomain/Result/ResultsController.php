@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\StudentParent;
+use App\Models\Tenant\StudentSchoolFee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -38,21 +39,23 @@ class ResultsController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
-        if ( ! $ward->schoolFee->isSchoolFeesPaid() ){
+        $studentSchoolFees = (new StudentSchoolFee($ward));
+
+        if ( ! $studentSchoolFees->isSchoolFeesPaid() ){
             Session::flash('warningFlash', 'Kindly pay school fees to access result.');
             return redirect()->route('singleWardFee',[$ward->schoolFee->uuid, $ward->uuid]);
         }
 
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
 
-        if ( $result->status == AcademicResult::APPROVED_RESULT_STATUS ){
+        if ( $result->status != AcademicResult::APPROVED_RESULT_STATUS ){
             abort(404);
         }
 
-        $result->load(['student', 'academicSession', 'classArm']);
+        $result->load(['student', 'academicSession', 'classArm', 'getTerm']);
 
         $subjects = collect($result->subjects)->map(function ($subject, $key){
-            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->first()->subject->subject_name);
+            return collect($subject)->put('subjectName', ClassSubject::withoutGlobalScope('teacher')->whereUuid($key)->first()->subject->subject_name);
         })->values();
 
 

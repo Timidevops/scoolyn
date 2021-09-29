@@ -6,6 +6,7 @@ use App\Actions\Tenant\Transaction\CreateNewTransactionAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\SchoolFee;
 use App\Models\Tenant\Student;
+use App\Models\Tenant\StudentSchoolFee;
 use App\Models\Tenant\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -26,7 +27,7 @@ class RecordStudentSchoolFeesController extends Controller
             return back();
         }
 
-        if ( $request->input('amount') > $student->schoolFee->schoolFeesLeft() ){
+        if ( $request->input('amount') > (new StudentSchoolFee($student))->schoolFeesLeft() ){
             Session::flash('warningFlash', 'Amount added is more that outstanding school fees.');
 
             return back();
@@ -37,18 +38,21 @@ class RecordStudentSchoolFeesController extends Controller
             'type'           => Transaction::CREDIT_TYPE,
             'amount'         => $request->input('amount'),
             'user_id'        => (string) $student->parent->uuid,
-            'school_fees_id' => $student->schoolFee->uuid,
+            'school_fees_id' => (new StudentSchoolFee($student))->schoolFees->uuid,
             'currency'       => 'ngn',
             'description'    => $request->input('description') ?? 'payment for school fees',
+            'meta' => [
+                'student_id' => $student->uuid,
+            ],
         ]);
 
-        $status = SchoolFee::PAID_STATUS;
+//        $status = SchoolFee::PAID_STATUS;
+//
+//        if ( ! (new StudentSchoolFee($student))->isSchoolFeesPaid() ){
+//            $status = SchoolFee::NOT_COMPLETE;
+//        }
 
-        if ( ! $student->schoolFee->isSchoolFeesPaid() ){
-            $status = SchoolFee::NOT_COMPLETE;
-        }
-
-        $student->schoolFee->setStatus($status);
+        //$student->schoolFee->setStatus($status);
 
         Session::flash('successFlash', 'School fees payment recorded successfully!!!');
 

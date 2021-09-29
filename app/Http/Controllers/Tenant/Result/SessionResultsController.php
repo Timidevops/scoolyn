@@ -16,7 +16,7 @@ class SessionResultsController extends Controller
     {
         $classArm = ClassArm::whereUuid($classArmId)->firstOrFail();
 
-        if ( ! $classArm->hasStudent($studentId) ){
+        if ( ! $classArm->hasStudent($studentId) || ! Student::whereUuid($studentId)->academicSessionResult()->exists() ){
             abort(404);
         }
 
