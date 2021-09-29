@@ -88,13 +88,15 @@ class TenantsController extends Controller
             //db migration
             Artisan::call('migrate:fresh',[
                 '--path' => 'database/migrations/tenants',
-                '--database' => 'tenant'
+                '--database' => 'tenant',
+                '--force' => true
             ]);
 
             //db seeding
             Artisan::call('db:seed',[
                 '--class' => "DatabaseSeeder",
                 '--database' => 'tenant',
+                '--force' => true,
             ]);
 
             //create new admin user
