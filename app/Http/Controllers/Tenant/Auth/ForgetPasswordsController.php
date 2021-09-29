@@ -16,7 +16,7 @@ class ForgetPasswordsController extends Controller
 {
     public function create()
     {
-        return view('Tenant.auth.forgotPassword', [
+        return view('tenant.auth.forgotPassword', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
             'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),
         ]);
@@ -40,7 +40,7 @@ class ForgetPasswordsController extends Controller
 
     public function edit(Request $request)
     {
-        return view('Tenant.auth.resetPassword', [
+        return view('tenant.auth.resetPassword', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
             'token' => $request->input('token'),
             'sideImage' => Setting::whereSettingName(Setting::FRONTEND_AUTH_IMAGE)->first(),

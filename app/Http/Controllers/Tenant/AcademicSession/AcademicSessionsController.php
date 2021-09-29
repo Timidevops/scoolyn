@@ -35,7 +35,7 @@ class AcademicSessionsController extends Controller
 
         $academicSessions->load('getTerm');
 
-        return view('Tenant.pages.setting.academicCalendar.index', [
+        return view('tenant.pages.setting.academicCalendar.index', [
             'totalAcademicSessions' => AcademicSession::query()->count(),
             'academicSessions' => $academicSessions,
         ]);
@@ -44,7 +44,7 @@ class AcademicSessionsController extends Controller
     public function create()
     {
         if ( ! Setting::isAcademicCalendarSet() ){
-            return view('Tenant.pages.setting.academicCalendar.create',[
+            return view('tenant.pages.setting.academicCalendar.create',[
                 'terms' => AcademicTerm::query()->get(['name', 'uuid']),
                 'currentSession' => '',
             ]);
@@ -54,7 +54,7 @@ class AcademicSessionsController extends Controller
 
         $possibleNexSession = $currentSession->session_year + 1 ."/". (($currentSession->session_year + 1) + 1 );
 
-        return  view('Tenant.pages.setting.academicCalendar.edit', [
+        return  view('tenant.pages.setting.academicCalendar.edit', [
             'terms' => AcademicTerm::query()->get(['name', 'uuid']),
             'currentSession' => $currentSession,
             'possibleNexSession' => $possibleNexSession,

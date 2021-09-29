@@ -14,7 +14,7 @@ class AdminsController extends Controller
 {
     public function index()
     {
-        return view('Tenant.pages.adminUser.index', [
+        return view('tenant.pages.adminUser.index', [
             'users' => User::role(User::ADMIN_USER)->get(),
             'totalUsers' => User::role(User::ADMIN_USER)->count(),
         ]);
@@ -22,7 +22,7 @@ class AdminsController extends Controller
 
     public function create()
     {
-        return view('Tenant.pages.adminUser.create');
+        return view('tenant.pages.adminUser.create');
     }
 
     public function store(Request $request)
@@ -49,7 +49,7 @@ class AdminsController extends Controller
     {
         $admin = User::query()->where('uuid', $uuid)->firstOrFail();
 
-        return view('Tenant.pages.adminUser.edit');
+        return view('tenant.pages.adminUser.edit');
     }
 
     public function update(string $uuid, Request $request)

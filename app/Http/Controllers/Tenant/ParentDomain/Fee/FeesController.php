@@ -50,7 +50,7 @@ class FeesController extends Controller
         $schoolFees = $wardSchoolFee->feesItems;
         $reference = generateUniqueReference('12','rp_');
 
-        return view('Tenant.parentDomain.fees.single', [
+        return view('tenant.parentDomain.fees.single', [
             'wardSchoolFee' => $wardSchoolFee,
             'schoolFees' => $schoolFees,
             'reference' => $reference,

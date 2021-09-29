@@ -11,6 +11,7 @@ use App\Models\Tenant\Subject;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
+use Ramsey\Uuid\Uuid;
 
 class SubjectsController extends Controller
 {
@@ -18,10 +19,10 @@ class SubjectsController extends Controller
     {
         $schoolSubject = SchoolSubject::query()->pluck('subject_id');
 
-        return view('Tenant.pages.subject.subject', [
+        return view('tenant.pages.subject.subject', [
             'subjectTotal'   => SchoolSubject::all()->count(),
             'schoolSubjects' => SchoolSubject::query()->get(['uuid', 'subject_name', 'slug']),
-            'subjects'       => Subject::query()->get(['uuid', 'subject_name', 'slug'])->whereNotIn('uuid', $schoolSubject),
+            'subjects'       => Subject::query()->whereNotIn('uuid', $schoolSubject)->get(['uuid', 'subject_name', 'slug']),
         ]);
     }
 
@@ -29,16 +30,31 @@ class SubjectsController extends Controller
     {
         $this->validate($request, [
             'subjects.*' => ['unique:'.config('env.tenant.tenantConnection').'.school_subjects,subject_id'],
-            'subjects'   => ['required', 'array','min:1']
+            'subjects'   => ['nullable', 'array','min:1'],
+            'newSubject' => ['nullable','unique:'.config('env.tenant.tenantConnection').'.school_subjects,subject_name'],
         ]);
 
-        foreach( $request->input('subjects') as $subjectId){
+        if( $request->input('subjects') ){
+            foreach( $request->input('subjects') as $subjectId){
 
             $subject = Subject::query()->where('uuid', $subjectId)->first();
 
             (new CreateNewSubjectAction())->execute([
                 'subject_name' => $subject->subject_name,
                 'subject_id'   => (string) $subjectId,
+                ]);
+            }
+        }
+
+        if( $request->input('newSubject') ){
+            $subject = Subject::query()->create([
+                'uuid' => Uuid::uuid4(),
+                'subject_name' => $request->input('newSubject'),
+            ]);
+
+            (new CreateNewSubjectAction())->execute([
+                'subject_name' => $subject->subject_name,
+                'subject_id'   => (string) $subject->uuid,
             ]);
         }
 

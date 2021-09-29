@@ -32,7 +32,7 @@ class PrintResultController extends Controller
 
             $pdf = App::make('dompdf.wrapper');
 
-            $pdf->loadView('Tenant.pdf.result.sessionResult',[
+            $pdf->loadView('tenant.pdf.result.sessionResult',[
                 'result' => $this->studentResult,
                 'subjects' => $this->getSubjects(),
                 'schoolDetails' => Setting::schoolDetails(),
@@ -49,7 +49,7 @@ class PrintResultController extends Controller
 
         $pdf = App::make('dompdf.wrapper');
 
-        $pdf->loadView('Tenant.pdf.result.result',[
+        $pdf->loadView('tenant.pdf.result.result',[
             'result' => $this->studentResult,
             'subjects' => $this->getSubjects(),
             'schoolDetails' => Setting::schoolDetails(),

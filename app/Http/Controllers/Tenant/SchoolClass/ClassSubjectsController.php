@@ -29,7 +29,7 @@ class ClassSubjectsController extends Controller
         $schoolClass->subject->load('subject');
         $classSubjects = collect($schoolClass->subject)->unique('subject_id')->values();
 
-        return view('Tenant.pages.classes.subject', [
+        return view('tenant.pages.classes.subject', [
             'subjects'                 => SchoolSubject::query()->get(['uuid', 'subject_name']),
             'schoolClass'              => $schoolClass,
             'classSubjectsTotal'       => $classSubjects->count(),

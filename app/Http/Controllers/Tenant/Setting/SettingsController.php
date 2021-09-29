@@ -10,7 +10,7 @@ class SettingsController extends Controller
 {
     public function index()
     {
-        return view('Tenant.pages.setting.index', [
+        return view('tenant.pages.setting.index', [
             'currentAcademicSession' => Setting::getCurrentAcademicCalendarInWord(),
         ]);
     }

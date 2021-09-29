@@ -46,7 +46,7 @@ class StudentSubjectsController extends Controller
 
         $classSubjects->load('subject');
 
-        return view('Tenant.pages.student.subject.index', [
+        return view('tenant.pages.student.subject.index', [
             'studentId'      => $student->uuid,
             'totalSubject'   => $totalSubject,
             'studentName'    => "{$student->first_name} {$student->last_name}",

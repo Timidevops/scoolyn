@@ -14,7 +14,7 @@ class ApplicantsController extends Controller
 {
     public function create()
     {
-        return view('Tenant.guestDomain.admission.index', [
+        return view('tenant.guestDomain.admission.index', [
             'schoolName' => Setting::schoolDetails()['schoolName'],
             'schoolLocation' => Setting::schoolDetails()['schoolLocation'],
             'schoolNumber' => Setting::schoolDetails()['contactNumber'],
