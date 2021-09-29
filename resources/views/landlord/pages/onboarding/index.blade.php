@@ -1,4 +1,4 @@
-@extends('Tenant.layouts.main')
+@extends('tenant.layouts.main')
 @section('headerMeta')
 @endsection
 @section('topNav')

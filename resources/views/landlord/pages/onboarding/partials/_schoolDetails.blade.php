@@ -65,10 +65,10 @@
            @endif
            @csrf
            <div :class="{'hidden': Open}">
-             @include('Tenant.welcome.schoolDetails.partials._accountRegistration')
+             @include('tenant.welcome.schoolDetails.partials._accountRegistration')
             </div>
         <div>
-          @include('Tenant.welcome.schoolDetails.partials._signUp')
+          @include('tenant.welcome.schoolDetails.partials._signUp')
         </div>
        </form>
     </div>

@@ -33,7 +33,7 @@
     <!-- tab body -->
     @foreach($students as $index => $student)
        <div x-show="broadsheetTabOpen === '{{$index}}'">
-           @if( $student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::SUBMITTED_STATUS || $student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::APPROVED_STATUS)
+           @if( $student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::SUBMITTED_STATUS || $student['broadsheetStatus']  == \App\Models\tenant\AcademicBroadSheet::APPROVED_STATUS)
                @include('.tenant.partials.result.academicBroadsheet._single', [
                         'broadsheetStatus' => $student['broadsheetStatus'],
                         'gradeFormats' => $student['gradeFormats'],
@@ -47,8 +47,7 @@
                     'academicBroadsheets' => $student['academicBroadsheets'],
                     'classArm' => $student['classArm'],
 
-                    ])
-               @elseif($student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
+                    ]) @elseif($student['broadsheetStatus'] == \App\Models\tenant\AcademicBroadSheet::NOT_APPROVED_STATUS)
                     @include('tenant.partials.result.academicBroadsheet._edit', [
                         'classArm' => $student['classArm'],
                         'broadsheetStatus' => $student['broadsheetStatus'],

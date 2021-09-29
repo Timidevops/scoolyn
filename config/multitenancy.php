@@ -41,7 +41,7 @@ return [
     /*
      * This class is the model used for storing configuration on tenants.
      *
-     * It must be or extend `Spatie\Multitenancy\Models\Tenant::class`
+     * It must be or extend `Spatie\Multitenancy\Models\tenant::class`
      */
     'tenant_model' => \App\Models\Tenant\ScoolynTenant::class,
 
