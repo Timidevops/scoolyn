@@ -1,6 +1,15 @@
 
 <div x-data="addTeacher()">
     <form wire:submit.prevent="store">
+        @if($errors->any())
+            <div class="mt-1 mb-5 bg-red-100 p-5">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
             <div class="mt-2">
                 <label for="fullName" class="block text-sm font-normal text-gray-100">Full Name</label>

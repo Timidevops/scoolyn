@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.auth')
+@extends('landlord.layouts.auth')
 
 @section('pageContent')
     <div class="flex justify-center">

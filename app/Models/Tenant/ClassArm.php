@@ -96,17 +96,17 @@ class ClassArm extends Model
                ->where('academic_session_id', $newAcademicSession);
         }
 
-        return $classSubjects->get()->map(function ($classSubject){
-            if( $classSubject->classArm ){
-                return $classSubject;
+        return $classSubjects->get()->filter(function ($classSubject) {
+
+            if($classSubject->class_arm){
+                return $classSubject->whereJsonContains('class_arm', $this->uuid);
             }
-            elseif( $classSubject->class_section_id === $this->class_section_id && $classSubject->class_section_category_id == $this->class_section_category_id ){
-                return $classSubject;
+            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
+                return  $classSubject->class_section_id == $this->class_section_id;
             }
-            else{
-                return $classSubject;
-            }
-        });
+
+            return $classSubject->class_section_id == $this->class_section_id && $classSubject->class_section_category_id == $this->class_section_category_id;
+        })->values();
     }
 
     public function hasStudent(string $studentId)

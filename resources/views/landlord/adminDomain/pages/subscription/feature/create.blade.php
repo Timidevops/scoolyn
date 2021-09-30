@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.main')
+@extends('landlord.layouts.main')
 
 @section('pageContent')
     <div class="mt-2 text-xl text-gray-200">

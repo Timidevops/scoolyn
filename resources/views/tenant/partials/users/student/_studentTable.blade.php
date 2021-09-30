@@ -154,7 +154,7 @@
                             <span class="cursor-pointer inline-block py-2 px-4 text-gray-200 text-base mx-2" :class="{ 'active border-b-2 border-blue-100 ': studentProfileTab == '2' }" @click.prevent="studentProfileTab = 2">Parent info</span>
                         </div>
                         <span class="cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="isStudentProfileModalOpen = false">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" x-on:click="onClickCloseStudentProfile()">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </span>

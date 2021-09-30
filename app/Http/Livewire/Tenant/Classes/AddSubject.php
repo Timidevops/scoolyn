@@ -75,7 +75,25 @@ class AddSubject extends Component
                 ->where('class_section_id', $this->classSectionId == 'all' ? null : $this->classSectionId ?? null)
                 ->where('class_section_category_id', $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null)->first();
 
-            if($isClassSubjectExists){
+            $allClassArmExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->whereJsonContains('class_arm', collect($this->classArm)->pluck('uuid')->toArray())->exists();
+
+            $classSectionExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)
+                ->exists();
+
+            $classSectionCategoryExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)
+                ->where('class_section_category_id', $this->classSectionCategoryId)
+                ->exists();
+
+            if($isClassSubjectExists || $allClassArmExists || $classSectionExists || $classSectionCategoryExists){
                 continue;
             }
 
@@ -122,7 +140,7 @@ class AddSubject extends Component
 
     public function onToggleAll(bool $checked)
     {
-        $this->subjectIds = $checked ? Subject::query()->pluck('uuid')->toArray() : [];
+        $this->subjectIds = $checked ? SchoolSubject::query()->pluck('uuid')->toArray() : [];
         $this->subjectLabel = $checked ? 'Select all' : '-- choose a subject --';
         $this->isSubjectDropdownOpen  = ! $checked;
     }

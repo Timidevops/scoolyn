@@ -81,6 +81,11 @@
 
                 this.isStudentProfileModalOpen = true;
             },
+            onClickCloseStudentProfile(){
+                this.studentParentDetail = [];
+                this.studentProfileTab = 1;
+                this.isStudentProfileModalOpen = false;
+            },
             search: "",
             pageNumber: 0,
             size: 10,

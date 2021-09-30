@@ -14,6 +14,6 @@ class InActiveSubscriptionController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return view('Landlord.pages.subscription.notActive.index');
+        return view('landlord.pages.subscription.notActive.index');
     }
 }

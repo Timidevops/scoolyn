@@ -123,6 +123,9 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
                 Route::get('parent/add-new', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'create'])->name('createParent');
                 Route::get('parent/upload-parents', [\App\Http\Controllers\Tenant\Parent\UploadParentsController::class, 'create'])->name('uploadParents');
                 Route::post('parent', [\App\Http\Controllers\Tenant\Parent\ParentsController::class, 'store'])->name('storeParent');
+                Route::get('parent/ward/{uuid}', [\App\Http\Controllers\Tenant\Parent\WardsController::class, 'index'])->name('listParentWard');
+                Route::get('parent/ward/{uuid}/add-new', [\App\Http\Controllers\Tenant\Parent\WardsController::class, 'create'])->name('createParentWard');
+                Route::post('parent/ward/{uuid}', [\App\Http\Controllers\Tenant\Parent\WardsController::class, 'store'])->name('storeParentWard');
 
                 Route::get('result/continuous-assessment-format', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'index'])->name('listCAStructure');
                 Route::get('result/continuous-assessment-format/add-new', [\App\Http\Controllers\Tenant\Result\ContinuousAssessmentFormatsController::class, 'create'])->name('createCAStructure');
@@ -162,8 +165,6 @@ Route::middleware(['landlord.checkCurrentTenant'])->group(function (){
 
                     Route::get('fee/student/{uuid}', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'index'])->name('listStudentFee');
                     Route::post('fee/student', [\App\Http\Controllers\Tenant\Fee\StudentFeesController::class, 'store'])->name('storeStudentFee');
-
-                    //Route::post('school-fee/{uuid}', [\App\Http\Controllers\tenant\Fee\SchoolFeesController::class, 'store'])->name('storeSchoolFee');
 
                     Route::get('fee/student/{uuid}/receipt', [\App\Http\Controllers\Tenant\Fee\ReceiptsController::class, 'index'])->name('listStudentReceipt');
 

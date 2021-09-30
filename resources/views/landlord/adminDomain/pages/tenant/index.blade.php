@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.main')
+@extends('landlord.layouts.main')
 
 @section('pageContent')
     <div>
@@ -31,7 +31,7 @@
             </div>
         </div>
         <!-- Table -->
-            @include('Landlord.adminDomain.pages.tenant.partials._indexTable')
+            @include('landlord.adminDomain.pages.tenant.partials._indexTable')
         <!-- Table -->
     </div>
 @endsection
