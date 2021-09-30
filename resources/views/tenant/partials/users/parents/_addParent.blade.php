@@ -6,6 +6,16 @@
             </a>
         </div>
 
+        @if($errors->any())
+            <div class="mt-1 mb-5 bg-red-100 p-5">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
+
         <form x-data="add()" action="{{route('storeParent')}}" method="post">
             @csrf
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
@@ -21,12 +31,12 @@
 
             <div class="mt-2">
                 <label for="email" class="block text-sm font-normal text-gray-100">Email</label>
-                <input type="text" name="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
+                <input type="email" name="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
             </div>
 
             <div class="mt-2">
                     <label for="phoneNumber" class="block text-sm font-normal text-gray-100">Phone number</label>
-                    <input type="text" name="phoneNumber" id="phoneNumber" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required>
+                    <input type="number" name="phoneNumber" id="phoneNumber" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required>
             </div>
 
             <div class="mt-2 relative">
@@ -80,10 +90,10 @@
 
                   genders:[
                           {
-                              value:'Female',
+                              value:'Male',
                           },
                           {
-                              value:'Male',
+                              value:'Female',
                           },
                   ],
 

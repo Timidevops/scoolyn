@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.main')
+@extends('landlord.layouts.main')
 
 @section('pageContent')
     <div>
@@ -35,7 +35,7 @@
             <div class=" sm:block">
                 <div class="max-w-6xl mx-auto  sm:px-6">
                     <div class="flex flex-col mt-2 py-10 rounded-md">
-                        @include('Landlord.adminDomain.pages.subscription.featureAddon.partials._indexTable')
+                        @include('landlord.adminDomain.pages.subscription.featureAddon.partials._indexTable')
                     </div>
                 </div>
             </div>
@@ -43,7 +43,7 @@
         <!-- table -->
 
         <!-- add feature addon modal -->
-            @include('Landlord.adminDomain.pages.subscription.featureAddon.partials._addFeatureAddonModal')
+            @include('landlord.adminDomain.pages.subscription.featureAddon.partials._addFeatureAddonModal')
         <!-- add feature addon modal -->
     </div>
 @endsection

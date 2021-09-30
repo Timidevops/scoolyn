@@ -75,6 +75,8 @@ class AddTeacher extends Component
     {
         $this->validate();
 
+        dd('here');
+
         $password = strtolower(str_replace(' ', '', $this->fullName));
         if($this->phone != ''){
             $password = $this->phone;
@@ -159,7 +161,7 @@ class AddTeacher extends Component
         }
 
         //@todo welcome email notification
-        (new WelcomeNewUserAction)->execute($user);
+        //(new WelcomeNewUserAction)->execute($user);
 
         //set marker
         (new UpdateTodoItemAction())->execute([

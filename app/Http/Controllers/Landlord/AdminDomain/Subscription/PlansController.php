@@ -13,7 +13,7 @@ class PlansController extends Controller
 {
     public function index()
     {
-        return view('Landlord.adminDomain.pages.subscription.plan.index', [
+        return view('landlord.adminDomain.pages.subscription.plan.index', [
             'plans'      => Plan::all(),
             'totalPlans' => Plan::query()->count(),
         ]);
@@ -21,7 +21,7 @@ class PlansController extends Controller
 
     public function create()
     {
-        return view('Landlord.adminDomain.pages.subscription.plan.create');
+        return view('landlord.adminDomain.pages.subscription.plan.create');
     }
 
     public function store(Request $request)
@@ -43,7 +43,7 @@ class PlansController extends Controller
 
     public function edit(string $uuid)
     {
-        return view('Landlord.adminDomain.pages.subscription.plan.edit', [
+        return view('landlord.adminDomain.pages.subscription.plan.edit', [
             'plan' => Plan::whereUuid($uuid)->firstOrFail(),
             'features' => Plan::whereUuid($uuid)->first()->features,
             'newFeatures' => Feature::query()->get(['uuid', 'name', 'description', 'value']),

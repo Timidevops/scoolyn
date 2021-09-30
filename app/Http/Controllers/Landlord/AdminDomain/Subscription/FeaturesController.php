@@ -12,7 +12,7 @@ class FeaturesController extends Controller
 {
     public function index()
     {
-        return view('Landlord.adminDomain.pages.subscription.feature.index', [
+        return view('landlord.adminDomain.pages.subscription.feature.index', [
             'features' => Feature::all(),
             'totalFeatures' => Feature::query()->count(),
         ]);
@@ -20,7 +20,7 @@ class FeaturesController extends Controller
 
     public function create()
     {
-        return view('Landlord.adminDomain.pages.subscription.feature.create');
+        return view('landlord.adminDomain.pages.subscription.feature.create');
     }
 
     public function store(Request $request)

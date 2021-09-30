@@ -13,7 +13,7 @@ class FeatureAddonsController extends Controller
 {
     public function index()
     {
-        return view('Landlord.adminDomain.pages.subscription.featureAddon.index', [
+        return view('landlord.adminDomain.pages.subscription.featureAddon.index', [
             'features' => Feature::query()->get(['name', 'uuid', 'description']),
             'totalFeatureAddons' => FeatureAddon::query()->count(),
             'featureAddons' => FeatureAddon::query()->get(['name', 'value']),

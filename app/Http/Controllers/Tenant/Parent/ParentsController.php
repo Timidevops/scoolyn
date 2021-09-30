@@ -36,11 +36,26 @@ class ParentsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'email' => ['unique:'.config('env.tenant.tenantConnection').'.parents,email', 'unique:'.config('env.tenant.tenantConnection').'.users,email'],
+            'phoneNumber' => ['unique:'.config('env.tenant.tenantConnection').'.parents,phone_number', 'unique:'.config('env.tenant.tenantConnection').'.users,phone'],
+        ]);
+
         // create user
+        $password = "{$request->input('firstName')}_{$request->input('lastName')}";
+
+        if( $request->input('phoneNumber') ){
+            $password = $request->input('phoneNumber');
+        }
+        elseif ( $request->input('email') ){
+            $password = $request->input('email');
+        }
+
         $user = (new CreateUserAction())->execute([
             'name'     => "{$request->input('firstName')} {$request->input('lastName')}",
             'email'    => $request->input('email'),
-            'password' => Hash::make('password'),//Hash::make(random_number(1,9,5)),
+            'password' => Hash::make($password),
+            'phone'    => $request->input('phoneNumber'),
         ]);
 
         // assign student role

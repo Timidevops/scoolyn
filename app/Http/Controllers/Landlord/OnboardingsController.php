@@ -32,7 +32,7 @@ class OnboardingsController extends Controller
     {
         $schoolAdmin  = SchoolAdmin::query()->where('uuid', $uuid)->first();
 
-        return view('Landlord.pages.onboarding.index', [
+        return view('landlord.pages.onboarding.index', [
             'id' => $uuid,
             'domain' => (string) config('env.app_domain'),
             'email' => $schoolAdmin->email,

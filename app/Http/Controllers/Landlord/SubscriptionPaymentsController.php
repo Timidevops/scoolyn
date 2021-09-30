@@ -17,7 +17,7 @@ class SubscriptionPaymentsController extends Controller
     {
         $plan = Plan::query()->where('uuid', $uuid)->firstOrFail();
 
-        return view('Landlord.pages.payment.index', [
+        return view('landlord.pages.payment.index', [
             'plan' => $plan,
         ]);
     }

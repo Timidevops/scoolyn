@@ -26,21 +26,7 @@ class StudentSubjectsController extends Controller
 
         $studentSubjectIds = $student->subjects ? $student->subjects->subjects : [];
 
-        $classArm = $student->classArm;
-
-        $classSubjects = $student->classArm->classSubject->filter(function ($classSubject) use($classArm){
-
-            if($classSubject->class_arm){
-
-                return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
-            }
-            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
-                return  $classSubject->class_section_id == $classArm->class_section_id;
-            }
-
-            return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
-        });
-
+        $classSubjects = $student->classArm->getClassSubjects();
 
         $classSubjects = $classSubjects->whereNotIn('uuid', $studentSubjectIds);
 

@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.main')
+@extends('landlord.layouts.main')
 
 @section('pageContent')
     <div class="mt-2 text-xl text-gray-200">
@@ -64,7 +64,7 @@
                         </div>
                         <!-- table -->
                         <div class="mt-10">
-                            @include('Landlord.adminDomain.pages.subscription.plan.partials._editTable')
+                            @include('landlord.adminDomain.pages.subscription.plan.partials._editTable')
                         </div>
                         <!-- table -->
                     </div>
@@ -72,7 +72,7 @@
             </div>
         </div>
         <!-- add feature modal -->
-            @include('Landlord.adminDomain.pages.subscription.plan.partials._addFeatureModal')
+            @include('landlord.adminDomain.pages.subscription.plan.partials._addFeatureModal')
         <!-- add feature modal -->
     </div>
 

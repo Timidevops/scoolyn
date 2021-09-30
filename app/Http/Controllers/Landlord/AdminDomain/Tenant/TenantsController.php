@@ -26,7 +26,7 @@ class TenantsController extends Controller
 {
     public function index()
     {
-        return view('Landlord.adminDomain.pages.tenant.index', [
+        return view('landlord.adminDomain.pages.tenant.index', [
             'schools'      => ScoolynTenant::query()->get(['name', 'domain']),
             'totalSchools' => ScoolynTenant::query()->count(),
         ]);
@@ -34,7 +34,7 @@ class TenantsController extends Controller
 
     public function create()
     {
-        return view('Landlord.adminDomain.pages.tenant.create', [
+        return view('landlord.adminDomain.pages.tenant.create', [
             'domain' => (string) config('env.app_domain'),
             'plans'  => Plan::all(),
         ]);

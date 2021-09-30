@@ -1,4 +1,4 @@
-@extends('Landlord.layouts.auth')
+@extends('landlord.layouts.auth')
 
 @section('pageContent')
     <div class="min-h-screen bg-white flex">
