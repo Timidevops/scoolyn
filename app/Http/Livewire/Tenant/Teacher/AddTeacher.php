@@ -61,8 +61,10 @@ class AddTeacher extends Component
         $classSubjects = ClassSubject::query()->whereNull('teacher_id')->get();
 
         $classSubjects = $classSubjects->map(function ($classSubject){
-            $uuid [] = $classSubject->subject->uuid;
-            return $uuid;
+            if($classSubject->subject()->exists()){
+                $uuid [] = $classSubject->subject->uuid;
+                return $uuid;
+            }
         });
 
         return view('livewire.tenant.teacher.add-teacher', [

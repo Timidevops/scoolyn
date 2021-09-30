@@ -93,7 +93,8 @@ class UploadStudent extends Component
         try {
             $this->studentsDetail = (new ExcelFileReaderAction())->execute($file, $format);
         } catch (FileNotFoundException | InvalidFileFormatException $e) {
-            Log::info("Error while uploading file ". $e->getMessage());
+            session()->flash('errorMessage', 'Invalid file format. Kindly download and use the valid format.');
+            Log::info("Error while uploading students file ". $e->getMessage());
             return;
         }
 
