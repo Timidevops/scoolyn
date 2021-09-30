@@ -14,9 +14,9 @@ class ExcelFileReaderAction
 {
     private array $fileData = [];
 
-    public function execute($file, array $format): array
+    public function execute($file, array $format, $disk = 'temp'): array
     {
-        if( ! Storage::disk('temp')->exists("$file") ){
+        if( ! Storage::disk($disk)->exists("$file") ){
             throw new FileNotFoundException("Please upload a valid file.");
         }
 

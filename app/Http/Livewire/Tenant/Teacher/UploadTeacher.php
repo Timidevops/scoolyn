@@ -155,6 +155,8 @@
             try {
                 $this->teachersDetail = (new ExcelFileReaderAction())->execute($file, $format);
             } catch (FileNotFoundException | InvalidFileFormatException $e) {
+                session()->flash('errorMessage', 'Invalid file format. Kindly download and use the valid format');
+                Log::info("error while uploading teachers file. ". $e->getMessage());
                 return;
             }
 

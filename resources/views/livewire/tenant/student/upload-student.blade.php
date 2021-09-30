@@ -145,7 +145,11 @@
 
     </div>
     </div>
-
+    @if(session()->has('errorMessage'))
+        <div class="md:flex mt-5 mb-5 lg:px-8">
+            <span class="text-red-500">{{ session('errorMessage') }}</span>
+        </div>
+    @endif
     <div class="px-4 py-4 lg:px-8">
         <button type="submit" class="bg-blue-100 text-white rounded-md py-3 px-3  text-sm">
             Submit
