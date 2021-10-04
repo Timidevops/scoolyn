@@ -24,12 +24,12 @@ class SchoolClassesSeeder extends Seeder
             'Senior Secondary School 3',
         ];
 
-        foreach ($schoolClasses as $key => $schoolClass){
-            SchoolClass::query()->create([
-                'uuid' => Uuid::uuid4(),
-                'class_name' => $schoolClass,
-                'level' => $key + 1,
-            ]);
-        }
+//        foreach ($schoolClasses as $key => $schoolClass){
+//            SchoolClass::query()->create([
+//                'uuid' => Uuid::uuid4(),
+//                'class_name' => $schoolClass,
+//                'level' => $key + 1,
+//            ]);
+//        }
     }
 }

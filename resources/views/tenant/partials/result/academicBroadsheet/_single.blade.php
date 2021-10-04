@@ -9,11 +9,7 @@
             @endif
         </div>
         <!-- broadsheet table with grades -->
-<<<<<<< HEAD:resources/views/tenant/partials/result/academicBroadsheet/_single.blade.php
             @include('.tenant.partials.result.helpers.table.broadsheetTableWithGrade')
-=======
-            @include('tenant.partials.result.helpers.table.broadsheetTableWithGrade')
->>>>>>> tim:resources/views/Tenant/partials/result/academicBroadsheet/_single.blade.php
         <!--/: broadsheet table with grades -->
     </div>
 </div>
