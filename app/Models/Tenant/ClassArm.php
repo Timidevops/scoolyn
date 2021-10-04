@@ -52,6 +52,10 @@ class ClassArm extends Model
                 });
             }
         }
+
+        static::addGlobalScope('dummyClassArm', function (Builder $builder) {
+            $builder->where('id', '!=', 1);
+        });
     }
 
     public function academicResult(): HasMany

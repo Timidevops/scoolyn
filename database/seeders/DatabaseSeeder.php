@@ -35,6 +35,7 @@ class DatabaseSeeder extends Seeder
             RoleSeeder::class,
             SubjectSeeders::class,
             AcademicTermSeeder::class,
+            SchoolClassesSeeder::class,
         ]);
     }
 

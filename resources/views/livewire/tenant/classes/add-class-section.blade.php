@@ -44,24 +44,24 @@
                         {{$classLabel}}
                     </button>
                     <div class="border border-purple-100 @if(!$classDropdown)  hidden @endif">
-                        <div>
-                            <div>
-                                <div class="flex items-center py-2 cursor-pointer" >
-                              <span class="mx-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">
-                                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                                </svg>
-                            </span>
-                                    <span wire:click="toggleDefaultClassDropdown('{{!$defaultClassOptionDropdown}}')" class="text-xs font-normal text-gray-100">Choose default class</span>
-                                </div>
-                            </div>
-                            <ul class="@if(!$defaultClassOptionDropdown) hidden @endif py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
-              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
-                                @foreach($defaultClassOptions as $defaultClassOption)
-                                    <li wire:click="selectDefaultClass('{{$defaultClassOption}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">{{$defaultClassOption}}</li>
-                                @endforeach
-                            </ul>
-                        </div>
+{{--                        <div>--}}
+{{--                            <div>--}}
+{{--                                <div class="flex items-center py-2 cursor-pointer" >--}}
+{{--                              <span class="mx-2">--}}
+{{--                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-100 border border-green-100 rounded-full" viewBox="0 0 20 20" fill="currentColor">--}}
+{{--                                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />--}}
+{{--                                </svg>--}}
+{{--                            </span>--}}
+{{--                                    <span wire:click="toggleDefaultClassDropdown('{{!$defaultClassOptionDropdown}}')" class="text-xs font-normal text-gray-100">Choose default class</span>--}}
+{{--                                </div>--}}
+{{--                            </div>--}}
+{{--                            <ul class="@if(!$defaultClassOptionDropdown) hidden @endif py-1 overflow-auto h-32 text-base leading-6 border border-purple-100--}}
+{{--              rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">--}}
+{{--                                @foreach($defaultClassOptions as $defaultClassOption)--}}
+{{--                                    <li wire:click="selectDefaultClass('{{$defaultClassOption}}')" class="relative py-2 pl-3  text-gray-200 cursor-pointer select-none pr-9">{{$defaultClassOption}}</li>--}}
+{{--                                @endforeach--}}
+{{--                            </ul>--}}
+{{--                        </div>--}}
                         <div>
                             <ul class="@if(!$classDropdownOption) hidden @endif py-1 overflow-auto h-32 text-base leading-6 border border-purple-100
               rounded-md shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">

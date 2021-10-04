@@ -53,9 +53,7 @@ class TeachersController extends Controller
 
         $classArms->load(['schoolClass', 'classSection', 'classSectionCategory']);
 
-        $subjects = $teacher->subjectTeacher;
-
-        //$subjects->load('');
+        $subjects = $teacher->subjectTeacher->load(['subject', 'schoolClass']);
 
         return view('tenant.pages.teacher.edit', [
             'teacher'   => $teacher,
