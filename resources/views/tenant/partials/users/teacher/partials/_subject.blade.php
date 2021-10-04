@@ -36,11 +36,13 @@
                                     </td>
 
 
-                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                                    <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-blue-100">
                                         <div class="flex">
-                                            <p class="group inline-flex space-x-2 truncate">
-                                                <span class="text-gray-500 truncate capitalize" x-text="JSON.stringify(content)"></span>
-                                            </p>
+                                            <a :href=`{{route('listSubjectTeacher','')}}/${content.subject.slug}` class="group inline-flex space-x-2 truncate">
+                                                <span class="text-blue-100 truncate capitalize" x-text="content.subject.subject_name"></span>
+                                                -
+                                                <span class="text-gray-500 truncate capitalize" x-text="content.school_class.class_name"></span>
+                                            </a>
                                         </div>
                                     </td>
 

@@ -34,6 +34,7 @@
             @endif
             <div class=" mx-4" >
 
+
                 <div class="mt-6">
                     <label for="service" class="block text-xs font-normal text-gray-100">Section name</label>
                     <button wire:click="$set('classSectionDropdown', {{!$classSectionDropdown}})" type="button"
