@@ -16,6 +16,7 @@ use App\Models\Tenant\ClassSectionCategoryType;
 use App\Models\Tenant\ClassSectionType;
 use App\Models\Tenant\OnboardingTodoList;
 use App\Models\Tenant\SchoolClass;
+use App\Models\Tenant\Setting;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -34,14 +35,7 @@ class AddClassSection extends Component
     public bool $classDropdown = false;
     public bool $classDropdownOption = false;
     public bool $defaultClassOptionDropdown = false;
-    public array $defaultClassOptions = [
-        'Junior Secondary School 1',
-        'Junior Secondary School 2',
-        'Junior Secondary School 3',
-        'Senior Secondary School 1',
-        'Senior Secondary School 2',
-        'Senior Secondary School 3',
-    ];
+    public array $defaultClassOptions = [];
 
     public string $sectionLabel = '-- choose a section --';
     public bool $sectionDropdown = false;
@@ -99,6 +93,7 @@ class AddClassSection extends Component
             'school_class_id' => $schoolClassId,
             'class_section_id' => $classSectionTypeId,
             'class_section_category_id' => $classSectionCategoryTypeId,
+            'academic_session_id' => Setting::getCurrentAcademicSessionId(),
         ]);
 
         //set marker

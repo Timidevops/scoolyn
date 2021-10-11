@@ -25,6 +25,11 @@ class ClassArm extends Model
     const GENERATING_RESULT_STATUS = 'generating_result';
     const RESULT_GENERATED_STATUS = 'result_generated';
     const RESULT_INCOMPLETE_STATUS = 'result_incomplete';
+    const RESULT_ERROR_STATUS = 'error_generating_result';
+    const NEW_REPORT_STATUS = 'new_report_status';
+    const SESSION_REPORT_GENERATED_STATUS = 'session_report_generated';
+    const SESSION_REPORT_ERROR_STATUS = 'error_generating_session_report';
+    const SESSION_COMPLETED_STATUS = 'session_completed';
 
     protected $guarded = [];
 
@@ -35,26 +40,33 @@ class ClassArm extends Model
     protected static function booted()
     {
         parent::boot();
+
         if (auth()->check()) {
 
             if ( ! Auth::user()->hasRole(User::SUPER_ADMIN_USER) ) {
 
                 $teacher = Teacher::whereUserId(Auth::user()->uuid)->first();
 
-                if ( ! $teacher ){
-                    abort(404);
-                }
-
                 static::addGlobalScope('teacher', function (Builder $builder) use($teacher) {
                     $builder->where('class_teacher', $teacher->uuid);
                 });
             }
         }
+
+        static::addGlobalScope('dummyClassArm', function (Builder $builder) {
+            $builder->where('id', '!=', 1);
+        });
     }
 
     public function academicResult(): HasMany
     {
         return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid');
+    }
+
+    public function academicResultWithCurrentReport(): HasMany
+    {
+        return $this->hasMany(AcademicResult::class, 'class_arm', 'uuid')
+            ->where('report_card', Setting::getCurrentCardBreakdownFormat());
     }
 
     public function schoolClass(): BelongsTo
@@ -77,6 +89,40 @@ class ClassArm extends Model
         return $this
             ->hasMany(ClassSubject::class, 'school_class_id', 'school_class_id')
             ->withoutGlobalScope('teacher');
+    }
+
+    public function getClassSubjects(bool $withScope = true, string $newAcademicSession = '')
+    {
+        $classSubjects =  $this->classSubject();
+        if ( ! $withScope ){
+           $classSubjects =  $this->classSubject()
+               ->withoutGlobalScope('academicSession')
+               ->where('academic_session_id', $newAcademicSession);
+        }
+
+        return $classSubjects->get()->filter(function ($classSubject) {
+
+            if($classSubject->class_arm){
+                return $classSubject->whereJsonContains('class_arm', $this->uuid);
+            }
+            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
+                return  $classSubject->class_section_id == $this->class_section_id;
+            }
+
+            return $classSubject->class_section_id == $this->class_section_id && $classSubject->class_section_category_id == $this->class_section_category_id;
+        })->values();
+    }
+
+    public function hasStudent(string $studentId)
+    {
+        return (collect($this->students)->contains($studentId));
+    }
+
+    public function getStudents()
+    {
+        return collect($this->students)->map(function ($student){
+            return Student::whereUuid($student);
+        });
     }
 
     public function teacher()

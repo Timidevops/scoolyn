@@ -1,5 +1,14 @@
 <div class="">
     <div class="bg-white rounded-md">
+        @if($errors->any())
+            <div class="mt-1 mb-5 bg-red-100 p-5">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
         <form wire:submit.prevent="storeParent">
             @csrf
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
@@ -20,7 +29,7 @@
 
                 <div class="mt-2">
                     <label for="phoneNumber" class="block text-sm font-normal text-gray-100">Phone number</label>
-                    <input type="text" wire:model="parentPhoneNumber" id="phoneNumber" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required>
+                    <input type="number" wire:model="parentPhoneNumber" id="phoneNumber" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 " required>
                 </div>
 
                 <div class="mt-2 relative">
@@ -40,7 +49,6 @@
                        shadow-xs max-h-60 focus:outline-none sm:text-sm sm:leading-5">
                             <li wire:click="selectParentGender('Female')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Female</li>
                             <li wire:click="selectParentGender('Male')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Male</li>
-                            <li wire:click="selectParentGender('Others')" class="relative py-2 pl-3  text-blue-100 hover:bg-purple-100 cursor-default select-none pr-9">Others</li>
                         </ul>
                     </div>
                 </div>

@@ -10,7 +10,7 @@ use Spatie\Multitenancy\Models\Concerns\UsesLandlordConnection;
 class User extends Authenticates
 {
     use HasFactory;
-    //use SoftDeletes;
+    use SoftDeletes;
     use UsesLandlordConnection;
 
     protected $guarded = [];

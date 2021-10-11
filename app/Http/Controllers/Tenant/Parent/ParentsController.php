@@ -7,7 +7,7 @@ use App\Actions\Tenant\Parent\CreateNewParentAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\OnboardingTodoList;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,8 +20,8 @@ class ParentsController extends Controller
     public function index()
     {
         return view('tenant.pages.parent.parent', [
-            'totalParent' => Parents::query()->count(),
-            'parents'     => Parents::query()->get(['uuid', 'first_name', 'last_name', 'email']),
+            'totalParent' => StudentParent::query()->count(),
+            'parents'     => StudentParent::query()->get(['uuid', 'first_name', 'last_name', 'email']),
         ]);
     }
 
@@ -36,11 +36,26 @@ class ParentsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->validate($request, [
+            'email' => ['unique:'.config('env.tenant.tenantConnection').'.parents,email', 'unique:'.config('env.tenant.tenantConnection').'.users,email'],
+            'phoneNumber' => ['unique:'.config('env.tenant.tenantConnection').'.parents,phone_number', 'unique:'.config('env.tenant.tenantConnection').'.users,phone'],
+        ]);
+
         // create user
+        $password = "{$request->input('firstName')}_{$request->input('lastName')}";
+
+        if( $request->input('phoneNumber') ){
+            $password = $request->input('phoneNumber');
+        }
+        elseif ( $request->input('email') ){
+            $password = $request->input('email');
+        }
+
         $user = (new CreateUserAction())->execute([
             'name'     => "{$request->input('firstName')} {$request->input('lastName')}",
             'email'    => $request->input('email'),
-            'password' => Hash::make('password'),//Hash::make(random_number(1,9,5)),
+            'password' => Hash::make($password),
+            'phone'    => $request->input('phoneNumber'),
         ]);
 
         // assign student role

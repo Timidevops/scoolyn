@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Tenant\Teacher;
 use App\Actions\Tenant\OnboardingTodo\UpdateTodoItemAction;
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
+use App\Actions\Tenant\User\WelcomeNewUserAction;
 use App\Models\Tenant\ClassArm;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\OnboardingTodoList;
@@ -21,6 +22,7 @@ class AddTeacher extends Component
     public string $email = '';
     public string $staffId = '';
     public string $address = '';
+    public string $phone = '';
 
     public string $schoolClassId = '';
     public string $classSectionId = '';
@@ -43,7 +45,8 @@ class AddTeacher extends Component
 
     protected $rules = [
         'fullName' => ['required'],
-        'email' => ['required', 'unique:tenant.users,email'],
+        'email' => ['nullable','required_without:phone','sometimes','unique:tenant.users,email'],
+        'phone' => ['nullable','required_without:email','sometimes','unique:tenant.users,phone'],
     ];
 
     public function render()
@@ -58,8 +61,10 @@ class AddTeacher extends Component
         $classSubjects = ClassSubject::query()->whereNull('teacher_id')->get();
 
         $classSubjects = $classSubjects->map(function ($classSubject){
-            $uuid [] = $classSubject->subject->uuid;
-            return $uuid;
+            if($classSubject->subject()->exists()){
+                $uuid [] = $classSubject->subject->uuid;
+                return $uuid;
+            }
         });
 
         return view('livewire.tenant.teacher.add-teacher', [
@@ -72,10 +77,18 @@ class AddTeacher extends Component
     {
         $this->validate();
 
+        dd('here');
+
+        $password = strtolower(str_replace(' ', '', $this->fullName));
+        if($this->phone != ''){
+            $password = $this->phone;
+        }
+        $password = Hash::make($password);
         $user = (new CreateUserAction())->execute([
-            'name'      => $this->fullName,
-            'email'     => $this->email,
-            'password'  => Hash::make('password')//Hash::make(random_number(1,9,5)),
+            'name' => $this->fullName,
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'password'  => $password,
         ]);
 
         $teacher =  (new CreateNewTeacherAction())->execute($user, [
@@ -150,6 +163,7 @@ class AddTeacher extends Component
         }
 
         //@todo welcome email notification
+        //(new WelcomeNewUserAction)->execute($user);
 
         //set marker
         (new UpdateTodoItemAction())->execute([

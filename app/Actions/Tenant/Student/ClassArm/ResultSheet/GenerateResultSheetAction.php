@@ -3,11 +3,18 @@
 
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
+use App\Actions\Tenant\Result\Helpers\UpdateStudentBroadsheetsOrStudentReportWithStudentPosition;
+use App\Jobs\Tenant\GenerateSessionResultJob;
 use App\Models\Tenant\AcademicGradingFormat;
 use App\Models\Tenant\AcademicResult;
+use App\Models\Tenant\AcademicSession;
+use App\Models\Tenant\AcademicTerm;
 use App\Models\Tenant\ClassArm;
+use App\Models\Tenant\ReportCardBreakdownFormat;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Student;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class GenerateResultSheetAction
 {
@@ -36,89 +43,79 @@ class GenerateResultSheetAction
 
         $this->studentBroadsheets = $studentBroadsheets;
 
-        $this->studentBroadsheets = $this->updateStudentBroadsheetsWithStudentPosition();
+        $this->studentBroadsheets = (new UpdateStudentBroadsheetsOrStudentReportWithStudentPosition)->execute($this->studentBroadsheets);
 
         $this->updateStudentBroadsheetWithStudentMetric();
 
-        // add data to resultTable of each student
-        foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
-            $input = $studentBroadsheet;
+        //add data to resultTable of each student
 
-            $input['studentId'] = $key;
+        try{
+            DB::beginTransaction();
 
-            $input['classArm'] = (string) $classArm->uuid;
+            foreach ( $this->studentBroadsheets as $key => $studentBroadsheet ){
+                $input = $studentBroadsheet;
 
-            $input['gradingFormat'] = $this->getGradingFormat()->meta;
+                $input['studentId'] = $key;
 
-            $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
+                $input['classArm'] = (string) $classArm->uuid;
 
-            $result->setStatus(AcademicResult::PENDING_RESULT_STATUS);
+                $input['gradingFormat'] = $this->getGradingFormat();
+
+                $result = (new CreateNewResultSheetAction())->execute(camel_to_snake($input));
+
+                $result->setStatus(AcademicResult::PENDING_RESULT_STATUS);
+            }
+
+            //check if result generated equals to number of students in class
+            if( count($classArm->academicResult
+                    ->where('class_arm', $this->classArm->uuid)
+                    ->where('report_card', Setting::getCurrentCardBreakdownFormat())) !=  count($studentIds) ){
+
+                //@todo log
+                DB::rollBack();
+
+                $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
+
+                return;
+            }
+
+            DB::commit();
         }
-
-        //check if result generated equals to number of students in class
-        if( count($classArm->academicResult) !=  count($studentIds) ){
-
+        catch (\Exception $exception){
             //@todo log
+            DB::rollBack();
 
-            $classArm->setStatus(ClassArm::RESULT_INCOMPLETE_STATUS);
+            $classArm->setStatus(ClassArm::RESULT_ERROR_STATUS);
 
             return;
         }
 
         $classArm->setStatus(ClassArm::RESULT_GENERATED_STATUS);
-    }
 
-    private function updateStudentBroadsheetsWithStudentPosition()
-    {
-        $totalMarkObtained = [];
+        $lastTerm = AcademicTerm::all()->last();
 
-        foreach ($this->studentBroadsheets as $key => $studentBroadsheet){
-            $totalMarkObtained [$key] = $studentBroadsheet['totalMarkObtained'];
+        $currentSession = AcademicSession::whereUuid(Setting::getCurrentAcademicSessionId());
+
+        $lastReport = ReportCardBreakdownFormat::all()->last();
+
+        if ( $currentSession->term == $lastTerm->uuid && Setting::getCurrentCardBreakdownFormat() == $lastReport->uuid){
+            GenerateSessionResultJob::dispatch($classArm);
         }
-
-        arsort($totalMarkObtained);
-
-        $position = 1;
-
-        foreach ($totalMarkObtained as $key =>  $value){
-
-            $searchKey = array_search($value, $totalMarkObtained);
-
-            //scenario; if same position retain position.
-            if ($key !=  $searchKey) {
-                $studentBroadsheet = collect($this->studentBroadsheets)->get($key);
-
-                $duplicatePosition = $position - 1;
-
-                $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $duplicatePosition)->toArray();
-
-                continue;
-            }
-
-            $studentBroadsheet = collect($this->studentBroadsheets)->get($key);
-
-            $this->studentBroadsheets[$key] = collect($studentBroadsheet)->put('classPosition', (string) $position)->toArray();
-
-            $position++;
-        }
-
-        return $this->studentBroadsheets;
-
     }
 
     private function updateStudentBroadsheetWithStudentMetric()
     {
+        $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
 
         foreach ($this->studentBroadsheets as $key => $broadsheet){
-            $this->getSubjectMetric($key, $broadsheet['subjects']);
+            $this->getSubjectMetric($key, $broadsheet['subjects'], $subjectMetrics);
         }
 
         return $this->studentBroadsheets;
     }
 
-    private function getSubjectMetric($studentId, array $subjectIds)
+    private function getSubjectMetric($studentId, array $subjectIds, array $subjectMetrics)
     {
-        $subjectMetrics =  (new EvaluateSubjectMetricsAction())->execute($this->classArm);
 
         foreach ($subjectIds as $key => $subjectId){
 
@@ -131,7 +128,10 @@ class GenerateResultSheetAction
 
     private function getGradingFormat()
     {
-        return AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
+        $gradeFormats = AcademicGradingFormat::query()->whereJsonContains('school_class', $this->classArm->school_class_id)->first();
 
+        $gradeFormats = collect($gradeFormats->meta)->where('nameOfReport', Setting::getCurrentCardBreakdownFormat())->first();
+
+        return $gradeFormats['gradingFormat'];
     }
 }

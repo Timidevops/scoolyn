@@ -9,6 +9,6 @@ class UploadStudentsController extends Controller
 {
     public function create()
     {
-        return view('Tenant.pages.student.uploadStudent');
+        return view('tenant.pages.student.uploadStudent');
     }
 }

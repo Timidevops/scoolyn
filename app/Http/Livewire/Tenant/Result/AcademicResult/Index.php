@@ -43,7 +43,14 @@ class Index extends Component
 
         $this->getBroadsheets();
 
-        return view('livewire.tenant.result.academic-result.index');
+        $finalizedResult =
+            $this->classArm->status == ClassArm::RESULT_GENERATED_STATUS
+            || $this->classArm->status == ClassArm::SESSION_REPORT_GENERATED_STATUS
+            || $this->classArm->status == ClassArm::SESSION_COMPLETED_STATUS;
+
+        return view('livewire.tenant.result.academic-result.index', [
+            'finalizedResult' => $finalizedResult,
+        ]);
     }
 
     public function generateResult()
@@ -77,7 +84,10 @@ class Index extends Component
                 continue;
             }
 
-            $academicBroadsheet = $classSubject->academicBroadsheet()->where('class_arm', $this->classArm->uuid)->first();
+            $academicBroadsheet = $classSubject->academicBroadsheet()
+                ->where('class_arm', $this->classArm->uuid)
+                ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
 
             if( $academicBroadsheet ){
 
@@ -113,7 +123,9 @@ class Index extends Component
             }
 
             $academicBroadsheet = $classSubject->academicBroadsheet()
-                ->where('class_arm', $this->classArm->uuid)->first();
+                ->where('class_arm', $this->classArm->uuid)
+                ->where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
 
             if($academicBroadsheet){
 

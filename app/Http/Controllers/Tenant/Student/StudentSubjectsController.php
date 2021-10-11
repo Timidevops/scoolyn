@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant\Student;
 
-use App\Actions\Tenant\Student\StudentSubject\CreateNewStudentSubjectAction;
+use App\Actions\Tenant\Student\AttachSubjectsToStudents;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\Student;
@@ -26,27 +26,13 @@ class StudentSubjectsController extends Controller
 
         $studentSubjectIds = $student->subjects ? $student->subjects->subjects : [];
 
-        $classArm = $student->classArm;
-
-        $classSubjects = $student->classArm->classSubject->filter(function ($classSubject) use($classArm){
-
-            if($classSubject->class_arm){
-
-                return $classSubject->whereJsonContains('class_arm', $classArm->uuid);
-            }
-            elseif ($classSubject->class_section_id && ! $classSubject->class_section_category_id){
-                return  $classSubject->class_section_id == $classArm->class_section_id;
-            }
-
-            return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
-        });
-
+        $classSubjects = $student->classArm->getClassSubjects();
 
         $classSubjects = $classSubjects->whereNotIn('uuid', $studentSubjectIds);
 
         $classSubjects->load('subject');
 
-        return view('Tenant.pages.student.subject.index', [
+        return view('tenant.pages.student.subject.index', [
             'studentId'      => $student->uuid,
             'totalSubject'   => $totalSubject,
             'studentName'    => "{$student->first_name} {$student->last_name}",
@@ -59,27 +45,13 @@ class StudentSubjectsController extends Controller
     {
 
         $this->validate($request, [
-            'subjects.*' => ['required','unique:school_subjects,subject_id'],
+            'subjects.*' => ['required','unique:'.config('env.tenant.tenantConnection').'.school_subjects,subject_id'],
             'subjects'   => ['required', 'array','min:1']
         ]);
 
+        $student = Student::whereUuid($uuid);
 
-        $student = Student::query()->where('uuid', '=', $uuid)->first();
-
-        if( ! $student->subjects ){
-
-            (new CreateNewStudentSubjectAction())->execute($student, [
-                'subjects' => $request->input('subjects'),
-            ]);
-
-            Session::flash('successFlash', 'Subject added successfully!!!');
-
-            return back();
-        }
-
-        $student->subjects->subjects = collect($student->subjects->subjects)->merge($request->input('subjects'));
-
-        $student->subjects->save();
+        (new AttachSubjectsToStudents($student))->execute($request->input('subjects'));
 
         Session::flash('successFlash', 'Subject added successfully!!!');
 

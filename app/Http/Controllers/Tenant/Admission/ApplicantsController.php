@@ -14,7 +14,7 @@ class ApplicantsController extends Controller
 {
     public function index()
     {
-        return view('Tenant.pages.admission.index', [
+        return view('tenant.pages.admission.index', [
             'applicants' => AdmissionApplicant::query()->get(),
             'totalApplicants' => AdmissionApplicant::query()->count(),
         ]);
@@ -53,7 +53,7 @@ class ApplicantsController extends Controller
 
         //@todo adjust passport url
 
-        return view('Tenant.pages.admission.single', [
+        return view('tenant.pages.admission.single', [
             'applicant' => $applicant,
         ]);
     }

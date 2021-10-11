@@ -6,6 +6,7 @@ use App\Actions\Tenant\SchoolClass\ClassSubject\CreateNewClassSubjectAction;
 use App\Models\Tenant\ClassSection;
 use App\Models\Tenant\ClassSubject;
 use App\Models\Tenant\SchoolSubject;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Subject;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
@@ -74,16 +75,35 @@ class AddSubject extends Component
                 ->where('class_section_id', $this->classSectionId == 'all' ? null : $this->classSectionId ?? null)
                 ->where('class_section_category_id', $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null)->first();
 
-            if($isClassSubjectExists){
+            $allClassArmExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->whereJsonContains('class_arm', collect($this->classArm)->pluck('uuid')->toArray())->exists();
+
+            $classSectionExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)
+                ->exists();
+
+            $classSectionCategoryExists = ClassSubject::query()
+                ->where('subject_id', $subjectId)
+                ->where('school_class_id', $this->schoolClass->uuid)
+                ->where('class_section_id', $this->classSectionId)
+                ->where('class_section_category_id', $this->classSectionCategoryId)
+                ->exists();
+
+            if($isClassSubjectExists || $allClassArmExists || $classSectionExists || $classSectionCategoryExists){
                 continue;
             }
 
             (new CreateNewClassSubjectAction())->execute([
-                'subject_id'                => $subjectId,
-                'class_arm'                 => $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid'),
-                'school_class_id'           => $this->schoolClass->uuid,
-                'class_section_id'          => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
+                'subject_id' => $subjectId,
+                'class_arm' => $this->classSectionId != 'all' ? null : collect($this->classArm)->pluck('uuid'),
+                'school_class_id' => $this->schoolClass->uuid,
+                'class_section_id' => $this->classSectionId == 'all' ? null : $this->classSectionId ?? null,
                 'class_section_category_id' => $this->classSectionCategoryId == 'all' ? null : $this->classSectionCategoryId ?? null,
+                'academic_session_id' => Setting::getCurrentAcademicSessionId(),
             ]);
         }
 
@@ -120,7 +140,7 @@ class AddSubject extends Component
 
     public function onToggleAll(bool $checked)
     {
-        $this->subjectIds = $checked ? Subject::query()->pluck('uuid')->toArray() : [];
+        $this->subjectIds = $checked ? SchoolSubject::query()->pluck('uuid')->toArray() : [];
         $this->subjectLabel = $checked ? 'Select all' : '-- choose a subject --';
         $this->isSubjectDropdownOpen  = ! $checked;
     }

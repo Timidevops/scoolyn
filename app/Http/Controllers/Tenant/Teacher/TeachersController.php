@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant\Teacher;
 
 use App\Actions\Tenant\Teacher\CreateNewTeacherAction;
+use App\Actions\Tenant\Teacher\DeleteTeacherAction;
 use App\Actions\Tenant\User\CreateUserAction;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\Teacher;
@@ -10,17 +11,28 @@ use App\Models\Tenant\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class TeachersController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = Teacher::query()->get(['full_name', 'staff_id', 'uuid']);
+        $teachers = Teacher::query()->get();
+        if($request->has('search')){
+            $teachers = Teacher::where('full_name', 'like', '%'.$request->search . '%')
+                ->orWhere('staff_id', '=', $request->search)
+                ->get();
+        }
         $teachers->load(['subjectTeacher', 'classArm']);
+
+        collect($teachers)->map(function ($teacher){
+            $teacher['phone'] = $teacher->user->phone;
+            return $teacher;
+        });
 
         return view('tenant.pages.teacher.teacher', [
             'totalTeachers' => Teacher::query()->count(),
-            'teachers'      => collect($teachers),
+            'teachers' => collect($teachers),
         ]);
     }
 
@@ -29,24 +41,41 @@ class TeachersController extends Controller
         return view('tenant.pages.teacher.addTeacher');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function edit(string $uuid)
     {
-        dd('here');
-        $user = (new CreateUserAction())->execute([
-            'name'      => $request->input('fullName'),
-            'email'     => $request->input('email'),
-            'password'  => Hash::make(random_number(1,9,5)),
+        $teacher = Teacher::whereUuid($uuid);
+
+        if ( ! $teacher ){
+            abort(404);
+        }
+
+        $classArms = $teacher->classArm;
+
+        $classArms->load(['schoolClass', 'classSection', 'classSectionCategory']);
+
+        $subjects = $teacher->subjectTeacher->load(['subject', 'schoolClass']);
+
+        return view('tenant.pages.teacher.edit', [
+            'teacher'   => $teacher,
+            'classArms' => $classArms,
+            'subjects'  => $subjects,
         ]);
+    }
 
-        // assign teacher role
-        $user->assignRole(User::TEACHER_USER);
+    public function delete(string $uuid)
+    {
+        $teacher = Teacher::whereUuid($uuid);
 
-        (new CreateNewTeacherAction())->execute($user, camel_to_snake($request->only(['fullName', 'staffId', 'email'])));
+        if ( ! $teacher ){
+            Session::flash('errorFlash', 'Error processing request.');
 
-        //@todo send welcome email
-//        $expiresAt = now()->addDay();
-//        $user->sendWelcomeNotification($expiresAt);
+            return back();
+        }
 
-        return back();
+        (new DeleteTeacherAction)->execute($teacher);
+
+        Session::flash('successFlash', 'Teacher removed successfully!!!');
+
+        return redirect()->route('listTeacher');
     }
 }

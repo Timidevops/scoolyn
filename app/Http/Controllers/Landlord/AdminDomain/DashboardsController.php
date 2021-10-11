@@ -11,7 +11,7 @@ class DashboardsController extends Controller
 {
     public function index()
     {
-        return view('Landlord.adminDomain.pages.dashboard.index', [
+        return view('landlord.adminDomain.pages.dashboard.index', [
             'totalTenants' => ScoolynTenant::query()->count(),
         ]);
     }

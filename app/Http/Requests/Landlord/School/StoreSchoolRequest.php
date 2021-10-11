@@ -32,6 +32,8 @@ class StoreSchoolRequest extends FormRequest
             'schoolEmail' => ['nullable'],
             'hasPayment' => ['required', Rule::in(['yes', 'no'])],
             'paymentCurrency' => ['nullable', Rule::in(['ngn'])],
+            'plan' => ['required', 'exists:plans,id'],
+            'marketerCode' => ['nullable', 'exists:marketers,marketer_code'],
             'domainName' => ['required', 'unique:scoolyn_tenants,domain'],
             'adminEmail' => ['required', 'email', 'unique:school_admins,email'],
             'adminPassword' => ['required','min:8','confirmed'],

@@ -11,13 +11,13 @@ class LoginsController extends Controller
 {
     public function form()
     {
-        return view('Landlord.adminDomain.pages.login.index');
+        return view('landlord.adminDomain.pages.login.index');
     }
 
     public function store(Request $request)
     {
         $this->validate($request, [
-            'email' => ['required', 'email', 'exists:users,email'],
+            'email' => ['required', 'email'],
         ]);
 
         if ( ! Auth::guard('admin')->attempt($request->only(['email', 'password'])) ){

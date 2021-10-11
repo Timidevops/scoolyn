@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Tenant\ParentDomain\Result;
 use App\Http\Controllers\Controller;
 use App\Models\Tenant\AcademicResult;
 use App\Models\Tenant\ClassSubject;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
+use App\Models\Tenant\StudentSchoolFee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class ResultsController extends Controller
 {
@@ -19,7 +21,11 @@ class ResultsController extends Controller
 
         $results = AcademicResult::query()->whereIn('student_id', $wards)->get();
 
-        $results->load(['student', 'academicSession', 'academicTerm']);
+        $results = $results->filter(function ($result){
+            return $result->status == AcademicResult::APPROVED_RESULT_STATUS;
+        });
+
+        $results->load(['student', 'academicSession']);
 
         return view('livewire.tenant.parent-domain.result.index', [
             'results' => $results,
@@ -33,15 +39,27 @@ class ResultsController extends Controller
 
         $ward   = $parent->ward()->where('uuid', $studentId)->firstOrFail();
 
+        $studentSchoolFees = (new StudentSchoolFee($ward));
+
+        if ( ! $studentSchoolFees->isSchoolFeesPaid() ){
+            Session::flash('warningFlash', 'Kindly pay school fees to access result.');
+            return redirect()->route('singleWardFee',[$ward->schoolFee->uuid, $ward->uuid]);
+        }
+
         $result = $ward->academicReport()->where('uuid', $uuid)->firstOrFail();
 
-        $result->load(['student', 'academicSession', 'academicTerm', 'classArm']);
+        if ( $result->status != AcademicResult::APPROVED_RESULT_STATUS ){
+            abort(404);
+        }
+
+        $result->load(['student', 'academicSession', 'classArm', 'getTerm']);
 
         $subjects = collect($result->subjects)->map(function ($subject, $key){
-            return collect($subject)->put('subjectName', ClassSubject::whereUuid($key)->subject->subject_name);
+            return collect($subject)->put('subjectName', ClassSubject::withoutGlobalScope('teacher')->whereUuid($key)->first()->subject->subject_name);
         })->values();
 
-        return view('Tenant.parentDomain.result.single', [
+
+        return view('tenant.parentDomain.result.single', [
             'result' => $result,
             'subjects' => $subjects,
         ]);

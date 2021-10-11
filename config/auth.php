@@ -111,6 +111,7 @@ return [
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
+            'connection' => env('DB_CONNECTION_TENANT'),
         ],
     ],
 

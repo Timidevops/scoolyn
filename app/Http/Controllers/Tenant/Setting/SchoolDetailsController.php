@@ -12,7 +12,7 @@ class SchoolDetailsController extends Controller
 {
     public function edit()
     {
-        return view('Tenant.pages.setting.SchoolDetails.edit', [
+        return view('tenant.pages.setting.SchoolDetails.edit', [
             'schoolDetails' => Setting::schoolDetails(),
             'principalDetails' => Setting::getSchoolPrincipal(),
             'schoolLogo' => Setting::getSchoolLogo(),

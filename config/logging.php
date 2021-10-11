@@ -37,7 +37,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily', 'slack', 'cloudwatch'],
             'ignore_exceptions' => false,
         ],
 
@@ -57,7 +57,7 @@ return [
         'slack' => [
             'driver' => 'slack',
             'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => 'Laravel Log',
+            'username' => env('APP_NAME'),
             'emoji' => ':boom:',
             'level' => env('LOG_LEVEL', 'critical'),
         ],
@@ -99,6 +99,23 @@ return [
 
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
+        ],
+
+        'cloudwatch' => [
+            'driver' => 'custom',
+            'via' => \App\Logging\CloudwatchLoggerFactory::class,
+            'sdk' => [
+                'region' => env('AWS_DEFAULT_REGION'),
+                'version' => 'latest',
+                'credentials' => [
+                    'key' => env('AWS_ACCESS_KEY_ID'),
+                    'secret' => env('AWS_SECRET_ACCESS_KEY'),
+                ]
+            ],
+            'retention' => 365,
+            'level' => 'info',
+            'group' => env('CLOUDWATCH_GROUP'),
+            'stream' => env('CLOUDWATCH_STREAM'),
         ],
     ],
 

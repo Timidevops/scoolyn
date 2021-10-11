@@ -14,8 +14,6 @@ class CreateNewStudentSubjectAction
     {
         $input['uuid'] = Uuid::uuid4();
 
-        $input['academic_session_id'] = Setting::getCurrentAcademicSessionId();
-
         $student->subjects()->create($input);
     }
 }

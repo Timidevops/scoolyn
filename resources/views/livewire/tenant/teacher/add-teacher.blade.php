@@ -1,6 +1,15 @@
 
 <div x-data="addTeacher()">
     <form wire:submit.prevent="store">
+        @if($errors->any())
+            <div class="mt-1 mb-5 bg-red-100 p-5">
+                @foreach ($errors->all() as $error)
+                    <p class="text-white">
+                        {!! $error !!}
+                    </p>
+                @endforeach
+            </div>
+        @endif
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-4">
             <div class="mt-2">
                 <label for="fullName" class="block text-sm font-normal text-gray-100">Full Name</label>
@@ -8,11 +17,15 @@
             </div>
             <div class="mt-2">
                 <label for="email" class="block text-sm font-normal text-gray-100">Email</label>
-                <input type="email" wire:model="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100" required>
+                <input type="email" wire:model="email" id="email" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
             </div>
             <div class="mt-2">
                 <label for="staffId" class="block text-sm font-normal text-gray-100">Staff Number</label>
                 <input type="text" wire:model="staffId" id="staffId" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+            </div>
+            <div class="mt-2">
+                <label for="phone" class="block text-sm font-normal text-gray-100">Phone Number</label>
+                <input type="text" wire:model="phone" id="phone" class="w-full text-gray-100 rounded-md py-2 px-2 border border-purple-100">
             </div>
             <div class="mt-2">
                 <label for="address" class="block text-sm font-normal text-gray-100">Address</label>
@@ -38,13 +51,13 @@
             <div x-show="isClassTeacherDivVisible" class="mt-2">
                 <p @click="isSelectClassModalOpen = true;" class="block cursor-pointer border-b border-dotted pb-1 w-1/3 text-sm font-normal text-blue-100">Choose a class</p>
                 <!-- Modal -->
-                    @include('Tenant.partials.users.teacher.modal._selectClass')
+                    @include('tenant.partials.users.teacher.modal._selectClass')
                 <!--/: Modal -->
             </div>
             <div x-show="isSubjectTeacherDivVisible" class="mt-2">
                 <p @click="isSelectSubjectModalOpen = true;" class="block cursor-pointer border-b border-dotted pb-1 w-5/12 text-sm font-normal text-blue-100">Choose class subject</p>
                 <!-- Modal -->
-                    @include('Tenant.partials.users.teacher.modal._selectSubject')
+                    @include('tenant.partials.users.teacher.modal._selectSubject')
                 <!--/: Modal -->
             </div>
         </div>

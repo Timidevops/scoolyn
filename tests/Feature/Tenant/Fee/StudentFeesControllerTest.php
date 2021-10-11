@@ -4,7 +4,7 @@ namespace Tests\Feature\Tenant\Fee;
 
 use App\Actions\Tenant\SchoolClass\CreateNewClassSectionAction;
 use App\Actions\Tenant\Student\CreateNewStudentAction;
-use App\Models\Tenant\Parents;
+use App\Models\Tenant\StudentParent;
 use App\Models\Tenant\SchoolClass;
 use App\Models\Tenant\Student;
 use App\Models\Tenant\StudentFee;
@@ -19,7 +19,7 @@ class StudentFeesControllerTest extends TestCase
      */
     public function test_that_student_fee_controller_is_stored()
     {
-        $getParent = Parents::factory()->make();
+        $getParent = StudentParent::factory()->make();
         $getClass = SchoolClass::factory()->make();
 
         $getClassSection = (new CreateNewClassSectionAction())->execute($getClass, [

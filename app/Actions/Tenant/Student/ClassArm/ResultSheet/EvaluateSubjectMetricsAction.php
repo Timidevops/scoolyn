@@ -3,11 +3,15 @@
 
 namespace App\Actions\Tenant\Student\ClassArm\ResultSheet;
 
+use App\Actions\Tenant\Result\Broadsheet\Helper\result\GetAllBroadsheetWithCaFormatAction;
+use App\Actions\Tenant\Result\Helpers\GetSubjectMetricAction;
+use App\Models\Tenant\Setting;
 use Illuminate\Database\Eloquent\Model;
 
 class EvaluateSubjectMetricsAction
 {
     public array $subjectScore;
+    public array $academicBroadsheetScore;
 
     public function execute(Model $classArm)
     {
@@ -26,15 +30,43 @@ class EvaluateSubjectMetricsAction
                 return $classSubject->class_section_id == $classArm->class_section_id;
             }
 
-
             return $classSubject->class_section_id == $classArm->class_section_id && $classSubject->class_section_category_id == $classArm->class_section_category_id;
         });
 
         foreach ($classSubjects as $classSubject){
 
-            $academicBroadsheet =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->first();
+            $academicBroadsheets =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)
+                ->get();
 
-            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($academicBroadsheet->meta)->get('academicBroadsheet') );
+//            if ( $academicBroadsheets->count() <= 1 ){
+//
+//                $academicBroadsheets =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->
+//                where('report_card', Setting::getCurrentCardBreakdownFormat())
+//                    ->first();
+//
+//                $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( collect($academicBroadsheets->meta)->get('academicBroadsheet') );
+//
+//                return $classSubjectBroadsheet;
+//            }
+
+            $academicBroadsheet =  $classSubject->academicBroadsheet()->where('class_arm', $classArm->uuid)->
+            where('report_card', Setting::getCurrentCardBreakdownFormat())
+                ->first();
+
+            $getAllBroadsheetWithCaFormats = [];
+
+            foreach ( collect(collect($academicBroadsheet->meta)->get('academicBroadsheet'))->keys() as $studentId){
+                $getAllBroadsheetWithCaFormats []  = (new GetAllBroadsheetWithCaFormatAction($studentId))->execute($academicBroadsheets);
+            }
+
+            collect($getAllBroadsheetWithCaFormats)->map(function ($broadsheet){
+                collect($broadsheet['academicBroadsheets'])->map(function ($item, $index){
+                    $this->academicBroadsheetScore [$index] = $item;
+                })->toArray();
+            })->toArray();
+
+            $classSubjectBroadsheet [$classSubject->uuid] = $this->getSubjectScores( $this->academicBroadsheetScore );
+
         }
 
         return $classSubjectBroadsheet;
@@ -44,47 +76,44 @@ class EvaluateSubjectMetricsAction
     {
         $subjectScores = [];
 
-        foreach ($broadsheets as $key => $broadsheet){
-            $subjectScores[$key] = $broadsheet['total'];
+        $subjectMetrics = [];
+
+        foreach ( $broadsheets as $key => $broadsheet){
+            //@todo if not 3rd term
+//            $subjectScores[$key] = collect($broadsheet['total'])->sum();
+//
+//            $subjectMetrics [$key]['total'] = $broadsheet['total'];
+
+
+            $subjectScores[$key] = collect($broadsheet)->sum();
+
+            $subjectMetrics [$key]['total'] = collect($broadsheet)->sum();
         }
 
-        $this->subjectScore = $subjectScores;
+        $getSubjectMetrics = (new GetSubjectMetricAction)->execute($subjectScores);
 
-        return $this->getSubjectMetric($subjectScores);
+        return collect($subjectMetrics)->map(function ($subjectMetric, $key) use ($getSubjectMetrics){
+            $subjectMetrics ['subjectPosition'] = $getSubjectMetrics[$key]['subjectPosition'];
+
+            $subjectMetrics ['classAverage']    = $getSubjectMetrics[$key]['classAverage'];
+
+            $subjectMetrics ['total']    = $subjectMetric['total'];
+
+            return $subjectMetrics;
+        });
     }
 
     private function getSubjectMetric(array $subjectScores)
     {
-        arsort($subjectScores);
+        $studentPositions = getPosition($subjectScores, 'subjectPosition');
 
-        $position = 1;
+        $classAvg = 0;//$this->getClassSubjectAverage($subjectScores);
 
-        $studentPositions = [];
-
-        foreach ($subjectScores as $key => $subjectScore){
-
-            $searchKey = array_search($subjectScore, $subjectScores);
-
-            //scenario; if same position retain position.
-            if( $key != $searchKey){
-
-                $studentPositions [$key] = [
-                    'SubjectPosition' => (string) $position - 1,
-                    'classAverage'    => (string) $this->getClassSubjectAverage($this->subjectScore)
-                ];
-
-                continue;
-            }
-
-            $studentPositions [$key] = [
-                'SubjectPosition' => (string) $position,
-                'classAverage'    => (string) $this->getClassSubjectAverage($this->subjectScore)
-            ];
-
-            $position ++;
-        }
-
-        return $studentPositions;
+        return collect($studentPositions)->map(function ($item, $index) use($classAvg, $subjectScores){
+            $item['classAverage'] = $classAvg;
+            $item['total'] = collect($subjectScores)->get($index);
+            return $item;
+        })->toArray();
     }
 
     private function getClassSubjectAverage(array $subjectScores)

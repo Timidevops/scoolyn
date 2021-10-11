@@ -9,6 +9,6 @@ class ChangePasswordsController extends Controller
 {
     public function edit()
     {
-        return view('Tenant.pages.setting.changePassword.edit');
+        return view('tenant.pages.setting.changePassword.edit');
     }
 }

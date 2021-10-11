@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Landlord;
 
+use App\Actions\Landlord\Transaction\CreateNewTransactionAction;
 use App\Http\Controllers\Controller;
 use App\Models\Landlord\Plan;
 use App\Models\Landlord\Transaction;
@@ -16,7 +17,7 @@ class SubscriptionPaymentsController extends Controller
     {
         $plan = Plan::query()->where('uuid', $uuid)->firstOrFail();
 
-        return view('Landlord.pages.payment.index', [
+        return view('landlord.pages.payment.index', [
             'plan' => $plan,
         ]);
     }
@@ -56,7 +57,7 @@ class SubscriptionPaymentsController extends Controller
         }
 
         //create landlord transaction
-        $this->createNewTransaction([
+        (new CreateNewTransactionAction)->execute([
             'reference' => $reference,
             'amount' => $subscription->price,
             'currency' => 'ngn',
@@ -71,8 +72,4 @@ class SubscriptionPaymentsController extends Controller
         return redirect()->to($redirectTo);
     }
 
-    private function createNewTransaction(array $input)
-    {
-        Transaction::query()->create($input);
-    }
 }

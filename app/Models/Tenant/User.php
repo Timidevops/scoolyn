@@ -3,6 +3,7 @@
 namespace App\Models\Tenant;
 
 
+use Digikraaft\ModelSuspension\CanBeSuspended;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,6 +22,7 @@ class User extends Authenticatable
     use ReceivesWelcomeNotification;
     use SoftDeletes;
     use UsesTenantConnection;
+    use CanBeSuspended;
 
     protected $guard_name = 'web';
 
@@ -32,14 +34,14 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
-    public function teacher(): HasMany
+    public function teacher(): HasOne
     {
-        return $this->hasMany(Teacher::class, 'user_id', 'uuid');
+        return $this->hasOne(Teacher::class, 'user_id', 'uuid');
     }
 
     public function parent(): HasOne
     {
-        return $this->hasOne(Parents::class, 'user_id', 'uuid');
+        return $this->hasOne(StudentParent::class, 'user_id', 'uuid');
     }
 
     public function getUserFullName()

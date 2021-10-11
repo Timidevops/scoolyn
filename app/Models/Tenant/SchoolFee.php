@@ -23,10 +23,6 @@ class SchoolFee extends Model
 
     protected $guarded = [];
 
-    protected $casts = [
-        'fee_structure_id' => 'array',
-    ];
-
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id', 'uuid');
@@ -36,9 +32,38 @@ class SchoolFee extends Model
     {
         return $this->hasOne(AcademicSession::class, 'uuid', 'academic_session_id');
     }
-
     public function academicTerm()
     {
-        return $this->hasOne(AcademicTerm::class, 'uuid', 'academic_term_id');
+        return $this->hasOne(AcademicTerm::class, 'uuid', 'term_id');
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'school_fees_id', 'uuid');
+    }
+
+    public function isSchoolFeesPaid(): bool
+    {
+        return $this->schoolFeesLeft() == 0;
+    }
+
+    public function schoolFeesPaid()
+    {
+        return $this->transactions()->sum('amount');
+    }
+
+    public function schoolFeesLeft()
+    {
+        return $this->amount - $this->schoolFeesPaid();
+    }
+
+    public function feesItems()
+    {
+        return $this->hasMany(FeeStructure::class, 'school_fees_id', 'uuid');
+    }
+
+    public function schoolClasses()
+    {
+        return $this->hasMany(SchoolClass::class, 'school_fees_id', 'uuid');
     }
 }

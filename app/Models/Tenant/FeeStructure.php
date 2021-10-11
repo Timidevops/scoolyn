@@ -31,4 +31,9 @@ class FeeStructure extends Model
     {
         return self::query()->where('uuid', $uuid)->first();
     }
+
+    public function schoolFees()
+    {
+        return $this->belongsTo(SchoolFee::class, 'school_fees_id', 'uuid');
+    }
 }
