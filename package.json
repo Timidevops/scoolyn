@@ -9,7 +9,7 @@
         "prod": "npm run production",
         "production": "mix --production"
     },
-    "dependencies": {
+    "devDependencies": {
         "@tailwindcss/ui": "^0.7.2",
         "autoprefixer": "^10.4.16",
         "axios": "^1.6.1",
