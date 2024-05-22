@@ -2,7 +2,7 @@
     @csrf
     @method('PATCH')
     <input type="hidden" name="classArm" value="{{$classArm}}">
-    <div class="flex justify-between items-center px-4 py-4">
+    <div class="flex items-center justify-between px-4 py-4">
         <div>
             <h3>
                 Assessment for {{\App\Models\tenant\Setting::getCurrentCardBreakdownFormat(true)}}
@@ -16,55 +16,53 @@
                     </div>
                 @endif
             </button>
-            <button type="submit" class="border-blue-100 border text-blue-100 rounded-md py-2 px-4 mx-2 text-sm">
+            <button type="submit" class="px-4 py-2 mx-2 text-sm text-blue-100 border border-blue-100 rounded-md">
                 Save Broadsheet
             </button>
-            <button type="submit" name="submit" class="bg-blue-100 text-white rounded-md py-2 px-4 mx-2 text-sm">
+            <button type="submit" name="submit" class="px-4 py-2 mx-2 text-sm text-white bg-blue-100 rounded-md">
                 Submit Broadsheet
             </button>
         </div>
     </div>
     <div class="flex flex-col mt-2">
-        <div class="align-middle min-w-full overflow-x-auto  overflow-hidden ">
-            <table class="min-w-full divide-y  divide-purple-100">
+        <div class="min-w-full overflow-hidden overflow-x-auto align-middle ">
+            <table class="min-w-full divide-y divide-purple-100">
                 <thead>
                 <tr>
-                    <th class="px-6 py-3 w-1  text-left text-sm font-medium text-gray-500 uppercase">
+                    <th class="w-1 px-6 py-3 text-sm font-medium text-left text-gray-500 uppercase">
                         SN
                     </th>
-                    <th class="px-6 py-3  text-left  font-medium text-gray-500 text-sm ">
+                    <th class="px-6 py-3 text-sm font-medium text-left text-gray-500 ">
                                         <span class="flex items-center mx-1">
                                             Student
                                         </span>
                     </th>
                     @if( $student['previousReportCard'] != null )
-                        <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
-                            <div class="flex">
+                        <th scope="col" class="px-4 py-4">
+                            <div class="flex space-x-2">
                                 @foreach($student['previousReportCard'] as $previousReportCard)
-                                    <div class="flex space-x-5">
-                                        @foreach($previousReportCard['caAssessmentStructureFormat'] as $caAssessmentStructureFormat)
-                                            <div>
-                                                <p class="text-xs uppercase">{{$caAssessmentStructureFormat['name']}}</p>
-                                                <span class="text-gray-300">({{$caAssessmentStructureFormat['score']}}%)</span>
-                                                <input type="hidden" class="previousReportCardScore_{{$index ?? ''}}" value="{{$caAssessmentStructureFormat['score']}}">
-                                            </div>
-                                        @endforeach
-                                    </div>
+                                    @foreach($previousReportCard['caAssessmentStructureFormat'] as $caAssessmentStructureFormat)
+                                        <div class="text-center rounded-md w">
+                                            <p class="text-xs uppercase">{{$caAssessmentStructureFormat['name']}}</p>
+                                            <span class="">({{$caAssessmentStructureFormat['score']}}%)</span>
+                                            <input type="hidden" class="previousReportCardScore_{{$index ?? ''}}" value="{{$caAssessmentStructureFormat['score']}}">
+                                        </div>
+                                    @endforeach
                                 @endforeach
                             </div>
                         </th>
                     @endif
                     <template x-for="(item, index) in caAssessmentStructure.caFormat" :key="item">
-                        <th class="px-6 py-3  text-center  font-medium text-gray-200 text-sm">
+                        <th class="px-6 py-3 text-sm font-medium text-center text-gray-200">
                             <div>
-                                <span class="uppercase text-xs" x-text="item.name"></span>
+                                <span class="text-xs uppercase" x-text="item.name"></span>
                                 <p class="text-gray-300">(<span x-text="item.score"></span>%)</p>
                                 <input type="hidden" class="assessmentScore" :value="item.score">
                             </div>
                         </th>
                     </template>
-                    <th class="px-6 py-3  text-left  font-medium text-gray-200 text-sm ">
-                        <div class="text-center mx-1">
+                    <th class="px-6 py-3 text-sm font-medium text-left text-gray-200 ">
+                        <div class="mx-1 text-center">
                             <span>Total</span>
                             <p class="text-gray-300">(<span x-text="getTotalAssessment()"></span>%)</p>
                         </div>
@@ -74,26 +72,26 @@
                 <tbody class="bg-white divide-y divide-purple-100">
                 <template x-for="(item, index) in {{$academicBroadsheets}}" :key="item">
                     <tr>
-                        <td class="max-w-0  px-6 py-4 whitespace-nowrap text-xs text-gray-900">
+                        <td class="px-6 py-4 text-xs text-gray-900 max-w-0 whitespace-nowrap">
                             <div class="flex">
-                                <a href="#" class="group inline-flex space-x-2 truncate">
+                                <a href="#" class="inline-flex space-x-2 truncate group">
                                     <p class="text-gray-500 truncate" x-text="index+1">
                                     </p>
                                 </a>
                             </div>
                         </td>
-                        <td class="px-6 py-4 text-left whitespace-nowrap text-xs text-gray-200">
-                            <span class="text-gray-200 font-normal capitalize" x-text="item.studentName"></span>
+                        <td class="px-6 py-4 text-xs text-left text-gray-200 whitespace-nowrap">
+                            <span class="font-normal text-gray-200 capitalize" x-text="item.studentName"></span>
                         </td>
                         @if( $student['previousReportCard'] != null )
-                            <td class="whitespace-nowrap px-6 py-4  text-xs text-gray-200">
+                            <td class="px-6 py-4 text-xs text-gray-200 whitespace-nowrap">
                                 @foreach($student['previousReportCard'] as $previousReportCard)
                                     <div class="flex">
                                         @foreach($student['previousReportCard'] as $previousReportCard)
                                             <div class="flex space-x-5">
                                                 <template x-for="(previousReportContent, previousReportIndex) in getPreviousReportData({{$previousReportCard['caAssessmentStructureFormat']}}, {{$previousReportCard['academicBroadsheets']}}, item.studentId) ">
                                                     <div>
-                                                        <p class="text-gray-500 truncate text-center" :class="`previousReportContentScore_${index}_{{$index ?? ''}}`" x-text="previousReportContent.score"></p>
+                                                        <p class="text-center text-gray-500 truncate" :class="`previousReportContentScore_${index}_{{$index ?? ''}}`" x-text="previousReportContent.score"></p>
                                                     </div>
                                                 </template>
                                             </div>
@@ -103,16 +101,16 @@
                             </td>
                         @endif
                         <template x-for="(ca, caIndex) in getBroadsheet(item.broadsheet)" :key="ca">
-                            <td class="whitespace-nowrap text-xs text-gray-200">
+                            <td class="text-xs text-gray-200 whitespace-nowrap">
                                 <div class="mt-2 text-center">
                                     <label>
-                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$index ?? ''}}`" @input="onchangeCAScore(index, '{{$index ?? ''}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 text-center text-gray-100 rounded-md py-2 px-2 border border-purple-100 ">
+                                        <input type="number" x-bind:value="ca.score" x-bind:class="`totalScore_${index}_{{$index ?? ''}}`" @input="onchangeCAScore(index, '{{$index ?? ''}}', ca, event)" x-bind:name="`broadsheet[${item.studentId}][${ca.name}]`" class="w-2/5 px-2 py-2 text-center text-gray-100 border border-purple-100 rounded-md ">
                                     </label>
                                 </div>
                             </td>
                         </template>
-                        <td class="px-6 py-4 whitespace-nowrap text-xs text-gray-200">
-                            <p class="text-gray-200 text-center font-normal" x-bind:id="`totalScore_${index}_{{$index ?? ''}}`">
+                        <td class="px-6 py-4 text-xs text-gray-200 whitespace-nowrap">
+                            <p class="font-normal text-center text-gray-200" x-bind:id="`totalScore_${index}_{{$index ?? ''}}`">
                                 <span x-text="item.broadsheet.total"></span>
                             </p>
                             <input type="hidden" :value="getTotalScoreFromPrevious(index,'{{$index ?? ''}}', item.broadsheet.total)" x-bind:id="`totalScoreValue_${index}_{{$index ?? ''}}`" />
